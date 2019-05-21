@@ -1,0 +1,33 @@
+<div class="container">
+
+<h4>LISTING TOKENS</h4>
+
+<table class="table table-striped">
+  <tr>
+    <th scope="col">Rider ID</th>
+    <th scope="col">Created At</th>
+    <th scope="col">Expires At</th>
+    <th scope="col">Used At</th>
+    <th scope="col">Valid</th>
+    <th scope="col"></th>
+  </tr>
+
+  <% @tokens.each do |token| %>
+    <% if token.rider.organization.name==current_organization.name%>
+      <tr>
+        <td scope="row"><%= token.rider_id %></td>
+        <td><%= token.created_at %></td>
+        <td><%= token.expires_at %></td>
+        <td><%= token.used_at %></td>
+        <td><%= token.is_valid %></td>
+        <td><%= link_to 'Show', token_path(token) %></td>
+        <td><%= link_to 'Edit', edit_token_path(token) %></td>
+        <td><%= link_to 'Destroy', token_path(token),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<%= link_to 'Back', welcome_index_path, class:"btn btn-danger" %>

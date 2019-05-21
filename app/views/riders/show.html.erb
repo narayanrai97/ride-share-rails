@@ -1,0 +1,42 @@
+<h1> Rider </h1>
+
+<p>
+  <strong>ID:</strong>
+  <%= @rider.id %>
+</p>
+
+<p>
+  <strong>First Name:</strong>
+  <%= @rider.first_name %>
+</p>
+
+<p>
+  <strong>Last Name:</strong>
+  <%= @rider.last_name %>
+</p>
+
+
+<p>
+  <strong>Phone:</strong>
+  <%= @rider.phone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @rider.email %>
+</p>
+
+<p>
+  <strong>Tokens:</strong>
+  <%= @count %>
+</p>
+
+<h2>Locations</h2>
+<% @locations.each do |location| %>
+  <p><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></p>
+<% end %>
+
+<%= link_to 'Edit', edit_rider_path(@rider) %> |
+<%= link_to 'Back', riders_path %> |
+<%= link_to 'Add Tokens', new_token_path(@rider) %>
+
