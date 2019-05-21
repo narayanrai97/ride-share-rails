@@ -1,0 +1,15 @@
+<div class="container">
+
+
+  <div class="card">
+
+    <h5 class="card-header shadow bg-primary info-color  text-center ">
+      <strong class="text-white">Edit Token</strong>
+    </h5><%= render 'form' %>
+
+
+  </div>
+</div>
+
+<%= link_to 'Back To Rider', rider_path(@token.rider_id) %> |
+<%= link_to 'Back To Tokens', tokens_path %> |

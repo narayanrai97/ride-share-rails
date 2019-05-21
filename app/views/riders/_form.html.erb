@@ -1,0 +1,69 @@
+
+<%= form_with(model: @rider, local: true) do |form| %>
+
+  <% if @rider.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@rider.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @rider.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="row">
+
+  <div class="form-group offset-md-1 col-md-5 ">
+    <%= form.label :first_name %><br>
+    <%= form.text_field :first_name,class: "form-control" %>
+  </div >
+
+  <div class="form-group col-md-5">
+    <%= form.label :last_name %><br>
+    <%= form.text_field :last_name,class: "form-control" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group offset-md-1 col-md-5">
+    <%= form.label :phone %><br>
+    <%= form.text_field :phone,class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-5">
+    <%= form.label :email %><br>
+    <%= form.text_field :email,class: "form-control" %>
+  </div>
+</div>
+
+  <div class="form-group col-md-5">
+      <%= form.label :password %><br>
+      <%= form.password_field :password,class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-5">
+      <%= form.label :password_confirmation %><br>
+      <%= form.password_field :password_confirmation,class: "form-control" %>
+  </div>
+
+  
+
+<!--  <p>-->
+<!--    <%#= form.label :tokens %><br>-->
+    <%#= form.text_field :tokens %>
+<!--  </p>-->
+
+<div class="row">
+  <div  class="form-group col-md-1 offset-md-1">
+    <%= link_to 'Back', riders_path,class:"btn btn-danger" %>
+  </div>
+  <div  class="form-group col-md-1 offset-md-7">
+    <%= form.submit class:"btn btn-primary" %>
+  </div>
+</div>
+  
+<% end %>

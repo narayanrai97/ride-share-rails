@@ -1,0 +1,30 @@
+<div class="container">
+
+
+<h4>LISTING ORGANIZATIONS</h4>
+
+<%= link_to 'New Organization', new_organization_path, class:"btn btn-primary" %>
+<table class="table table-striped">
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Name</th>
+    <th scope="col"></th>
+  </tr>
+
+  <% @organizations.each do |org| %>
+      <% if org.name==current_organization.name%>
+    <tr>
+      <td scope="row"><%= org.id %></td>
+      <td><%= org.name %></td>
+      <td><%= link_to 'Show', organization_path(org) %></td>
+      <td><%= link_to 'Edit', edit_organization_path(org) %></td>
+      <td><%= link_to 'Destroy', organization_path(org),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<%= link_to 'Back', welcome_index_path, class:"btn btn-danger" %>
+</div>

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rider_id: 1
+  pick_up_time: 2019-02-08 10:27:46
+  start_street: MyString
+  start_city: MyString
+  start_zip: MyString
+  end_street: MyString
+  end_city: MyString
+  end_state: MyString
+  end_zip: MyString
+  reason: MyText
+  status: MyString
+
+two:
+  rider_id: 1
+  pick_up_time: 2019-02-08 10:27:46
+  start_street: MyString
+  start_city: MyString
+  start_zip: MyString
+  end_street: MyString
+  end_city: MyString
+  end_state: MyString
+  end_zip: MyString
+  reason: MyText
+  status: MyString

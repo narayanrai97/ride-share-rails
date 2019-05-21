@@ -1,0 +1,34 @@
+<h4>TOKEN</h4>
+
+
+<p>
+  <strong>Rider ID:</strong>
+  <%= @token.rider_id %>
+</p>
+
+<p>
+  <strong>Created At:</strong>
+  <%= @token.created_at %>
+</p>
+
+
+<p>
+  <strong>Expires At:</strong>
+  <%= @token.expires_at %>
+</p>
+
+<p>
+  <strong>Used at:</strong>
+  <%= @token.used_at %>
+</p>
+
+<p>
+  <strong>Valid:</strong>
+  <%= @token.is_valid%>
+</p>
+
+
+
+<%= link_to 'Edit', edit_token_path(@token) %> |
+<%= link_to 'Back To Rider', rider_path(@token.rider_id) %> |
+<%= link_to 'Back To Tokens', tokens_path %> |
