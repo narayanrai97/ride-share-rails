@@ -44,6 +44,66 @@ module Api
 
 
 
+    #Method to create application for user, requires information for application and updates state of driver to pending
+        desc "Create Application from App"
+        params do
+          requires :car_make, type: String, desc: " Car Manufactor of Driver"
+          requires :car_model, type: String, desc: " Car Model of Driver"
+          requires :car_year, type: Integer, desc: " Car Year of Driver"
+          requires :car_color, type: String, desc: " Car Color of driver"
+          requires :car_plate, type: String, desc: " Car plate of driver"
+          requires :insurance_provider, type: String, desc: " Insurance Provider for driver"
+          requires :insurance_start, type: DateTime, desc: " Insurance start date"
+          requires :insurance_stop, type: DateTime, desc: " Insurance start date"
+        end
+        post "drivers/application" do
+          driver = current_driver
+            driver.update(car_make: params[:car_make], car_model: params[:car_model],
+                          car_year: params[:car_year], car_color: params[:car_color],
+                          car_plate: params[:car_plate], insurance_provider: params[:insurance_provider],
+                          insurance_start: params[:insurance_start], insurance_stop: params[:insurance_stop],
+                          application_state: "pending")
+            render json: driver
+
+        end
+
+
+        #Method to get application info for logged in user, currently just the information in application
+      desc "Get Application Info"
+      params do
+      end
+      get "drivers/application" do
+        driver = current_driver
+
+        @application = Array.new
+
+
+          @application << {
+            :id => driver.id,
+            :car_make => driver.car_make,
+            :car_model => driver.car_model,
+            :car_year => driver.car_year,
+            :car_color => driver.car_color,
+            :car_plate => driver.car_plate,
+            :insurance_provider =>driver.insurance_provider ,
+            :insurance_start =>driver.insurance_start,
+            :insurance_stop => driver.insurance_stop,
+            :application_state  => driver.application_state
+
+          }
+
+
+        render :json => @application
+      end
+
+
+
+
+
+
+
+
+
         desc "Return a driver with a given id"
         params do
           # requires :id, type: String, desc: "ID of driver"

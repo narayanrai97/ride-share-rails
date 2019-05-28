@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_16_203244) do
+ActiveRecord::Schema.define(version: 2019_05_28_160539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,12 @@ ActiveRecord::Schema.define(version: 2019_05_16_203244) do
     t.datetime "updated_at", null: false
     t.string "auth_token"
     t.datetime "token_created_at"
+    t.integer "car_year"
+    t.string "car_plate"
+    t.string "insurance_provider"
+    t.datetime "insurance_start"
+    t.datetime "insurance_stop"
+    t.string "application_state"
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
   end
