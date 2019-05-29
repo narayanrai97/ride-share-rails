@@ -75,10 +75,10 @@ module Api
       get "drivers/application" do
         driver = current_driver
 
-        @application = Array.new
 
 
-          @application << {
+
+          @application = {
             :id => driver.id,
             :car_make => driver.car_make,
             :car_model => driver.car_model,
