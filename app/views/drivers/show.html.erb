@@ -14,29 +14,28 @@
   <strong>Phone:</strong>
   <%= @driver.phone %>
 </p>
-
 <p>
   <strong>Email:</strong>
   <%= @driver.email %>
 </p>
+<% @driver.vehicles.each do |vehicle| %>
 
+  <p>
+    <strong>Car Make:</strong>
+    <%= vehicle.car_make %>
+  </p>
 
-<p>
-  <strong>Car Make:</strong>
-  <%= @driver.car_make %>
-</p>
+  <p>
+    <strong>Car Model:</strong>
+    <%= vehicle.car_model %>
+  </p>
 
-<p>
-  <strong>Car Model:</strong>
-  <%= @driver.car_model %>
-</p>
-
-<p>
-  <strong>Car Color:</strong>
-  <%= @driver.car_color %>
-</p>
-
-
+  <p>
+    <strong>Car Color:</strong>
+    <%= vehicle.car_color %>
+  </p>
+<%end%>
+<%=current_driver%>
 <p>
   <strong>Schedules:</strong>
   <%= @schedules %>
