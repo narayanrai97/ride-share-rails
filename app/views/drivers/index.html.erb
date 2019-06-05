@@ -13,6 +13,7 @@
       <th scope="col">Car Make</th>
       <th scope="col">Car Model</th>
       <th scope="col">Car Color</th>
+      <th scope="col">Car Year</th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -26,9 +27,12 @@
           <td><%= driver.last_name %></td>
           <td><%= driver.phone %></td>
           <td><%= driver.email %></td>
-          <td><%= driver.car_make %></td>
-          <td><%= driver.car_model %></td>
-          <td><%= driver.car_color %></td>
+          <%driver.vehicles.each do |vehicle|%>
+            <td><%= vehicle.car_make %></td>
+            <td><%= vehicle.car_model %></td>
+            <td><%= vehicle.car_color %></td>
+            <td><%= vehicle.car_year %></td>
+          <%end%>
           <td><%= link_to 'Show', driver_path(driver) %></td>
           <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
           <td><%= link_to 'Destroy', driver_path(driver),

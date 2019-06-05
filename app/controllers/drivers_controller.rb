@@ -6,6 +6,7 @@ class DriversController < ApplicationController
 
   def show
     @driver = Driver.find(params[:id])
+    @vehicle = Vehicle.all
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
 
@@ -13,10 +14,17 @@ class DriversController < ApplicationController
 
   def index
     @drivers = Driver.all
+    @vehicle = Vehicle.all
   end
 
   def create
     @driver = Driver.new(driver_params)
+    #Tempory Password, need to use random password
+-   # generator and send to email potentially
+-    @driver.password ="password"
+-    @driver.password_confirmation = "password"
+-    @driver.organization_id = current_organization.id
+
     if @driver.save
       redirect_to @driver
     else
