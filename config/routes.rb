@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :drivers
+  resources :drivers do
+    resources :vehicles, shallow: true
+  end
   devise_for :users
   devise_for :organizations, controllers: {registrations: "organizations/registrations"}
   #changed to signular because conflicts with other driver routes
@@ -8,6 +10,8 @@ Rails.application.routes.draw do
   devise_for :riders
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
+
+
 
 
 
