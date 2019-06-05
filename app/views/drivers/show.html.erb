@@ -1,48 +1,49 @@
 <h1>Driver</h1>
-<p>
+<div>
   <strong>First Name:</strong>
   <%= @driver.first_name %>
-</p>
+</div>
 
-<p>
+<div>
   <strong>Last Name:</strong>
   <%= @driver.last_name %>
-</p>
+</div>
 
 
-<p>
+<div>
   <strong>Phone:</strong>
   <%= @driver.phone %>
-</p>
-<p>
+</div>
+<div>
   <strong>Email:</strong>
   <%= @driver.email %>
-</p>
+</div>
 <% @driver.vehicles.each do |vehicle| %>
 
-  <p>
+  <div>
     <strong>Car Make:</strong>
     <%= vehicle.car_make %>
-  </p>
+  </div>
 
-  <p>
+  <div>
     <strong>Car Model:</strong>
     <%= vehicle.car_model %>
-  </p>
+  </div>
 
-  <p>
+  <div>
     <strong>Car Color:</strong>
     <%= vehicle.car_color %>
-  </p>
+  </div>
 <%end%>
-<%=current_driver%>
-<p>
+
+<%=link_to "Add Car",new_driver_vehicle_path(params[:id])%>
+<div>
   <strong>Schedules:</strong>
   <%= @schedules %>
-</p>
+</div>
 <h2>Locations</h2>
 <% @locations.each do |location| %>
-    <p><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></p>
+    <div><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></div>
 <% end %>
 
 <%= link_to 'Edit', edit_driver_path(@driver) %> |
