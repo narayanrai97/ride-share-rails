@@ -16,11 +16,17 @@ class VehiclesController < ApplicationController
 
   def edit
     @vehicle = Vehicle.find(params[:id])
+
   end
 
   def update
     @vehicle = Vehicle.find(params[:id])
-    redirect_to root
+    if @vehicle.update(vehicle_params)
+    redirect_to driver_path(@vehicle.driver_id)
+    else
+
+    end
+
   end
 
   def destroy
