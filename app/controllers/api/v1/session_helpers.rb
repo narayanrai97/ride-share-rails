@@ -49,6 +49,9 @@ module Api
         private
         def authenticate_token
           token = headers["Token"]
+          if token.start_with?("Token token") #workaround for stupid handling in GrapeSwagger
+            token=token.split('"')[1]
+          end
           return Driver.where(auth_token: token).where("token_created_at >= ?", 1.day.ago).first
         end
 
