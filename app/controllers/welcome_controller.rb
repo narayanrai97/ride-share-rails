@@ -1,8 +1,5 @@
 class WelcomeController < ApplicationController
-  layout false
-  layout 'application', :only => :index
-  layout 'rider_layout', :only => :rider
-  layout false, :only => :welcome
+  layout :resolve_layout
   
   def welcome
   
@@ -15,4 +12,20 @@ class WelcomeController < ApplicationController
   def index
 
   end
+
+  private
+
+  def resolve_layout
+    case action_name
+    when "rider"
+      "rider_layout"
+    when "index"
+      "administration"
+    else
+      false
+    end
+  end
+
 end
+
+
