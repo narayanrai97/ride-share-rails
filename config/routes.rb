@@ -8,17 +8,17 @@ Rails.application.routes.draw do
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 
 
-
   get 'welcome/index'
+  get 'welcome/welcome'
+  get 'welcome/rider'
 
   resources :drivers
   resources :riders
   resources :rides
   resources :organizations
-  resources :tokens,  path_names: { new: 'new/:rider_id' }
-
-
-  root 'welcome#index'
+  resources :tokens, path_names: { new: 'new/:rider_id' }
+ 
+  root 'welcome#welcome'
 
   namespace :api, :defaults => {:format => :json} do
     as :driver do
@@ -27,5 +27,12 @@ Rails.application.routes.draw do
     end
   end
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  namespace :user do
+    root :to => "welcome#index"
+  end
+
+  namespace :rider do
+    root :to => "welcome#rider"
+  end
+
 end
