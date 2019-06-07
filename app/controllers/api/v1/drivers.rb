@@ -61,7 +61,7 @@ module Api
             driver.application_state ="pending"
             if vehicle.save
               driver.save
-              render :driver => driver, vehicles: driver.vehicles
+              return driver
             end
 
         end
