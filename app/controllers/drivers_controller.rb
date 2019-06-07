@@ -20,10 +20,11 @@ class DriversController < ApplicationController
   def create
     @driver = Driver.new(driver_params)
     #Tempory Password, need to use random password
--   # generator and send to email potentially
--    @driver.password ="password"
--    @driver.password_confirmation = "password"
--    @driver.organization_id = current_user.organization_id
+   # generator and send to email potentially
+    generated_password = Devise.friendly_token.first(8)
+    @driver.password = generated_password
+    @driver.password_confirmation = generated_password
+    @driver.organization_id = current_user.organization_id
 
     if @driver.save
       redirect_to @driver

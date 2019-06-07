@@ -10,7 +10,7 @@ class VehiclesController < ApplicationController
     if @vehicle.save
     redirect_to driver_path(params[:driver_id])
     else
-
+      render 'new'
     end
   end
 
@@ -24,7 +24,7 @@ class VehiclesController < ApplicationController
     if @vehicle.update(vehicle_params)
     redirect_to driver_path(@vehicle.driver_id)
     else
-
+      render "edit"
     end
 
   end
