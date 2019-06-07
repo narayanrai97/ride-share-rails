@@ -23,7 +23,7 @@ class DriversController < ApplicationController
 -   # generator and send to email potentially
 -    @driver.password ="password"
 -    @driver.password_confirmation = "password"
--    @driver.organization_id = current_organization.id
+-    @driver.organization_id = current_user.organization_id
 
     if @driver.save
       redirect_to @driver
