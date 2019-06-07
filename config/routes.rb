@@ -12,12 +12,6 @@ Rails.application.routes.draw do
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> master
   get 'welcome/index'
   get 'welcome/welcome'
   get 'welcome/rider'
@@ -27,7 +21,7 @@ Rails.application.routes.draw do
   resources :rides
   resources :organizations
   resources :tokens, path_names: { new: 'new/:rider_id' }
- 
+
   root 'welcome#welcome'
 
   namespace :api, :defaults => {:format => :json} do
