@@ -39,7 +39,7 @@ module Api
                 driver.application_state ="pending"
                 driver.save
               end
-              return vehicle
+              render vehicle
             end
 
         end
@@ -55,23 +55,40 @@ module Api
             return vehicle
 
           else
-            #Return Not authorized, not formatted 
+            #Return Not authorized, not formatted
             status 401
             render "Not Authorized"
           end
         end
 
 
+        desc "Return a vehicles of current  driver"
+        params do
+
+        end
+        get "vehicles", root: :vehicle do
+          driver = current_driver
+          render driver.vehicles
+
+        end
+
+
         desc "Update a vehicle with a given id"
         params do
+          requires :id, type: Integer, desc: "ID of vehicle"
         end
         put "vehicles" do
-          vehicle = Vehicle.find(params:id)
-          vehicle.update(car_make: params[:car_make], car_model: params[:car_model],
-                          car_year: params[:car_year], car_color: params[:car_color],
-                          car_plate: params[:car_plate], insurance_provider: params[:insurance_provider],
-                          insurance_start: params[:insurance_start], insurance_stop: params[:insurance_stop],seat_belt_num: params[:seat_belt_num])
-          return vehicle
+          if drivers_vehicle(params[:id])
+            vehicle = Vehicle.find(params:id)
+            vehicle.update(car_make: params[:car_make], car_model: params[:car_model],
+                            car_year: params[:car_year], car_color: params[:car_color],
+                            car_plate: params[:car_plate], insurance_provider: params[:insurance_provider],
+                            insurance_start: params[:insurance_start], insurance_stop: params[:insurance_stop],seat_belt_num: params[:seat_belt_num])
+            render vehicle
+          else
+            status 401
+            render "Not Authorized"
+          end
         end
 
 
@@ -80,9 +97,14 @@ module Api
           requires :id, type: Integer, desc: "ID of vehicle"
         end
         delete "vehicles" do
-          vehicle = Vehicle.find(params[:id])
-          if vehicle.destroy != nil
-            return { sucess:true }
+          if drivers_vehicle(params[:id])
+            vehicle = Vehicle.find(params[:id])
+            if vehicle.destroy != nil
+              return { sucess:true }
+            end
+          else
+            status 401
+            render "Not Authorized"
           end
         end
       end

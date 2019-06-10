@@ -41,7 +41,7 @@ module Api
         location_ids.each do |id|
           locations.push(Location.where(id: id))
         end
-        return driver
+        render driver
         #render json: {"driver": driver, "location": locations}
       end
 
@@ -54,7 +54,7 @@ module Api
         driver.update(first_name: params[:first_name], last_name: params[:last_name], phone: params[:phone],
                       email: params[:email], car_make: params[:car_make], car_model: params[:car_model],
                       car_color: params[:car_color], radius: params[:radius], is_active: params[:is_active])
-        return current_driver
+        render current_driver
       end
 
 
