@@ -19,7 +19,7 @@ module Api
         driver = Driver.new({organization_id: params[:organization_id], email: params[:email],password: params[:password],first_name: params[:first_name],last_name: params[:last_name],phone: params[:phone]})
         if driver.save
           status 200
-          render json: driver
+          render driver: driver
         #Return bad request error code and error
         else
           status 400
@@ -41,7 +41,7 @@ module Api
         location_ids.each do |id|
           locations.push(Location.where(id: id))
         end
-        render driver
+        render driver: driver
         #render json: {"driver": driver, "location": locations}
       end
 
@@ -51,10 +51,12 @@ module Api
       end
       put "drivers" do
         driver = current_driver
+
         driver.update(first_name: params[:first_name], last_name: params[:last_name], phone: params[:phone],
-                      email: params[:email], car_make: params[:car_make], car_model: params[:car_model],
-                      car_color: params[:car_color], radius: params[:radius], is_active: params[:is_active])
-        render current_driver
+                      email: params[:email],radius: params[:radius], is_active: params[:is_active])
+        #if driver.save
+          render current_driver
+        #end
       end
 
 
