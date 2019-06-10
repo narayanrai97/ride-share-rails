@@ -48,15 +48,20 @@ module Api
 
       desc "Update a driver with a given id"
       params do
+        requires :driver, type: JSON do
+          optional  :email , type:String
+          optional :password, type:String
+          optional :first_name, type: String
+          optional :last_name, type: String
+          optional :phone, type: String
+        end
       end
       put "drivers" do
         driver = current_driver
-
-        driver.update(first_name: params[:first_name], last_name: params[:last_name], phone: params[:phone],
-                      email: params[:email],radius: params[:radius], is_active: params[:is_active])
-        #if driver.save
+        driver.attributes= (params[:driver])
+        if driver.save
           render current_driver
-        #end
+        end
       end
 
 
