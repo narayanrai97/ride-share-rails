@@ -54,14 +54,7 @@ module Api
         return Driver.where(auth_token: token).where("token_created_at >= ?", 1.day.ago).first
       end
 
-      def drivers_vehicle(id)
-        driver = current_driver
-        driver.vehicles.each do |vehicle|
-          if vehicle.id =id
-            return true
-          end
-          return false
-        end
+    
     end
   end
 end

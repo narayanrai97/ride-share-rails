@@ -4,6 +4,7 @@ module Api
       include Api::V1::Defaults
 
       helpers SessionHelpers
+      helpers VehicleHelpers
 
 
       before do
@@ -48,12 +49,15 @@ module Api
         params do
            requires :id, type: Integer, desc: "ID of vehicle"
         end
-        get "vehicles", root: :vehicle do
-          if drivers_vehicle(param[:id])
+        get "vehicle", root: :vehicle do
+          if drivers_vehicle(params[:id])
             vehicle = Vehicle.find(params[:id])
             return vehicle
+
           else
-            return "Not Authorized"
+            #Return Not authorized, not formatted 
+            status 401
+            render "Not Authorized"
           end
         end
 
@@ -83,3 +87,4 @@ module Api
         end
       end
     end
+  end
