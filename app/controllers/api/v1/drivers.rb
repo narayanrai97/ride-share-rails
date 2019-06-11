@@ -8,15 +8,18 @@ module Api
       #Method to Create a Driver using api calls
       desc "Create a Driver"
       params do
-        requires :email , type:String
-        requires :password, type:String
-        requires :first_name, type: String
-        requires :last_name, type: String
-        requires :phone, type: String
-        requires :organization_id, type: Integer
+        requires :driver, type: JSON do
+          requires :email , type:String
+          requires :password, type:String
+          requires :first_name, type: String
+          requires :last_name, type: String
+          requires :phone, type: String
+          requires :organization_id, type: Integer
+        end
       end
-      post "drivers(json)" do
-        driver = Driver.new({organization_id: params[:organization_id], email: params[:email],password: params[:password],first_name: params[:first_name],last_name: params[:last_name],phone: params[:phone]})
+      post "drivers" do
+        driver = Driver.new
+        driver.attributes= (params[:driver])
         if driver.save
           status 200
           render driver: driver

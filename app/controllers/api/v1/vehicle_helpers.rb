@@ -6,12 +6,12 @@ module Api
       def drivers_vehicle(id)
         driver = current_driver
         driver.vehicles.each do |vehicle|
+        
           if vehicle.id == id
             return true
-          else
-            return false
           end
         end
+        return false
       end
     end
   end
