@@ -5,21 +5,26 @@ module Api
 
       helpers SessionHelpers
 
-
+      #Method to Create a Driver using api calls
       desc "Create a Driver"
       params do
-        requires :email , type:String
-        requires :password, type:String
-        requires :first_name, type: String
-        requires :last_name, type: String
-        requires :phone, type: String
-        requires :organization_id, type: Integer
+        requires :driver, type: JSON do
+          requires :email , type:String
+          requires :password, type:String
+          requires :first_name, type: String
+          requires :last_name, type: String
+          requires :phone, type: String
+          requires :organization_id, type: Integer
+          requires :is_active , type: Boolean
+          optional :radius, type: Integer
+        end
       end
-      post "drivers(json)" do
-        driver = Driver.new({organization_id: params[:organization_id], email: params[:email],password: params[:password],first_name: params[:first_name],last_name: params[:last_name],phone: params[:phone]})
+      post "drivers" do
+        driver = Driver.new
+        driver.attributes= (params[:driver])
         if driver.save
           status 200
-          render json: driver
+          render driver: driver
         #Return bad request error code and error
         else
           status 400
@@ -30,116 +35,50 @@ module Api
 
 
 
-      namespace do
-        before do
-          error!('Unauthorized', 401) unless require_login!
+      desc "Return a driver with a given id"
+      params do
+        # requires :id, type: String, desc: "ID of driver"
+      end
+      get "drivers", root: :driver do
+        driver = current_driver
+        location_ids = LocationRelationship.where(driver_id: current_driver.id)
+        locations = []
+        location_ids.each do |id|
+          locations.push(Location.where(id: id))
         end
+        render driver: driver
+        #render json: {"driver": driver, "location": locations}
+      end
 
 
-
-      # desc "Return all drivers"
-      # get "/drivers/all", root: :driver do
-      #   Driver.all
-      # end
-
-
-
-    #Method to create application for user, requires information for application and updates state of driver to pending
-        desc "Create Application from App"
-        params do
-          requires :car_make, type: String, desc: " Car Manufactor of Driver"
-          requires :car_model, type: String, desc: " Car Model of Driver"
-          requires :car_year, type: Integer, desc: " Car Year of Driver"
-          requires :car_color, type: String, desc: " Car Color of driver"
-          requires :car_plate, type: String, desc: " Car plate of driver"
-          requires :insurance_provider, type: String, desc: " Insurance Provider for driver"
-          requires :insurance_start, type: DateTime, desc: " Insurance start date"
-          requires :insurance_stop, type: DateTime, desc: " Insurance start date"
+      desc "Update a driver with a given id"
+      params do
+        requires :driver, type: JSON do
+          optional  :email , type:String
+          optional :password, type:String
+          optional :first_name, type: String
+          optional :last_name, type: String
+          optional :phone, type: String
+          optional :is_active , type: Boolean
+          optional :radius, type: Integer 
         end
-        post "drivers/application" do
-          driver = current_driver
-            driver.update(car_make: params[:car_make], car_model: params[:car_model],
-                          car_year: params[:car_year], car_color: params[:car_color],
-                          car_plate: params[:car_plate], insurance_provider: params[:insurance_provider],
-                          insurance_start: params[:insurance_start], insurance_stop: params[:insurance_stop],
-                          application_state: "pending")
-            render json: driver
-
+      end
+      put "drivers" do
+        driver = current_driver
+        driver.attributes= (params[:driver])
+        if driver.save
+          render current_driver
         end
+      end
 
 
-        #Method to get application info for logged in user, currently just the information in application
-      desc "Get Application Info"
+      desc "Delete a driver with a given id"
       params do
       end
-      get "drivers/application" do
+      delete "drivers" do
         driver = current_driver
-
-
-
-
-          @application = {
-            :id => driver.id,
-            :car_make => driver.car_make,
-            :car_model => driver.car_model,
-            :car_year => driver.car_year,
-            :car_color => driver.car_color,
-            :car_plate => driver.car_plate,
-            :insurance_provider =>driver.insurance_provider ,
-            :insurance_start =>driver.insurance_start,
-            :insurance_stop => driver.insurance_stop,
-            :application_state  => driver.application_state
-
-          }
-
-
-        render :json => @application
-      end
-
-
-
-
-
-
-
-
-
-        desc "Return a driver with a given id"
-        params do
-          # requires :id, type: String, desc: "ID of driver"
-        end
-        get "drivers", root: :driver do
-          driver = current_driver
-          location_ids = LocationRelationship.where(driver_id: current_driver.id)
-          locations = []
-          location_ids.each do |id|
-            locations.push(Location.where(id: id))
-        end
-          return driver
-          #render json: {"driver": driver, "location": locations}
-        end
-
-
-        desc "Update a driver with a given id"
-        params do
-        end
-        put "drivers" do
-          driver = current_driver
-          driver.update(first_name: params[:first_name], last_name: params[:last_name], phone: params[:phone],
-                        email: params[:email], car_make: params[:car_make], car_model: params[:car_model],
-                        car_color: params[:car_color], radius: params[:radius], is_active: params[:is_active])
-          return current_driver
-        end
-
-
-        desc "Delete a driver with a given id"
-        params do
-        end
-        delete "drivers" do
-          driver = current_driver
-          if driver.destroy != nil
-            return { sucess:true }
-          end
+        if driver.destroy != nil
+          return { sucess:true }
         end
       end
     end

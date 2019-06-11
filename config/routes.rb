@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :drivers do
+    resources :vehicles, shallow: true
+  end
   devise_for :users
   devise_for :drivers
   devise_for :riders
@@ -11,7 +14,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-  resources :drivers
+
   resources :riders
   resources :rides
   resources :tokens, path_names: { new: 'new/:rider_id' }
