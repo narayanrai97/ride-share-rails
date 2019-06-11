@@ -3,5 +3,4 @@ class Organization < ApplicationRecord
   has_many :riders, dependent: :destroy
   has_many :rides, dependent: :destroy
 
-
 end
