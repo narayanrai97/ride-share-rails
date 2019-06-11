@@ -1,6 +1,18 @@
 class ApplicationController < ActionController::Base
-	def after_sign_in_path_for(resource)
-		
+  #Make devise model accept other params than
+  #email password and password_confirmation
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password,
+    :password_confirmation, :first_name, :last_name, :phone, :organization_id])
+  end
+
+
+  def after_sign_in_path_for(resource)
+
 		if resource.class == User
 		stored_location_for(resource) || welcome_index_path
 		else
@@ -14,4 +26,3 @@ class ApplicationController < ActionController::Base
 	end
 
 end
-	

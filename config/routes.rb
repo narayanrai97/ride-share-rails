@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
 
+  resources :drivers do
+    resources :vehicles, shallow: true
+  end
   devise_for :users
   devise_for :organizations, controllers: {registrations: "organizations/registrations"}
-  devise_for :drivers
+  #changed to signular because conflicts with other driver routes
+  devise_for :driver
   devise_for :riders
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
@@ -12,12 +16,12 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-  resources :drivers
+
   resources :riders
   resources :rides
   resources :organizations
   resources :tokens, path_names: { new: 'new/:rider_id' }
- 
+
   root 'welcome#welcome'
 
   namespace :api, :defaults => {:format => :json} do
