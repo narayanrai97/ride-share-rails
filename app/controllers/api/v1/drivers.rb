@@ -15,6 +15,8 @@ module Api
           requires :last_name, type: String
           requires :phone, type: String
           requires :organization_id, type: Integer
+          requires :is_active , type: Boolean
+          optional :radius, type: Integer
         end
       end
       post "drivers" do
@@ -57,6 +59,8 @@ module Api
           optional :first_name, type: String
           optional :last_name, type: String
           optional :phone, type: String
+          optional :is_active , type: Boolean
+          optional :radius, type: Integer 
         end
       end
       put "drivers" do
