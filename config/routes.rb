@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   devise_for :users
-  devise_for :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
   devise_for :riders
   mount Api::Base, at: "/"
@@ -15,9 +14,8 @@ Rails.application.routes.draw do
   resources :drivers
   resources :riders
   resources :rides
-  resources :organizations
   resources :tokens, path_names: { new: 'new/:rider_id' }
- 
+
   root 'welcome#welcome'
 
   namespace :api, :defaults => {:format => :json} do
