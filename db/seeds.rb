@@ -8,9 +8,10 @@
 
 
 
-Organization.create(name: "Durham Rescue Mission", email: "drm@gmail.com", password: "password", password_confirmation: "password")
-Organization.create(name: "Urban Ministries of Durham",  email: "umd@gmail.com", password: "password", password_confirmation: "password")
+Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
+Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
 User.create(email: "admin@gmail.com", password: "password",organization_id: 1)
+
 
 
 Driver.create(organization_id: "1", first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "password", password_confirmation: "password")

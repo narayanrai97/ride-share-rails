@@ -39,7 +39,6 @@ Rails.application.routes.draw do
 
   resources :riders
   resources :rides
-  resources :organizations
   resources :tokens, path_names: { new: 'new/:rider_id' }
 
   root 'welcome#welcome'
