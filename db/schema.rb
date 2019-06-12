@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_07_171649) do
+ActiveRecord::Schema.define(version: 2019_06_11_152517) do
+
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,13 +63,12 @@ ActiveRecord::Schema.define(version: 2019_06_07_171649) do
 
   create_table "organizations", force: :cascade do |t|
     t.string "name"
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "street"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
   end
 
   create_table "recurring_patterns", force: :cascade do |t|
