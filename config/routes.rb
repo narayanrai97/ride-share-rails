@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     end
     get 'user' => 'welcome#index'
   end
-  devise_for :organizations, controllers: {registrations: "organizations/registrations"}
+  resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
   devise_for :riders, :skip => [:registrations]
   devise_scope :rider do

@@ -11,6 +11,7 @@
 Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
 Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
 User.create(email: "admin@gmail.com", password: "password",organization_id: 1)
+User.create(email: "admin1@gmail.com", password: "password",organization_id: 2)
 
 
 
