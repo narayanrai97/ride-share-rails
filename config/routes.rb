@@ -3,20 +3,29 @@ Rails.application.routes.draw do
   resources :drivers do
     resources :vehicles, shallow: true
   end
-  devise_for :users
+  devise_for :users, skip: [:registrations]
   devise_scope :user do
-    get 'users/edit' => 'devise/registrations#edit', :as => 'edit_user_registration'
-    put 'users' => 'devise/registrations#update', :as => 'user_registration'
-    #This is the route devise goes after updating, Temporary work around.
+    resource :users,
+             only: [:edit, :update, :destroy],
+             controller: 'devise/registrations',
+             as: :user_registration do
+      get 'cancel'
+
+    end
     get 'user' => 'welcome#index'
   end
   devise_for :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
   devise_for :riders, :skip => [:registrations]
   devise_scope :rider do
-    get 'riders/edit' => 'devise/registrations#edit', :as => 'edit_rider_registration'
-    put 'riders' => 'devise/registrations#update', :as => 'rider_registration'
-    get 'rider' => 'welcome#index'
+    resource :riders,
+             only: [:edit, :update, :destroy],
+             controller: 'devise/registrations',
+             as: :rider_registration do
+      get 'cancel'
+
+    end
+    get 'rider' => 'welcome#rider'
   end
 
   mount Api::Base, at: "/"
