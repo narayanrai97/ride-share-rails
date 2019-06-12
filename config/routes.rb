@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :drivers do
+    resources :vehicles, shallow: true
+  end
   devise_for :users
   devise_scope :user do
     get 'users/edit' => 'devise/registrations#edit', :as => 'edit_user_registration'
@@ -24,7 +27,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-  resources :drivers
+
   resources :riders
   resources :rides
   resources :organizations
