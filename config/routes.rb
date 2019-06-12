@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get 'cancel'
 
     end
-    get 'user' => 'welcome#index'
+    get 'user' => "welcome#index"
   end
   resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
