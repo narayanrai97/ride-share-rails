@@ -1,5 +1,6 @@
 class RidesController < ApplicationController
 
+  before_action :authenticate_rider!
   layout 'rider_layout'
 
     def new
