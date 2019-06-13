@@ -33,10 +33,10 @@
 <div>
   <strong>Application Status:</strong>
   <%= @driver.application_state %>
-  <%= button_to "Accept",driver_accept_path(@driver),method: :put,
+  <%= link_to "Accept",driver_accept_path(@driver),method: :put,
                  data: { confirm: 'Are you sure you want to approve the application?' },
                  class: "btn btn-primary" %>
-  <%= button_to "Reject",driver_reject_path(@driver),method: :put,
+  <%= link_to "Reject",driver_reject_path(@driver),method: :put,
                   data: { confirm: 'Are you sure you want to reject the application?' },
                   class: "btn btn-danger" %>
 </div>
