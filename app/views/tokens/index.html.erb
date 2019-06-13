@@ -13,7 +13,7 @@
   </tr>
 
   <% @tokens.each do |token| %>
-    <% if token.rider.organization.name==current_organization.name%>
+    <% if token.rider.organization==current_user.organization %>
       <tr>
         <td scope="row"><%= token.rider_id %></td>
         <td><%= token.created_at %></td>

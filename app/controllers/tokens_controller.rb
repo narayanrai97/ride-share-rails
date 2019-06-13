@@ -1,5 +1,7 @@
 class TokensController < ApplicationController
-
+  
+  before_action :authenticate_user!
+  layout "administration"
 
   def new
     @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)

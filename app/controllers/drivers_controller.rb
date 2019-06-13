@@ -1,4 +1,7 @@
 class DriversController < ApplicationController
+  
+  before_action :authenticate_user!
+  layout "administration"
 
   def new
     @driver = Driver.new

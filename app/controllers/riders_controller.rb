@@ -1,6 +1,7 @@
 class RidersController < ApplicationController
 
   before_action :authenticate_user!
+  layout "administration"
 
   def new
     @rider = Rider.new
