@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :drivers do
     resources :vehicles, shallow: true
   end
-  devise_for :users, skip: [:registrations]
+  devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
   devise_scope :user do
     resource :users,
              only: [:edit, :update, :destroy],
@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
   resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
-  devise_for :riders, :skip => [:registrations]
+  devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
   devise_scope :rider do
     resource :riders,
              only: [:edit, :update, :destroy],
