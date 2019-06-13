@@ -3,9 +3,31 @@ Rails.application.routes.draw do
   resources :drivers do
     resources :vehicles, shallow: true
   end
-  devise_for :users, path: 'users', controllers: {sessions: "users/sessions"}
+  devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
+  devise_scope :user do
+    resource :users,
+             only: [:edit, :update, :destroy],
+             controller: 'devise/registrations',
+             as: :user_registration do
+      get 'cancel'
+
+    end
+    get 'user' => "welcome#index"
+  end
+  resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
-  devise_for :riders, path: 'riders', controllers: {sessions: "riders/sessions"}
+  devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
+  devise_scope :rider do
+    resource :riders,
+             only: [:edit, :update, :destroy],
+             controller: 'devise/registrations',
+             as: :rider_registration do
+      get 'cancel'
+
+    end
+    get 'rider' => 'welcome#rider'
+  end
+
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 

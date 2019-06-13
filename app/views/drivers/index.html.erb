@@ -20,7 +20,7 @@
     </tr>
 
     <% @drivers.each do |driver| %>
-      <% if driver.organization.name==current_organization.name%>
+      <% if driver.organization.id==current_user.organization_id%>
         <tr>
           <td scope="row"><%= driver.id %></td>
           <td><%= driver.first_name %></td>
