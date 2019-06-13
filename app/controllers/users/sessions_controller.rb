@@ -12,7 +12,7 @@ class Users::SessionsController < Devise::SessionsController
    def create
      super
      if rider_signed_in?
-       sign_out :rider
+       sign_out current_rider
      end
    end
 
