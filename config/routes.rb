@@ -3,9 +3,9 @@ Rails.application.routes.draw do
   resources :drivers do
     resources :vehicles, shallow: true
   end
-  devise_for :users
+  devise_for :users, path: 'users', controllers: {sessions: "users/sessions"}
   devise_for :drivers
-  devise_for :riders
+  devise_for :riders, path: 'riders', controllers: {sessions: "riders/sessions"}
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 
