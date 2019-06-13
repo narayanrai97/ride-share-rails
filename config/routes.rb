@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   resources :drivers do
     resources :vehicles, shallow: true
+    put :accept
+    put :reject
   end
   devise_for :users
   devise_for :drivers
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 
+  
 
   get 'welcome/index'
   get 'welcome/welcome'

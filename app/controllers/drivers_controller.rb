@@ -13,7 +13,11 @@ class DriversController < ApplicationController
   end
 
   def index
-    @drivers = Driver.all
+    if params[:application_state]== "pending"
+      @drivers =Driver.where(:application_state =>"pending")
+    else
+      @drivers = Driver.all
+    end
     @vehicle = Vehicle.all
   end
 
@@ -62,6 +66,20 @@ class DriversController < ApplicationController
 
     redirect_to drivers_path
   end
+
+  #Method to Accept application
+  def accept
+   @driver = Driver.find(params[:driver_id])
+   @driver.update(application_state: "Approved")
+   redirect_to driver_path(params[:driver_id])
+  end
+   #Method to Reject application
+   def reject
+     @driver = Driver.find(params[:driver_id])
+     @driver.update(application_state: "Rejected")
+     redirect_to driver_path(params[:driver_id])
+   end
+
 
   private
   def driver_params

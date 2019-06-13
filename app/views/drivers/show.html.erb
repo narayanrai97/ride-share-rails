@@ -18,21 +18,60 @@
   <strong>Email:</strong>
   <%= @driver.email %>
 </div>
+<div>
+  <strong>Radius:</strong>
+  <%= @driver.radius %>
+</div>
+<div>
+  <strong>Active:</strong>
+  <%= @driver.is_active %>
+</div>
+<div>
+  <strong>Background Check:</strong>
+  <%= @driver.background_check %>
+</div>
+<div>
+  <strong>Application Status:</strong>
+  <%= @driver.application_state %>
+  <%= button_to "Accept",driver_accept_path(@driver),method: :put,
+                 data: { confirm: 'Are you sure you want to approve the application?' },
+                 class: "btn btn-primary" %>
+  <%= button_to "Reject",driver_reject_path(@driver),method: :put,
+                  data: { confirm: 'Are you sure you want to reject the application?' },
+                  class: "btn btn-danger" %>
+</div>
+<h2>Cars</h2>
 <% @driver.vehicles.each do |vehicle| %>
 
-  <div>
+<div>
     <strong>Car Make:</strong>
     <%= vehicle.car_make %>
-  </div>
 
-  <div>
+
     <strong>Car Model:</strong>
     <%= vehicle.car_model %>
-  </div>
 
-  <div>
+
+    <strong>Car Year:</strong>
+    <%= vehicle.car_year %>
     <strong>Car Color:</strong>
     <%= vehicle.car_color %>
+
+    <strong>Liscense Plate:</strong>
+    <%= vehicle.car_plate %>
+
+    <strong>Number of seats:</strong>
+    <%= vehicle.seat_belt_num %>
+
+    <strong>Insurance Provider:</strong>
+    <%= vehicle.insurance_provider %>
+
+    <strong>Insurance Start:</strong>
+    <%= vehicle.insurance_start %>
+
+    <strong>Insurance stop:</strong>
+    <%= vehicle.insurance_stop %>
+    <%=link_to "Edit Car",edit_vehicle_path(params[:id])%>
   </div>
 <%end%>
 
