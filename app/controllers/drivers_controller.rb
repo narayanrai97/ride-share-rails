@@ -1,5 +1,5 @@
 class DriversController < ApplicationController
-  
+
   before_action :authenticate_user!
   layout "administration"
 
@@ -18,8 +18,10 @@ class DriversController < ApplicationController
   def index
     if params[:application_state]== "pending"
       @drivers =Driver.where(:application_state =>"pending")
+    elsif params[:application_state]== "approved"
+      @drivers =Driver.where(:application_state =>"approved")
     else
-      @drivers = Driver.all
+      @drivers = Driver.all.order(:first_name)
     end
     @vehicle = Vehicle.all
   end

@@ -1,98 +1,101 @@
-<h1>Driver</h1>
-<div>
-  <strong>First Name:</strong>
-  <%= @driver.first_name %>
-</div>
+<div class="container">
+  <h1>Driver</h1>
+  <div>
+    <strong>First Name:</strong>
+    <%= @driver.first_name %>
+  </div>
 
-<div>
-  <strong>Last Name:</strong>
-  <%= @driver.last_name %>
-</div>
+  <div>
+    <strong>Last Name:</strong>
+    <%= @driver.last_name %>
+  </div>
 
 
-<div>
-  <strong>Phone:</strong>
-  <%= @driver.phone %>
-</div>
-<div>
-  <strong>Email:</strong>
-  <%= @driver.email %>
-</div>
-<div>
-  <strong>Radius:</strong>
-  <%= @driver.radius %>
-</div>
-<div>
-  <strong>Active:</strong>
-  <%= @driver.is_active %>
-</div>
-<div class="mb-2">
-  <strong>Background Check:</strong>
-  <%= @driver.background_check %>
-  <%= link_to "Accept",driver_pass_path(@driver),method: :put,
-                 data: { confirm: 'Are you sure you want to approve the application?' },
-                 class: "btn btn-primary" %>
-  <%= link_to "Reject",driver_fail_path(@driver),method: :put,
-                  data: { confirm: 'Are you sure you want to reject the application?' },
-                  class: "btn btn-danger" %>
-</div>
-<div>
-  <strong>Application Status:</strong>
-  <%= @driver.application_state %>
-  <%if @driver.background_check ==true%>
-    <%= link_to "Accept",driver_accept_path(@driver),method: :put,
+  <div>
+    <strong>Phone:</strong>
+    <%= @driver.phone %>
+  </div>
+  <div>
+    <strong>Email:</strong>
+    <%= @driver.email %>
+  </div>
+  <div>
+    <strong>Radius:</strong>
+    <%= @driver.radius %>
+  </div>
+  <div>
+    <strong>Active:</strong>
+    <%= @driver.is_active %>
+  </div>
+  <div class="mb-2">
+    <strong>Background Check:</strong>
+    <%= @driver.background_check %>
+    <%= link_to "Accept",driver_pass_path(@driver),method: :put,
                    data: { confirm: 'Are you sure you want to approve the application?' },
                    class: "btn btn-primary" %>
-
-  <%end%>
-  <%= link_to "Reject",driver_reject_path(@driver),method: :put,
-                data: { confirm: 'Are you sure you want to reject the application?' },
-                class: "btn btn-danger" %>
-</div>
-<h2>Cars</h2>
-<% @driver.vehicles.each do |vehicle| %>
-
-<div>
-    <strong>Car Make:</strong>
-    <%= vehicle.car_make %>
-
-
-    <strong>Car Model:</strong>
-    <%= vehicle.car_model %>
-
-
-    <strong>Car Year:</strong>
-    <%= vehicle.car_year %>
-    <strong>Car Color:</strong>
-    <%= vehicle.car_color %>
-
-    <strong>Liscense Plate:</strong>
-    <%= vehicle.car_plate %>
-
-    <strong>Number of seats:</strong>
-    <%= vehicle.seat_belt_num %>
-
-    <strong>Insurance Provider:</strong>
-    <%= vehicle.insurance_provider %>
-
-    <strong>Insurance Start:</strong>
-    <%= vehicle.insurance_start %>
-
-    <strong>Insurance stop:</strong>
-    <%= vehicle.insurance_stop %>
-    <%=link_to "Edit Car",edit_vehicle_path(:id =>vehicle.id)%>
+    <%= link_to "Reject",driver_fail_path(@driver),method: :put,
+                    data: { confirm: 'Are you sure you want to reject the application?' },
+                    class: "btn btn-danger" %>
   </div>
-<%end%>
+  <div>
+    <strong>Application Status:</strong>
+    <%= @driver.application_state %>
+    <%if @driver.background_check ==true%>
+      <%= link_to "Accept",driver_accept_path(@driver),method: :put,
+                     data: { confirm: 'Are you sure you want to approve the application?' },
+                     class: "btn btn-primary" %>
 
-<%=link_to "Add Car",new_driver_vehicle_path(params[:id])%>
-<div>
-  <strong>Schedules:</strong>
-  <%= @schedules %>
+    <%end%>
+    <%= link_to "Reject",driver_reject_path(@driver),method: :put,
+                  data: { confirm: 'Are you sure you want to reject the application?' },
+                  class: "btn btn-danger" %>
+  </div>
+  <h2>Cars</h2>
+
+  <% @driver.vehicles.each do |vehicle| %>
+
+    <div>
+        <strong>Car Make:</strong>
+        <%= vehicle.car_make %>
+
+
+        <strong>Car Model:</strong>
+        <%= vehicle.car_model %>
+
+
+        <strong>Car Year:</strong>
+        <%= vehicle.car_year %>
+        <strong>Car Color:</strong>
+        <%= vehicle.car_color %>
+
+        <strong>Liscense Plate:</strong>
+        <%= vehicle.car_plate %>
+
+        <strong>Number of seats:</strong>
+        <%= vehicle.seat_belt_num %>
+
+        <strong>Insurance Provider:</strong>
+        <%= vehicle.insurance_provider %>
+
+        <strong>Insurance Start:</strong>
+        <%= vehicle.insurance_start.strftime("%B %d, %Y") %>
+
+        <strong>Insurance stop:</strong>
+        <%= vehicle.insurance_stop.strftime("%B %d, %Y") %>
+        <%=link_to "Edit Car",edit_vehicle_path(:id =>vehicle.id)%>
+      </div>
+  <%end%>
+  <%=link_to "Add Car",new_driver_vehicle_path(params[:id])%>
+
+  <div>
+    <strong>Schedules:</strong>
+    <%= @schedules %>
+  </div>
+  <h2>Locations</h2>
+  <% @locations.each do |location| %>
+      <div><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></div>
+  <% end %>
+
+  <%= link_to 'Edit', edit_driver_path(@driver) %> |
+  <%= link_to 'Back', drivers_path %>
 </div>
-<h2>Locations</h2>
-<% @locations.each do |location| %>
-    <div><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></div>
-<% end %>
-
-<%= link_to 'Edit', edit_driver_path(@driver) %> |
-<%= link_to 'Back', drivers_path %>
