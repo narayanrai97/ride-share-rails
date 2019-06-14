@@ -18,9 +18,11 @@
       <li class="nav-item active">
         <%= link_to 'Home', welcome_rider_path, :class => 'nav-link' %>
       </li>
+    <% if false %>
       <li class="nav-item">
           <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
       </li>
+    <% end %>
       <li class="nav-item">
           <%= link_to 'Rides', rides_path, :class => 'nav-link' %>
       </li>
@@ -38,7 +40,7 @@
   </div>
 </nav>
 
-  
+
 
 
     <% if notice %>

@@ -2,15 +2,23 @@ class WelcomeController < ApplicationController
   layout :resolve_layout
 
   def welcome
-
+    if (current_user)
+      redirect_to welcome_index_path
+    elsif (current_rider)
+      redirect_to welcome_rider_path
+    end
   end
 
   def rider
-
+    if (!current_rider)
+      redirect_to welcome_welcome_path
+    end
   end
 
   def index
-
+    if (!current_user)
+      redirect_to welcome_welcome_path
+    end
   end
 
   private
