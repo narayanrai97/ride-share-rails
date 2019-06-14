@@ -26,19 +26,28 @@
   <strong>Active:</strong>
   <%= @driver.is_active %>
 </div>
-<div>
+<div class="mb-2">
   <strong>Background Check:</strong>
   <%= @driver.background_check %>
+  <%= link_to "Accept",driver_pass_path(@driver),method: :put,
+                 data: { confirm: 'Are you sure you want to approve the application?' },
+                 class: "btn btn-primary" %>
+  <%= link_to "Reject",driver_fail_path(@driver),method: :put,
+                  data: { confirm: 'Are you sure you want to reject the application?' },
+                  class: "btn btn-danger" %>
 </div>
 <div>
   <strong>Application Status:</strong>
   <%= @driver.application_state %>
-  <%= link_to "Accept",driver_accept_path(@driver),method: :put,
-                 data: { confirm: 'Are you sure you want to approve the application?' },
-                 class: "btn btn-primary" %>
+  <%if @driver.background_check ==true%>
+    <%= link_to "Accept",driver_accept_path(@driver),method: :put,
+                   data: { confirm: 'Are you sure you want to approve the application?' },
+                   class: "btn btn-primary" %>
+
+  <%end%>
   <%= link_to "Reject",driver_reject_path(@driver),method: :put,
-                  data: { confirm: 'Are you sure you want to reject the application?' },
-                  class: "btn btn-danger" %>
+                data: { confirm: 'Are you sure you want to reject the application?' },
+                class: "btn btn-danger" %>
 </div>
 <h2>Cars</h2>
 <% @driver.vehicles.each do |vehicle| %>

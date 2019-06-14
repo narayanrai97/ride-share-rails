@@ -70,15 +70,28 @@ class DriversController < ApplicationController
   #Method to Accept application
   def accept
    @driver = Driver.find(params[:driver_id])
-   @driver.update(application_state: "Approved")
+   @driver.update(application_state: "approved")
    redirect_to driver_path(params[:driver_id])
   end
    #Method to Reject application
    def reject
      @driver = Driver.find(params[:driver_id])
-     @driver.update(application_state: "Rejected")
+     @driver.update(application_state: "rejected")
      redirect_to driver_path(params[:driver_id])
    end
+
+   #change background_check to true
+   def pass
+    @driver = Driver.find(params[:driver_id])
+    @driver.update(background_check: true)
+    redirect_to driver_path(params[:driver_id])
+   end
+    #change background_check to false
+    def fail
+      @driver = Driver.find(params[:driver_id])
+      @driver.update(background_check: false)
+      redirect_to driver_path(params[:driver_id])
+    end
 
 
   private
