@@ -29,22 +29,8 @@
           <td><%= driver.last_name %></td>
           <td><%= driver.phone %></td>
           <td><%= driver.email %></td>
-<<<<<<< HEAD
           <td><%= driver.application_state %></td>
           <td><%= link_to 'Review', driver_path(driver) %> </td>
-=======
-          <% if false %>
-          <%#driver.vehicles.each do |vehicle|%>
-          <!--
-            <td><%#= #vehicle.car_make %></td>
-            <td><%#= #vehicle.car_model %></td>
-            <td><%#= #vehicle.car_color %></td>
-            <td><%#= #vehicle.car_year %></td>
-          -->
-          <%#end%>
-          <% end %>
-          <td><%= link_to 'Show', driver_path(driver) %> </td>
->>>>>>> master
           <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
           <td><%= link_to 'Destroy', driver_path(driver),
                           method: :delete,
