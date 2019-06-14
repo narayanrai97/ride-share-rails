@@ -71,7 +71,7 @@
 
     <strong>Insurance stop:</strong>
     <%= vehicle.insurance_stop %>
-    <%=link_to "Edit Car",edit_vehicle_path(params[:id])%>
+    <%=link_to "Edit Car",edit_vehicle_path(:id =>vehicle.id)%>
   </div>
 <%end%>
 
