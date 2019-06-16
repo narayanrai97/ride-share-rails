@@ -1,6 +1,6 @@
 class WelcomeController < ApplicationController
   layout :resolve_layout
-  
+
   def welcome
     if (current_user)
       redirect_to welcome_index_path
@@ -30,10 +30,8 @@ class WelcomeController < ApplicationController
     when "index"
       "administration"
     else
-      false
+      "application"
     end
   end
 
 end
-
-

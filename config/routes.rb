@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   resources :drivers do
     resources :vehicles, shallow: true
+    put :accept
+    put :reject
+    put :pass
+    put :fail
   end
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
   devise_scope :user do
@@ -30,6 +34,7 @@ Rails.application.routes.draw do
 
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
+
 
 
   get 'welcome/index'
