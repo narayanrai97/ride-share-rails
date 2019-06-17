@@ -1,0 +1,2 @@
+class AdminRideController < ApplicationController
+end
