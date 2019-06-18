@@ -1,5 +1,5 @@
 class DriversController < ApplicationController
-  
+
   before_action :authenticate_user!
   layout "administration"
 
@@ -16,7 +16,13 @@ class DriversController < ApplicationController
   end
 
   def index
-    @drivers = Driver.all
+    if params[:application_state]== "pending"
+      @drivers =Driver.where(:application_state =>"pending")
+    elsif params[:application_state]== "approved"
+      @drivers =Driver.where(:application_state =>"approved")
+    else
+      @drivers = Driver.all.order(:first_name)
+    end
     @vehicle = Vehicle.all
   end
 
@@ -65,6 +71,33 @@ class DriversController < ApplicationController
 
     redirect_to drivers_path
   end
+
+  #Method to Accept application
+  def accept
+   @driver = Driver.find(params[:driver_id])
+   @driver.update(application_state: "approved")
+   redirect_to driver_path(params[:driver_id])
+  end
+   #Method to Reject application
+   def reject
+     @driver = Driver.find(params[:driver_id])
+     @driver.update(application_state: "rejected")
+     redirect_to driver_path(params[:driver_id])
+   end
+
+   #change background_check to true
+   def pass
+    @driver = Driver.find(params[:driver_id])
+    @driver.update(background_check: true)
+    redirect_to driver_path(params[:driver_id])
+   end
+    #change background_check to false
+    def fail
+      @driver = Driver.find(params[:driver_id])
+      @driver.update(background_check: false)
+      redirect_to driver_path(params[:driver_id])
+    end
+
 
   private
   def driver_params
