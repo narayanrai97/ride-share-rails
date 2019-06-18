@@ -35,8 +35,12 @@ module Api
 
       def destroy_token
         resource = current_driver
-        resource.invalidate_auth_token
-        render json: {Success: "Logged Out"}
+        if (resource != nil)
+          resource.invalidate_auth_token
+          render json: {Success: "Logged Out"}
+        else
+          render json: { errors: [ { detail:"Valid token not provided for logout." }]}, status: 401
+        end
       end
 
 
@@ -48,8 +52,10 @@ module Api
       private
       def authenticate_token
         token = headers["Token"]
-        if token.start_with?("Token token") #workaround for stupid handling in GrapeSwagger
-          token=token.split('"')[1]
+        if (token != nil)
+          if token.start_with?("Token token") #workaround for stupid handling in GrapeSwagger
+            token=token.split('"')[1]
+          end
         end
         return Driver.where(auth_token: token).where("token_created_at >= ?", 1.day.ago).first
       end
