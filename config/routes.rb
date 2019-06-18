@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   resources :drivers do
     resources :vehicles, shallow: true
   end
-  devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
+  devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions",
+                                                                         passwords: "users/passwords"}
   devise_scope :user do
     resource :users,
              only: [:edit, :update, :destroy],
