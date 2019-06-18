@@ -12,5 +12,7 @@
  *
 
  */
- $primary: #ff8262;
+ $theme-colors: (
+  "primary": #ff8262
+  );
  @import "bootstrap";
