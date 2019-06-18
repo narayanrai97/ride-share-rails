@@ -53,7 +53,7 @@ module Api
 
       desc "Update a driver with a given id"
       params do
-        requires :driver, type: JSON do
+        requires :driver, type: Hash do
           optional  :email , type:String
           optional :password, type:String
           optional :first_name, type: String

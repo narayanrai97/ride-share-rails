@@ -16,7 +16,7 @@ module Api
     #Method to create application for user, requires information for vehicle and updates state of vehicle to pending
       desc "Create Vehicle/Start application"
       params do
-        requires :vehicle, type: JSON do
+        requires :vehicle, type: Hash do
           requires :car_make, type: String, desc: " Car Manufactor of vehicle"
           requires :car_model, type: String, desc: " Car Model of vehicle"
           requires :car_year, type: Integer, desc: " Car Year of vehicle"
@@ -76,7 +76,7 @@ module Api
 
         desc "Update a vehicle with a given id"
         params do
-          requires :vehicle, type: JSON do
+          requires :vehicle, type: Hash do
             requires :id, type: Integer, desc: "ID of vehicle"
             optional :car_make, type: String, desc: " Car Manufactor of vehicle"
             optional :car_model, type: String, desc: " Car Model of vehicle"
