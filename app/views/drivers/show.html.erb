@@ -36,10 +36,10 @@
       <%= @driver.background_check %>
       <%= link_to "Accept",driver_pass_path(@driver),method: :put,
                      data: { confirm: 'Are you sure you want to approve the application?' },
-                     class: "btn btn-primary btn-sm" %>
+                     class: "btn btn-green btn-sm" %>
       <%= link_to "Reject",driver_fail_path(@driver),method: :put,
                       data: { confirm: 'Are you sure you want to reject the application?' },
-                      class: "btn btn-danger btn-sm" %>
+                      class: "btn btn-darkgray btn-sm" %>
       </div>
       <div class="col-md">
 
@@ -49,12 +49,12 @@
         <%if @driver.background_check ==true%>
           <%= link_to "Accept",driver_accept_path(@driver),method: :put,
                          data: { confirm: 'Are you sure you want to approve the application?' },
-                         class: "btn btn-primary btn-sm " %>
+                         class: "btn btn-green btn-sm " %>
 
         <%end%>
         <%= link_to "Reject",driver_reject_path(@driver),method: :put,
                       data: { confirm: 'Are you sure you want to reject the application?' },
-                      class: "btn btn-danger btn-sm" %>
+                      class: "btn btn-darkgray btn-sm" %>
       </div>
     </div>
   </div>
@@ -125,7 +125,7 @@
     </div>
   <%end%>
   <div class="ml-5 mt-2">
-    <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-success"%>
+    <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-green"%>
   </div>
 
   <div>
