@@ -8,7 +8,7 @@ module Api
       #Method to Create a Driver using api calls
       desc "Create a Driver"
       params do
-        requires :driver, type: JSON do
+        requires :driver, type: Hash do
           requires :email , type:String
           requires :password, type:String
           requires :first_name, type: String
@@ -60,7 +60,7 @@ module Api
           optional :last_name, type: String
           optional :phone, type: String
           optional :is_active , type: Boolean
-          optional :radius, type: Integer 
+          optional :radius, type: Integer
         end
       end
       put "drivers" do
