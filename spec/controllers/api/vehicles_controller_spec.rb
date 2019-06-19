@@ -6,7 +6,7 @@ RSpec.describe Api::VehiclesController, type: :request do
     #token_created_at in the last day so it would function
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id,
        auth_token: "1234",token_created_at: Time.zone.now) }
-    let!(:vehicle){FactoryBot.create(:vehicle, driver_id: driver.id)}
+    let!(:vehicle){FactoryBot.create(:vehicle, driver_id: driver.id, car_year: 2017)}
     let!(:vehicle1){FactoryBot.create(:vehicle, driver_id: driver.id)}
 
 
@@ -41,12 +41,22 @@ RSpec.describe Api::VehiclesController, type: :request do
 
 
     end
-
+    #API response of all vehicles of  a driver
     it 'will generate all vehicles of user' do
 
       get '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
 
         expect(response).to have_http_status(200)
+        parsed_json = JSON.parse(response.body)
+        expect(parsed_json['vehicle'][0]['car_make']).to eq('Nissan')
+        expect(parsed_json['vehicle'][0]['car_year']).to eq(2017)
+        expect(parsed_json['vehicle'][0]['car_color']).to eq('Silver')
+        expect(parsed_json['vehicle'][0]['car_plate']).to eq('ZQWOPQ')
+        expect(parsed_json['vehicle'][0]['insurance_provider']).to eq('Geico')
+        #Dates a formatted when they are accepted so appear slightly different than above
+        expect(parsed_json['vehicle'][0]['insurance_start']).to eq('2019-05-19')
+        expect(parsed_json['vehicle'][0]['insurance_stop']).to eq('2020-05-19')
+        expect(parsed_json['vehicle'][0]['seat_belt_num']).to eq(4)
         puts response.body
 
 
