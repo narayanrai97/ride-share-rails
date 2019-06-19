@@ -40,7 +40,7 @@ module Api
                 driver.application_state ="pending"
                 driver.save
               end
-              render vehicle
+              render vehicle: vehicle
             end
 
         end
