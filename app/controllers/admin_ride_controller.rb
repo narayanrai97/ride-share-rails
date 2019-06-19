@@ -4,7 +4,7 @@ class AdminRideController < ApplicationController
     layout 'administration'
   
       def new
-        #@ride = Ride.new
+        @ride = Ride.new
       end
   
       def show
