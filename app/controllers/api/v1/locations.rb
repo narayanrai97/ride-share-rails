@@ -48,7 +48,12 @@ module Api
 
       desc "Create a new location from a driver"
       params do
+        requires :street, type: String, desc: "Street name"
+        requires :city, type: String, desc: "City"
+        requires :state, type: String, desc: "State"
+        requires :zip, type: String, desc: "Zip code"
       end
+
       post "locations" do
         driver = current_driver
         location = Location.create(street: params[:street], city: params[:city], state: params[:state], zip: params[:zip])
@@ -98,6 +103,10 @@ module Api
       desc "put a location from a driver"
       params do
         requires :id, type: String, desc: "ID of location"
+        optional :street, type: String, desc: "Street name"
+        optional :city, type: String, desc: "City"
+        optional :state, type: String, desc: "State"
+        optional :zip, type: String, desc: "Zip code"
       end
       put 'locations/:id' do
         driver = current_driver
