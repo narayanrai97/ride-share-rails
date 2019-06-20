@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::OrganizationsController, type: :request do
+RSpec.describe Api::V1::Organizations, type: :request do
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:organization1) { FactoryBot.create(:organization, name: 'Chapel Hill Health') }
     let!(:organization2) { FactoryBot.create(:organization, zip: 27709) }
