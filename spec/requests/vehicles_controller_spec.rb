@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::VehiclesController, type: :request do
+RSpec.describe Api::V1::Vehicles, type: :request do
     #Drivers require a organization to assosiate with
     let!(:organization) { FactoryBot.create(:organization) }
     #Created a token to by pass login but had to include
