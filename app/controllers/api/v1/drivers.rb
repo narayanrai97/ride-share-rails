@@ -23,7 +23,6 @@ module Api
         driver = Driver.new
         driver.attributes= (params[:driver])
         if driver.save
-          status 200
           render driver: driver
         #Return bad request error code and error
         else
