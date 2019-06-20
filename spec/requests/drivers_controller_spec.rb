@@ -16,5 +16,11 @@ RSpec.describe Api::DriversController, type: :request do
        expect(response).to have_http_status(200)
        parsed_json = JSON.parse(response.body)
        puts parsed_json
+       expect(parsed_json['driver']['email']).to eq('sample@sample.com')
+       expect(parsed_json['driver']['first_name']).to eq('Bob')
+       expect(parsed_json ['driver']['last_name']).to eq('Steve')
+       expect(parsed_json['driver']['phone']).to eq('3361234567')
+       expect(parsed_json['driver']['radius']).to eq(50)
+       expect(parsed_json['driver']['is_active']).to eq(true)
     end
 end
