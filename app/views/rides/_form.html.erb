@@ -19,48 +19,52 @@
 <% if false %>
     <%= form.label :rider_id %><br>
     <%= form.text_field :rider_id,class: "form-control" %>
-  </div >
-  <div class="form-group col-2">
+  <!-- </div >
+  <div class="form-group col-2"> -->
 <% end %>
-    <%= form.label :pick_up_time %><br>
-    <%= form.datetime_local_field :pick_up_time,class: "form-control" %>
+    <h6><b><%= form.label :pick_up_time, "PICK UP DATE AND TIME" %></b></h6>
+    <%= form.datetime_local_field :pick_up_time, class: "form-control" %>
   </div>
-
 </div>
 
 <div class="form-row">
-  
   <div class="form-group offset-md-1 col-md-10">
-    <%= form.label :start_street %><br>
+    <h6><b>START ADDRESS</b></h6>
+  <!-- </div>
+
+  <div class="form-group offset-md-1 col-md-10"> -->
+    <%= form.label :start_street, "Street Name" %><br>
     <%= form.text_field :start_street,class: "form-control" %>
   </div>
 
 </div>
 
 <div class="form-row">
-  
+
     <div class="form-group offset-md-1 col-4">
-      <%= form.label :start_city %><br>
+      <%= form.label :start_city, "City" %><br>
       <%= form.text_field :start_city,class: "form-control" %>
     </div>
 
     <div class="form-group col-4">
-      <%= form.label :start_state %><br>
+      <%= form.label :start_state, "State" %><br>
       <%= form.text_field :start_state,class: "form-control" %>
     </div>
 
     <div class="form-group col-2">
-      <%= form.label :start_zip %><br>
+      <%= form.label :start_zip, "Zip" %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
     </div>
 
 </div>
 
 <div class="form-row">
-
     <div class="form-group offset-md-1 col-md-10">
-    <%= form.label :end_street %><br>
-    <%= form.text_field :end_street,class: "form-control" %>
+      <h6><b>END ADDRESS</b></h6>
+      <!-- </div>
+      <div class="form-group offset-md-1 col-md-10"> -->
+      <%= form.label :end_street, "Street Name" %><br>
+      <%= form.text_field :end_street,class: "form-control" %>
   </div>
 
 </div>
@@ -68,17 +72,17 @@
 <div class="form-row">
 
   <div class="form-group offset-md-1 col-4">
-      <%= form.label :end_city %><br>
+      <%= form.label :end_city, "City" %><br>
       <%= form.text_field :end_city,class: "form-control" %>
     </div>
 
     <div class="form-group col-4">
-      <%= form.label :end_state %><br>
+      <%= form.label :end_state, "State" %><br>
       <%= form.text_field :end_state,class: "form-control" %>
     </div>
 
     <div class="form-group col-2">
-      <%= form.label :end_zip %><br>
+      <%= form.label :end_zip, "Zip" %><br>
       <%= form.text_field :end_zip,class: "form-control" %>
     </div>
 
@@ -86,15 +90,15 @@
 
   <div class="form-row">
     <div class="form-group  col-md-10 offset-md-1">
-    <%= form.label :reason %><br>
-    <%= form.text_field :reason,class: "form-control" %>
+      <h6><b><%= form.label :reason, "REASON" %></b></h6>
+      <%= form.text_field :reason,class: "form-control" %>
     </div>
   </div>
 <% if false %>
   <div class="form-row">
     <div class="form-group  col-md-10 offset-md-1">
-    <%= form.label :status %><br>
-    <%= form.text_field :status,class: "form-control" %>
+      <%= form.label :status %><br>
+      <%= form.text_field :status,class: "form-control" %>
     </div>
   </div>
 <% end %>
