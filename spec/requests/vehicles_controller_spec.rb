@@ -29,7 +29,7 @@ RSpec.describe Api::VehiclesController, type: :request do
 
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #puts parsed_json
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
@@ -59,7 +59,7 @@ RSpec.describe Api::VehiclesController, type: :request do
         expect(parsed_json['vehicle'][0]['insurance_start']).to eq('2019-05-19')
         expect(parsed_json['vehicle'][0]['insurance_stop']).to eq('2020-05-19')
         expect(parsed_json['vehicle'][0]['seat_belt_num']).to eq(4)
-        puts response.body
+        #puts response.body
 
 
     end
@@ -77,7 +77,7 @@ RSpec.describe Api::VehiclesController, type: :request do
       expect(parsed_json['vehicle']['insurance_start']).to eq('2019-05-19')
       expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-05-19')
       expect(parsed_json['vehicle']['seat_belt_num']).to eq(4)
-      puts response.body
+      #puts response.body
 
     end
 
@@ -99,7 +99,7 @@ RSpec.describe Api::VehiclesController, type: :request do
 
         expect(response).to have_http_status(200)
         parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #puts parsed_json
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
