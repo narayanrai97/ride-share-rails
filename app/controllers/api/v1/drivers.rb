@@ -23,7 +23,7 @@ module Api
         driver = Driver.new
         driver.attributes= (params[:driver])
         if driver.save
-          render driver: driver
+          render  driver
         #Return bad request error code and error
         else
           status 400
@@ -45,7 +45,7 @@ module Api
         location_ids.each do |id|
           locations.push(Location.where(id: id))
         end
-        render driver: driver
+        render driver
         #render json: {"driver": driver, "location": locations}
       end
 
