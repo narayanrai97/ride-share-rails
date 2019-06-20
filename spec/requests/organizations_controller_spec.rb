@@ -5,11 +5,13 @@ RSpec.describe Api::OrganizationsController, type: :request do
     let!(:organization1) { FactoryBot.create(:organization, name: 'Chapel Hill Health') }
     let!(:organization2) { FactoryBot.create(:organization, zip: 27709) }
 
-    it 'driver login in' do
+    it 'test output of organization endpoint' do
     get '/api/v1/organizations', headers: {"ACCEPT" => "application/json" }
 
 
-      puts response.body
+      #puts response.body
+      #Checkout out that response is what it should be
+      #Only testing parts I changed on the second and third object
       parsed_json = JSON.parse(response.body)
       expect(parsed_json['organization'][0]['name']).to eq('Duke')
       expect(parsed_json['organization'][0]['street']).to eq('200 Front Street')
