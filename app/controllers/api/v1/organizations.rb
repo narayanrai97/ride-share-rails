@@ -6,8 +6,8 @@ module Api
       helpers SessionHelpers
 
 
-
-        desc "Return a organizations of current  driver"
+      #Request to see all organizations and information about organizations
+        desc "Return all organizations "
         params do
 
         end
