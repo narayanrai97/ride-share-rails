@@ -21,7 +21,7 @@ module Api
       params do
         requires :id, type: String, desc: "ID of the location"
       end
-      get "locations/:id", root: :location do
+      get "location/:id", root: :location do
         render Location.find(permitted_params[:id])
       end
 
@@ -63,7 +63,7 @@ module Api
       params do
         requires :id, type: String, desc: "ID of location"
       end
-      delete 'locations/:id' do
+      delete 'location/:id' do
         driver = current_driver
         location = Location.find(permitted_params[:id])
         if location != nil
@@ -75,22 +75,36 @@ module Api
         end
       end
 
-
+      #Update a location for a driver ????
       desc "put a location from a driver"
-      params do
-        requires :id, type: String, desc: "ID of location"
+        params do
+          requires :location, type: Hash do
+            requires :id, type: Integer, desc: "ID of location"
+            requires :street , type:String
+            requires :city, type:String
+            requires :state, type: String
+            requires :zip, type: String
+          end
       end
-      put "locations/:id" do
+      put "locations" do
+        #Current driver object
         driver = current_driver
-        old_location = Location.find(permitted_params[:id])
-        if LocationRelationship.where(location_id: permitted_params[:id]).count > 1
-          new_location = Location.create(street: params[:street], city: params[:city], state: params[:state], zip: params[:zip])
+        #Find location to change
+        old_location = Location.find(params[:location][:id])
+        #If location has more than one locationrelationship run code #Keeps location from having more than one user
+        if LocationRelationship.where(location_id: params[:location][:id]).count > 1
+          #Fix for new location creation so id changes
+          params[:location][:id] = Location.maximum(:id).next
+          #Create new location and locationrelationship
+          new_location = Location.create(params[:location])
           LocationRelationship.create(location_id: new_location.id, driver_id: driver.id)
-          # LocationRelationship.find_by(location_id: permitted_params[:id], driver_id: driver)
+          render new_location
         else
-          old_location.update(street: params[:street], city: params[:city], state: params[:state], zip: params[:zip])
+          #update old location
+          old_location.update(params[:location])
+          render old_location
         end
-          return new_location
+
       end
 
 
