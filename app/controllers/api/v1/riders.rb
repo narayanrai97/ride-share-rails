@@ -13,7 +13,7 @@ module Api
       params do
         requires :id, type: String, desc: "ID of the rider"
       end
-      get "rider/:id", root: :rider do
+      get "riders/:id", root: :rider do
         rider = Rider.find(permitted_params[:id])
         location_ids = LocationRelationship.where(driver_id: permitted_params[:id])
         locations = []

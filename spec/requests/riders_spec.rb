@@ -9,13 +9,11 @@ RSpec.describe "Api::V1::Riders", type: :request do
     it "returns all riders" do
    get '/api/v1/riders', headers: {"ACCEPT" => "application/json" }
    expect(response).to have_http_status(200)
-   puts response.body
     end
 # This test Return a rider with a given ID
   it "returns rider ID" do
-  get "/api/v1/rider/#{rider.id}", headers: {"ACCEPT" => "application/json" }
+  get "/api/v1/riders/#{rider.id}", headers: {"ACCEPT" => "application/json" }
   expect(response).to have_http_status(200)
-  puts response.body
   end
 end
 
