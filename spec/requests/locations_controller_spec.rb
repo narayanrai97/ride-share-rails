@@ -45,7 +45,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #puts parsed_json
       expect(parsed_json['locations'][0]['street']).to eq('1200 front')
       expect(parsed_json['locations'][0]['city']).to eq('Durham')
       expect(parsed_json['locations'][0]['state']).to eq('NC')
@@ -62,7 +62,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #puts parsed_json
       expect(parsed_json['location']['street']).to eq('1200 front')
       expect(parsed_json['location']['city']).to eq('Durham')
       expect(parsed_json['location']['state']).to eq('NC')
@@ -77,9 +77,29 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #puts parsed_json
       expect(parsed_json['success']).to eq(true)
 
+
+
+  end
+
+  it 'will update a location related to logged in user' do
+
+    put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+      params: {location:{street:"210 Front Street",
+      city:"Burlington",
+      state:"NC",
+      zip: "27217"}}
+
+      expect(response).to have_http_status(200)
+      parsed_json = JSON.parse(response.body)
+      #puts parsed_json
+      expect(parsed_json['location']['street']).to eq('210 Front Street')
+      expect(parsed_json['location']['city']).to eq("Burlington")
+      expect(parsed_json['location']['state']).to eq('NC')
+      expect(parsed_json['location']['zip']).to eq( "27217")
+      expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
 
 
   end

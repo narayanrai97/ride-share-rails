@@ -2,20 +2,13 @@ module Api
   module V1
     class Locations < Grape::API
       include Api::V1::Defaults
-
       helpers SessionHelpers
 
       before do
         error!('Unauthorized', 401) unless require_login!
       end
 
-      #
-      # desc "Return all locations"
-      #   get "locations/all", root: :locations do
-      #     Location.all
-      #   end
 
-      #Returns a single location based off the ID
       #Lets driver look up resources that do no belong to themss
       desc "Return a location with a given ID"
       params do
@@ -58,7 +51,8 @@ module Api
           render location
         end
       end
-      #Needs logic to delete location if owner deletes location
+
+
       desc "Delete an association between a driver and a location"
       params do
         requires :id, type: String, desc: "ID of location"
@@ -68,6 +62,7 @@ module Api
         location = Location.find(permitted_params[:id])
         if location != nil
           LocationRelationship.find_by(location_id: permitted_params[:id], driver_id: driver.id).destroy
+          #Logic about multiple users using the same location 
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             location.destroy
             return { success:true }
