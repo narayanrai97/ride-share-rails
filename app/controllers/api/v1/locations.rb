@@ -21,7 +21,7 @@ module Api
       params do
         requires :id, type: String, desc: "ID of the location"
       end
-      get "location/:id", root: :location do
+      get "locations/:id", root: :location do
         render Location.find(permitted_params[:id])
       end
 
@@ -58,20 +58,25 @@ module Api
           render location
         end
       end
-
+      #Needs logic to delete location if owner deletes location
       desc "Delete an association between a driver and a location"
       params do
         requires :id, type: String, desc: "ID of location"
       end
-      delete 'location/:id' do
+      delete 'locations/:id' do
         driver = current_driver
         location = Location.find(permitted_params[:id])
         if location != nil
           LocationRelationship.find_by(location_id: permitted_params[:id], driver_id: driver.id).destroy
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             location.destroy
+            return { success:true }
+            #Needed to return if successful or not
+            # Was just always returning success
+          else
+            return{success:false}
           end
-          return { sucess:true }
+
         end
       end
 
