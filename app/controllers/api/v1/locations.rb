@@ -9,7 +9,7 @@ module Api
       end
 
 
-      #Lets driver look up resources that do no belong to themss
+      #Lets driver look up resources that do no belong to them
       desc "Return a location with a given ID"
       params do
         requires :id, type: String, desc: "ID of the location"
@@ -62,7 +62,7 @@ module Api
         location = Location.find(permitted_params[:id])
         if location != nil
           LocationRelationship.find_by(location_id: permitted_params[:id], driver_id: driver.id).destroy
-          #Logic about multiple users using the same location 
+          #Logic about multiple users using the same location
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             location.destroy
             return { success:true }
@@ -80,14 +80,13 @@ module Api
         params do
           requires :id, type: Integer, desc: "ID of location"
           requires :location, type: Hash do
-            requires :street , type:String
-            requires :city, type:String
-            requires :state, type: String
-            requires :zip, type: String
+            optional :street , type:String
+            optional :city, type:String
+            optional :state, type: String
+            optional :zip, type: String
           end
       end
       put "locations/:id" do
-        #Current driver object
         driver = current_driver
         #Find location to change
         old_location = Location.find(params[:id])
@@ -95,7 +94,6 @@ module Api
         #Keeps location from having more than one user
         if LocationRelationship.where(location_id: params[:location][:id]).count > 1
           #Fix for new location creation so id changes
-          params[:location][:id] = Location.maximum(:id).next
           #Create new location and locationrelationship
           new_location = Location.create(params[:location])
           LocationRelationship.create(location_id: new_location.id, driver_id: driver.id)
@@ -106,8 +104,6 @@ module Api
           render old_location
         end
       end
-
-
     end
   end
 end
