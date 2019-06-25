@@ -78,20 +78,21 @@ module Api
       #Update a location for a driver ????
       desc "put a location from a driver"
         params do
+          requires :id, type: Integer, desc: "ID of location"
           requires :location, type: Hash do
-            requires :id, type: Integer, desc: "ID of location"
             requires :street , type:String
             requires :city, type:String
             requires :state, type: String
             requires :zip, type: String
           end
       end
-      put "locations" do
+      put "locations/:id" do
         #Current driver object
         driver = current_driver
         #Find location to change
-        old_location = Location.find(params[:location][:id])
-        #If location has more than one locationrelationship run code #Keeps location from having more than one user
+        old_location = Location.find(params[:id])
+        #If location has more than one locationrelationship run code
+        #Keeps location from having more than one user
         if LocationRelationship.where(location_id: params[:location][:id]).count > 1
           #Fix for new location creation so id changes
           params[:location][:id] = Location.maximum(:id).next
@@ -104,7 +105,6 @@ module Api
           old_location.update(params[:location])
           render old_location
         end
-
       end
 
 
