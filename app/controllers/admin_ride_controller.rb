@@ -56,20 +56,20 @@ class AdminRideController < ApplicationController
       end
   
       def update
-      #   @ride = Ride.find(params[:id])
+        @ride = Ride.find(params[:id])
   
-      #   if @ride.update(ride_params)
-      #     redirect_to @ride
-      #   else
-      #     render 'edit'
-      #   end
+        if @ride.update(ride_params)
+          redirect_to @ride
+        else
+          render 'edit'
+        end
       end
   
       def destroy
-        # @ride = Ride.find(params[:id])
-        # @ride.destroy
+        @ride = Ride.find(params[:id])
+        @ride.destroy
   
-        # redirect_to rides_path
+        redirect_to rides_path
       end
   
       private
