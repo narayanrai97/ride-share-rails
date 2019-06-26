@@ -12,12 +12,17 @@ class Rider < ApplicationRecord
   devise :database_authenticatable,
             :recoverable, :rememberable, :validatable
 
-            
+
 
   def full_name
     first_name + " " + last_name
   end
 
+  def next_token
+    self.tokens.where(is_valid: true).
+                where('expires_at >= ?', Time.zone.now).
+                where(ride_id: nil).
+                order(:expires_at).first
+  end
+
 end
-
-
