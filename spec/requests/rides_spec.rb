@@ -72,26 +72,33 @@ RSpec.describe Api::V1::Rides, type: :request do
     it 'will return all rides without drivers ' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #nil because no driver has accepted it yet
+      expect(parsed_json['rides'][0]['driver_id']).to eq(nil)
     end
+
     # returns rides that only the driver has accepted
     it 'will return all rides that the  driver has accepted ' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #Driver should own all of these rides
+      expect(parsed_json['rides'][0]['driver_id']).to eq(driver.id)
+      expect(parsed_json['rides'][1]['driver_id']).to eq(driver.id)
+      expect(parsed_json['rides'][2]['driver_id']).to eq(driver.id)
     end
 
     #Returns rides based on status matching matched and driver accepted
     it 'will return all rides with status matched' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "matched"}
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #should only have matched result, only should return one object
+      expect(parsed_json['rides'][0]['status']).to eq("matched")
     end
-  #Returns rides of driver with a start and end time and drivewr accepted
+  #Returns rides of driver with a start and end time and drivewr accepted, May want to loop through results
     it 'will return all rides start date' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start:"2019-02-23 15:30:00", end: "2019-02-23 18:30:00"}
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      #Time formatting includes timezone information z and miliseconds
+      expect(parsed_json['rides'][0]['pick_up_time']).to eq("2019-02-23T15:30:00.000Z")
     end
   end
 end
