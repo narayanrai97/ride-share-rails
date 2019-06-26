@@ -61,7 +61,8 @@ module Api
         driver = current_driver
         location = Location.find(permitted_params[:id])
         if location != nil
-          LocationRelationship.find_by(location_id: permitted_params[:id], driver_id: driver.id).destroy
+          LocationRelationship.find_by(location_id: permitted_params[:id],
+             driver_id: driver.id).destroy
           #Logic about multiple users using the same location
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             location.destroy
@@ -75,7 +76,7 @@ module Api
         end
       end
 
-      #Update a location for a driver ????
+      #Update a location for a driver
       desc "put a location from a driver"
         params do
           requires :id, type: Integer, desc: "ID of location"
