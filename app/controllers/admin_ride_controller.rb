@@ -45,7 +45,7 @@ class AdminRideController < ApplicationController
   
         if @ride.save
           @ride.reload
-          redirect_to "/admin_ride/" + @ride.id.to_s
+          redirect_to admin_ride_path(@ride)
         else
           render 'new'
         end
@@ -59,7 +59,7 @@ class AdminRideController < ApplicationController
         @ride = Ride.find(params[:id])
   
         if @ride.update(ride_params)
-          redirect_to @ride
+           redirect_to admin_ride_path(@ride)
         else
           render 'edit'
         end
@@ -69,7 +69,7 @@ class AdminRideController < ApplicationController
         @ride = Ride.find(params[:id])
         @ride.destroy
   
-        redirect_to rides_path
+        redirect_to admin_ride_index_path
       end
   
       private

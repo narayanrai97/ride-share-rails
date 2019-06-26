@@ -7,6 +7,8 @@ class Driver < ApplicationRecord
   belongs_to :organization
   has_many :rides
   has_many :schedule_windows
+  has_many :location_relationships
+  has_many :locations, through: :location_relationships
   has_many :vehicles ,dependent: :destroy
 
 
