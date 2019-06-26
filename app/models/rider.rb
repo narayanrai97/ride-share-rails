@@ -18,11 +18,19 @@ class Rider < ApplicationRecord
     first_name + " " + last_name
   end
 
-  def next_token
+  def valid_tokens
     self.tokens.where(is_valid: true).
                 where('expires_at >= ?', Time.zone.now).
                 where(ride_id: nil).
-                order(:expires_at).first
+                order(:expires_at)
+  end
+
+  def next_valid_token
+      self.valid_tokens.first
+  end
+
+  def valid_tokens_count
+    self.valid_tokens.size
   end
 
 end
