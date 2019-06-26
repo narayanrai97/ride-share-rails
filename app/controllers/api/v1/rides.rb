@@ -14,10 +14,11 @@ module Api
 
         desc "Return all rides"
         params do
-          optional :start, type: String, desc: "Start date for rides"
+          optional :start, type: DateTime, desc: "Start date for rides"
           optional :end, type: String, desc: "End date for rides"
           optional :status, type: Array[String], desc: "String of status wanted"
           optional :driver_specific, type: Boolean, desc: "Boolean if rides are driver specific"
+          #Missing functionality for radius feature currently
           optional :radius, type: Boolean, desc: "Boolean if rides are within radius"
         end
           get "rides", root: :rides do
@@ -26,12 +27,7 @@ module Api
             start_time = params[:start]
             end_time = params[:end]
 
-            # if start_time == nil
-            #   start_time = DateTime.now-6.months
-            # end
-            # if end_time == nil
-            #   end_time = start_time + 6.months
-            # end
+
 
             if start_time != nil and end_time != nil
               rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
@@ -83,6 +79,7 @@ module Api
           driver = current_driver
           ride = Ride.find(permitted_params[:ride_id])
           ride.update(driver_id: driver.id, status: "scheduled")
+          #Dont understand this call to the database
           return Ride.find(permitted_params[:ride_id])
         end
 
@@ -94,6 +91,7 @@ module Api
         post "rides/:ride_id/complete" do
           ride = Ride.find(permitted_params[:ride_id])
           ride.update(status: "completed")
+          #Dont understand this call to the database
           Ride.find(permitted_params[:ride_id])
         end
 
@@ -115,6 +113,7 @@ module Api
       post "rides/:ride_id/picking-up" do
         ride = Ride.find(permitted_params[:ride_id])
         ride.update(status: "picking-up")
+        #Dont understand this call to the database
         Ride.find(permitted_params[:ride_id])
       end
 
@@ -125,10 +124,9 @@ module Api
       post "rides/:ride_id/dropping-off" do
         ride = Ride.find(permitted_params[:ride_id])
         ride.update(status: "dropping-off")
+        #Dont understand this call to the database
         Ride.find(permitted_params[:ride_id])
       end
-
-
     end
   end
 end
