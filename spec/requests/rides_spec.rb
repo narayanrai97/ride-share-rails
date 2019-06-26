@@ -67,29 +67,31 @@ RSpec.describe Api::V1::Rides, type: :request do
     expect(parsed_json['ride']['start_location']['id']).to eq(location.id)
     expect(parsed_json['ride']['end_location']['id']).to eq(location1.id)
   end
-  #Returns all rides that have not been filled with a driver
-  it 'will return all rides without drivers ' do
-    get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    parsed_json = JSON.parse(response.body)
-    puts parsed_json
-  end
-  # returns rides that only the driver has accepted
-  it 'will return all rides that the  driver has accepted ' do
-    get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
-    parsed_json = JSON.parse(response.body)
-    puts parsed_json
-  end
+  context "rides_list " do
+    #Returns all rides that have not been filled with a driver
+    it 'will return all rides without drivers ' do
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+    end
+    # returns rides that only the driver has accepted
+    it 'will return all rides that the  driver has accepted ' do
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+    end
 
-  #Returns rides based on status matching matched and driver accepted
-  it 'will return all rides with status matched' do
-    get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "matched"}
-    parsed_json = JSON.parse(response.body)
-    puts parsed_json
-  end
-#Returns rides of driver with a start and end time and drivewr accepted
-  it 'will return all rides start date' do
-    get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start:"2019-02-23 15:30:00", end: "2019-02-23 18:30:00"}
-    parsed_json = JSON.parse(response.body)
-    puts parsed_json
+    #Returns rides based on status matching matched and driver accepted
+    it 'will return all rides with status matched' do
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "matched"}
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+    end
+  #Returns rides of driver with a start and end time and drivewr accepted
+    it 'will return all rides start date' do
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start:"2019-02-23 15:30:00", end: "2019-02-23 18:30:00"}
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+    end
   end
 end
