@@ -67,7 +67,9 @@ module Api
                 ride"
           end
           get "rides/:id", root: :ride do
-            render Ride.find(permitted_params[:id])
+            #Only can see rides they are the driver for or have no driver
+            rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+            ride = rides.find(permitted_params[:id])
           end
 
 
@@ -77,7 +79,9 @@ module Api
         end
         post "rides/:ride_id/accept" do
           driver = current_driver
-          ride = Ride.find(permitted_params[:ride_id])
+          rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+          ride = rides.find(permitted_params[:ride_id])
+
           if ride.update(driver_id: driver.id, status: "scheduled")
             render ride
           end
@@ -89,7 +93,8 @@ module Api
           requires :ride_id, type: String, desc: "ID of the ride"
         end
         post "rides/:ride_id/complete" do
-          ride = Ride.find(permitted_params[:ride_id])
+          rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+          ride = rides.find(permitted_params[:ride_id])
           if ride.update(status: "completed")
             render ride
           end
@@ -100,7 +105,8 @@ module Api
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/cancel" do
-        ride = Ride.find(permitted_params[:ride_id])
+        rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+        ride = rides.find(permitted_params[:ride_id])
         if ride.update(status: "canceled")
           render ride
         end
@@ -112,7 +118,8 @@ module Api
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/picking-up" do
-        ride = Ride.find(permitted_params[:ride_id])
+        rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+        ride = rides.find(permitted_params[:ride_id])
         if ride.update(status: "picking-up")
           render ride
         end
@@ -123,7 +130,8 @@ module Api
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/dropping-off" do
-        ride = Ride.find(permitted_params[:ride_id])
+        rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
+        ride = rides.find(permitted_params[:ride_id])
         if ride.update(status: "dropping-off")
           render ride
         end
