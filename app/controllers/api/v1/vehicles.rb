@@ -36,7 +36,7 @@ module Api
           vehicle.driver_id = current_driver.id
 
             if vehicle.save
-              if(!driver.application_state = "pending" || !driver.application_state ="accepted")
+              if(driver.application_state != "pending" || !driver.application_state !="accepted")
                 driver.application_state ="pending"
                 driver.save
               end
