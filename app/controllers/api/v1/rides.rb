@@ -67,7 +67,7 @@ module Api
                 ride"
           end
           get "rides/:id", root: :ride do
-            #Only can see rides they are the driver for or have no driver
+            #Only can see rides they  the driver own for or have no driver
             rides =Ride.where(driver_id: nil).or(Ride.where(driver_id: current_driver.id))
             ride = rides.find(permitted_params[:id])
           end
