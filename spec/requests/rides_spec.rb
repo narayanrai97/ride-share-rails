@@ -67,7 +67,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     expect(parsed_json['ride']['start_location']['id']).to eq(location.id)
     expect(parsed_json['ride']['end_location']['id']).to eq(location1.id)
   end
-  context "rides_list " do
+  context "rides list return different params " do
     #Returns all rides that have not been filled with a driver
     it 'will return all rides without drivers ' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}

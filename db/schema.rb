@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.datetime "updated_at", null: false
     t.string "auth_token"
     t.datetime "token_created_at"
+    t.boolean "background_check"
     t.string "application_state"
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
