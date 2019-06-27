@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_195313) do
+ActiveRecord::Schema.define(version: 2019_06_27_153256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.datetime "updated_at", null: false
     t.string "auth_token"
     t.datetime "token_created_at"
-    t.boolean "background_check"
     t.string "application_state"
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
@@ -57,6 +56,8 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.string "zip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -144,7 +145,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.datetime "created_at", null: false
     t.datetime "expires_at"
     t.datetime "used_at"
-    t.boolean "is_valid"
+    t.boolean "is_valid", default: true
     t.datetime "updated_at", null: false
     t.integer "ride_id"
     t.index ["rider_id"], name: "index_tokens_on_rider_id"
