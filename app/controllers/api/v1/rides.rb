@@ -67,7 +67,7 @@ module Api
                 ride"
           end
           get "rides/:id", root: :ride do
-            Ride.find(permitted_params[:id])
+            render Ride.find(permitted_params[:id])
           end
 
 
