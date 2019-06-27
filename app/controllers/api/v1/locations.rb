@@ -25,9 +25,9 @@ module Api
       end
       get "locations" do
         driver = current_driver
-        location_ids = LocationRelationship.where(driver_id: driver.id).ids
+        location_ids = LocationRelationship.where(driver_id: driver.id).select("location_id")
         locations = Location.where(id: location_ids)
-        render locations
+        locations
       end
 
 
