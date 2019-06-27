@@ -78,9 +78,9 @@ module Api
         post "rides/:ride_id/accept" do
           driver = current_driver
           ride = Ride.find(permitted_params[:ride_id])
-          ride.update(driver_id: driver.id, status: "scheduled")
-          #Dont understand this call to the database
-          return Ride.find(permitted_params[:ride_id])
+          if ride.update(driver_id: driver.id, status: "scheduled")
+            render ride
+          end
         end
 
 
@@ -90,9 +90,9 @@ module Api
         end
         post "rides/:ride_id/complete" do
           ride = Ride.find(permitted_params[:ride_id])
-          ride.update(status: "completed")
-          #Dont understand this call to the database
-          Ride.find(permitted_params[:ride_id])
+          if ride.update(status: "completed")
+            render ride
+          end
         end
 
       desc "Cancel a ride"
@@ -101,8 +101,9 @@ module Api
       end
       post "rides/:ride_id/cancel" do
         ride = Ride.find(permitted_params[:ride_id])
-        ride.update(status: "canceled")
-        Ride.find(permitted_params[:ride_id])
+        if ride.update(status: "canceled")
+          render ride
+        end
       end
 
 
@@ -112,9 +113,9 @@ module Api
       end
       post "rides/:ride_id/picking-up" do
         ride = Ride.find(permitted_params[:ride_id])
-        ride.update(status: "picking-up")
-        #Dont understand this call to the database
-        Ride.find(permitted_params[:ride_id])
+        if ride.update(status: "picking-up")
+          render ride
+        end
       end
 
       desc "dropping off driver"
@@ -123,9 +124,9 @@ module Api
       end
       post "rides/:ride_id/dropping-off" do
         ride = Ride.find(permitted_params[:ride_id])
-        ride.update(status: "dropping-off")
-        #Dont understand this call to the database
-        Ride.find(permitted_params[:ride_id])
+        if ride.update(status: "dropping-off")
+          render ride
+        end
       end
     end
   end
