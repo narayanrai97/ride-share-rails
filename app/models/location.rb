@@ -5,7 +5,7 @@ class Location < ApplicationRecord
   has_many :drivers, through: :location_relationships
   geocoded_by :full_address
   validates :street, :city, :state, :zip, presence: true
-  validates :zip, numericality: true
+  validates :zip, length: { is: 5 }, numericality: true
   after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
   after_validation :capitalize_first_letter, :upcase_fields
 

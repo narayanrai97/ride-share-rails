@@ -38,6 +38,9 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  # config.expect_with(:rspec) { |c| c.syntax = :should }
 
   # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
  config.before(:suite) do
