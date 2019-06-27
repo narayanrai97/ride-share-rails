@@ -4,7 +4,7 @@ class Location < ApplicationRecord
   #One location would most likely have only one driver. But logic currently not that
   has_many :drivers, through: :location_relationships
   geocoded_by :full_address
-  after_validation :geocode, if: ->(obj) { obj.full_address.present? }
+  after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
   after_validation :capitalize_first_letter, :upcase_fields
 
   def capitalize_first_letter
