@@ -38,7 +38,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     let!(:schedule_window) { FactoryBot.create(:schedule_window, driver_id: driver.id, location_id: location.id) }
      it "Gets the schedule_window" do
      get '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
-     params: {start_date: "02-01-2019", end_date: "05-03-2019"}
+     params: {start_date: "02-02-2019", end_date: "05-03-2019"}
      expect(response).to have_http_status(200)
      puts response.body
     end
