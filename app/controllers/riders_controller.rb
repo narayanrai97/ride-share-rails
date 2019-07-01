@@ -48,7 +48,7 @@ class RidersController < ApplicationController
     @rider = Rider.find(params[:id])
     @rider.destroy
 
-    redirect_to riders_path
+    redirect_to admin_riders_path
   end
 
   private
