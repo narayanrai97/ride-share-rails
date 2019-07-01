@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-  resources :riders
+
   resources :rides
   resources :admin_ride
   resources :tokens, path_names: { new: 'new/:rider_id' }
@@ -59,6 +59,10 @@ Rails.application.routes.draw do
 
   namespace :rider do
     root :to => "welcome#rider"
+  end
+  
+  namespace :admin do
+    resource :riders
   end
 
 end
