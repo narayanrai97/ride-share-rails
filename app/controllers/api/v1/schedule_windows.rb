@@ -44,6 +44,9 @@ module Api
         schedule = ScheduleWindow.where(id: permitted_params[:id])
         all_events = []
         create_all_events(schedule, Date.today, Date.today+1.year, all_events)
+        if params[:is_recurring] == false
+          return { seccuss:true}
+        end
         render json: all_events
       end
 
