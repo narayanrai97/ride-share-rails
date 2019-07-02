@@ -26,7 +26,6 @@ class RidesController < ApplicationController
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
         @start_location.save
-        @start_location.reload
 
         @end_location = Location.new(
           street: ride_params[:end_street],
@@ -34,7 +33,6 @@ class RidesController < ApplicationController
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
         @end_location.save
-        @end_location.reload
 
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
@@ -44,7 +42,7 @@ class RidesController < ApplicationController
           end_location_id: @end_location.id,
           reason: ride_params[:reason],
           status: "requested")
-        if @ride.save!
+        if @ride.save
           @token.ride_id = @ride.id
           @token.save
           flash[:notice] = "Ride created."

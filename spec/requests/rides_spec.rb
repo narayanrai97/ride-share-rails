@@ -20,7 +20,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     start_location_id: location.id, end_location_id: location1.id)}
   let!(:ride3){create(:ride,rider_id: rider.id,organization_id: organization.id,
      driver_id: driver.id,status: "matched",
-     start_location_id: location.id, end_location_id: location1.id,pick_up_time: "2019-02-23 15:30:00")}
+     start_location_id: location.id, end_location_id: location1.id)}
 
 
 
@@ -95,10 +95,10 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
   #Returns rides of driver with a start and end time and drivewr accepted, May want to loop through results
     it 'will return all rides start date' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start:"2019-02-23 15:30:00", end: "2019-02-23 18:30:00"}
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start: Date.today, end: Date.today + 15}
       parsed_json = JSON.parse(response.body)
       #Time formatting includes timezone information z and miliseconds
-      expect(parsed_json['rides'][0]['pick_up_time']).to eq("2019-02-23T15:30:00.000Z")
+      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 5.days).round(10).iso8601(3).to_date))
     end
   end
 end
