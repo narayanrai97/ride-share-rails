@@ -145,7 +145,7 @@ ActiveRecord::Schema.define(version: 2019_06_27_153256) do
     t.datetime "created_at", null: false
     t.datetime "expires_at"
     t.datetime "used_at"
-    t.boolean "is_valid", default: true
+    t.boolean "is_valid"
     t.datetime "updated_at", null: false
     t.integer "ride_id"
     t.index ["rider_id"], name: "index_tokens_on_rider_id"

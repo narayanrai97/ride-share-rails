@@ -56,13 +56,40 @@ class AdminRideController < ApplicationController
       end
   
       def update
-        @ride = Ride.find(params[:id])
+
+          @ride = Ride.find(params[:id])
+          @start_location = @ride.start_location
+          @end_location = @ride.end_location
   
-        if @ride.update(ride_params)
-           redirect_to admin_ride_path(@ride)
-        else
-          render 'edit'
-        end
+          if !@start_location.update(
+            street: ride_params[:start_street], 
+            city: ride_params[:start_city],
+            state: ride_params[:start_state],
+            zip: ride_params[:start_zip])
+
+            render 'edit' and return
+          end
+  
+          if !@end_location.update(
+            street: ride_params[:end_street], 
+            city: ride_params[:end_city],
+            state: ride_params[:end_state],
+            zip: ride_params[:end_zip])
+
+            render 'edit' and return
+          end
+  
+          if @ride.update(
+            organization_id: current_user.organization_id,
+            rider_id: ride_params[:rider_id],
+            pick_up_time: ride_params[:pick_up_time],
+            reason: ride_params[:reason])
+            redirect_to admin_ride_path(@ride)
+          else
+            render 'edit'# and return
+            # Another example: render :show, layout: 'top_story'
+          end
+
       end
   
       def destroy
@@ -70,6 +97,7 @@ class AdminRideController < ApplicationController
         @ride.destroy
   
         redirect_to admin_ride_index_path
+        # redirect_to rides_path
       end
   
       private
