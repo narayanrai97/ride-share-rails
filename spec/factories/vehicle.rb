@@ -7,8 +7,8 @@ FactoryBot.define do
       car_plate {"ZQWOPQ"}
       seat_belt_num {4}
       insurance_provider {"Geico"}
-      insurance_start {"2019-05-19"}
-      insurance_stop {"2020-05-19"}
+      insurance_start { Date.today }
+      insurance_stop { Date.today + 6.months }
 
     end
 end
