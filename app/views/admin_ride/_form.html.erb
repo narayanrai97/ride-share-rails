@@ -1,6 +1,10 @@
+<% if @ride.id %>
+<% url = admin_ride_path(@ride) %>
+<% else %>
+<% url = admin_ride_index_path %>
+<% end %>
+<%= form_with(url: url , model: @ride, local: true) do |form| %>
 
-
-<%= form_with(url: "/admin_ride", model: @ride, local: true) do |form| %>
 
   <% if @ride.errors.any? %>
     <div id="error_explanation">
