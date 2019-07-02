@@ -26,7 +26,7 @@
       <td><%= ride.status %></td>
       <td><%= link_to 'Show', admin_ride_path(ride) %></td>
       <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
-      <td><%= link_to 'Destroy', admin_ride_path(ride),
+      <td><%= link_to 'Destroy', admin_ride_index_path(ride),
                       method: :delete,
                       data: { confirm: 'Are you sure?' } %></td>
     </tr>
