@@ -10,7 +10,7 @@ RSpec.describe RidesController, type: :controller do
       sign_in rider
       @next_token = rider.next_valid_token       # Token id `1`
     end
-  
+
     let(:test_response) { post :create, params: { ride: { rider_id: rider.id,
                                                           pick_up_time: pick_up_time,
                                                           start_street: "201 W. Main st.",
