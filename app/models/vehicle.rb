@@ -3,7 +3,7 @@ class Vehicle < ApplicationRecord
 
   validates :car_make, :car_model, :car_color, :car_year, :car_plate, :seat_belt_num,
             :insurance_provider, :insurance_start, :insurance_stop, presence: true
-  validates :car_color, inclusion: { in: %w(red black white blue silver burgandy yellow gold gray green brown),
+  validates :car_color, inclusion: { in: %w(Red Black White Blue Silver Burgandy Yellow Gold Gray Green Brown),
                                 message: "%{value} is not a valid car color" }
   validates :car_year, numericality: { only_integer: true }
   validate  :insurance_stop_cannot_be_in_the_past
