@@ -44,9 +44,6 @@ module Api
         schedule = ScheduleWindow.where(id: permitted_params[:id])
         all_events = []
         create_all_events(schedule, Date.today, Date.today+1.year, all_events)
-        if params[:is_recurring] == false
-          return { seccuss:true}
-        end
         render json: all_events
       end
 
@@ -55,8 +52,8 @@ module Api
       params do
         requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
         requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
-        requires :start_time, type: String, desc: "End date and time of availability"
-        requires :start_time, type: String, desc: "Start date and time of availability "
+        requires :start_time, type: String, desc: "Start date and time of availability"
+        requires :end_time, type: String, desc: "End date and time of availability "
         requires :is_recurring, type: Boolean, desc: "Boolean if availability is recurring or not"
         requires :location_id, type: String, desc: "ID of location"
       end
@@ -72,7 +69,12 @@ module Api
 
       desc "Update an schedule window for a driver"
       params do
-        requires :id, type: String, desc: "ID of avaliablity"
+        requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
+        requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
+        requires :start_time, type: String, desc: "Start date and time of availability"
+        requires :end_time, type: String, desc: "End date and time of availability "
+        requires :is_recurring, type: Boolean, desc: "Boolean if availability is recurring or not"
+        requires :location_id, type: String, desc: "ID of location"
       end
       put "availabilities/:id" do
         driver = current_driver

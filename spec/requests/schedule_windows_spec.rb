@@ -9,45 +9,73 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
     let!(:location) { FactoryBot.create(:location) }
-    it "Sign up for availabilities" do 
+    it "Sign up for availabilities, get all availabilities, update and delete " do 
      post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
-         start_date: "02-01-2019",
-         end_date: "05-03-2019", 
-         start_time: "09-03-2019", 
-         end_time: "10-02-2019", 
-         is_recurring: true,
-         location_id: "1"
+         start_date: "09-01-2019",
+         end_date: "10-03-2019", 
+         start_time: "07-03-2019, 2:00 pm", 
+         end_time: "07-03-2019, 8:00 pm", 
+         is_recurring: false,
+         location_id: location.id
+     } 
+     expect(response).to have_http_status(201)
+     parsed_json = JSON.parse(response.body)
+       puts parsed_json
+       expect(parsed_json['start_date']).to eq('2019-01-09T00:00:00.000Z')
+       expect(parsed_json['end_date']).to eq('2019-03-10T00:00:00.000Z')
+       expect(parsed_json ['start_time']).to eq('2019-03-07T14:00:00.000Z')
+       expect(parsed_json['end_date']).to eq('2019-03-10T00:00:00.000Z')
+       expect(parsed_json['is_recurring']).to eq(false)
+
+    
+     post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
+         start_date: "10-01-2019",
+         end_date: "11-03-2019", 
+         start_time: "07-03-2019, 2:00 pm", 
+         end_time: "07-03-2019, 8:00 pm", 
+         is_recurring: false,
+         location_id: location.id
      } 
      expect(response).to have_http_status(201)
      puts response.body
-    end
-  
-    let!(:organization) { FactoryBot.create(:organization) }
-    let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
-    let!(:location) { FactoryBot.create(:location) }
-    let!(:schedule_window) { FactoryBot.create(:schedule_window, driver_id: driver.id, location_id: location.id) }
-    it "update availabilities" do 
-       put "/api/v1/availabilities/#{schedule_window.id}", headers: {"ACCEPT" => "application/json", "Token" => logintoken}, 
-       params: { id: schedule_window.id} 
+     
+   
+    post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
+         start_date: "11-01-2019",
+         end_date: "12-03-2019", 
+         start_time: "011-03-2019, 5:00 pm", 
+         end_time: "011-03-2019, 9:00 pm", 
+         is_recurring: true,
+         location_id: location.id
+     }
+     expect(response).to have_http_status(201)
+     puts response.body
+    
+ 
+     get '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
+     params: {start: "07-03-2019", end: "07-03-2019"}
+     expect(response).to have_http_status(200)
+     puts response.body
+        parsed_json = JSON.parse(response.body)
+        window_id = parsed_json['json'][0]['eventId']
+
+       put "/api/v1/availabilities/#{window_id}", headers: {"ACCEPT" => "application/json", "Token" => logintoken}, 
+       params: { 
+         start_date: "02-01-2019",
+         end_date: "05-03-2019", 
+         start_time: "07-03-2019, 3:00 pm", 
+         end_time: "07-03-2019, 8:00 pm", 
+         is_recurring: false,
+         location_id: location.id
+       } 
       expect(response).to have_http_status(200)
      puts response.body
-    end
-    let!(:organization) { FactoryBot.create(:organization) }
-    let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
-    let!(:location) { FactoryBot.create(:location) }
-    let!(:schedule_window) { FactoryBot.create(:schedule_window, driver_id: driver.id, location_id: location.id) }
-     it "Gets the schedule_window" do
-     get '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
-     params: {start_date: "02-02-2019", end_date: "05-03-2019"}
-     expect(response).to have_http_status(200)
-     puts response.body
-    end
-    
-    it "delete schedule_window" do 
-     token = logintoken
-     delete "/api/v1/availabilities/#{schedule_window.id}", headers: { "ACCEPT" => "application/json", "Token" => token}, 
-     params: {id: schedule_window.id }
+   
+     delete "/api/v1/availabilities/#{window_id}", headers: { "ACCEPT" => "application/json", "Token" => logintoken}, 
+     params: {id: window_id }
      expect(response).to have_http_status(200)
       puts response.body
-    end
-end
+    
+ end
+ 
+ end
