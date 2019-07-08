@@ -84,11 +84,13 @@ class RidesController < ApplicationController
       end
 
       if @ride.update(
-        organization_id: current_user.organization_id,
-        rider_id: ride_params[:rider_id],
+        # organization_id: current_user.organization_id,
+        # rider_id: ride_params[:rider_id],
+        # driver_id: ride_params[:driver_id], I wondered if we needed this line
+        # as it is a field in the schema
         pick_up_time: ride_params[:pick_up_time],
         reason: ride_params[:reason])
-        redirect_to admin_ride_path(@ride)
+        redirect_to ride_path(@ride)
       else
         render 'edit'# and return
         # Another example: render :show, layout: 'top_story'
