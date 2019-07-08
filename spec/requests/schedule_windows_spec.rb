@@ -13,21 +13,20 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
      post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
          start_date: "09-01-2019",
          end_date: "10-03-2019", 
-         start_time: "07-03-2019, 2:00 pm", 
-         end_time: "07-03-2019, 8:00 pm", 
+         start_time: "11-03-2019, 2:00 pm", 
+         end_time: "11-03-2019, 9:00 pm", 
          is_recurring: false,
          location_id: location.id
      } 
-     expect(response).to have_http_status(201)
-     parsed_json = JSON.parse(response.body)
-       puts parsed_json
+       parsed_json = JSON.parse(response.body)
+       expect(parsed_json.count).to eq(8)
        expect(parsed_json['start_date']).to eq('2019-01-09T00:00:00.000Z')
        expect(parsed_json['end_date']).to eq('2019-03-10T00:00:00.000Z')
-       expect(parsed_json ['start_time']).to eq('2019-03-07T14:00:00.000Z')
-       expect(parsed_json['end_date']).to eq('2019-03-10T00:00:00.000Z')
+       expect(parsed_json ['start_time']).to eq('2019-03-11T14:00:00.000Z')
+       expect(parsed_json['end_time']).to eq('2019-03-11T21:00:00.000Z')
        expect(parsed_json['is_recurring']).to eq(false)
 
-    
+    # It signs up a schedule_window
      post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
          start_date: "10-01-2019",
          end_date: "11-03-2019", 
@@ -36,10 +35,15 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
          is_recurring: false,
          location_id: location.id
      } 
-     expect(response).to have_http_status(201)
-     puts response.body
+       parsed_json = JSON.parse(response.body)
+       expect(parsed_json.count).to eq(8)
+       expect(parsed_json['start_date']).to eq("2019-01-10T00:00:00.000Z")
+       expect(parsed_json['end_date']).to eq("2019-03-11T00:00:00.000Z")
+       expect(parsed_json ['start_time']).to eq("2019-03-07T14:00:00.000Z")
+       expect(parsed_json['end_time']).to eq("2019-03-07T20:00:00.000Z")
+       expect(parsed_json['is_recurring']).to eq(false)
      
-   
+   # It signs up a schedule_window, and test recurring being true
     post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
          start_date: "11-01-2019",
          end_date: "12-03-2019", 
@@ -48,34 +52,50 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
          is_recurring: true,
          location_id: location.id
      }
-     expect(response).to have_http_status(201)
-     puts response.body
+     parsed_json = JSON.parse(response.body)
+     expect(parsed_json.count).to eq(8)
+     expect(parsed_json['start_date']).to eq("2019-01-11T00:00:00.000Z")
+     expect(parsed_json['end_date']).to eq("2019-03-12T00:00:00.000Z")
+     expect(parsed_json ['start_time']).to eq("2019-03-11T17:00:00.000Z")
+     expect(parsed_json['end_time']).to eq("2019-03-11T21:00:00.000Z")
+     expect(parsed_json['is_recurring']).to eq(true)
     
- 
-     get '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
-     params: {start: "07-03-2019", end: "07-03-2019"}
+     # It gets all schedule_window
+     get '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}
      expect(response).to have_http_status(200)
-     puts response.body
-        parsed_json = JSON.parse(response.body)
-        window_id = parsed_json['json'][0]['eventId']
+     parsed_json = JSON.parse(response.body)
+     window_id = parsed_json['json'][0]['eventId']
+        
+     # it gets schedule_window by ID
+      get "/api/v1/availabilities/window/#{window_id}", headers: {"ACCEPT" => "application/json", "Token" => logintoken},
+      params: { id: window_id }
+      expect(response).to have_http_status(200)
+      
 
+      # It updates the schedule_window
        put "/api/v1/availabilities/#{window_id}", headers: {"ACCEPT" => "application/json", "Token" => logintoken}, 
        params: { 
-         start_date: "02-01-2019",
-         end_date: "05-03-2019", 
-         start_time: "07-03-2019, 3:00 pm", 
-         end_time: "07-03-2019, 8:00 pm", 
+         start_date: "12-01-2019",
+         end_date: "12-03-2019", 
+         start_time: "12-03-2019, 3:00 pm", 
+         end_time: "12-03-2019, 8:00 pm", 
          is_recurring: false,
          location_id: location.id
        } 
-      expect(response).to have_http_status(200)
-     puts response.body
+      parsed_json = JSON.parse(response.body)
+     expect(parsed_json.count).to eq(8)
+     expect(parsed_json['start_date']).to eq("2019-01-12T00:00:00.000Z")
+     expect(parsed_json['end_date']).to eq("2019-03-12T00:00:00.000Z")
+     expect(parsed_json ['start_time']).to eq("2019-03-12T15:00:00.000Z")
+     expect(parsed_json['end_time']).to eq("2019-03-12T20:00:00.000Z")
+     expect(parsed_json['is_recurring']).to eq(false)
    
+     # it deletes the schedule_window
      delete "/api/v1/availabilities/#{window_id}", headers: { "ACCEPT" => "application/json", "Token" => logintoken}, 
      params: {id: window_id }
      expect(response).to have_http_status(200)
-      puts response.body
+      
     
- end
+   end
  
  end

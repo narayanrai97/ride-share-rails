@@ -22,13 +22,16 @@ Rails.application.routes.draw do
   resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
-  devise_scope :rider do
-    resource :riders,
-             only: [:edit, :update, :destroy],
-             controller: 'devise/registrations',
-             as: :rider_registration do
-              get 'cancel'
-             end
+  resources :riders
+devise_scope :rider do
+  resource :riders,
+           #only: [:edit, :update, :destroy],
+           controller: 'devise/registrations',
+           as: :rider_registration do
+            get 'cancel'
+           
+  #get 'rider' => 'welcome#rider'
+end
     get 'rider' => 'welcome#rider'
   end
 
@@ -61,8 +64,4 @@ Rails.application.routes.draw do
     root :to => "welcome#rider"
   end
   
-  namespace :admin do
-    resource :riders
-  end
-
 end
