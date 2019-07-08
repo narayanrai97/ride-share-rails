@@ -70,6 +70,7 @@ module Api
       desc "Update an schedule window for a driver"
       params do
         requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
+        requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
         requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
         requires :start_time, type: String, desc: "Start date and time of availability"
         requires :end_time, type: String, desc: "End date and time of availability "

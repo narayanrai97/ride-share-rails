@@ -45,15 +45,16 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
      
    # It signs up a schedule_window, and test recurring being true
     post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
-         start_date: "11-01-2019",
-         end_date: "12-03-2019", 
-         start_time: "011-03-2019, 5:00 pm", 
-         end_time: "011-03-2019, 9:00 pm", 
+         start_date: Time.now + 5.days,
+         end_date: Time.now + 5.days, 
+         start_time: Time.now + 3.month, 
+         end_time: Time.now + 3.month, 
          is_recurring: true,
          location_id: location.id
      }
      parsed_json = JSON.parse(response.body)
      expect(parsed_json.count).to eq(8)
+     puts parsed_json
      expect(parsed_json['start_date']).to eq("2019-01-11T00:00:00.000Z")
      expect(parsed_json['end_date']).to eq("2019-03-12T00:00:00.000Z")
      expect(parsed_json ['start_time']).to eq("2019-03-11T17:00:00.000Z")
