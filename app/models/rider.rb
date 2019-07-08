@@ -1,17 +1,13 @@
 class Rider < ApplicationRecord
-
-  validates :first_name, presence: true
-  validates :last_name, presence: true
-  validates :phone, presence: true
-  # validates :email, presence: true
+  devise :database_authenticatable,
+         :recoverable, :rememberable, :validatable
 
   belongs_to :organization
-  has_many :tokens, dependent: :destroy
-  has_many :rides
+  has_many   :tokens, dependent: :destroy
+  has_many   :rides
 
-  devise :database_authenticatable,
-            :recoverable, :rememberable, :validatable
-
+  validates :first_name, :last_name, :phone, presence: true
+  # validates :email, presence: true
 
 
   def full_name
