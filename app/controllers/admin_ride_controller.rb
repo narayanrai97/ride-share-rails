@@ -54,6 +54,20 @@ class AdminRideController < ApplicationController
       def edit
         @ride = Ride.find(params[:id])
       end
+
+      # Example:
+
+      # def update
+      #   @horse = Horse.find(id: params[:id])
+      
+      #   if @horse.update(horse_params)
+      #     flash[:success] = "You have updated #{@horse.name}."
+      #     redirect_to horse_path(@horse)
+      #   else
+      #     flash.now[:error] = "You have not updated #{@horse.name}."
+      #     render :edit
+      #   end
+      # end
   
       def update
 
@@ -66,6 +80,9 @@ class AdminRideController < ApplicationController
             city: ride_params[:start_city],
             state: ride_params[:start_state],
             zip: ride_params[:start_zip])
+            # flash[:success] = "You have updated your location."
+            # redirect_to...
+            flash.now[:alert] = @start_location.errors.full_messages[0]
 
             render 'edit' and return
           end
@@ -75,6 +92,7 @@ class AdminRideController < ApplicationController
             city: ride_params[:end_city],
             state: ride_params[:end_state],
             zip: ride_params[:end_zip])
+            flash.now[:alert] = @end_location.errors.full_messages[0]
 
             render 'edit' and return
           end
@@ -84,10 +102,12 @@ class AdminRideController < ApplicationController
             rider_id: ride_params[:rider_id],
             pick_up_time: ride_params[:pick_up_time],
             reason: ride_params[:reason])
+            flash.notice = "The ride information has been updated"
             redirect_to admin_ride_path(@ride)
+          
           else
-            render 'edit'# and return
-            # Another example: render :show, layout: 'top_story'
+            # flash.now[:alert] = @ride.errors.full_messages[0]
+            render 'edit'
           end
 
       end

@@ -70,6 +70,7 @@ class RidesController < ApplicationController
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
+        flash.now[:alert] = @start_location.errors.full_messages[0]
 
         render 'edit' and return
       end
@@ -79,21 +80,19 @@ class RidesController < ApplicationController
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
+        flash.now[:alert] = @end_location.errors.full_messages[0]
 
         render 'edit' and return
       end
 
       if @ride.update(
-        # organization_id: current_user.organization_id,
-        # rider_id: ride_params[:rider_id],
-        # driver_id: ride_params[:driver_id], I wondered if we needed this line
-        # as it is a field in the schema
         pick_up_time: ride_params[:pick_up_time],
         reason: ride_params[:reason])
+        flash.notice = "The ride information has been updated"
         redirect_to ride_path(@ride)
       else
-        render 'edit'# and return
-        # Another example: render :show, layout: 'top_story'
+        # flash.now[:alert] = @ride.errors.full_messages[0]
+        render 'edit'
       end
     end
 
