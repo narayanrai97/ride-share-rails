@@ -1,10 +1,11 @@
 FactoryBot.define do
     factory :schedule_window do
-   start_date {"02-01-2019"}
-    end_date {"05-03-2019"}
-    start_time {"09-03-2019"}
-    end_time {"10-02-2019"} 
+    start_date {Time.now + 3.months }
+    end_date {Time.now + 5.months}
+    start_time {Time.now + 2.hours}
+    end_time {Time.now + 5.hours} 
     is_recurring {false}
-    location_id {"2"}
+    location
    end
 end
+
