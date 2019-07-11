@@ -54,20 +54,6 @@ class AdminRideController < ApplicationController
       def edit
         @ride = Ride.find(params[:id])
       end
-
-      # Example:
-
-      # def update
-      #   @horse = Horse.find(id: params[:id])
-      
-      #   if @horse.update(horse_params)
-      #     flash[:success] = "You have updated #{@horse.name}."
-      #     redirect_to horse_path(@horse)
-      #   else
-      #     flash.now[:error] = "You have not updated #{@horse.name}."
-      #     render :edit
-      #   end
-      # end
   
       def update
 
