@@ -24,7 +24,6 @@ class AdminRideController < ApplicationController
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
         @start_location.save
-        @start_location.reload
   
         @end_location = Location.new(
           street: ride_params[:end_street], 
@@ -32,7 +31,6 @@ class AdminRideController < ApplicationController
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
         @end_location.save
-        @end_location.reload
   
         @ride = Ride.new(
           organization_id: current_user.organization_id,
@@ -44,12 +42,14 @@ class AdminRideController < ApplicationController
           status: "requested")
   
         if @ride.save
-          @ride.reload
+          flash.notice = "Ride saved."
           redirect_to admin_ride_path(@ride)
         else
           render 'new'
         end
+
       end
+
   
       def edit
         @ride = Ride.find(params[:id])
@@ -66,8 +66,6 @@ class AdminRideController < ApplicationController
             city: ride_params[:start_city],
             state: ride_params[:start_state],
             zip: ride_params[:start_zip])
-            # flash[:success] = "You have updated your location."
-            # redirect_to...
             flash.now[:alert] = @start_location.errors.full_messages[0]
 
             render 'edit' and return
@@ -92,7 +90,6 @@ class AdminRideController < ApplicationController
             redirect_to admin_ride_path(@ride)
           
           else
-            # flash.now[:alert] = @ride.errors.full_messages[0]
             render 'edit'
           end
 
@@ -103,7 +100,6 @@ class AdminRideController < ApplicationController
         @ride.destroy
   
         redirect_to admin_ride_index_path
-        # redirect_to rides_path
       end
   
       private

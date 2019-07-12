@@ -91,7 +91,6 @@ class RidesController < ApplicationController
         flash.notice = "The ride information has been updated"
         redirect_to ride_path(@ride)
       else
-        # flash.now[:alert] = @ride.errors.full_messages[0]
         render 'edit'
       end
     end
