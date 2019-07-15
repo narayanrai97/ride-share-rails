@@ -24,6 +24,7 @@ class VehiclesController < ApplicationController
   def update
     @vehicle = Vehicle.find(params[:id])
     if @vehicle.update(vehicle_params)
+    flash.notice = "The vehicle information has been updated"
     redirect_to driver_path(@vehicle.driver_id)
     else
       render "edit"

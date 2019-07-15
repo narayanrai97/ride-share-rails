@@ -35,7 +35,9 @@ class TokensController < ApplicationController
     @token = Token.find(params[:id])
 
     if @token.update(ride_params)
-      redirect_to @token
+      flash.notice = "The token information has been updated"
+      # redirect_to @token
+      redirect_to token_path(@token)
     else
       render 'edit'
     end
