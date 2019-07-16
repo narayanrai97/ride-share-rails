@@ -7,7 +7,6 @@ class TokensController < ApplicationController
     @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)
   end
 
-
   def show
     @token = Token.find(params[:id])
   end
@@ -15,8 +14,6 @@ class TokensController < ApplicationController
   def index
     @tokens = Token.all
   end
-
-
 
   def create
     @token = Token.new(token_params)
@@ -36,7 +33,6 @@ class TokensController < ApplicationController
 
     if @token.update(token_params)
       flash.notice = "The token information has been updated"
-      # redirect_to @token
       redirect_to token_path(@token)
     else
       render 'edit'
@@ -49,8 +45,6 @@ class TokensController < ApplicationController
 
     redirect_to tokens_path
   end
-
-
 
   private
   def token_params
