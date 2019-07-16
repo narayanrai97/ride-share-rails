@@ -39,7 +39,11 @@
 
 
       <strong>Background Check:</strong>
+
+      <% if false %>
       <%= @driver.background_check %>
+      <% end %>
+
       <%= link_to "Accept",driver_pass_path(@driver),method: :put,
                      data: { confirm: 'Are you sure you want to approve the application?' },
                      class: "btn btn-green btn-sm" %>
@@ -52,6 +56,9 @@
 
         <strong>Application Status:</strong>
         <%= @driver.application_state %>
+
+
+        <% if false %>
         <%if @driver.background_check ==true%>
           <%= link_to "Accept",driver_accept_path(@driver),method: :put,
                          data: { confirm: 'Are you sure you want to approve the application?' },
@@ -61,6 +68,9 @@
         <%= link_to "Reject",driver_reject_path(@driver),method: :put,
                       data: { confirm: 'Are you sure you want to reject the application?' },
                       class: "btn btn-darkgray btn-sm" %>
+        <% end %>
+        
+    
       </div>
     </div>
     <div>
