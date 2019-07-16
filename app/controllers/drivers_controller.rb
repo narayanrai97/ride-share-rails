@@ -41,6 +41,7 @@ class DriversController < ApplicationController
     @driver.organization_id = current_user.organization_id
 
     if @driver.save
+      flash.notice = "The driver information has been saved"
       redirect_to @driver
     else
       render 'new'

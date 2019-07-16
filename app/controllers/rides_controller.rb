@@ -45,13 +45,13 @@ class RidesController < ApplicationController
         if @ride.save
           @token.ride_id = @ride.id
           @token.save
-          flash[:notice] = "Ride created."
+          flash[:notice] = "Ride created"
           redirect_to @ride
         else
           render 'new'
         end
       else
-        flash[:notice] = "Sorry you do not have enough valid tokens to request this ride."
+        flash[:notice] = "Sorry you do not have enough valid tokens to request this ride"
         redirect_to rides_path
       end
     end

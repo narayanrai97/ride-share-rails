@@ -42,7 +42,7 @@ class AdminRideController < ApplicationController
           status: "requested")
   
         if @ride.save
-          flash.notice = "Ride saved."
+          flash.notice = "Ride saved"
           redirect_to admin_ride_path(@ride)
         else
           render 'new'

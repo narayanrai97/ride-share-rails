@@ -18,7 +18,7 @@ class TokensController < ApplicationController
   def create
     @token = Token.new(token_params)
     if @token.save
-      flash.notice = "The token information has been updated"
+      flash.notice = "The token information has been saved"
       redirect_to @token
     else
       render 'new'
@@ -34,7 +34,8 @@ class TokensController < ApplicationController
 
     if @token.update(token_params)
       flash.notice = "The token information has been updated"
-      redirect_to token_path(@token)
+      # redirect_to token_path(@token)
+      redirect_to @token
     else
       render 'edit'
     end
@@ -51,6 +52,5 @@ class TokensController < ApplicationController
   def token_params
     params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :valid)
   end
-
 
 end
