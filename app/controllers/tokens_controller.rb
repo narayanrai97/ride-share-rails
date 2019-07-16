@@ -21,6 +21,7 @@ class TokensController < ApplicationController
   def create
     @token = Token.new(token_params)
     if @token.save
+      flash.notice = "The token information has been updated"
       redirect_to @token
     else
       render 'new'
