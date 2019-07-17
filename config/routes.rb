@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
+
   resources :riders
   resources :rides
   resources :admin_ride

@@ -15,7 +15,7 @@
   </tr>
 
   <% @riders.each do |rider| %>
-    <% if rider.organization_id==current_user.organization_id%>
+    <!--< if rider.organization_id==current_user.organization_id%>-->
     <tr>
       <td scope="row">><%= rider.id %></td>
       <td><%= rider.first_name %></td>
@@ -25,11 +25,11 @@
 <!--      <td><%#= rider.tokens %></td>-->
       <td><%= link_to 'Show', rider_path(rider) %></td>
       <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
-      <td><%= link_to 'Destroy', rider_path(rider),
+      <td><%= link_to 'Destroy', admin_rider_path(rider),
                       method: :delete,
                       data: { confirm: 'Are you sure?' } %></td>
     </tr>
-    <% end %>
+    <!--< end %>-->
   <% end %>
 </table>
 

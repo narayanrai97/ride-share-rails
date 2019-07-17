@@ -44,12 +44,12 @@ class RidersController < ApplicationController
     end
   end
 
-  def destroy
-    @rider = Rider.find(params[:id])
-    @rider.destroy
+  # def destroy
+  #   @rider = Rider.find(params[:id])
+  #   @rider.destroy
 
-    redirect_to riders_path
-  end
+  #   redirect_to riders_path
+  # end
 
   private
   def rider_params
