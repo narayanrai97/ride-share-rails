@@ -6,21 +6,21 @@
 <%= link_to 'New Ride', new_admin_ride_path, class:"btn btn-primary" %>
 <table class="table table-striped">
   <tr>
-    <th scope="col">Ride ID</th>
-    <th scope="col">Rider ID</th>
-    <th scope="col">Driver ID</th>
+    <th scope="col">Rider</th>
+    <th scope="col">Driver</th>
     <th scope="col">Pick Up Time</th>
     <th scope="col">Reason</th>
     <th scope="col">Status</th>
+    <th scope="col"></th>
+    <th scope="col"></th>
     <th scope="col"></th>
   </tr>
 
   <% @rides.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
     <tr>
-      <td scope="row"><%= ride.id %></td>
-      <td><%= ride.rider_id %></td>
-      <td><%= ride.driver_id %></td>
+      <td><%= ride.rider.full_name unless ride.rider.nil?%></td>
+      <td><%= ride.driver.full_name unless ride.driver.nil?%></td>
       <td><%= ride.pick_up_time %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
