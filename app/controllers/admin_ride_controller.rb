@@ -108,6 +108,12 @@ class AdminRideController < ApplicationController
         :start_street, :start_city, :start_state, :start_zip, 
         :end_street, :end_city, :end_state, :end_zip, :reason, :status)
       end
+
+      # def belongs_to_org
+      #   unless rider.organization_id == current_user.organization_id
+      #   flash[:notice] = “Rider must belong to admins organization”
+      #   redirect_to riders_path
+      # end
   
   end
   
