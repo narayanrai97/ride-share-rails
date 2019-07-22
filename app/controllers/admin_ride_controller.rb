@@ -66,7 +66,7 @@ class AdminRideController < ApplicationController
             city: ride_params[:start_city],
             state: ride_params[:start_state],
             zip: ride_params[:start_zip])
-            flash.now[:alert] = @start_location.errors.full_messages[0]
+            flash.now[:alert] = @start_location.errors.full_messages.join(", ")
 
             render 'edit' and return
           end
@@ -76,7 +76,7 @@ class AdminRideController < ApplicationController
             city: ride_params[:end_city],
             state: ride_params[:end_state],
             zip: ride_params[:end_zip])
-            flash.now[:alert] = @end_location.errors.full_messages[0]
+            flash.now[:alert] = @end_location.errors.full_messages.join(", ")
 
             render 'edit' and return
           end

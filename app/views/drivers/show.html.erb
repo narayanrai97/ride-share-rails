@@ -57,7 +57,8 @@
         <strong>Application Status:</strong>
         <%= @driver.application_state %>
 
-        <%if @driver.background_check ==true%>
+        <%if @driver.background_check %>
+
           <%= link_to "Accept",driver_accept_path(@driver),method: :put,
                          data: { confirm: 'Are you sure you want to approve the application?' },
                          class: "btn btn-green btn-sm " %>

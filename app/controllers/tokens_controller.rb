@@ -34,7 +34,6 @@ class TokensController < ApplicationController
 
     if @token.update(token_params)
       flash.notice = "The token information has been updated"
-      # redirect_to token_path(@token)
       redirect_to @token
     else
       render 'edit'

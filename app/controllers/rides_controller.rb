@@ -25,7 +25,11 @@ class RidesController < ApplicationController
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-        @start_location.save
+          if @start_location.save
+            return true
+          else
+            # render 'new'
+          end
 
         @end_location = Location.new(
           street: ride_params[:end_street],
@@ -70,7 +74,7 @@ class RidesController < ApplicationController
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
-        flash.now[:alert] = @start_location.errors.full_messages[0]
+        flash.now[:alert] = @start_location.errors.full_messages.join(", ")
 
         render 'edit' and return
       end
@@ -80,7 +84,7 @@ class RidesController < ApplicationController
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
-        flash.now[:alert] = @end_location.errors.full_messages[0]
+        flash.now[:alert] = @end_location.errors.full_messages.join(", ")
 
         render 'edit' and return
       end
