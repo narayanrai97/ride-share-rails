@@ -23,14 +23,20 @@ class AdminRideController < ApplicationController
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-        @start_location.save
+
+        if !@start_location.save
+          render 'new' and return
+        end
   
         @end_location = Location.new(
           street: ride_params[:end_street], 
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-        @end_location.save
+
+        if !@end_location.save
+          render 'new' and return
+        end
   
         @ride = Ride.new(
           organization_id: current_user.organization_id,
@@ -50,7 +56,6 @@ class AdminRideController < ApplicationController
 
       end
 
-  
       def edit
         @ride = Ride.find(params[:id])
       end

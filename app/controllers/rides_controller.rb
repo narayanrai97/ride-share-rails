@@ -25,10 +25,9 @@ class RidesController < ApplicationController
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-          if @start_location.save
-            return true
-          else
-            # render 'new'
+
+          if !@start_location.save
+            render 'new' and return
           end
 
         @end_location = Location.new(
@@ -36,8 +35,11 @@ class RidesController < ApplicationController
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-        @end_location.save
 
+          if !@end_location.save
+            render 'new' and return
+          end
+        
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
           rider_id: current_rider.id,
