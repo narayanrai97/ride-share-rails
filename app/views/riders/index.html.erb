@@ -25,7 +25,7 @@
 <!--      <td><%#= rider.tokens %></td>-->
       <td><%= link_to 'Show', rider_path(rider) %></td>
       <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
-      <td><%= link_to 'Destroy', admin_rider_path(rider),
+      <td><%= link_to 'Delete', rider_path(rider),
                       method: :delete,
                       data: { confirm: 'Are you sure?' } %></td>
     </tr>
