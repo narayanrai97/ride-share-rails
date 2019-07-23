@@ -26,13 +26,9 @@ module Api
         optional :end, type: Time, desc: "End date for schedule"
       end
       get "availabilities", root: :schedule_windows do
-        driver = current_driver
-        schedules = ScheduleWindow.where(driver_id: driver.id)
-        all_events = []
         start_time = DateTime.now
         end_time = DateTime.now+3.months
-        create_all_events(schedules, start_time, end_time, all_events)
-        render json: all_events
+        current_driver.events(start_time, end_time)
       end
 
 
@@ -50,20 +46,22 @@ module Api
 
       desc "Create an schedule window for a driver"
       params do
-        requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
-        requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
+        optional :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
+        optional :end_date, type: String, desc: "End date and time of when availability would end recurring"
         requires :start_time, type: String, desc: "Start date and time of availability"
         requires :end_time, type: String, desc: "End date and time of availability "
         requires :is_recurring, type: Boolean, desc: "Boolean if availability is recurring or not"
         requires :location_id, type: String, desc: "ID of location"
       end
       post "availabilities" do
-        driver = current_driver
-        schedule_window = ScheduleWindow.create(driver_id: driver.id, start_date: params[:start_date], end_date: params[:end_date], start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], is_recurring: params[:is_recurring])
-        if params[:is_recurring] == true
-          RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
-        end
-        render schedule_window
+        current_driver.schedule_windows.create( 
+          start_date: params[:start_date], 
+          end_date: params[:end_date], 
+          start_time: params[:start_time],
+          end_time: params[:end_time], 
+          location_id: params[:location_id], 
+          is_recurring: params[:is_recurring]
+        )
       end
 
 
