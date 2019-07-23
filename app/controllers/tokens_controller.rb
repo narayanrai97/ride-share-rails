@@ -1,12 +1,12 @@
 class TokensController < ApplicationController
   
   before_action :authenticate_user!
+  before_action :authorize_token_belongs_to_org!, only: [:show, :update, :edit, :delete]
   layout "administration"
 
   def new
     @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)
   end
-
 
   def show
     @token = Token.find(params[:id])
@@ -15,8 +15,6 @@ class TokensController < ApplicationController
   def index
     @tokens = Token.all
   end
-
-
 
   def create
     @token = Token.new(token_params)
@@ -48,12 +46,14 @@ class TokensController < ApplicationController
     redirect_to tokens_path
   end
 
-
-
   private
   def token_params
     params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :valid)
   end
 
+  def authorize_token_belongs_to_org!
+    byebug
+    authorize Token
+  end
 
 end

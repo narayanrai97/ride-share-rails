@@ -1,7 +1,9 @@
 class RidesController < ApplicationController
 
-  before_action :authenticate_rider!
-  before_action :authenticate_user!, :authorize_belongs_to_org!, only: [:show, :update, :edit, :delete]
+  before_action :authenticate_user!
+  before_action :authenticate_ride!
+  before_action :authorize_ride_belongs_to_org!, only: [:show, :update, :edit, :delete]
+  
   layout 'rider_layout'
 
     def new
@@ -110,10 +112,9 @@ class RidesController < ApplicationController
       :end_street, :end_city, :end_state, :end_zip, :reason, :status)
     end
 
-    def authorize_belongs_to_org!
+    def authorize_ride_belongs_to_org!
       byebug
       authorize Ride
     end
-
 
 end

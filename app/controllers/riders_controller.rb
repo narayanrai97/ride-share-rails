@@ -1,6 +1,7 @@
 class RidersController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :authorize_rider_belongs_to_org!, only: [:show, :update, :edit, :delete]
   layout "administration"
 
   def new
@@ -12,7 +13,6 @@ class RidersController < ApplicationController
     @count = Token.where(rider_id:  @rider.id).count
     @location_ids = LocationRelationship.where(rider_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
-
   end
 
   def index
@@ -54,6 +54,11 @@ class RidersController < ApplicationController
   private
   def rider_params
     params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
+  end
+
+  def authorize_rider_belongs_to_org!
+    byebug
+    authorize Rider
   end
 
 end

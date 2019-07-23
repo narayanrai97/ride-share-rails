@@ -1,6 +1,7 @@
 class DriversController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :authorize_driver_belongs_to_org!, only: [:show, :update, :edit, :delete]
   layout "administration"
 
   def new
@@ -12,7 +13,6 @@ class DriversController < ApplicationController
     @vehicle = Vehicle.all
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
-
   end
 
   def index
@@ -47,7 +47,6 @@ class DriversController < ApplicationController
     end
   end
 
-
   def edit
     @driver = Driver.find(params[:id])
   end
@@ -62,9 +61,6 @@ class DriversController < ApplicationController
     end
   end
 
-
-
-
   def destroy
     @driver = Driver.find(params[:id])
     @driver.destroy
@@ -78,6 +74,7 @@ class DriversController < ApplicationController
    @driver.update(application_state: "approved")
    redirect_to driver_path(params[:driver_id])
   end
+
    #Method to Reject application
    def reject
      @driver = Driver.find(params[:driver_id])
@@ -91,6 +88,7 @@ class DriversController < ApplicationController
     @driver.update(background_check: true)
     redirect_to driver_path(params[:driver_id])
    end
+   
     #change background_check to false
     def fail
       @driver = Driver.find(params[:driver_id])
@@ -98,9 +96,14 @@ class DriversController < ApplicationController
       redirect_to driver_path(params[:driver_id])
     end
 
-
   private
   def driver_params
     params.require(:driver).permit(:first_name, :last_name, :phone, :email, :address, :car_make, :car_model, :car_color)
   end
+
+  def authorize_driver_belongs_to_org!
+    byebug
+    authorize Driver
+  end
+
 end
