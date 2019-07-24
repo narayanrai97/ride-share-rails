@@ -2,8 +2,7 @@ class ScheduleWindow < ApplicationRecord
   belongs_to :driver
   has_one    :recurring_pattern
   belongs_to :location
-  validates :start_time, :end_time, presence: true
-  validates :is_recurring, inclusion: {in: [true, false]}
+  validates :start_time, :end_time, :is_recurring, presence: true
   validates :start_date, :end_date, presence: true, if: :is_recurring?
 
   validate  :following_dates_cannot_be_in_the_past

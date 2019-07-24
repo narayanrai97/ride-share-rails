@@ -14,18 +14,18 @@
   </tr>
 
   <% @riders.each do |rider| %>
-    <!--< if rider.organization_id==current_user.organization_id%>-->
-    <tr>
-      <td><%= rider.full_name %></td>
-      <td><%= rider.phone %></td>
-      <td><%= rider.email %></td>
-      <td><%= link_to 'Show', rider_path(rider) %></td>
-      <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
-      <td><%= link_to 'Delete', rider_path(rider),
-                      method: :delete,
-                      data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-    <!--< end %>-->
+    <% if rider.organization == current_user.organization %>
+      <tr>
+        <td><%= rider.full_name %></td>
+        <td><%= rider.phone %></td>
+        <td><%= rider.email %></td>
+        <td><%= link_to 'Show', rider_path(rider) %></td>
+        <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
+        <td><%= link_to 'Delete', rider_path(rider),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
   <% end %>
 </table>
 

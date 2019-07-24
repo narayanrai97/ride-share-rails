@@ -46,13 +46,6 @@ class RidersController < ApplicationController
     end
   end
 
-  # def destroy
-  #   @rider = Rider.find(params[:id])
-  #   @rider.destroy
-
-  #   redirect_to riders_path
-  # end
-
   private
   def rider_params
     params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
