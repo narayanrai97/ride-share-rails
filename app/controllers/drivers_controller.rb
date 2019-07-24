@@ -41,6 +41,7 @@ class DriversController < ApplicationController
     @driver.organization_id = current_user.organization_id
 
     if @driver.save
+      flash.notice = "The driver information has been saved"
       redirect_to @driver
     else
       render 'new'
@@ -56,6 +57,7 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:id])
 
     if @driver.update(driver_params)
+      flash.notice = "The driver information has been updated"
       redirect_to @driver
     else
       render 'edit'

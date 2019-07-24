@@ -23,16 +23,20 @@ class AdminRideController < ApplicationController
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-        @start_location.save
-        @start_location.reload
+
+        if !@start_location.save
+          render 'new' and return
+        end
   
         @end_location = Location.new(
           street: ride_params[:end_street], 
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-        @end_location.save
-        @end_location.reload
+
+        if !@end_location.save
+          render 'new' and return
+        end
   
         @ride = Ride.new(
           organization_id: current_user.organization_id,
@@ -44,13 +48,14 @@ class AdminRideController < ApplicationController
           status: "requested")
   
         if @ride.save
-          @ride.reload
+          flash.notice = "Ride saved"
           redirect_to admin_ride_path(@ride)
         else
           render 'new'
         end
+
       end
-  
+
       def edit
         @ride = Ride.find(params[:id])
       end
@@ -66,6 +71,7 @@ class AdminRideController < ApplicationController
             city: ride_params[:start_city],
             state: ride_params[:start_state],
             zip: ride_params[:start_zip])
+            flash.now[:alert] = @start_location.errors.full_messages.join(", ")
 
             render 'edit' and return
           end
@@ -75,6 +81,7 @@ class AdminRideController < ApplicationController
             city: ride_params[:end_city],
             state: ride_params[:end_state],
             zip: ride_params[:end_zip])
+            flash.now[:alert] = @end_location.errors.full_messages.join(", ")
 
             render 'edit' and return
           end
@@ -84,10 +91,11 @@ class AdminRideController < ApplicationController
             rider_id: ride_params[:rider_id],
             pick_up_time: ride_params[:pick_up_time],
             reason: ride_params[:reason])
+            flash.notice = "The ride information has been updated"
             redirect_to admin_ride_path(@ride)
+          
           else
-            render 'edit'# and return
-            # Another example: render :show, layout: 'top_story'
+            render 'edit'
           end
 
       end
@@ -97,7 +105,6 @@ class AdminRideController < ApplicationController
         @ride.destroy
   
         redirect_to admin_ride_index_path
-        # redirect_to rides_path
       end
   
       private
