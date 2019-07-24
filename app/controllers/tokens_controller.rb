@@ -1,12 +1,12 @@
 class TokensController < ApplicationController
-  
+
   before_action :authenticate_user!
   layout "administration"
 
   def new
-    @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)
+    @rider = Rider.find(params[:rider_id])
+    @token = @rider.tokens.new
   end
-
 
   def show
     @token = Token.find(params[:id])
@@ -16,15 +16,20 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-
-
   def create
-    @token = Token.new(token_params)
-    if @token.save
-      redirect_to @token
-    else
-      render 'new'
+    @rider = Rider.find(params[:token][:rider_id])
+    @quantity = params[:token][:quantity].to_i
+
+    @quantity.times do
+      if @rider.valid_tokens.create
+
+      else
+        render 'new'
+      end
     end
+
+    flash.notice = "#{@quantity} #{'token'.pluralize(@quantity)} given to #{@rider.full_name}."
+    redirect_to rider_path(@rider)
   end
 
   def edit
@@ -52,7 +57,7 @@ class TokensController < ApplicationController
 
   private
   def token_params
-    params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :valid)
+    params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
   end
 
 
