@@ -26,6 +26,8 @@ class Driver < ApplicationRecord
     self.update_columns(auth_token: nil, token_created_at: nil)
   end
 
-
+  def full_name
+    [first_name, last_name].join(' ')
+  end
 
 end
