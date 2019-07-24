@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe ScheduleWindow, type: :model do
     let(:recurring_schedule_window) { build(:schedule_window, is_recurring: true, start_date: "") }
     let(:recurring_schedule_window2) { build(:schedule_window, is_recurring: true, end_date: "") }
+    let(:recurring_schedule_window3) { build(:schedule_window, is_recurring: true, end_date: Date.today - 2.days) }
 
     describe "Validations" do
       it { should validate_presence_of(:start_time) }
@@ -14,6 +15,10 @@ RSpec.describe ScheduleWindow, type: :model do
 
       it "should validate presence of end date" do
         expect(recurring_schedule_window2.valid?).to be_falsey
+      end
+
+      it "should validate start date cannot be greater than end date" do
+        expect(recurring_schedule_window3.valid?).to be_falsey
       end
     end
 
