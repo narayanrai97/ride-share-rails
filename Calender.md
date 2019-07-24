@@ -56,8 +56,8 @@ end_time: “2019-09-10, 1600”
 is_recurring: true
 
 RecurringPattern Model
-schedule_window_id: 2
-separation_count: 1 # The count is 1 due to the fact that it is occuring every other week.
+schedule_window_id: 3
+separation_count: 4 # The count is 1 due to the fact that it is occuring every other week.
 By default the separation_count is set (0) which is daily. So 1 will jump a week and we recure every other week.
 day_of_week: 1 # The day of week is 1 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
 week_of_month: 0 # The week of month is 0 because the example is occures every week until the end date.
