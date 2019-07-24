@@ -1,6 +1,9 @@
 class AdminRideController < ApplicationController
 
     before_action :authenticate_user!
+    before_action :authenticate_ride!
+    before_action :authorize_user_belongs_to_org!, only: [:show, :update, :edit, :delete]
+    
     layout 'administration'
   
       def new
@@ -107,6 +110,11 @@ class AdminRideController < ApplicationController
         params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, 
         :start_street, :start_city, :start_state, :start_zip, 
         :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+      end
+
+      def authorize_user_belongs_to_org!
+        byebug
+        authorize Ride
       end
 
       # def belongs_to_org
