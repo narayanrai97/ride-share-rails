@@ -27,15 +27,21 @@ class RidesController < ApplicationController
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-        @start_location.save
+
+          if !@start_location.save
+            render 'new' and return
+          end
 
         @end_location = Location.new(
           street: ride_params[:end_street],
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-        @end_location.save
 
+          if !@end_location.save
+            render 'new' and return
+          end
+        
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
           rider_id: current_rider.id,
@@ -47,13 +53,13 @@ class RidesController < ApplicationController
         if @ride.save
           @token.ride_id = @ride.id
           @token.save
-          flash[:notice] = "Ride created."
+          flash[:notice] = "Ride created"
           redirect_to @ride
         else
           render 'new'
         end
       else
-        flash[:notice] = "Sorry you do not have enough valid tokens to request this ride."
+        flash[:notice] = "Sorry you do not have enough valid tokens to request this ride"
         redirect_to rides_path
       end
     end
@@ -72,7 +78,7 @@ class RidesController < ApplicationController
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
-        flash.now[:alert] = @start_location.errors.full_messages[0]
+        flash.now[:alert] = @start_location.errors.full_messages.join(", ")
 
         render 'edit' and return
       end
@@ -82,7 +88,7 @@ class RidesController < ApplicationController
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
-        flash.now[:alert] = @end_location.errors.full_messages[0]
+        flash.now[:alert] = @end_location.errors.full_messages.join(", ")
 
         render 'edit' and return
       end

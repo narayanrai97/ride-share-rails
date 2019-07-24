@@ -19,6 +19,7 @@ class TokensController < ApplicationController
   def create
     @token = Token.new(token_params)
     if @token.save
+      flash.notice = "The token information has been saved"
       redirect_to @token
     else
       render 'new'
@@ -32,7 +33,8 @@ class TokensController < ApplicationController
   def update
     @token = Token.find(params[:id])
 
-    if @token.update(ride_params)
+    if @token.update(token_params)
+      flash.notice = "The token information has been updated"
       redirect_to @token
     else
       render 'edit'
