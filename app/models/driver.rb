@@ -24,18 +24,19 @@ class Driver < ApplicationRecord
     self.update_columns(auth_token: nil, token_created_at: nil)
   end
   
-  def events(start_date, end_date)
+  def events(query_start_date, query_end_date)
     list = []
     schedule_windows.each do |e|
       if e.is_recurring
-        list += recurring_event(e)
+        list += recurring_event(e, query_start_date, query_end_date)
       else
-        list += nonrecurring_event(e)
+        list << nonrecurring_event(e)
       end
     end
     list.sort_by{|i| i[:start_time]}.reverse
   end
   
+  # TODO add query dates and only return if window is inside dates
   def nonrecurring_event(window)
     {
       "eventId": events.id, 
@@ -46,12 +47,37 @@ class Driver < ApplicationRecord
     }
   end
   
-  def recurring_event(start)
-    if start.dow == day_of_week
-      elsif first ==start.dow < day_of_week
-      first = start + (day_of_week - start.dow).day
+  def recurring_event(window, query_start_date, query_end_date)
+    case window.recurring_pattern.type_of_repeating
+    when 'weekly'
+      recurring_weekly(window, query_start_date, query_end_date)
     else
-      first = start + (7 - (start.dow - day_of_week)).days
+      return []
     end
   end
+  
+  def recurring_weekly(window, query_start_date, query_end_date)
+    dow = window.recurring_pattern.day_of_week
+    start_dow = query_start_date.dow
+    if start_dow == dow
+      first = query_start_date
+    elsif start_dow < dow
+      first = query_start_date + (dow - start_dow).days
+    else
+      first = query_start_date + (7 - (start_dow - dow)).days
+    end
+  end
+  {
+    "eventId": events.id, 
+    "startTime": events.start_time, 
+    "endTime": events.end_time, 
+    "isRecurring": events.is_recurring, 
+    "location": location
+  }
+    if window.recurring_pattern.is_Recurring == false
+      puts dow 
+    else
+      puts []  
+  end
 end
+
