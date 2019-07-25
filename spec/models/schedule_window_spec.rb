@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ScheduleWindow, type: :model do
-  # start_date should be before or equal to start_time
-  # end_date should be equal or greater than end_time
     let(:recurring_schedule_window)  { build(:schedule_window, is_recurring: true, start_date: "") }
     let(:recurring_schedule_window2) { build(:schedule_window, is_recurring: true, end_date: "") }
     let(:recurring_schedule_window3) { build(:schedule_window, is_recurring: true, start_date: Date.today + 2.days) }
