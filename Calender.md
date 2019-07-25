@@ -27,7 +27,7 @@ week_of_month: 0 # The week of month is 0 because the example is daily until the
 month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “Daily” # The type of repeating is set to daily because the schedule window above recurs daily. 
 
-Example of every other week on Tuesday:
+# Example of every other week on Tuesday:
 
 ScheduleWindow Model
 id: 2
@@ -46,7 +46,7 @@ week_of_month: 0 # The week of month is 0 because the example is occures every o
 month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “Every other week” # The type of repeating is set to daily because the schedule window above recurs daily. 
 
-Example of monthly on the second Tuesday of the week, every month.
+# Example of monthly on the second Tuesday of the week, every month.
 
 ScheduleWindow Model
 id: 3
@@ -65,7 +65,7 @@ week_of_month: 2 # The week of month is 2 because the example is occures every m
 month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “Every Month” # The type of repeating is set to daily because the schedule window above recurs daily. 
 
-Example of yearly on the second Tuesday of January
+# Example of yearly on the second Tuesday of January
 
 ScheduleWindow Model
 id: 4
