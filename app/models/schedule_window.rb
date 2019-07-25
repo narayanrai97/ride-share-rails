@@ -8,6 +8,8 @@ class ScheduleWindow < ApplicationRecord
   validate  :following_dates_cannot_be_in_the_past
   validate  :following_times_cannot_be_overlapped
   validate  :following_dates_cannot_be_overlapped
+  validate  :start_date_cannot_be_later_than_start_time
+  validate  :end_date_cannot_be_before_end_time
 
 # Instance methods
 
@@ -34,7 +36,7 @@ class ScheduleWindow < ApplicationRecord
       if start_time == end_time
         errors.add(:start_time, "and end time cannot be same")
       elsif start_time > end_time
-        errors.add(:start_time, "cannot be greater then end")
+        errors.add(:start_time, "cannot be later than end time")
       else
         true
       end
@@ -46,9 +48,25 @@ class ScheduleWindow < ApplicationRecord
       if start_date == end_date
         errors.add(:start_date, "and end date cannot be same")
       elsif start_date > end_date
-        errors.add(:start_date, "cannot be greater than the end date")
+        errors.add(:start_date, "cannot be later than the end date")
       else
         true
+      end
+    end
+  end
+
+  def start_date_cannot_be_later_than_start_time
+    if start_date.present? && start_time.present?
+      if start_date > start_time
+        errors.add(:start_date, "cannot be later than start time")
+      end
+    end
+  end
+
+  def end_date_cannot_be_before_end_time
+    if end_date.present? && end_time.present?
+      if end_date < end_time
+        errors.add(:end_date, "cannot be before end time")
       end
     end
   end

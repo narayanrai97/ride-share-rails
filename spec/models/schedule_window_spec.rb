@@ -1,9 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe ScheduleWindow, type: :model do
-    let(:recurring_schedule_window) { build(:schedule_window, is_recurring: true, start_date: "") }
+  # start_date should be before or equal to start_time
+  # end_date should be equal or greater than end_time
+    let(:recurring_schedule_window)  { build(:schedule_window, is_recurring: true, start_date: "") }
     let(:recurring_schedule_window2) { build(:schedule_window, is_recurring: true, end_date: "") }
-    let(:recurring_schedule_window3) { build(:schedule_window, is_recurring: true, end_date: Date.today - 2.days) }
+    let(:recurring_schedule_window3) { build(:schedule_window, is_recurring: true, start_date: Date.today + 2.days) }
+    let(:recurring_schedule_window4) { build(:schedule_window, is_recurring: true, start_time: Date.today + 10.hours) }
+    let(:recurring_schedule_window5) { build(:schedule_window, is_recurring: true, start_date: Date.today + 4.hours) }
+    let(:recurring_schedule_window6) { build(:schedule_window, is_recurring: true, end_date: Date.today) }
 
     describe "Validations" do
       it { should validate_presence_of(:start_time) }
@@ -17,8 +22,20 @@ RSpec.describe ScheduleWindow, type: :model do
         expect(recurring_schedule_window2.valid?).to be_falsey
       end
 
-      it "should validate start date cannot be greater than end date" do
+      it "should validate start date cannot be later than end date" do
         expect(recurring_schedule_window3.valid?).to be_falsey
+      end
+
+       it "should validate start time cannot be later than end time" do
+        expect(recurring_schedule_window4.valid?).to be_falsey
+      end
+
+      it "should validate start date cannot be later than start time" do
+        expect(recurring_schedule_window5.valid?).to be_falsey
+      end
+
+      it "should validate end date cannot be before end time" do
+        expect(recurring_schedule_window6.valid?).to be_falsey
       end
     end
 
