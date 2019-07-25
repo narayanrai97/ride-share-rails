@@ -28,7 +28,7 @@ class TokensController < ApplicationController
       end
     end
 
-    flash.notice = "#{@quantity} #{'token'.pluralize(@quantity)} given to #{@rider.full_name}."
+    flash.notice = "#{@quantity} #{'token'.pluralize(@quantity)} given to #{@rider.full_name}"
     redirect_to rider_path(@rider)
   end
 
