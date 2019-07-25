@@ -21,6 +21,7 @@ class RidersController < ApplicationController
 
   def create
     @rider = Rider.new(rider_params)
+    flash.notice = "The rider information has been created"
     @rider.organization_id = current_user.organization_id
 
     if @rider.save
