@@ -1,4 +1,5 @@
 class Ride < ApplicationRecord
+
   belongs_to :organization
   belongs_to :driver, optional: true
   belongs_to :rider

@@ -22,14 +22,16 @@ Rails.application.routes.draw do
   resources :organizations, controllers: {registrations: "organizations/registrations"}
   devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
+
+  resources :riders
   devise_scope :rider do
     resource :riders,
-             only: [:edit, :update, :destroy],
+             #only: [:edit, :update, :destroy],
              controller: 'devise/registrations',
              as: :rider_registration do
               get 'cancel'
              end
-    get 'rider' => 'welcome#rider'
+    #get 'rider' => 'welcome#rider'
   end
 
   mount Api::Base, at: "/"
@@ -39,7 +41,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-  resources :riders
+  
   resources :rides
   resources :admin_ride
   resources :tokens, path_names: { new: 'new/:rider_id' }

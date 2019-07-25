@@ -39,6 +39,7 @@ class RidersController < ApplicationController
     @rider = Rider.find(params[:id])
 
     if @rider.update(rider_params)
+      flash.notice = "The rider information has been updated"
       redirect_to @rider
     else
       render 'edit'

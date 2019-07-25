@@ -7,7 +7,6 @@ class TokensController < ApplicationController
     @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)
   end
 
-
   def show
     @token = Token.find(params[:id])
   end
@@ -16,11 +15,10 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-
-
   def create
     @token = Token.new(token_params)
     if @token.save
+      flash.notice = "The token information has been saved"
       redirect_to @token
     else
       render 'new'
@@ -36,7 +34,8 @@ class TokensController < ApplicationController
     @rider = Rider.find(params[:token][:rider_id])
     @tokens = @rider.valid_tokens
 
-    if @token.update(ride_params)
+    if @token.update(token_params)
+      flash.notice = "The token information has been updated"
       redirect_to @token
     else
       render 'edit'
@@ -50,12 +49,9 @@ class TokensController < ApplicationController
     redirect_to tokens_path
   end
 
-
-
   private
   def token_params
     params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :valid)
   end
-
 
 end

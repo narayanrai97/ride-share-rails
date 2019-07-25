@@ -5,27 +5,23 @@
 <%= link_to 'New Rider', new_rider_path, class:"btn btn-primary" %>
 <table class="table table-striped">
   <tr>
-    <th scope="col">ID</th>
-    <th scope="col">First Name</th>
-    <th scope="col">Last Name</th>
+    <th scope="col">Name</th>
     <th scope="col">Phone</th>
     <th scope="col">Email</th>
-<!--    <th>Tokens</th>-->
-    <th></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
+    <th scope="col"></th>
   </tr>
 
   <% @riders.each do |rider| %>
     <% if rider.organization_id==current_user.organization_id%>
     <tr>
-      <td scope="row">><%= rider.id %></td>
-      <td><%= rider.first_name %></td>
-      <td><%= rider.last_name %></td>
+      <td><%= rider.full_name %></td>
       <td><%= rider.phone %></td>
       <td><%= rider.email %></td>
-<!--      <td><%#= rider.tokens %></td>-->
       <td><%= link_to 'Show', rider_path(rider) %></td>
       <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
-      <td><%= link_to 'Destroy', rider_path(rider),
+      <td><%= link_to 'Delete', rider_path(rider),
                       method: :delete,
                       data: { confirm: 'Are you sure?' } %></td>
     </tr>
