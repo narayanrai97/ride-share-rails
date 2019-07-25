@@ -20,7 +20,9 @@ class AdminRideController < ApplicationController
   def create
     select_rider = Rider.find(ride_params[:rider_id])
     @token = select_rider.next_valid_token
-    unless @token.nil?
+    @token = select_rider.valid_tokens.create if @token.nil?
+
+    # unless @token.nil?
       @start_location = Location.new(street: ride_params[:start_street],
                                      city: ride_params[:start_city],
                                      state: ride_params[:start_state],
@@ -53,10 +55,10 @@ class AdminRideController < ApplicationController
       else
         render 'new'
       end
-    else
-      flash[:notice] = "The rider does not have enough valid tokens to request this ride."
-      redirect_to admin_ride_index_path
-    end
+    # else
+    #   flash[:notice] = "The rider does not have enough valid tokens to request this ride."
+    #   redirect_to admin_ride_index_path
+    # end
   end
 
   def edit

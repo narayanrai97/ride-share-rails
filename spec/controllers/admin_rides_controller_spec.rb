@@ -9,7 +9,13 @@ RSpec.describe AdminRideController, type: :controller do
   describe "POST create" do
     before do
       sign_in admin
+      i = 1
+      valid_tokens.each do |vt|
+          vt.update_attributes(ride_id: i + 1)
+          i = i + 1
+      end
       @next_token = select_rider.next_valid_token       # Token id `1`
+      @next_token = select_rider.valid_tokens.create if @next_token.nil?
     end
 
     let(:test_response) { post :create, params: { ride: { rider_id: select_rider.id,
@@ -36,7 +42,7 @@ RSpec.describe AdminRideController, type: :controller do
           @next_token.save
       end.to change(Ride, :count)
 
-      expect(select_rider.valid_tokens_count).to eq(4) # Token count change after admin ride create
+      expect(select_rider.valid_tokens_count).to eq(0) # Token count change after admin ride create
     end
 
   end
