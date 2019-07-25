@@ -1,8 +1,7 @@
 class AdminRideController < ApplicationController
 
     before_action :authenticate_user!
-    before_action :authenticate_ride!
-    before_action :authorize_user_belongs_to_org!, only: [:show, :update, :edit, :delete]
+    rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
     
     layout 'administration'
   
@@ -12,6 +11,7 @@ class AdminRideController < ApplicationController
   
       def show
         @ride = Ride.find(params[:id])
+        authorize @ride
         @start_location = Location.find(@ride.start_location_id)
         @end_location = Location.find(@ride.end_location_id)
       end
@@ -56,7 +56,6 @@ class AdminRideController < ApplicationController
         else
           render 'new'
         end
-
       end
 
       def edit
@@ -64,7 +63,6 @@ class AdminRideController < ApplicationController
       end
   
       def update
-
           @ride = Ride.find(params[:id])
           @start_location = @ride.start_location
           @end_location = @ride.end_location
@@ -75,7 +73,6 @@ class AdminRideController < ApplicationController
             state: ride_params[:start_state],
             zip: ride_params[:start_zip])
             flash.now[:alert] = @start_location.errors.full_messages.join(", ")
-
             render 'edit' and return
           end
   
@@ -85,7 +82,6 @@ class AdminRideController < ApplicationController
             state: ride_params[:end_state],
             zip: ride_params[:end_zip])
             flash.now[:alert] = @end_location.errors.full_messages.join(", ")
-
             render 'edit' and return
           end
   
@@ -96,17 +92,14 @@ class AdminRideController < ApplicationController
             reason: ride_params[:reason])
             flash.notice = "The ride information has been updated"
             redirect_to admin_ride_path(@ride)
-          
           else
             render 'edit'
           end
-
       end
   
       def destroy
         @ride = Ride.find(params[:id])
         @ride.destroy
-  
         redirect_to admin_ride_index_path
       end
   
@@ -117,18 +110,11 @@ class AdminRideController < ApplicationController
         :end_street, :end_city, :end_state, :end_zip, :reason, :status)
       end
 
-      def authorize_user_belongs_to_org!
-        byebug
-        authorize Ride
+      def user_not_authorized
+        flash.notice = "You are not authorized to view this information"
+        redirect_to admin_ride_index_url
       end
-
-      # def belongs_to_org
-      #   unless rider.organization_id == current_user.organization_id
-      #   flash[:notice] = “Rider must belong to admins organization”
-      #   redirect_to riders_path
-      # end
-  
-  end
+end
   
   
   
