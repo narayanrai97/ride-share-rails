@@ -33,15 +33,17 @@ class TokensController < ApplicationController
   end
 
   def edit
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:id])
+    @token = @rider.valid_tokens.first
   end
 
   def update
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:token][:rider_id])
+    @token = @rider.valid_tokens.first
 
-    if @token.update(token_params)
+    if @token.update(is_valid: false)
       flash.notice = "The token information has been updated"
-      redirect_to @token
+      redirect_to @rider
     else
       render 'edit'
     end
