@@ -9,8 +9,6 @@ class AdminRideController < ApplicationController
 
   def show
     @ride = Ride.find(params[:id])
-    @start_location = Location.find(@ride.start_location_id)
-    @end_location = Location.find(@ride.end_location_id)
   end
 
   def index
@@ -18,47 +16,42 @@ class AdminRideController < ApplicationController
   end
 
   def create
-    select_rider = Rider.find(ride_params[:rider_id])
-    @token = select_rider.next_valid_token
-    @token = select_rider.valid_tokens.create if @token.nil?
+    rider = Rider.find(ride_params[:rider_id])
+    @token = rider.next_valid_token
+    @token = rider.valid_tokens.create if @token.nil?
 
-    # unless @token.nil?
-      @start_location = Location.new(street: ride_params[:start_street],
-                                     city: ride_params[:start_city],
-                                     state: ride_params[:start_state],
-                                     zip: ride_params[:start_zip])
-      if !@start_location.save
-        render 'new' and return
-      end
+    @start_location = Location.new(street: ride_params[:start_street],
+                                   city: ride_params[:start_city],
+                                   state: ride_params[:start_state],
+                                   zip: ride_params[:start_zip])
+    if !@start_location.save
+      render 'new' and return
+    end
 
-      @end_location = Location.new(street: ride_params[:end_street],
-                                   city: ride_params[:end_city],
-                                   state: ride_params[:end_state],
-                                   zip: ride_params[:end_zip])
-      if !@end_location.save
-        render 'new' and return
-      end
+    @end_location = Location.new(street: ride_params[:end_street],
+                                 city: ride_params[:end_city],
+                                 state: ride_params[:end_state],
+                                 zip: ride_params[:end_zip])
+    if !@end_location.save
+      render 'new' and return
+    end
 
-      @ride = Ride.new(organization_id: current_user.organization_id,
-                       rider_id: ride_params[:rider_id],
-                       pick_up_time: ride_params[:pick_up_time],
-                       start_location_id: @start_location.id,
-                       end_location_id: @end_location.id,
-                       reason: ride_params[:reason],
-                       status: "requested")
+    @ride = Ride.new(organization_id: current_user.organization_id,
+                     rider_id: ride_params[:rider_id],
+                     pick_up_time: ride_params[:pick_up_time],
+                     start_location_id: @start_location.id,
+                     end_location_id: @end_location.id,
+                     reason: ride_params[:reason],
+                     status: "requested")
 
-      if @ride.save
-        @token.ride_id = @ride.id
-        @token.save
-        flash[:notice] = "Ride created for #{select_rider.full_name}"
-        redirect_to admin_ride_path(@ride)
-      else
-        render 'new'
-      end
-    # else
-    #   flash[:notice] = "The rider does not have enough valid tokens to request this ride."
-    #   redirect_to admin_ride_index_path
-    # end
+    if @ride.save
+      @token.ride_id = @ride.id
+      @token.save
+      flash[:notice] = "Ride created for #{rider.full_name}"
+      redirect_to admin_ride_path(@ride)
+    else
+      render 'new'
+    end
   end
 
   def edit
@@ -69,21 +62,22 @@ class AdminRideController < ApplicationController
     @ride = Ride.find(params[:id])
     @start_location = @ride.start_location
     @end_location = @ride.end_location
+    start_location = {street: ride_params[:start_street],
+                      city: ride_params[:start_city],
+                      state: ride_params[:start_state],
+                      zip: ride_params[:start_zip]}
 
-    if !@start_location.update(
-      street: ride_params[:start_street],
-      city: ride_params[:start_city],
-      state: ride_params[:start_state],
-      zip: ride_params[:start_zip])
+    end_location = {street: ride_params[:end_street],
+                    city: ride_params[:end_city],
+                    state: ride_params[:end_state],
+                    zip: ride_params[:end_zip]}
+
+    if !@start_location.update(start_location)
       flash.now[:alert] = @start_location.errors.full_messages.join(", ")
       render 'edit' and return
     end
 
-    if !@end_location.update(
-      street: ride_params[:end_street],
-      city: ride_params[:end_city],
-      state: ride_params[:end_state],
-      zip: ride_params[:end_zip])
+    if !@end_location.update(end_location)
       flash.now[:alert] = @end_location.errors.full_messages.join(", ")
       render 'edit' and return
     end
