@@ -67,17 +67,18 @@ class Driver < ApplicationRecord
       first = query_start_date + (7 - (start_dow - dow)).days
     end
   end
-  {
-    "eventId": events.id, 
-    "startTime": events.start_time, 
-    "endTime": events.end_time, 
-    "isRecurring": events.is_recurring, 
-    "location": location
-  }
-    if window.recurring_pattern.is_Recurring == false
-      puts dow 
+  #TODO write code for non recurring pattern 
+  def recurring_month(window, query_start_date, query_end_date)
+    dow = window.recurring_pattern.day_of_week
+    start_dow = query_start_date.dow 
+    if start_dow == dow
+      first = query_start_date
+    elsif start_dow < dow
+      first = query_start_date + (dow - start_dow).days
     else
-      puts []  
-  end
+      first = query_start_date + (7 - (start_dow - dow)).days
+            end
+        end
+    end
 end
 
