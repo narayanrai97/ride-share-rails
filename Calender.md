@@ -25,7 +25,7 @@ separation_count: 0  # The count is 0 due to the fact that it is daily. If it wa
 day_of_week: 6 # The day of week is 6 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
 week_of_month: 0 # The week of month is 0 because the example is daily until the end date.
 month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “Daily” # The type of repeating is set to daily because the schedule window above recurs daily. 
+type_of_repeating: “Weekly” # The type of repeating is set to daily because the schedule window above recurs daily. 
 
 # Example of every other week on Tuesday:
 
@@ -44,7 +44,7 @@ By default the separation_count is set (0) which is daily. So 1 will jump a week
 day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
 week_of_month: 0 # The week of month is 0 because the example is occures every other week until the end date.
 month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “Every other week” # The type of repeating is set to daily because the schedule window above recurs daily. 
+type_of_repeating: “weekly” # The type of repeating is set to daily because the schedule window above recurs daily. 
 
 # Example of monthly on the second Tuesday of the week, every month.
 
