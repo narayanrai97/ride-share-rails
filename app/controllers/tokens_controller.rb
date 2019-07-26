@@ -20,15 +20,14 @@ class TokensController < ApplicationController
     @rider = Rider.find(params[:token][:rider_id])
     @quantity = params[:token][:quantity].to_i
 
+    @counter = 0
     @quantity.times do
       if @rider.valid_tokens.create
-
-      else
-        render 'new'
+        @counter += 1
       end
     end
 
-    flash.notice = "#{@quantity} #{'token'.pluralize(@quantity)} given to #{@rider.full_name}"
+    flash.notice = "#{@counter} #{'token'.pluralize(@counter)} given to #{@rider.full_name}"
     redirect_to rider_path(@rider)
   end
 
