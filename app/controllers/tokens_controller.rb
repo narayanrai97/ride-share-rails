@@ -39,14 +39,19 @@ class TokensController < ApplicationController
 
   def update
     @rider = Rider.find(params[:token][:rider_id])
-    @token = @rider.valid_tokens.first
+    @tokens_array = @rider.valid_tokens.to_a
+    @quantity = params[:token][:quantity].to_i
+    @counter = 0
 
-    if @token.update(is_valid: false)
-      flash.notice = "The token information has been updated"
-      redirect_to @rider
-    else
-      render 'edit'
+    @tokens_array.each_with_index do |value, index|
+      if index < @quantity
+        value.update_attributes(is_valid: false)
+        @counter += 1
+      end
     end
+
+    flash.notice = "#{@counter} #{'Token'.pluralize(@counter)} taken away from #{@rider.full_name}."
+    redirect_to @rider
   end
 
   def destroy
