@@ -66,6 +66,10 @@ class Driver < ApplicationRecord
     else
       first = query_start_date + (7 - (start_dow - dow)).days
     end
+    if window.rcurring_pattern == false 
+      return dow
+    else 
+      return []
   end
   #TODO write code for non recurring pattern 
   def recurring_month(window, query_start_date, query_end_date)
@@ -76,8 +80,7 @@ class Driver < ApplicationRecord
     elsif start_dow < dow
       first = query_start_date + (dow - start_dow).days
     else
-      first = query_start_date + (7 - (start_dow - dow)).days
-            end
+      first = query_start_date + (30 - (start_dow - dow)).days
         end
     end
 end
