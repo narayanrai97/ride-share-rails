@@ -34,8 +34,8 @@ ScheduleWindow Model
 id: 2
 start_date: “2019-09-03"
 end_date: “2019-09-30”
-start_time: “2019-09-02, 1400"
-end_time: “2019-09-02, 1600”
+start_time: “2019-09-03, 1400"
+end_time: “2019-09-03, 1600”
 is_recurring: true
 
 RecurringPattern Model
@@ -87,7 +87,7 @@ type_of_repeating: “Monthly” # The type of repeating is set to monthly becau
 # Example of yearly, week two on Tuesday of January, every year
 
 ScheduleWindow Model
-id: 4
+id: 5
 start_date: “2019-09-10"
 end_date: “2022-12-30”
 start_time: “2019-09-10, 1400"
@@ -95,7 +95,7 @@ end_time: “2019-09-10, 1600”
 is_recurring: true
 
 RecurringPattern Model
-schedule_window_id: 4
+schedule_window_id: 5
 separation_count: 0  # The count is 0 due to the fact that it is occuring every year.
 day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
 week_of_month: 2 # The week of month is 2 because the example is occuring every second week.
@@ -105,7 +105,7 @@ type_of_repeating: “yearly” # The type of repeating is set to daily because 
 # Example of yearly, week three on Tuesday of March, every other year
 
 ScheduleWindow Model
-id: 4
+id: 6
 start_date: “2019-09-10"
 end_date: “2030-12-30”
 start_time: “2019-09-10, 1400"
@@ -113,7 +113,7 @@ end_time: “2019-09-10, 1600”
 is_recurring: true
 
 RecurringPattern Model
-schedule_window_id: 4
+schedule_window_id: 6
 separation_count: 1  # The count is 1 due to the fact that it is occuring every other year.
 day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
 week_of_month: 3 # The week of month is 3 because the example is occures every third week.
