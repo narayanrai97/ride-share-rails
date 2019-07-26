@@ -14,7 +14,6 @@
   </tr>
 
   <% @riders.each do |rider| %>
-    <% if rider.organization == current_user.organization %>
       <tr>
         <td><%= rider.full_name %></td>
         <td><%= rider.phone %></td>
@@ -25,7 +24,6 @@
                         method: :delete,
                         data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
   <% end %>
 </table>
 

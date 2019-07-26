@@ -16,7 +16,7 @@ class RidersController < ApplicationController
   end
 
   def index
-    @riders = Rider.all
+    @riders = Rider.where(organization_id: current_user.organization_id)
   end
 
   def create

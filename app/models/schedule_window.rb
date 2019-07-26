@@ -5,36 +5,36 @@ class ScheduleWindow < ApplicationRecord
   validates :start_time, :end_time, :is_recurring, presence: true
   validates :start_date, :end_date, presence: true, if: :is_recurring?
 
-  validate  :following_dates_cannot_be_in_the_past
-  validate  :following_times_cannot_be_overlapped
-  validate  :following_dates_cannot_be_overlapped
+  validate  :dates_cannot_be_in_the_past
+  validate  :end_time_after_start_time
+  validate  :end_date_after_start_date
   validate  :start_date_cannot_be_later_than_start_time
   validate  :end_date_cannot_be_before_end_time
 
 # Instance methods
 
-  def following_dates_cannot_be_in_the_past
-    dates_arr = [start_time, end_time, start_date, end_date]
+  def dates_cannot_be_in_the_past
+    if start_time < DateTime.now
+        errors.add(:start_time, "cannot be in the past")
+    end
 
-    dates_arr.each do |dt|
-      if dt.present? && dt < Date.today
-        if dt == start_time
-          errors.add(:start_time, "cannot be in the past")
-        elsif dt == end_time
-          errors.add(:end_time, "cannot be in the past")
-        elsif dt == start_date
-          errors.add(:start_date, "cannot be in the past")
-        else
-          errors.add(:end_date, "cannot be in the past")
-        end
-      end
+    if end_time < DateTime.now
+      errors.add(:end_time, "cannot be in the past")
+    end
+
+    if start_date < Date.today
+      errors.add(:start_date, "cannot be in the past")
+    end
+
+    if end_date < Date.today
+      errors.add(:end_date, "cannot be in the past")
     end
   end
 
-  def following_times_cannot_be_overlapped
+  def end_time_after_start_time
     if start_time.present? && end_time.present?
       if start_time == end_time
-        errors.add(:start_time, "and end time cannot be same")
+        errors.add(:end_time, "cannot be same as start time")
       elsif start_time > end_time
         errors.add(:start_time, "cannot be later than end time")
       else
@@ -43,10 +43,10 @@ class ScheduleWindow < ApplicationRecord
     end
   end
 
-  def following_dates_cannot_be_overlapped
+  def end_date_after_start_date
     if start_date.present? && end_date.present?
       if start_date == end_date
-        errors.add(:start_date, "and end date cannot be same")
+        errors.add(:end_date, "cannot be same as start date")
       elsif start_date > end_date
         errors.add(:start_date, "cannot be later than the end date")
       else
