@@ -24,12 +24,12 @@
 
 <p>
   <strong>Start Address:</strong>
-  <%= @start_location.street %>, <%= @start_location.city %> <%= @start_location.state %>, <%= @start_location.zip %>
+  <%= @ride.start_location.full_address %>
 </p>
 
 <p>
   <strong>End Address:</strong>
-  <%= @end_location.street %>, <%= @end_location.city %> <%= @end_location.state %>, <%= @end_location.zip %>
+  <%= @ride.end_location.full_address %>
 </p>
 
 
