@@ -32,11 +32,13 @@ class TokensController < ApplicationController
   end
 
   def edit
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:rider_id])
+    @token = @rider.valid_tokens
   end
 
   def update
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:token][:rider_id])
+    @tokens = @rider.valid_tokens
 
     if @token.update(token_params)
       flash.notice = "The token information has been updated"
