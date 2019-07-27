@@ -58,8 +58,9 @@ Rails.application.routes.draw do
     root :to => "welcome#index"
   end
 
-  namespace :rider do
+  namespace :riders do
     root :to => "welcome#rider"
+    resources :tokens
   end
 
 end
