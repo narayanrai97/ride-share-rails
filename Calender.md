@@ -6,7 +6,7 @@ If true, this will affect the RecurringPattern model, just a few things to keep 
 the separation_count is affected by the type_of_string it is: "daily", "weekly", "monthly", "yearly"
 
 
-Below are examples of when the is_recurring is true:
+Below are examples of when the field is_recurring is true:
 
 
 # Example of weekly. Occurs every Saturday from 2pm to 4pm.
