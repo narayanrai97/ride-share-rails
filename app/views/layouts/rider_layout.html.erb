@@ -26,6 +26,9 @@
       <li class="nav-item">
           <%= link_to 'Rides', rides_path, :class => 'nav-link' %>
       </li>
+      <li class="nav-item">
+          <%= link_to 'Change Password', edit_rider_registration_path, :class => 'nav-link' %>
+      </li>
 
     </ul>
     <div><% if rider_signed_in? %>

@@ -56,8 +56,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle'][0]['car_plate']).to eq('ZQWOPQ')
         expect(parsed_json['vehicle'][0]['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
-        expect(parsed_json['vehicle'][0]['insurance_start']).to eq('2019-05-19')
-        expect(parsed_json['vehicle'][0]['insurance_stop']).to eq('2020-05-19')
+        expect(parsed_json['vehicle'][0]['insurance_start'].to_date).to eq(Time.now.to_date)
+        expect(parsed_json['vehicle'][0]['insurance_stop'].to_date).to eq((Time.now + 6.months).to_date)
         expect(parsed_json['vehicle'][0]['seat_belt_num']).to eq(4)
         #puts response.body
 
@@ -74,8 +74,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
       expect(parsed_json['vehicle']['car_plate']).to eq('ZQWOPQ')
       expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
       #Dates a formatted when they are accepted so appear slightly different than above
-      expect(parsed_json['vehicle']['insurance_start']).to eq('2019-05-19')
-      expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-05-19')
+      expect(parsed_json['vehicle']['insurance_start'].to_date).to eq(Time.now.to_date)
+      expect(parsed_json['vehicle']['insurance_stop'].to_date).to eq((Time.now + 6.months).to_date)
       expect(parsed_json['vehicle']['seat_belt_num']).to eq(4)
       #puts response.body
 

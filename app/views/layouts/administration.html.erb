@@ -25,14 +25,16 @@
               <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
           </li>
           <li class="nav-item">
-
-          
               <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link' %>
-          
-           
           </li>
+          <% if current_user.organization.use_tokens %>
+            <li class="nav-item">
+                <%= link_to 'Tokens', tokens_path, :class => 'nav-link' %>
+            </li>
+          <% end %>
+           </li>
           <li class="nav-item">
-              <%= link_to 'Tokens', tokens_path, :class => 'nav-link' %>
+              <%= link_to 'Change Password', edit_user_registration_path, :class => 'nav-link' %>
           </li>
 
 

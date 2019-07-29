@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_195313) do
+ActiveRecord::Schema.define(version: 2019_07_23_203528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.string "zip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -133,7 +135,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.bigint "location_id"
-    t.boolean "is_recurring"
+    t.boolean "is_recurring", default: false, null: false
     t.index ["driver_id"], name: "index_schedule_windows_on_driver_id"
     t.index ["location_id"], name: "index_schedule_windows_on_location_id"
   end
@@ -143,7 +145,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_195313) do
     t.datetime "created_at", null: false
     t.datetime "expires_at"
     t.datetime "used_at"
-    t.boolean "is_valid"
+    t.boolean "is_valid", default: true
     t.datetime "updated_at", null: false
     t.integer "ride_id"
     t.index ["rider_id"], name: "index_tokens_on_rider_id"

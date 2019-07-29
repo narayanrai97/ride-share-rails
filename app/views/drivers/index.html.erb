@@ -4,16 +4,14 @@
 
   <div class="mb-3">
     <%= link_to 'All Applications', drivers_path, class:"btn btn-primary" %> |
-    <%= link_to 'Pending Applications', drivers_path(application_state: "pending"), class:"btn btn-primary" %> | 
+    <%= link_to 'Pending Applications', drivers_path(application_state: "pending"), class:"btn btn-primary" %> |
     <%= link_to 'Approved Applications', drivers_path(application_state: "approved"), class:"btn btn-primary" %>
   </div>
 
   <%= link_to 'New Driver', new_driver_path, class:"btn btn-primary" %>
   <table class="table table-striped">
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
+      <th scope="col">Name</th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
       <th scope="col">Application State</th>
@@ -25,15 +23,13 @@
     <% @drivers.each do |driver| %>
       <% if driver.organization_id == current_user.organization_id%>
         <tr>
-          <td scope="row"><%= driver.id %></td>
-          <td><%= driver.first_name %></td>
-          <td><%= driver.last_name %></td>
+          <td><%= driver.full_name %></td>
           <td><%= driver.phone %></td>
           <td><%= driver.email %></td>
           <td><%= driver.application_state %></td>
           <td><%= link_to 'Review', driver_path(driver) %> </td>
           <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
-          <td><%= link_to 'Destroy', driver_path(driver),
+          <td><%= link_to 'Delete', driver_path(driver),
                           method: :delete,
                           data: { confirm: 'Are you sure?' } %></td>
         </tr>

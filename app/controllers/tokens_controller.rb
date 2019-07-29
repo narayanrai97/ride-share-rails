@@ -1,12 +1,12 @@
 class TokensController < ApplicationController
-  
+
   before_action :authenticate_user!
   layout "administration"
 
   def new
-    @token = Token.new(:rider_id => params[:rider_id], :created_at => Time.now, :expires_at => Time.now + 1.month, :is_valid => true)
+    @rider = Rider.find(params[:rider_id])
+    @token = @rider.tokens.new
   end
-
 
   def show
     @token = Token.find(params[:id])
@@ -16,25 +16,32 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-
-
   def create
-    @token = Token.new(token_params)
-    if @token.save
-      redirect_to @token
-    else
-      render 'new'
+    @rider = Rider.find(params[:token][:rider_id])
+    @quantity = params[:token][:quantity].to_i
+
+    @counter = 0
+    @quantity.times do
+      if @rider.valid_tokens.create
+        @counter += 1
+      end
     end
+
+    flash.notice = "#{@counter} #{'token'.pluralize(@counter)} given to #{@rider.full_name}"
+    redirect_to rider_path(@rider)
   end
 
   def edit
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:rider_id])
+    @token = @rider.valid_tokens
   end
 
   def update
-    @token = Token.find(params[:id])
+    @rider = Rider.find(params[:token][:rider_id])
+    @tokens = @rider.valid_tokens
 
-    if @token.update(ride_params)
+    if @token.update(token_params)
+      flash.notice = "The token information has been updated"
       redirect_to @token
     else
       render 'edit'
@@ -48,12 +55,9 @@ class TokensController < ApplicationController
     redirect_to tokens_path
   end
 
-
-
   private
   def token_params
-    params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :valid)
+    params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
   end
-
 
 end
