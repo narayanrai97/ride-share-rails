@@ -1,8 +1,8 @@
 In the Ride Share App, there are two models called ScheduleWindow and RecurringPattern.
 RecurringPattern belongs to ScheduleWindow.
-In the ScheduleWindow model there is a field called is_recurring
+In the ScheduleWindow model there is a field called is_recurring.
 If this field is_recurring is false, the fields for start_date and end_date in the ScheduleWindow model are optional.
-If true, this will affect the RecurringPattern model few things to keep in mind:
+If true, this will affect the RecurringPattern model, just a few things to keep in mind:
 the separation_count is affected by the type_of_string it is: "daily", "weekly", "monthly", "yearly"
 
 
@@ -46,7 +46,7 @@ week_of_month: 0 # The week_of_month is 0 because the example is occuring every 
 month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “weekly” # The type_of_repeating is set to weekly because the schedule window above recurs weekly. 
 
-# Example of monthly. Occurs every month, every Tuesday:
+# Example of monthly. Occurs every month, on Tuesday:
 
 ScheduleWindow Model
 id: 3
@@ -65,7 +65,7 @@ month_of_year: 0 # The month_of_year is set to 0 because it is not recurring onc
 type_of_repeating: "monthly" # The type_of_repeating is set to monthly because the schedule_window above recurs monthly.
 
 
-# Example of monthly. Occurs every other month, every two weeks, on Tuesday
+# Example of monthly. Occurs every other month, every second week, on Tuesday
 
 ScheduleWindow Model
 id: 4
@@ -83,7 +83,7 @@ week_of_month: 2 # The week_of_month is 2 because the example is occurs every mo
 month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “monthly” # The type_of_repeating is set to monthly because the schedule window above recurs monthly. 
 
-# Example of monthly. Occurs every 3 months, every third week, on Tuesday,
+# Example of monthly. Occurs every three months, every third week, on Tuesday,
 
 ScheduleWindow Model
 id: 5
@@ -101,7 +101,7 @@ week_of_month: 3 # The week_of_month is 3 because the example is occurs every th
 month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
 type_of_repeating: “monthly” # The type_of_repeating is set to monthly because the schedule window above recurs monthly. 
 
-# Example of yearly. Occurs second week of January on Tuesday .
+# Example of yearly. Occurs every second week of January on Tuesday .
 
 ScheduleWindow Model
 id: 6
