@@ -14,7 +14,7 @@ class RidersController < ApplicationController
   end
 
   def index
-    @riders = Rider.all
+    @riders = current_user.organization.riders
   end
 
   def create
@@ -42,13 +42,6 @@ class RidersController < ApplicationController
     else
       render 'edit'
     end
-  end
-
-  def destroy
-    @rider = Rider.find(params[:id])
-    @rider.destroy
-
-    redirect_to riders_path
   end
 
   private
