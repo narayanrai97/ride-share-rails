@@ -44,7 +44,13 @@ Rails.application.routes.draw do
 
   resources :rides
   resources :admin_ride
-  resources :tokens, path_names: { new: 'new/:rider_id' }
+  resources :tokens, path_names: { new: 'new/:rider_id' } do
+    collection do
+      get 'bulk_form/:rider_id' => 'tokens#bulk_form', as: 'bulk_form'
+      post 'bulk_update'
+    end
+  end
+
 
   root 'welcome#welcome'
 

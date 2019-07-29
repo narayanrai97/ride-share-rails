@@ -16,41 +16,9 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-  def create
-    @rider = Rider.find(params[:token][:rider_id])
-    @quantity = params[:token][:quantity].to_i
-
-    @counter = 0
-    @quantity.times do
-      if @rider.valid_tokens.create
-        @counter += 1
-      end
-    end
-
-    flash.notice = "#{@counter} #{'token'.pluralize(@counter)} given to #{@rider.full_name}"
-    redirect_to rider_path(@rider)
-  end
-
   def edit
     @rider = Rider.find(params[:id])
     @token = @rider.valid_tokens.first if !@rider.valid_tokens.nil?
-  end
-
-  def update
-    @rider = Rider.find(params[:token][:rider_id])
-    @tokens_array = @rider.valid_tokens.to_a
-    @quantity = params[:token][:quantity].to_i
-    @counter = 0
-
-    @tokens_array.each_with_index do |value, index|
-      if index < @quantity
-        value.update_attributes(is_valid: false)
-        @counter += 1
-      end
-    end
-
-    flash.notice = "#{@counter} #{'Token'.pluralize(@counter)} taken away from #{@rider.full_name}."
-    redirect_to @rider
   end
 
   def destroy
@@ -60,9 +28,38 @@ class TokensController < ApplicationController
     redirect_to tokens_path
   end
 
+
+
+  def bulk_form
+  end
+
+  def bulk_update
+    rider = Rider.find(params[:rider_id])
+    quantity = params[:quantity].to_i
+
+    if params[:commit] == "Add"
+      add_bulk(rider, quantity)
+    elsif params[:commit] == "Remove"
+      remove_bulk(rider, quantity)
+    end
+  end
+
   private
   def token_params
     params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
   end
 
+  def add_bulk(rider, quantity)
+    quantity.times { rider.valid_tokens.create }
+    flash.notice = "#{quantity} #{'token'.pluralize(quantity)} given to #{rider.full_name}"
+    redirect_to rider
+  end
+
+  def remove_bulk(rider, quantity)
+    tokens = rider.valid_tokens.limit(quantity)
+    tokens.update_all(is_valid: false)
+
+    flash.notice = "#{quantity} #{'Token'.pluralize(quantity)} taken away from #{rider.full_name}."
+    redirect_to rider
+  end
 end
