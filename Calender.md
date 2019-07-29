@@ -1,15 +1,15 @@
-In the ride share app, there are two models called ScheduleWindow and RecurringPattern.
+In the Ride Share App, there are two models called ScheduleWindow and RecurringPattern.
 RecurringPattern belongs to ScheduleWindow.
-In the ScheduleWindow model there is a file call is_recurring
+In the ScheduleWindow model there is a field called is_recurring
 If this field is_recurring is false, the fields for start_date and end_date in the ScheduleWindow model are optional.
 If true, this will affect the RecurringPattern model few things to keep in mind:
-the separation_count is effected by the type_of_string it is: "daily", "weekly", "monthly", "yearly"
+the separation_count is affected by the type_of_string it is: "daily", "weekly", "monthly", "yearly"
 
 
-Below is are example of when the is_recurring is true:
+Below are examples of when the is_recurring is true:
 
 
-# Example of weekly. Occures every Saturday from 2pm to 4pm.
+# Example of weekly. Occurs every Saturday from 2pm to 4pm.
 
 ScheduleWindow Model
 id: 1
@@ -23,12 +23,12 @@ is_recurring: true
 RecurringPattern Model
 schedule_window_id: 1
 separation_count: 0  # The count is 0 due to the fact that it is weekly. 
-day_of_week: 6 # The day of week is 6 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 0 # The week of month is 0 because the example is occuring weekly until the end date.
-month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “weekly” # The type of repeating is set to weekly because this event occures weekly. 
+day_of_week: 6 # The day_of_week is 6 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 0 # The week_of_month is 0 because the example is occurring weekly until the end date.
+month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
+type_of_repeating: “weekly” # The type_of_repeating is set to weekly because this event occurs weekly. 
 
-# Example of weekly. Occures every other week, on Tuesday from 2pm to 4pm:
+# Example of weekly. Occurs every other week, on Tuesday from 2pm to 4pm:
 
 ScheduleWindow Model
 id: 2
@@ -41,12 +41,12 @@ is_recurring: true
 RecurringPattern Model
 schedule_window_id: 2
 separation_count: 1  # The count is 1 due to the fact that it is occuring every other week.
-day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 0 # The week of month is 0 because the example is occuring every other week until the end date.
-month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “weekly” # The type of repeating is set to weekly because the schedule window above recurs weekly. 
+day_of_week: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 0 # The week_of_month is 0 because the example is occuring every other week until the end date.
+month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
+type_of_repeating: “weekly” # The type_of_repeating is set to weekly because the schedule window above recurs weekly. 
 
-# Example of monthly. Occures every month, every Tuesday:
+# Example of monthly. Occurs every month, every Tuesday:
 
 ScheduleWindow Model
 id: 3
@@ -58,14 +58,14 @@ is_recurring: true
 
 RecurringPattern
 schedule_window_id: 3
-separation_count: 0 # The count is set to 0 since it occures every month.
-week_of_month: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 0 # The week of month is 0 because the example is occuring every other week until the end date.
-month_of_year: 0 # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: "monthly" # The type of repeating is set to monthy because the schedule_window above recurs monthly.
+separation_count: 0 # The count is set to 0 since it occurs every month.
+week_of_month: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 0 # The week_of_month is 0 because the example is occuring every other week until the end date.
+month_of_year: 0 # The month_of_year is set to 0 because it is not recurring once a month every year.
+type_of_repeating: "monthly" # The type_of_repeating is set to monthly because the schedule_window above recurs monthly.
 
 
-# Example of monthly. Occures every other month, every two weeks, on Tuesday
+# Example of monthly. Occurs every other month, every two weeks, on Tuesday
 
 ScheduleWindow Model
 id: 4
@@ -77,13 +77,13 @@ is_recurring: true
 
 RecurringPattern Model
 schedule_window_id: 4
-separation_count: 1  # The separtion_count is 1 since it occures every other month.
-day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 2 # The week of month is 2 because the example is occures every month.
-month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “monthly” # The type of repeating is set to monthly because the schedule window above recurs monthly. 
+separation_count: 1  # The separtion_count is 1 since it occurs every other month.
+day_of_week: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 2 # The week_of_month is 2 because the example is occurs every month.
+month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
+type_of_repeating: “monthly” # The type_of_repeating is set to monthly because the schedule window above recurs monthly. 
 
-# Example of monthly. Occures every 3 months, every third week, on Tuesday,
+# Example of monthly. Occurs every 3 months, every third week, on Tuesday,
 
 ScheduleWindow Model
 id: 5
@@ -95,13 +95,13 @@ is_recurring: true
 
 RecurringPattern Model
 schedule_window_id: 5
-separation_count: 3  # The separtion_count is 3 since it occures every three months.
-day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 3 # The week of month is 3 because the example is occures every third week.
-month_of_year: 0  # The month of year is set to 0 because it is not recurring once a month every year.
-type_of_repeating: “monthly” # The type of repeating is set to monthly because the schedule window above recurs monthly. 
+separation_count: 3  # The separtion_count is 3 since it occurs every three months.
+day_of_week: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 3 # The week_of_month is 3 because the example is occurs every third week.
+month_of_year: 0  # The month_of_year is set to 0 because it is not recurring once a month every year.
+type_of_repeating: “monthly” # The type_of_repeating is set to monthly because the schedule window above recurs monthly. 
 
-# Example of yearly. Occures second week of January on Tuesday .
+# Example of yearly. Occurs second week of January on Tuesday .
 
 ScheduleWindow Model
 id: 6
@@ -114,12 +114,12 @@ is_recurring: true
 RecurringPattern Model
 schedule_window_id: 6
 separation_count: 0  # The count is 0 due to the fact that it is occuring every year.
-day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 2 # The week of month is 2 because the example is occuring every second week.
-month_of_year: 1  # The month of year is set to 1 because it is recurring on the first month of the year.
-type_of_repeating: “yearly” # The type of repeating is set to yearly because the schedule window above recurs yearly. 
+day_of_week: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 2 # The week_of_month is 2 because the example is occuring every second week.
+month_of_year: 1  # The month_of_year is set to 1 because it is recurring on the first month of the year.
+type_of_repeating: “yearly” # The type_of_repeating is set to yearly because the schedule window above recurs yearly. 
 
-# Example of yearly. Occures every other year, on the third week of March, on Tuesday.
+# Example of yearly. Occurs every other year, on the third week of March, on Tuesday.
 
 ScheduleWindow Model
 id: 7
@@ -132,7 +132,8 @@ is_recurring: true
 RecurringPattern Model
 schedule_window_id: 7
 separation_count: 1  # The count is 1 due to the fact that it is occuring every other year.
-day_of_week: 2 # The day of week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
-week_of_month: 3 # The week of month is 3 because the example is occures every third week.
-month_of_year: 3  # The month of year is set to 3 because it is recurring on the third month of the year.
-type_of_repeating: “yearly” # The type of repeating is set to yearly because the schedule window above recurs yearly. 
+day_of_week: 2 # The day_of_week is 2 because we are using the “wday” method which counts the days of the week (0..6) form Sunday to Saturday.
+week_of_month: 3 # The week_of_month is 3 because the example is occurs every third week.
+month_of_year: 3  # The month_of_year is set to 3 because it is recurring on the third month of the year.
+type_of_repeating: “yearly” # The type_of_repeating is set to yearly because the schedule window above recurs yearly. 
+
