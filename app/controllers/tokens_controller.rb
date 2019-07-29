@@ -16,20 +16,6 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-  def edit
-    @rider = Rider.find(params[:id])
-    @token = @rider.valid_tokens.first if !@rider.valid_tokens.nil?
-  end
-
-  def destroy
-    @token = Token.find(params[:id])
-    @token.destroy
-
-    redirect_to tokens_path
-  end
-
-
-
   def bulk_form
     @rider = Rider.find(params[:rider_id])
   end
