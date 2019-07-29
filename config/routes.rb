@@ -41,7 +41,6 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
-
   resources :rides
   resources :admin_ride
   resources :tokens, path_names: { new: 'new/:rider_id' }
