@@ -10,13 +10,12 @@ class RidersController < ApplicationController
 
   def show
     @rider = Rider.find(params[:id])
-    @count = Token.where(rider_id:  @rider.id).count
     @location_ids = LocationRelationship.where(rider_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
   end
 
   def index
-    @riders = Rider.all
+    @riders = current_user.organization.riders
   end
 
   def create
@@ -44,13 +43,6 @@ class RidersController < ApplicationController
     else
       render 'edit'
     end
-  end
-
-  def destroy
-    @rider = Rider.find(params[:id])
-    @rider.destroy
-
-    redirect_to riders_path
   end
 
   private
