@@ -32,8 +32,8 @@ class TokensController < ApplicationController
   end
 
   def edit
-    @rider = Rider.find(params[:rider_id])
-    @token = @rider.valid_tokens
+    @rider = Rider.find(params[:id])
+    @token = @rider.valid_tokens.first if !@rider.valid_tokens.nil?
   end
 
   def update
