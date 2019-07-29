@@ -1,7 +1,8 @@
 class DriversController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authorize_driver_belongs_to_org!, only: [:show, :update, :edit, :delete]
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   layout "administration"
 
   def new
@@ -10,6 +11,7 @@ class DriversController < ApplicationController
 
   def show
     @driver = Driver.find(params[:id])
+    authorize @driver
     @vehicle = Vehicle.all
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
@@ -23,7 +25,7 @@ class DriversController < ApplicationController
     else
       @drivers = Driver.all.order(:first_name)
     end
-    @vehicle = Vehicle.all
+      @vehicle = Vehicle.all
   end
 
   def create
@@ -103,9 +105,9 @@ class DriversController < ApplicationController
     params.require(:driver).permit(:first_name, :last_name, :phone, :email, :address, :car_make, :car_model, :car_color)
   end
 
-  def authorize_driver_belongs_to_org!
-    byebug
-    authorize Driver
+  def user_not_authorized
+    flash.notice = "You are not authorized to view this information"
+    redirect_to drivers_path
   end
 
 end
