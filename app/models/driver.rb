@@ -25,6 +25,8 @@ class Driver < ApplicationRecord
   end
   
   def events(query_start_date, query_end_date)
+    query_start_date = Date.parse(query_start_date)
+    query_end_date = Date.parse(query_end_date)
     list = []
     schedule_windows.each do |e|
       if e.is_recurring
@@ -39,11 +41,11 @@ class Driver < ApplicationRecord
   # TODO add query dates and only return if window is inside dates
   def nonrecurring_event(window)
     {
-      "eventId": events.id, 
-      "startTime": events.start_time, 
-      "endTime": events.end_time, 
-      "isRecurring": events.is_recurring, 
-      "location": location
+      eventId: window.id, 
+      startTime: window.start_time, 
+      endTime: events.end_time, 
+      isRecurring: false, 
+      location: window.location
     }
   end
   
@@ -58,30 +60,40 @@ class Driver < ApplicationRecord
   
   def recurring_weekly(window, query_start_date, query_end_date)
     dow = window.recurring_pattern.day_of_week
-    start_dow = query_start_date.dow
-    if start_dow == dow
-      first = query_start_date
-    elsif start_dow < dow
-      first = query_start_date + (dow - start_dow).days
+    start_dow = query_start_date.wday
+    
+    if start_dow <= dow
+      current = query_start_date + (dow - start_dow).days
     else
-      first = query_start_date + (7 - (start_dow - dow)).days
+      current = query_start_date + (7 - (start_dow - dow)).days
     end
-    if window.rcurring_pattern == false 
-      return dow
-    else 
-      return []
+    
+    results = []
+    while current <= query_end_date && current <= window.end_date
+      results.unshift({
+        eventId: window.id, 
+        startTime: current.strftime('%Y-%m-%d') + " " + window.start_time.strftime('%H:%M'), 
+        endTime: current.strftime('%Y-%m-%d') + " " + window.end_time.strftime('%H:%M'), 
+        isRecurring: true, 
+        location: window.location
+      })
+      current = current + (7 * (window.recurring_pattern.separation_count + 1)).days
+    end
+    
+    return results
   end
+  
   #TODO write code for non recurring pattern 
-  def recurring_month(window, query_start_date, query_end_date)
-    dow = window.recurring_pattern.day_of_week
-    start_dow = query_start_date.dow 
-    if start_dow == dow
-      first = query_start_date
-    elsif start_dow < dow
-      first = query_start_date + (dow - start_dow).days
-    else
-      first = query_start_date + (30 - (start_dow - dow)).days
-        end
-    end
+  # def recurring_month(window, query_start_date, query_end_date)
+  #   dow = window.recurring_pattern.day_of_week
+  #   start_dow = query_start_date.dow 
+  #   if start_dow == dow
+  #     first = query_start_date
+  #   elsif start_dow < dow
+  #     first = query_start_date + (dow - start_dow).days
+  #   else
+  #     first = query_start_date + (30 - (start_dow - dow)).days
+  #       end
+  #  end
 end
 
