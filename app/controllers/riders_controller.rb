@@ -1,7 +1,8 @@
 class RidersController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authorize_rider_belongs_to_org!, only: [:show, :update, :edit, :delete]
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   layout "administration"
 
   def new
@@ -10,6 +11,7 @@ class RidersController < ApplicationController
 
   def show
     @rider = Rider.find(params[:id])
+    authorize @rider
     @location_ids = LocationRelationship.where(rider_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
   end
@@ -50,9 +52,9 @@ class RidersController < ApplicationController
     params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
   end
 
-  def authorize_rider_belongs_to_org!
-    byebug
-    authorize Rider
+  def user_not_authorized
+      flash.notice = "You are not authorized to view this information"
+      redirect_to riders_path
   end
 
 end
