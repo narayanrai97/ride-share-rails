@@ -60,7 +60,6 @@ class AdminRideController < ApplicationController
         else
           render 'new'
         end
-      end
   
         @ride = Ride.new(
           organization_id: current_user.organization_id,
