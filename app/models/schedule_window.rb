@@ -69,6 +69,7 @@ class ScheduleWindow < ApplicationRecord
         errors.add(:end_date, "cannot be before end time")
       end
     end
+  end
   belongs_to :location
 
   has_one :recurring_pattern
@@ -135,6 +136,6 @@ class ScheduleWindow < ApplicationRecord
     end
     
     return results
-  end
 
+  end
 end
