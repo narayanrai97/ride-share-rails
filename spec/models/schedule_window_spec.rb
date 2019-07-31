@@ -45,25 +45,25 @@ RSpec.describe ScheduleWindow, type: :model do
     end
 
     describe 'Cannot be in the past' do
-      xit "should validate that start time cannot be in the past" do
+      it "should validate that start time cannot be in the past" do
         subject.start_time = "2019-07-01"
         subject.valid?  # run validations
         expect(subject.errors[:start_time]).to include('cannot be in the past')
       end
 
-      xit "should validate that end time cannot be in the past" do
+      it "should validate that end time cannot be in the past" do
         subject.end_time = "2019-07-01"
         subject.valid?
         expect(subject.errors[:end_time]).to include('cannot be in the past')
       end
 
-      xit "should validate that start date cannot be in the past" do
+      it "should validate that start date cannot be in the past" do
         subject.start_date = "2019-07-01"
         subject.valid?  # run validations
         expect(subject.errors[:start_date]).to include('cannot be in the past')
       end
 
-      xit "should validate that end date cannot be in the past" do
+      it "should validate that end date cannot be in the past" do
         subject.end_date = "2019-07-01"
         subject.valid?
         expect(subject.errors[:end_date]).to include('cannot be in the past')
