@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ScheduleWindow, type: :model do
-    # let(:recurring_schedule_window4) { build(:schedule_window, is_recurring: true, start_time: Date.today + 10.hours) }
-    # let(:recurring_schedule_window6) { build(:schedule_window, is_recurring: true, end_date: Date.today) }
-
+   
     describe "Validations" do
       it "should validate start date cannot be later than end date" do
         window =  build(:schedule_window, is_recurring: true, start_date: '2019-10-01', end_date: '2019-09-01')
