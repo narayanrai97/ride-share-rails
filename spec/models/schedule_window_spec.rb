@@ -59,14 +59,14 @@ RSpec.describe ScheduleWindow, type: :model do
     end
 
     describe 'Cannot be overlapped' do
-      it "should validate that start time and end time cannot be overlapped" do
+      it "should validate that end time cannot be before start time" do
         subject.start_time = "2019-07-01 9:00am"
         subject.end_time = "2019-07-01 9:00am"
         subject.valid?  # run validations
         expect(subject.valid?).to be_falsey
       end
 
-      it "should validate that start date and end date cannot be overlapped" do
+      it "should validate that end date cannot be before start date" do
         subject.start_time = "2019-07-01"
         subject.end_time = "2019-07-01"
         subject.valid?  # run validations

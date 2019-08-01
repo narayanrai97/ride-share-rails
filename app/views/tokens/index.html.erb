@@ -4,29 +4,21 @@
 
 <table class="table table-striped">
   <tr>
-    <th scope="col">Rider ID</th>
-    <th scope="col">Created At</th>
-    <th scope="col">Expires At</th>
-    <th scope="col">Used At</th>
-    <th scope="col">Valid</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-    <th scope="col"></th>
+    <th scope="col">Rider</th>
+    <th scope="col">Created at</th>
+    <th scope="col">Expiration</th>
+    <th scope="col">Used at</th>
+    <th scope="col">Validity</th>
   </tr>
 
   <% @tokens.each do |token| %>
     <% if token.rider.organization_id==current_user.organization_id %>
       <tr>
-        <td scope="row"><%= token.rider_id %></td>
-        <td><%= token.created_at %></td>
-        <td><%= token.expires_at %></td>
-        <td><%= token.used_at %></td>
-        <td><%= token.is_valid %></td>
-        <td><%= link_to 'Show', token_path(token) %></td>
-        <td><%= link_to 'Edit', edit_token_path(token) %></td>
-        <td><%= link_to 'Delete', token_path(token),
-                        method: :delete,
-                        data: { confirm: 'Are you sure?' } %></td>
+        <td scope="row"><%= token.rider.full_name %></td>
+        <td><%= token.created_at.strftime("%b %d, %Y %I:%M %p") unless token.created_at.nil? %></td>
+        <td><%= token.expires_at.strftime("%b %d, %Y %I:%M %p") unless token.expires_at.nil? %></td>
+        <td><%= token.used_at.strftime("%b %d, %Y %I:%M %p") unless token.used_at.nil? %></td>
+        <td><%= t token.is_valid.class %></td>
       </tr>
     <% end %>
   <% end %>

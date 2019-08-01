@@ -24,3 +24,37 @@
  form-group {
    background-color: orange;
  }
+
+// .row {
+//    display: flex;
+//    flex-direction: row;
+// }
+
+// .parent {
+//   display: inline-flex;
+//   flex-direction: row;
+//   height: 100%;
+//   justify-content: space-around;
+// }
+
+.left {
+ // background-color: blue;
+ float: left;
+ width: 50%;
+}
+
+.right {
+  // background-color: yellow;
+  float: right;
+  width: 50%;
+}
+
+.row2 {
+ display: flex;
+ flex-direction: row;
+ margin-right: 90px;
+}
+
+.add {
+ margin-right: 50px;
+}
