@@ -24,3 +24,9 @@
  form-group {
    background-color: orange;
  }
+
+.table tr th {
+ // background-color: red;
+ border-top: none;
+ border-bottom: inset 3px gray;
+}
