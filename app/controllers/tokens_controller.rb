@@ -17,53 +17,46 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-  def create
-    @rider = Rider.find(params[:token][:rider_id])
-    @quantity = params[:token][:quantity].to_i
-
-    @counter = 0
-    @quantity.times do
-      if @rider.valid_tokens.create
-        @counter += 1
-      end
-    end
-
-    flash.notice = "#{@counter} #{'token'.pluralize(@counter)} given to #{@rider.full_name}"
-    redirect_to rider_path(@rider)
-  end
-
-  def edit
+  def bulk_form
     @rider = Rider.find(params[:rider_id])
-    @token = @rider.valid_tokens
   end
 
-  def update
-    @rider = Rider.find(params[:token][:rider_id])
-    @tokens = @rider.valid_tokens
+  def bulk_update
+    rider = Rider.find(params[:rider_id])
+    quantity = params[:quantity].to_i
 
-    if @token.update(token_params)
-      flash.notice = "The token information has been updated"
-      redirect_to @token
-    else
-      render 'edit'
+    if params[:commit] == "Add"
+      add_bulk(rider, quantity)
+    elsif params[:commit] == "Remove"
+      remove_bulk(rider, quantity)
     end
-  end
-
-  def destroy
-    @token = Token.find(params[:id])
-    @token.destroy
-
-    redirect_to tokens_path
   end
 
   private
-  def token_params
-    params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
-  end
+    def token_params
+      params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
+    end
 
-  def authorize_token_belongs_to_org!
-    byebug
-    authorize Token
-  end
+    def add_bulk(rider, quantity)
+      previous_count = rider.valid_tokens.count
+      quantity.times { rider.valid_tokens.create }
+      diff = rider.valid_tokens.count - previous_count
+      flash.notice = "#{diff} #{'Token'.pluralize(diff)} given to #{rider.full_name}."
+      redirect_to request.referrer
 
+    end
+
+    def remove_bulk(rider, quantity)
+      previous_count = rider.valid_tokens.count
+      tokens = rider.valid_tokens.limit(quantity)
+      if rider.valid_tokens_count > 0
+        tokens.update_all(is_valid: false)
+        diff = previous_count - rider.valid_tokens.count
+        flash.notice = "#{diff} #{'Token'.pluralize(diff)} taken away from #{rider.full_name}."
+        redirect_to request.referrer
+      else
+        flash.notice = "Rider does not have any valid token."
+        redirect_to request.referrer
+      end
+    end
 end

@@ -14,19 +14,19 @@ class ScheduleWindow < ApplicationRecord
 # Instance methods
 
   def dates_cannot_be_in_the_past
-    if start_time < DateTime.now
+    if start_time.present? && start_time < DateTime.now
         errors.add(:start_time, "cannot be in the past")
     end
 
-    if end_time < DateTime.now
+    if end_time.present? && end_time < DateTime.now
       errors.add(:end_time, "cannot be in the past")
     end
 
-    if start_date < Date.today
+    if start_date.present? && start_date < Date.today
       errors.add(:start_date, "cannot be in the past")
     end
 
-    if end_date < Date.today
+    if end_date.present? && end_date < Date.today
       errors.add(:end_date, "cannot be in the past")
     end
   end
