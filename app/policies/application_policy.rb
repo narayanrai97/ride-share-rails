@@ -7,6 +7,7 @@ class ApplicationPolicy
   end
 
   def index?
+    # byebug
     false
   end
 
