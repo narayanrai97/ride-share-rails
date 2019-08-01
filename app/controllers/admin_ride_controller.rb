@@ -95,8 +95,8 @@ class AdminRideController < ApplicationController
   end
 
   def destroy
-    @ride = Ride.find(params[:id])
-    @ride.destroy
+    Ride.find(params[:id]).destroy
+    flash.notice = "Ride deleted."
     redirect_to admin_ride_index_path
   end
 
