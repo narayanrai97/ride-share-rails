@@ -100,6 +100,18 @@ class AdminRideController < ApplicationController
     redirect_to admin_ride_index_path
   end
 
+  def approve
+    Ride.find(params[:id]).update_attribute(:status, "approved")
+    flash.notice = "Ride approved."
+    redirect_to request.referrer || admin_ride_index_path
+  end
+
+  def reject
+    Ride.find(params[:id]).update_attribute(:status, "rejected")
+    flash.notice = "Ride rejected."
+    redirect_to request.referrer || admin_ride_index_path
+  end
+
 
 
   private
