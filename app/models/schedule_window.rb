@@ -114,17 +114,18 @@ class ScheduleWindow < ApplicationRecord
   end
   
   def recurring_weekly(query_start_date, query_end_date)
+    current_start_date = query_start_date < start_date ? start_date : query_start_date 
     dow = recurring_pattern.day_of_week
-    start_dow = query_start_date.wday
+    start_dow = current_start_date.wday
     
     if start_dow <= dow
-      current = query_start_date + (dow - start_dow).days
+      current = current_start_date + (dow - start_dow).days
     else
-      current = query_start_date + (7 - (start_dow - dow)).days
+      current = current_start_date + (7 - (start_dow - dow)).days
     end
-    
+      
     results = []
-    while current <= query_end_date && current <= end_date
+    while current <= query_end_date && current <= end_date  
       results.unshift({
         eventId: id, 
         startTime: current.strftime('%Y-%m-%d') + " " + start_time.strftime('%H:%M'), 
