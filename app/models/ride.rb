@@ -9,8 +9,8 @@ class Ride < ApplicationRecord
 
   validates :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past
-  # validates :status, inclusion: { in: %w(requested pending approved scheduled matched canceled picking-up dropping-off completed),
-  # message: "%{value} is not a valid status" }
+  validates :status, inclusion: { in: %w(requested pending approved scheduled matched canceled picking-up dropping-off completed),
+  message: "%{value} is not a valid status" }
 
   def start_street
     if self.start_location
