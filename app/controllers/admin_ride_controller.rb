@@ -94,12 +94,6 @@ class AdminRideController < ApplicationController
     end
   end
 
-  def destroy
-    Ride.find(params[:id]).destroy
-    flash.notice = "Ride deleted."
-    redirect_to admin_ride_index_path
-  end
-
   def approve
     Ride.find(params[:id]).update_attribute(:status, "approved")
     flash.notice = "Ride approved."

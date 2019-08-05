@@ -28,7 +28,7 @@
       <% if ride.status == 'approved' %>
         <td><%= link_to 'Approve', "#", class: "btn btn-sm btn-success disabled"%></td>
       <% else %>
-        <td><%= button_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
+        <td><%= link_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
       <% end %>
       <% if ride.status == 'rejected' %>
         <td><%= link_to 'Reject', "#", class: "btn btn-sm btn-success disabled" %></td>
