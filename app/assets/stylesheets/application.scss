@@ -25,26 +25,18 @@
    background-color: orange;
  }
 
-// .row {
-//    display: flex;
-//    flex-direction: row;
-// }
-
-// .parent {
-//   display: inline-flex;
-//   flex-direction: row;
-//   height: 100%;
-//   justify-content: space-around;
-// }
+.table tr th {
+ // background-color: red;
+ border-top: none;
+ border-bottom: inset 3px gray;
+}
 
 .left {
- // background-color: blue;
  float: left;
  width: 50%;
 }
 
 .right {
-  // background-color: yellow;
   float: right;
   width: 50%;
 }
