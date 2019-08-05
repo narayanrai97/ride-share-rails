@@ -107,9 +107,8 @@ RSpec.describe ScheduleWindow, type: :model do
           events = recurring_pattern.schedule_window.recurring_weekly(query_start_date, query_end_date)
           
           #check that start_time can not be before start_date
-          # expect(events).to eq([])
+          expect(events).to eq([])
           puts events
-          expect(events.length).to eq(0)
 
       end
         
