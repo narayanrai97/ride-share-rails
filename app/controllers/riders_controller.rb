@@ -15,6 +15,7 @@ class RidersController < ApplicationController
 
   def index
     @riders = current_user.organization.riders
+    @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(10)
   end
 
   def create
