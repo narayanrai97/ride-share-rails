@@ -125,9 +125,23 @@ RSpec.describe ScheduleWindow, type: :model do
           # check that end times are correct
           end_dates = events.map{|k| k[:endTime] }
           expect(end_dates).to eq(["2019-09-21 16:00", "2019-09-14 16:00", "2019-09-07 16:00"])
+        end
+        it "query_start_date is after start_date and query_end_date is after the end_date" do
+          query_start_date = Date.parse("2019-10-01")
+          query_end_date = Date.parse("2019-11-21")
           
+          events = recurring_pattern.schedule_window.recurring_weekly(query_start_date, query_end_date)
           
+          #testing correct number of events
+          expect(events.length).to eq(3)
+          puts events
+          # # check that start times are correct
+          # start_times = events.map{|k| k[:startTime] }
+          # expect(start_times).to eq(["2019-09-21 14:00","2019-09-14 14:00","2019-09-07 14:00"])
           
+          # # check that end times are correct
+          # end_dates = events.map{|k| k[:endTime] }
+          # expect(end_dates).to eq(["2019-09-21 16:00", "2019-09-14 16:00", "2019-09-07 16:00"])
         end
       end
     end
