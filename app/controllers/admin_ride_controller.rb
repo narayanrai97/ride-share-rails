@@ -34,8 +34,9 @@ class AdminRideController < ApplicationController
                             pick_up_time: ride_params[:pick_up_time],
                             start_location: start_location,
                             end_location: end_location,
-                            reason: ride_params[:reason],
-                            status: "approved")
+                            reason: ride_params[:reason])
+
+    @ride.update_attribute(:status, "approved") if current_user.organization.use_tokens?
 
     if @ride.save
       token.ride_id = @ride.id
