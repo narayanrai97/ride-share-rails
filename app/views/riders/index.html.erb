@@ -1,11 +1,12 @@
 <div class="container">
 
-<h4>LISTING RIDERS</h4>
+<h1>Riders</h1>
+<%= paginate @riders %>
 
-<%= link_to 'New Rider', new_rider_path, class:"btn btn-primary" %>
 <table class="table table-striped">
   <tr>
-    <th scope="col">Name</th>
+    <th scope="col">First name</th>
+    <th scope="col">Last name</th>
     <th scope="col">Phone</th>
     <th scope="col">Email</th>
     <th scope="col"></th>
@@ -15,7 +16,8 @@
 
   <% @riders.each do |rider| %>
       <tr>
-        <td><%= rider.full_name %></td>
+        <td><%= rider.first_name %></td>
+        <td><%= rider.last_name %></td>
         <td><%= rider.phone %></td>
         <td><%= rider.email %></td>
         <td><%= link_to 'Show', rider_path(rider) %></td>
@@ -27,4 +29,7 @@
   <% end %>
 </table>
 
-<%= link_to 'Back', welcome_index_path, class:"btn btn-danger" %>
+<%= paginate @riders %>
+<%= link_to 'Back', welcome_index_path %> |
+<%= link_to 'New Rider', new_rider_path %>
+
