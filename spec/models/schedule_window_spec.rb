@@ -98,7 +98,7 @@ RSpec.describe ScheduleWindow, type: :model do
            
           events = recurring_pattern.schedule_window.recurring_weekly(query_start_date, query_end_date)
           
-          #check to make sure array is empty
+          #check that array is empty
           expect(events).to eq([])
       end
       
@@ -108,7 +108,7 @@ RSpec.describe ScheduleWindow, type: :model do
            
           events = recurring_pattern.schedule_window.recurring_weekly(query_start_date, query_end_date)
           
-          #check to make sure arrau is empty
+          #check that array is empty
           expect(events).to eq([])
         end
         
