@@ -18,7 +18,7 @@ class AdminRideController < ApplicationController
   def create
     rider = Rider.find(ride_params[:rider_id])
     token = rider.next_valid_token
-    token = rider.valid_tokens.create if @token.nil?
+    token = rider.valid_tokens.create if token.nil?
 
     start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
@@ -35,7 +35,6 @@ class AdminRideController < ApplicationController
                             start_location: start_location,
                             end_location: end_location,
                             reason: ride_params[:reason])
-
     @ride.update_attribute(:status, "approved") if current_user.organization.use_tokens?
 
     if @ride.save
@@ -88,26 +87,16 @@ class AdminRideController < ApplicationController
     end
   end
 
-  def destroy
-    @ride = Ride.find(params[:id])
-    @ride.destroy
-    redirect_to admin_ride_index_path
+  def approve
+    Ride.find(params[:id]).update_attribute(:status, "approved")
+    flash.notice = "Ride approved."
+    redirect_to request.referrer || admin_ride_index_path
   end
 
-  def approve
-  # byebug
-    @ride = Ride.find(params[:id])
-    @ride.update_attributes(status: "approved")
-    flash.notice = "Ride approved."
-    redirect_to admin_ride_index_path
-  end
-
-  def approve
-  # byebug
-    @ride = Ride.find(params[:id])
-    @ride.update_attributes(status: "approved")
-    flash.notice = "Ride approved."
-    redirect_to admin_ride_index_path
+  def reject
+    Ride.find(params[:id]).update_attribute(:status, "rejected")
+    flash.notice = "Ride rejected."
+    redirect_to request.referrer || admin_ride_index_path
   end
 
 
