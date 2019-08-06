@@ -20,6 +20,7 @@
   "lightergray" : #8ea0ad
   );
  @import "bootstrap";
+ @import "font-awesome"; // main background color
 
  form-group {
    background-color: orange;
@@ -49,4 +50,14 @@
 
 .add {
  margin-right: 50px;
+}
+
+.last_name_sort {
+ align-items: center;
+}
+
+.fa {
+ position: absolute;
+ margin-left: 5px;
+ margin-top: 4px;
 }
