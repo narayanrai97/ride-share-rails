@@ -11,6 +11,7 @@ class RidesController < ApplicationController
 
     def show
       @ride = Ride.find(params[:id])
+      authorize @ride
       unless RidePolicy.new(current_rider, @ride).show?
           raise Pundit::NotAuthorizedError
         end
@@ -70,6 +71,7 @@ class RidesController < ApplicationController
 
     def edit
       @ride = Ride.find(params[:id])
+      authorize @ride
       unless RidePolicy.new(current_rider, @ride).edit?
         raise Pundit::NotAuthorizedError
       end
@@ -77,6 +79,7 @@ class RidesController < ApplicationController
 
     def update
       @ride = Ride.find(params[:id])
+      authorize @ride
       unless RidePolicy.new(current_rider, @ride).update?
         raise Pundit::NotAuthorizedError
       end
@@ -116,6 +119,7 @@ class RidesController < ApplicationController
 
     def destroy
       @ride = Ride.find(params[:id])
+      authorize @ride
       unless RidePolicy.new(current_rider, @ride).destroy?
         raise Pundit::NotAuthorizedError
       end

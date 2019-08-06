@@ -24,3 +24,29 @@
  form-group {
    background-color: orange;
  }
+
+.table tr th {
+ // background-color: red;
+ border-top: none;
+ border-bottom: inset 3px gray;
+}
+
+.left {
+ float: left;
+ width: 50%;
+}
+
+.right {
+  float: right;
+  width: 50%;
+}
+
+.row2 {
+ display: flex;
+ flex-direction: row;
+ margin-right: 90px;
+}
+
+.add {
+ margin-right: 50px;
+}
