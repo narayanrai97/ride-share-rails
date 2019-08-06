@@ -18,6 +18,7 @@ ____
 | end_date      |  “2019-10-21” |
 |start_time    |“2019-09-07 1400"|
 |end_time       | “2019-09-07 1600”|
+|is_recurring      | true|
 
 #### RecurringPattern Model
 | Field      | Value | 

@@ -43,7 +43,12 @@ Rails.application.routes.draw do
 
 
   resources :rides
-  resources :admin_ride
+  resources :admin_ride do
+    member do
+      put 'approve' => 'admin_ride#approve'
+      put 'reject' => 'admin_ride#reject'
+    end
+  end
   resources :tokens, path_names: { new: 'new/:rider_id' } do
     collection do
       get 'bulk_form/:rider_id' => 'tokens#bulk_form', as: 'bulk_form'
