@@ -102,6 +102,14 @@ class AdminRideController < ApplicationController
     redirect_to admin_ride_index_path
   end
 
+  def approve
+  # byebug
+    @ride = Ride.find(params[:id])
+    @ride.update_attributes(status: "approved")
+    flash.notice = "Ride approved."
+    redirect_to admin_ride_index_path
+  end
+
 
 
   private
