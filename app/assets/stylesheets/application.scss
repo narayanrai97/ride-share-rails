@@ -28,13 +28,16 @@
 
 .table tr th {
  // background-color: red;
- border-top: none;
- border-bottom: inset 3px gray;
+ // border-top: none;
+}
+
+.border-bot {
+  border-bottom: inset 3px gray;
 }
 
 .left {
- float: left;
- width: 50%;
+  float: left;
+  width: 50%;
 }
 
 .right {
@@ -43,22 +46,26 @@
 }
 
 .row2 {
- display: flex;
- flex-direction: row;
- margin-right: 90px;
+  display: flex;
+  flex-direction: row;
+  margin-right: 90px;
 }
 
 .add {
- margin-right: 50px;
+  margin-right: 50px;
 }
 
-.last_name_sort {
- align-items: center;
+.rowBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.fa {
- position: absolute;
- margin-left: 5px;
- margin-top: 4px;
+.links{
+  max-height: 8px;
 }
 
+#flex-box {
+  display: flex;
+  flex-direction: column;
+}

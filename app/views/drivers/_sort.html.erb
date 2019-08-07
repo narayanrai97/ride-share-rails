@@ -9,14 +9,14 @@
   </div>
 
   <table class="table table-striped">
-    <tr>
+    <tr class="border-bot">
       <th scope="col">First name</th>
-      <th scope="col" class="last_name_sort">Last name <%= link_to drivers_path do %>
+      <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to drivers_path, class: "links" do %>
                                                            <%= fa_icon "sort-up" %>
                                                        <% end %>
-                                                       <%= link_to ascending_sort_path do %>
+                                                       <%= link_to ascending_sort_path, class: "links" do %>
                                                            <%= fa_icon "sort-down"%>
-                                                       <% end %></th>
+                                                       <% end %></span></th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
       <th scope="col">Application State</th>
