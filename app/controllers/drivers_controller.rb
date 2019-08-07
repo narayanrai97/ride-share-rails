@@ -17,13 +17,19 @@ class DriversController < ApplicationController
 
   def index
     if params[:application_state]== "pending"
-      @drivers =Driver.where(:application_state =>"pending")
+      @drivers =Driver.where(:application_state =>"pending").order(last_name: :desc)
     elsif params[:application_state]== "approved"
-      @drivers =Driver.where(:application_state =>"approved")
+      @drivers =Driver.where(:application_state =>"approved").order(last_name: :desc)
     else
-      @drivers = Driver.all.order(:first_name)
+      @drivers = Driver.order(last_name: :desc)
     end
+    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
     @vehicle = Vehicle.all
+  end
+
+  def ascending_sort
+    @drivers = Driver.order(:last_name)
+    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
   end
 
   def create

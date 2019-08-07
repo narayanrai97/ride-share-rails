@@ -8,6 +8,14 @@ Rails.application.routes.draw do
     put :fail
   end
 
+  devise_scope :driver do
+    get 'ascending_sort' => 'drivers#ascending_sort'
+  end
+
+  # resources :drivers
+  #   get 'sort-down' => "drivers#sort_down"
+  # end
+
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
   devise_scope :user do
     resource :users,
