@@ -6,12 +6,9 @@ module Api
 
       helpers SessionHelpers
 
-
       before do
         error!('Unauthorized', 401) unless require_login!
       end
-
-
 
       # desc "Return all schedule windows"
       # get "availabilities", root: :schedule_windows do

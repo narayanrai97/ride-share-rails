@@ -73,8 +73,8 @@ RSpec.describe ScheduleWindow, type: :model do
       
       describe 'recurring weekly' do
         let(:recurring_pattern) { create(:recurring_weekly_pattern) }
-        
-        it "should have a weekly recurring_pattern" do
+  
+        it "should return weekly events" do
           start_date = Date.parse('2019-09-13')
           end_date = Date.parse('2019-09-27')
           

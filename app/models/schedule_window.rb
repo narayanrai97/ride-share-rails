@@ -10,7 +10,7 @@ class ScheduleWindow < ApplicationRecord
   validate  :end_date_after_start_date
   validate  :start_date_cannot_be_later_than_start_time
   validate  :end_date_cannot_be_before_end_time
-
+  
 # Instance methods
 
   def dates_cannot_be_in_the_past
@@ -73,15 +73,7 @@ class ScheduleWindow < ApplicationRecord
   belongs_to :location
 
   has_one :recurring_pattern
- 
-  # after_create :create_recurring_pattern
-  
-  # def create_recurring_pattern
-  #   if is_recurring
-  #     RecurringPattern.create(schedule_window_id: id, day_of_week: start_time.wday)
-  #   end
-  # end
-  
+
   def events(query_start_date, query_end_date)
     if is_recurring
       recurring_event(query_start_date, query_end_date)
