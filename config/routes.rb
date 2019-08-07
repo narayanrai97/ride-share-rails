@@ -12,10 +12,6 @@ Rails.application.routes.draw do
     get 'ascending_sort' => 'drivers#ascending_sort'
   end
 
-  # resources :drivers
-  #   get 'sort-down' => "drivers#sort_down"
-  # end
-
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
   devise_scope :user do
     resource :users,
@@ -34,13 +30,11 @@ Rails.application.routes.draw do
   resources :riders
   devise_scope :rider do
     resource :riders,
-             #only: [:edit, :update, :destroy],
              controller: 'devise/registrations',
              as: :rider_registration do
               get 'cancel'
              end
              get 'sort-down' => 'riders#sort_down'
-    #get 'rider' => 'welcome#rider'
   end
 
   mount Api::Base, at: "/"
