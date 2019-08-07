@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_23_203528) do
+ActiveRecord::Schema.define(version: 2019_08_05_183203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_07_23_203528) do
     t.bigint "start_location_id"
     t.bigint "end_location_id"
     t.text "reason"
-    t.string "status", default: "requested"
+    t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["driver_id"], name: "index_rides_on_driver_id"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 2019_07_23_203528) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.bigint "location_id"
-    t.boolean "is_recurring", default: false
+    t.boolean "is_recurring", default: false, null: false
     t.index ["driver_id"], name: "index_schedule_windows_on_driver_id"
     t.index ["location_id"], name: "index_schedule_windows_on_location_id"
   end
