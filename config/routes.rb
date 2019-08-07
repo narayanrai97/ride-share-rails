@@ -31,6 +31,7 @@ Rails.application.routes.draw do
              as: :rider_registration do
               get 'cancel'
              end
+             get 'sort-down' => 'riders#sort_down'
     #get 'rider' => 'welcome#rider'
   end
 
@@ -72,6 +73,7 @@ Rails.application.routes.draw do
   namespace :riders do
     root :to => "welcome#rider"
     resources :tokens
+
   end
 
 end
