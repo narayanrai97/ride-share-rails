@@ -12,6 +12,7 @@ class ApplicationPolicy
   end
 
   def show?
+    # byebug
     false
   end
 

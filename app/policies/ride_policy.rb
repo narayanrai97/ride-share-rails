@@ -14,9 +14,10 @@ class RidePolicy < ApplicationPolicy
       return @ride.rider_id == @client.id
     # I will likely be adding a flash message in the code below.
     # else
-    #   flash.notice = "Unknown client"
-    #   return false
+      # flash.notice = "Unknown client"
+      # return false
     end
+
   end
     
   %i(show? edit? update? delete?).each do |ali|
