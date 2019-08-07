@@ -4,7 +4,6 @@ module Api
     class ScheduleWindows < Grape::API
       include Api::V1::Defaults
 
-      helpers EventHelpers
       helpers SessionHelpers
 
 
@@ -26,8 +25,8 @@ module Api
         optional :end, type: Time, desc: "End date for schedule"
       end
       get "availabilities", root: :schedule_windows do
-        start_time = DateTime.now
-        end_time = DateTime.now+3.months
+        start_time = params[:start] || DateTime.now
+        end_time = params[:end] ||  DateTime.now+3.months
         current_driver.events(start_time, end_time)
       end
 
