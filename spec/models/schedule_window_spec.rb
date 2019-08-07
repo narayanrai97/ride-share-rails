@@ -92,7 +92,7 @@ RSpec.describe ScheduleWindow, type: :model do
           expect(end_times).to eq(['2019-09-21 16:00', '2019-09-14 16:00'])
         end
         
-        it "query_start_date and query_end_date can not be after start_date" do
+        it "should return an empty [] when query is after the date range of the schedule window" do
           query_start_date = Date.parse('2019-10-27')
           query_end_date = Date.parse('2019-11-27')
            
@@ -102,7 +102,7 @@ RSpec.describe ScheduleWindow, type: :model do
           expect(events).to eq([])
       end
       
-       it "query_start_date and query_end_date can not be before start_date" do
+       it "should return an empty [] when query is before the date range of the schedule window" do
           query_start_date = Date.parse('2019-08-01')
           query_end_date = Date.parse('2019-08-31')
            
@@ -112,7 +112,7 @@ RSpec.describe ScheduleWindow, type: :model do
           expect(events).to eq([])
         end
         
-        it "query_start_date is before start_date and query_end_date is before the end_date" do
+        it "should return [] of events when query is before the schedule window start date but in range of the end date" do
           query_start_date = Date.parse("2019-08-01")
           query_end_date = Date.parse("2019-09-21")
           
@@ -130,7 +130,7 @@ RSpec.describe ScheduleWindow, type: :model do
           expect(end_dates).to eq(["2019-09-21 16:00", "2019-09-14 16:00", "2019-09-07 16:00"])
         end
         
-        it "query_start_date is after start_date and query_end_date is after the end_date" do
+        it "should return an [] of events when query is in range of the schedule window start date but past the end date" do
           query_start_date = Date.parse("2019-10-01")
           query_end_date = Date.parse("2019-11-21")
           
@@ -148,7 +148,7 @@ RSpec.describe ScheduleWindow, type: :model do
           expect(end_dates).to eq(["2019-10-19 16:00","2019-10-12 16:00","2019-10-05 16:00"])
         end
         
-        it "query_start_date is before start_date and query_end_date is after end_date" do
+        it "should return and [] of events when query is before schedule window start_date but in range of the end date" do
           query_start_date = Date.parse("2019-08-01")
           query_end_date = Date.parse("2019-11-30")
           
