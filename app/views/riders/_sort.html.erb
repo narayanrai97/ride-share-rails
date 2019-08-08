@@ -1,0 +1,34 @@
+<div class="container">
+
+<h1>Riders</h1>
+<%= paginate @riders %>
+
+<table class="table table-striped">
+  <tr class="border-bot">
+    <th scope="col">First name</th>
+    <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to riders_path, class: "links" do %>
+                                                       <%= fa_icon "sort-up" %>
+                                                     <% end %>
+                                                     <%= link_to sort_down_path, class: "links" do %>
+                                                       <%= fa_icon "sort-down"%>
+                                                     <% end %></span></th>
+    <th scope="col">Phone</th>
+    <th scope="col">Email</th>
+    <th scope="col"></th>
+  </tr>
+
+  <% @riders.each do |rider| %>
+      <tr>
+        <td><%= rider.first_name %></td>
+        <td><%= rider.last_name %></td>
+        <td><%= rider.phone %></td>
+        <td><%= rider.email %></td>
+        <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
+      </tr>
+  <% end %>
+</table>
+
+<%= paginate @riders %>
+<%= link_to 'Back', welcome_index_path %> |
+<%= link_to 'New Rider', new_rider_path %>
+

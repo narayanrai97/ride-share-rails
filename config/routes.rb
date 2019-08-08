@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     put :fail
   end
 
+  devise_scope :driver do
+    get 'ascending_sort' => 'drivers#ascending_sort'
+  end
+
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
   devise_scope :user do
     resource :users,
@@ -26,12 +30,11 @@ Rails.application.routes.draw do
   resources :riders
   devise_scope :rider do
     resource :riders,
-             #only: [:edit, :update, :destroy],
              controller: 'devise/registrations',
              as: :rider_registration do
               get 'cancel'
              end
-    #get 'rider' => 'welcome#rider'
+             get 'sort-down' => 'riders#sort_down'
   end
 
   mount Api::Base, at: "/"
@@ -40,6 +43,7 @@ Rails.application.routes.draw do
   get 'welcome/index'
   get 'welcome/welcome'
   get 'welcome/rider'
+
 
   resources :rides
   resources :admin_ride do
@@ -72,6 +76,7 @@ Rails.application.routes.draw do
   namespace :riders do
     root :to => "welcome#rider"
     resources :tokens
-  end
 
+  end
+  
 end

@@ -1,18 +1,12 @@
 FactoryBot.define do
-  factory :schedule_window do
-    start_time { DateTime.now }
-    end_time { DateTime.now + 8.hours }
-    start_date { Date.today }
-    end_date { Date.today + 3.months }
-    is_recurring { false }
-
-    driver
-    location
-  end
+    factory :schedule_window do
+        start_date { Time.now + 1.month }
+        end_date   { Time.now + 5.months }
+        start_time { Time.now + 1.month + 2.hours}
+        end_time   { Time.now + 1.month + 5.hours } 
+        is_recurring { false }
+        location
+        driver
+    end
 end
 
-# (byebug) start_time
-# Thu, 25 Jul 2019 09:00:00 UTC +00:00
-
-# (byebug) DateTime.now
-# Tue, 30 Jul 2019 15:52:42 -0400

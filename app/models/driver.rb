@@ -7,8 +7,6 @@ class Driver < ApplicationRecord
   belongs_to :organization
   has_many :rides
   has_many :schedule_windows
-  has_many :location_relationships
-  has_many :locations, through: :location_relationships
   has_many :vehicles ,dependent: :destroy
 
 
@@ -25,9 +23,15 @@ class Driver < ApplicationRecord
   def invalidate_auth_token
     self.update_columns(auth_token: nil, token_created_at: nil)
   end
-
-  def full_name
-    "#{first_name} #{last_name}"
+  
+  def events(query_start_date, query_end_date)
+    query_start_date = Date.parse(query_start_date)
+    query_end_date = Date.parse(query_end_date)
+    list = []
+    schedule_windows.each do |window|
+      list += window.events(query_start_date, query_end_date)
+    end
+    list.sort_by{|i| i[:start_time]}.reverse
   end
-
 end
+
