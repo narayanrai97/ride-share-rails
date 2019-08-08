@@ -24,11 +24,9 @@
       <td><%= ride.pick_up_time %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
-      <td><%= link_to 'Show', admin_ride_path(ride) %></td>
       <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
-      <td><%= link_to 'Delete', admin_ride_index_path(ride),
-                      method: :delete,
-                      data: { confirm: 'Are you sure?' } %></td>
+      <td><%= button_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
+      <td><%= button_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
     </tr>
     <% end %>
   <% end %>
