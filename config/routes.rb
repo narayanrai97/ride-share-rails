@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
+
   resources :rides
   resources :admin_ride do
     member do
@@ -73,5 +74,5 @@ Rails.application.routes.draw do
     root :to => "welcome#rider"
     resources :tokens
   end
-
+  
 end

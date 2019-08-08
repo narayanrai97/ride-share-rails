@@ -1,6 +1,6 @@
 FactoryBot.define do
     factory :driver do
-       email {'v1@sample.com'}
+       sequence(:email) { |id| "user#{id}@sample.com"}
        password {'password'}
        first_name { 'Ben' }
        last_name {'smith'}
