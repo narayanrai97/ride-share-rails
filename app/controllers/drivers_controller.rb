@@ -25,12 +25,8 @@ class DriversController < ApplicationController
     else
       @drivers = current_user.organization.drivers.order(last_name: :desc)
     end
-<<<<<<< HEAD
-      @vehicle = Vehicle.all
-=======
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
     @vehicle = Vehicle.all
->>>>>>> master
   end
 
   def ascending_sort
@@ -82,28 +78,6 @@ class DriversController < ApplicationController
    redirect_to driver_path(params[:driver_id])
   end
 
-<<<<<<< HEAD
-   #Method to Reject application
-   def reject
-     @driver = Driver.find(params[:driver_id])
-     @driver.update(application_state: "rejected")
-     redirect_to driver_path(params[:driver_id])
-   end
-
-   #change background_check to true
-   def pass
-    @driver = Driver.find(params[:driver_id])
-    @driver.update(background_check: true)
-    redirect_to driver_path(params[:driver_id])
-   end
-   
-    #change background_check to false
-    def fail
-      @driver = Driver.find(params[:driver_id])
-      @driver.update(background_check: false)
-      redirect_to driver_path(params[:driver_id])
-    end
-=======
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
@@ -124,7 +98,6 @@ class DriversController < ApplicationController
     @driver.update(background_check: false)
     redirect_to driver_path(params[:driver_id])
   end
->>>>>>> master
 
   private
   def driver_params
