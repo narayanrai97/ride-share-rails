@@ -25,8 +25,16 @@
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
       <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
-      <td><%= button_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
-      <td><%= button_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+      <% if ride.status == 'approved' %>
+        <td><%= link_to 'Approve', "#", class: "btn btn-sm btn-success disabled"%></td>
+      <% else %>
+        <td><%= link_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
+      <% end %>
+      <% if ride.status == 'rejected' %>
+        <td><%= link_to 'Reject', "#", class: "btn btn-sm btn-success disabled" %></td>
+      <% else %>
+        <td><%= link_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+      <% end %>
     </tr>
     <% end %>
   <% end %>
