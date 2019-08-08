@@ -14,6 +14,10 @@ class Driver < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+  
   def generate_auth_token
     token = SecureRandom.hex
     self.update_columns(auth_token: token, token_created_at: Time.zone.now)
@@ -23,7 +27,7 @@ class Driver < ApplicationRecord
   def invalidate_auth_token
     self.update_columns(auth_token: nil, token_created_at: nil)
   end
-  
+
   def events(query_start_date, query_end_date)
     query_start_date = Date.parse(query_start_date)
     query_end_date = Date.parse(query_end_date)
@@ -34,4 +38,3 @@ class Driver < ApplicationRecord
     list.sort_by{|i| i[:start_time]}.reverse
   end
 end
-
