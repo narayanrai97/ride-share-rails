@@ -20,7 +20,7 @@ class RidePolicy < ApplicationPolicy
 
   end
 
-  %i(show? edit? update? delete?).each do |ali|
+  %i(show? edit? update? delete? approve? reject?).each do |ali|
     alias_method ali, :ride_belongs_to_rider?
   end
 end
