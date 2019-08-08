@@ -58,13 +58,8 @@ Rails.application.routes.draw do
       put 'reject' => 'admin_ride#reject'
     end
   end
-  resources :tokens, path_names: { new: 'new/:rider_id' } do
-    collection do
-      get 'bulk_form/:id' => 'tokens#bulk_form', as: 'bulk_form'
-      post 'bulk_update'
-    end
-  end
 
+  resources :tokens, path_names: { new: 'new/:rider_id' }
 
   root 'welcome#welcome'
 
