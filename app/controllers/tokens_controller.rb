@@ -17,38 +17,22 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-  def bulk_form
-    @rider = Rider.find(params[:rider_id])
-  end
-
-  def bulk_update
-    rider = Rider.find(params[:rider_id])
-    quantity = params[:quantity].to_i
-
-    if params[:commit] == "Add"
-      add_bulk(rider, quantity)
-    elsif params[:commit] == "Remove"
-      remove_bulk(rider, quantity)
-    end
-  end
-
   private
     def token_params
       params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
     end
-
+  
+    def authorize_token_belongs_to_org!
+      # byebug
+      authorize Token
+    end
+  
     def add_bulk(rider, quantity)
       previous_count = rider.valid_tokens.count
       quantity.times { rider.valid_tokens.create }
       diff = rider.valid_tokens.count - previous_count
       flash.notice = "#{diff} #{'Token'.pluralize(diff)} given to #{rider.full_name}."
       redirect_to request.referrer
-
-    end
-
-    def authorize_token_belongs_to_org!
-    byebug
-    authorize Token
     end
 
     def remove_bulk(rider, quantity)
@@ -62,6 +46,5 @@ class TokensController < ApplicationController
       else
         flash.notice = "Rider does not have any valid token."
         redirect_to request.referrer
-      end
-    end
+     end
 end

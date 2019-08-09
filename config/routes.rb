@@ -27,7 +27,13 @@ Rails.application.routes.draw do
   devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
-  resources :riders
+  resources :riders do
+    collection do
+      get 'edit/:rider_id' => 'riders#edit'
+      post 'bulk_update'
+    end
+  end
+
   devise_scope :rider do
     resource :riders,
              controller: 'devise/registrations',
@@ -52,13 +58,8 @@ Rails.application.routes.draw do
       put 'reject' => 'admin_ride#reject'
     end
   end
-  resources :tokens, path_names: { new: 'new/:rider_id' } do
-    collection do
-      get 'bulk_form/:rider_id' => 'tokens#bulk_form', as: 'bulk_form'
-      post 'bulk_update'
-    end
-  end
 
+  resources :tokens, path_names: { new: 'new/:rider_id' }
 
   root 'welcome#welcome'
 
@@ -78,5 +79,5 @@ Rails.application.routes.draw do
     resources :tokens
 
   end
-  
+
 end
