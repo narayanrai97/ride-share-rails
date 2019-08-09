@@ -2,10 +2,16 @@
 
 
     <div class="card">
-
         <h5 class="card-header shadow bg-primary info-color text-center ">
-        <strong class="text-white">Edit Rider</strong>
-        </h5><%= render 'form' %>
+            <strong class="text-white">Update Rider</strong>
+        </h5>
+        <%= render 'form' %>
+        <div>
+            <%= render 'bulk_form' %>
+        </div><br/>
+    </div>
+    <div>
+        <%= link_to 'Back', riders_path %>
     </div>
 </div>
 
