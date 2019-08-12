@@ -18,13 +18,14 @@ module Api
 
       desc "Get a full schedule for a driver"
       params do
-        optional :start, type: Time, desc: "Start date for schedule"
-        optional :end, type: Time, desc: "End date for schedule"
+        optional :start, type: DateTime, desc: "Start date for schedule"
+        optional :end, type: DateTime, desc: "End date for schedule"
       end
       get "availabilities", root: :schedule_windows do
         start_time = params[:start] || DateTime.now
         end_time = params[:end] ||  DateTime.now+3.months
-        current_driver.events(start_time, end_time)
+        result = current_driver.events(start_time, end_time)
+        render json: result
       end
 
 

@@ -90,6 +90,7 @@ RSpec.describe ScheduleWindow, type: :model do
           # check that end times are correct
           end_times = events.map{|k| k[:endTime] }
           expect(end_times).to eq(['2019-09-21 16:00', '2019-09-14 16:00'])
+          puts events
         end
         
         it "should return an empty [] when query is after the date range of the schedule window" do
