@@ -66,6 +66,9 @@ class DriversController < ApplicationController
     end
   end
 
+# Ramiro, can the following method be trashed since
+# we are not using destroy anymore?)
+
   def destroy
     @driver = Driver.find(params[:id])
     @driver.destroy
