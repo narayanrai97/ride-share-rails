@@ -38,7 +38,7 @@ class RidesController < ApplicationController
           start_location: start_location,
           end_location: end_location,
           reason: ride_params[:reason])
-        @ride.update_attribute(:status, "approved") if current_rider.organization.use_tokens?
+        @ride.status = "approved" if current_rider.organization.use_tokens?
 
         if @ride.save
           token.ride_id = @ride.id
