@@ -17,7 +17,7 @@
     <% if ride.rider==current_rider%>
     <tr>
       <td scope="row"><%= ride.rider.full_name %></td>
-      <td><%= ride.driver.full_name if !ride.driver.nil? %></td>
+      <td><%= ride.driver&.full_name %></td>
       <td><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
