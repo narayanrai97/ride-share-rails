@@ -15,10 +15,10 @@ class Ride < ApplicationRecord
 
   # validate that start_location and end_location are valid
   def valid_locations
-    if !start_location.valid?
+    if start_location.present? && !start_location.valid?
       errors.add(:start_location, " is not valid")
     end
-    if !start_location.valid?
+    if end_location.present? && !end_location.valid?
       errors.add(:end_location, " is not valid")
     end
   end
