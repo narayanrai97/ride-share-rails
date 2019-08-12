@@ -10,7 +10,6 @@ RSpec.describe Ride, type: :model do
 
    describe "Associations" do
     it { should belong_to(:organization) }
-    it { should belong_to(:driver) }
     it { should belong_to(:rider) }
     it { should belong_to(:start_location) }
     it { should belong_to(:end_location) }
