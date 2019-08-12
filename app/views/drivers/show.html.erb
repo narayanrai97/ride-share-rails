@@ -38,16 +38,16 @@
 
       <strong>Background Check:</strong>
 
-       <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
+       <!-- The following background check code is temporarily commented out
+       because is not yet functioning properly. -->
 
-      <% if false %>
-      <%= @driver.background_check %>
-      <% end %>
+       <% if false %>
+       <%= @driver.background_check %>
 
-      <%= link_to "Accept",driver_pass_path(@driver),method: :put,
+        <%= link_to "Accept",driver_pass_path(@driver),method: :put,
                      data: { confirm: 'Are you sure you want to approve the application?' },
                      class: "btn btn-green btn-sm" %>
-      <%= link_to "Reject",driver_fail_path(@driver),method: :put,
+        <%= link_to "Reject",driver_fail_path(@driver),method: :put,
                       data: { confirm: 'Are you sure you want to reject the application?' },
                       class: "btn btn-darkgray btn-sm" %>
       </div>
@@ -57,18 +57,18 @@
         <strong>Application Status:</strong>
         <%= @driver.application_state %>
 
-        <%if @driver.background_check %>
+          <%if @driver.background_check %>
 
-          <%= link_to "Accept",driver_accept_path(@driver),method: :put,
+            <%= link_to "Accept",driver_accept_path(@driver),method: :put,
                          data: { confirm: 'Are you sure you want to approve the application?' },
                          class: "btn btn-green btn-sm " %>
+            <% end %>
 
-        <%end%>
-        <%= link_to "Reject",driver_reject_path(@driver),method: :put,
-                      data: { confirm: 'Are you sure you want to reject the application?' },
-                      class: "btn btn-darkgray btn-sm" %>
+            <%= link_to "Reject",driver_reject_path(@driver),method: :put,
+                        data: { confirm: 'Are you sure you want to reject the application?' },
+                        class: "btn btn-darkgray btn-sm" %>
         <% end %>
-        
+
       </div>
     </div>
     <div>
@@ -153,8 +153,8 @@
         </div>
 
       </div>
-     </div>
-  <%end%>
+    </div>
+  <% end %>
 
   <div class="ml-5 mt-2">
     <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-primary"%>
