@@ -14,7 +14,8 @@ class RidesController < ApplicationController
     end
 
     def index
-      @rides = Ride.all
+      @rides = current_rider.rides
+      @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
     end
 
     def create
@@ -39,7 +40,7 @@ class RidesController < ApplicationController
           if !@end_location.save
             render 'new' and return
           end
-        
+
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
           rider_id: current_rider.id,
@@ -72,7 +73,7 @@ class RidesController < ApplicationController
       @end_location = @ride.end_location
 
       if !@start_location.update(
-        street: ride_params[:start_street], 
+        street: ride_params[:start_street],
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
@@ -82,7 +83,7 @@ class RidesController < ApplicationController
       end
 
       if !@end_location.update(
-        street: ride_params[:end_street], 
+        street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
