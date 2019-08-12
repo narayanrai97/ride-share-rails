@@ -32,12 +32,15 @@ module Api
       desc "Get a specific schedule window for a driver"
       params do
         requires :id, type: String, desc: "ID of the event"
+        optional :start_date, DateTime, desc: "Start Date"
+        optional :end_date, DateTime, desc: "End Date"
       end
       get "availabilities/window/:id", root: :schedule_windows do
-        schedule = ScheduleWindow.where(id: permitted_params[:id])
-        all_events = []
-        create_all_events(schedule, Date.today, Date.today+1.year, all_events)
-        render json: all_events
+        schedule = ScheduleWindow.find(permitted_params[:id])
+        start_time = params[:start] || DateTime.now
+        end_time = params[:end] ||  DateTime.now+3.months
+        result = schedule.events(start_time, end_time)
+        render json: result
       end
 
 
@@ -74,7 +77,7 @@ module Api
       end
       put "availabilities/:id" do
         driver = current_driver
-        schedule_window = ScheduleWindow.where(id: params[:id]).where(driver_id: driver.id).first
+        schedule_window = ScheduleWindow.find(id: params[:id]).where(driver_id: driver.id).first
         schedule_window.update(driver_id: driver.id, start_date: params[:start_date], end_date: params[:end_date], start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], is_recurring: params[:is_recurring])
         pattern = RecurringPattern.where(schedule_window_id: schedule_window.id).first
         if pattern != nil

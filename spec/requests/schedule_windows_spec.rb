@@ -3,11 +3,10 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     def logintoken
        post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { 
-       email: recurring_pattern.schedule_window.driver.email,
+          email: recurring_pattern.schedule_window.driver.email,
        password: "password" }
        parsed_json = JSON.parse(response.body)
        parsed_json['json']['auth_token']
-       
     end
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
@@ -50,8 +49,9 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
               start: "2019-08-27",
               'end': '2019-09-21',
               }
+              
           parsed_json = JSON.parse(response.body)
-
+          
           # check that start times are correct
           startTime = parsed_json['json'].map{|k| k["startTime"] }
           expect(startTime).to eq(["2019-09-07 14:00", "2019-09-14 14:00", "2019-09-21 14:00"])
@@ -59,25 +59,22 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           #check that end times are correct
           endTime = parsed_json['json'].map{|k| k['endTime'] }
           expect(endTime).to eq(["2019-09-07 16:00", "2019-09-14 16:00", "2019-09-21 16:00"])
-
-  
       end
-    
-    # it "Get schedule_window" do
-    #     get '/api/v1/availabilities',  headers: headers
-    #     expect(response).to have_http_status(200)
-    #     expect(ScheduleWindow.count).to eq(1)
-    #     parsed_json = JSON.parse(response.body)
-    # end
       
-    # it "Gets schedule_window by ID" do
-    #     get "/api/v1/availabilities/window/#{schedule_window.id}", headers: headers
-    #     expect(response).to have_http_status(200)
-    #     parsed_json = JSON.parse(response.body)
-    #     # puts parsed_json
-    #     puts parsed_json['json'][0]["startDate"]
-    #     # expect(parsed_json["json"][0]["startDate"]).to eq(startDate.change(usec: 0))
-    # end
+    it "Gets schedule_window by ID" do
+        get "/api/v1/availabilities/window/#{recurring_pattern.schedule_window.id}", headers: headers, params: {
+            start: "2019-08-28",
+            'end': "2019-10-21",
+        }
+        expect(response).to have_http_status(200)
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
+        
+        puts "Start Date"
+        startTime = parsed_json["json"].map{|k| k["startTime"] }
+        puts startTime
+    
+    end
 
     #   it "Updates the schedule_window" do
     #     put "/api/v1/availabilities/#{schedule_window.id}", headers: headers,
