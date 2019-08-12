@@ -40,10 +40,12 @@ class RidersController < ApplicationController
 
   def edit
     @rider = Rider.find(params[:id])
+    authorize @rider
   end
 
   def update
     @rider = Rider.find(params[:id])
+    authorize @rider
 
     if @rider.update(rider_params)
       flash.notice = "The rider information has been updated"
@@ -55,6 +57,8 @@ class RidersController < ApplicationController
 
   def bulk_update
     @rider = Rider.find(params[:rider_id])
+    authorize @rider
+
     quantity = params[:quantity].to_i
     if params[:commit] == "Add"
       add_bulk(@rider, quantity)
@@ -79,7 +83,6 @@ class RidersController < ApplicationController
       diff = rider.valid_tokens.count - previous_count
       flash.notice = "#{diff} #{'token'.pluralize(diff)} added."
       redirect_to request.referrer
-
     end
 
     def remove_bulk(rider, quantity)
@@ -95,5 +98,4 @@ class RidersController < ApplicationController
         redirect_to request.referrer
       end
     end
-
 end
