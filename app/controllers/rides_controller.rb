@@ -11,8 +11,6 @@ class RidesController < ApplicationController
 
     def show
       @ride = Ride.find(params[:id])
-      # Line 15 was apparently telling it to do the same thing 16 and 17 are doing and cancelled each other out. Wouldn't work. Alik
-      # authorize @ride
       unless RidePolicy.new(current_rider, @ride).show?
           raise Pundit::NotAuthorizedError
         end
@@ -46,7 +44,7 @@ class RidesController < ApplicationController
           if !@end_location.save
             render 'new' and return
           end
-        
+
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
           rider_id: current_rider.id,
@@ -65,14 +63,13 @@ class RidesController < ApplicationController
         end
       else
         flash[:notice] = "Sorry, you do not have enough valid tokens to request this ride"
-        
+
         redirect_to rides_path
       end
     end
 
     def edit
       @ride = Ride.find(params[:id])
-      # authorize @ride
       unless RidePolicy.new(current_rider, @ride).edit?
         raise Pundit::NotAuthorizedError
       end
@@ -80,8 +77,6 @@ class RidesController < ApplicationController
 
     def update
       @ride = Ride.find(params[:id])
-      # See above comment.
-      # authorize @ride
       unless RidePolicy.new(current_rider, @ride).update?
         raise Pundit::NotAuthorizedError
       end
@@ -90,7 +85,7 @@ class RidesController < ApplicationController
       @end_location = @ride.end_location
 
       if !@start_location.update(
-        street: ride_params[:start_street], 
+        street: ride_params[:start_street],
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
@@ -100,7 +95,7 @@ class RidesController < ApplicationController
       end
 
       if !@end_location.update(
-        street: ride_params[:end_street], 
+        street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
@@ -118,19 +113,6 @@ class RidesController < ApplicationController
         render 'edit'
       end
     end
-
-    # Destroy is not working properly, and I am told that the way the delete works is going to be altered,
-    # so I am commenting it out for now. Alik
-    # def destroy
-    #   @ride = Ride.find(params[:id])
-    #   # authorize @ride
-    #   unless RidePolicy.new(current_rider, @ride).destroy?
-    #     raise Pundit::NotAuthorizedError
-    #   end
-    #   @ride.destroy
-      
-    #   redirect_to rides_path
-    # end
 
     private
     def ride_params
