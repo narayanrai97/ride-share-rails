@@ -22,18 +22,17 @@ class TokensController < ApplicationController
       params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
     end
 
+    def authorize_token_belongs_to_org!
+      # byebug
+      authorize Token
+    end
+
     def add_bulk(rider, quantity)
       previous_count = rider.valid_tokens.count
       quantity.times { rider.valid_tokens.create }
       diff = rider.valid_tokens.count - previous_count
       flash.notice = "#{diff} #{'Token'.pluralize(diff)} given to #{rider.full_name}."
       redirect_to request.referrer
-
-    end
-
-    def authorize_token_belongs_to_org!
-    byebug
-    authorize Token
     end
 
     def remove_bulk(rider, quantity)

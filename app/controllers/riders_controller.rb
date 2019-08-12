@@ -73,8 +73,8 @@ class RidersController < ApplicationController
     end
 
     def user_not_authorized
-        flash.notice = "You are not authorized to view this information"
-        redirect_to riders_path
+      flash.notice = "You are not authorized to view this information"
+      redirect_to riders_path
     end
 
     def add_bulk(rider, quantity)
