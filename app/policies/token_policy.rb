@@ -3,7 +3,6 @@
 class TokenPolicy < ApplicationPolicy
     def token_belongs_to_org?
       token.organization == current_user.organization
-
     end
 
     %i(show? edit? update? delete?).each do |ali|
