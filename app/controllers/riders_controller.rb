@@ -53,14 +53,47 @@ class RidersController < ApplicationController
     end
   end
 
-  private
-  def rider_params
-    params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
+  def bulk_update
+    @rider = Rider.find(params[:rider_id])
+    quantity = params[:quantity].to_i
+    if params[:commit] == "Add"
+      add_bulk(@rider, quantity)
+    elsif params[:commit] == "Remove"
+      remove_bulk(@rider, quantity)
+    end
   end
 
-  def user_not_authorized
-      flash.notice = "You are not authorized to view this information"
-      redirect_to riders_path
-  end
+  private
+    def rider_params
+      params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
+    end
+
+    def user_not_authorized
+        flash.notice = "You are not authorized to view this information"
+        redirect_to riders_path
+    end
+
+    def add_bulk(rider, quantity)
+      previous_count = rider.valid_tokens.count
+      quantity.times { rider.valid_tokens.create }
+      diff = rider.valid_tokens.count - previous_count
+      flash.notice = "#{diff} #{'token'.pluralize(diff)} added."
+      redirect_to request.referrer
+
+    end
+
+    def remove_bulk(rider, quantity)
+      previous_count = rider.valid_tokens.count
+      tokens = rider.valid_tokens.limit(quantity)
+      if rider.valid_tokens_count > 0
+        tokens.update_all(is_valid: false)
+        diff = previous_count - rider.valid_tokens.count
+        flash.notice = "#{diff} #{'token'.pluralize(diff)} removed."
+        redirect_to request.referrer
+      else
+        flash.notice = "Rider does not have any valid token."
+        redirect_to request.referrer
+      end
+    end
 
 end

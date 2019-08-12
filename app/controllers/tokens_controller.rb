@@ -17,21 +17,6 @@ class TokensController < ApplicationController
     @tokens = Token.all
   end
 
-  def bulk_form
-    @rider = Rider.find(params[:rider_id])
-  end
-
-  def bulk_update
-    rider = Rider.find(params[:rider_id])
-    quantity = params[:quantity].to_i
-
-    if params[:commit] == "Add"
-      add_bulk(rider, quantity)
-    elsif params[:commit] == "Remove"
-      remove_bulk(rider, quantity)
-    end
-  end
-
   private
     def token_params
       params.require(:token).permit(:rider_id, :created_at, :expires_at, :used_at, :is_valid)
