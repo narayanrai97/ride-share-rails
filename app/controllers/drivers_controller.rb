@@ -51,10 +51,12 @@ class DriversController < ApplicationController
 
   def edit
     @driver = Driver.find(params[:id])
+    authorize @driver
   end
 
   def update
     @driver = Driver.find(params[:id])
+    authorize @driver
 
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated"
@@ -81,6 +83,7 @@ class DriversController < ApplicationController
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(application_state: "rejected")
     redirect_to driver_path(params[:driver_id])
   end
@@ -88,6 +91,7 @@ class DriversController < ApplicationController
   #change background_check to true
   def pass
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(background_check: true)
     redirect_to driver_path(params[:driver_id])
   end
@@ -95,6 +99,7 @@ class DriversController < ApplicationController
   #change background_check to false
   def fail
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(background_check: false)
     redirect_to driver_path(params[:driver_id])
   end
