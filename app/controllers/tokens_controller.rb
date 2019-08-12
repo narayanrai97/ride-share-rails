@@ -23,7 +23,6 @@ class TokensController < ApplicationController
     end
 
     def authorize_token_belongs_to_org!
-      # byebug
       authorize Token
     end
 
