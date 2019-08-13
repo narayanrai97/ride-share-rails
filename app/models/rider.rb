@@ -6,7 +6,7 @@ class Rider < ApplicationRecord
   has_many   :tokens, dependent: :destroy
   has_many   :rides
 
-  validates :first_name, :last_name, :phone, presence: true
+  validates :first_name, :last_name, :phone, :organization, presence: true
   # validates :email, presence: true
 
 
