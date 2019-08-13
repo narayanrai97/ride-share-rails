@@ -1,6 +1,8 @@
 class RidesController < ApplicationController
 
   before_action :authenticate_rider!
+  rescue_from Pundit::NotAuthorizedError, with: :rider_not_authorized
+
   layout 'rider_layout'
 
     def new
@@ -9,6 +11,9 @@ class RidesController < ApplicationController
 
     def show
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).show?
+          raise Pundit::NotAuthorizedError
+      end
       @start_location = Location.find(@ride.start_location_id)
       @end_location = Location.find(@ride.end_location_id)
     end
@@ -57,10 +62,17 @@ class RidesController < ApplicationController
 
     def edit
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).edit?
+        raise Pundit::NotAuthorizedError
+      end
     end
 
     def update
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).update?
+        raise Pundit::NotAuthorizedError
+      end
+
       @start_location = @ride.start_location
       @end_location = @ride.end_location
 
@@ -94,13 +106,6 @@ class RidesController < ApplicationController
       end
     end
 
-    def destroy
-      @ride = Ride.find(params[:id])
-      @ride.destroy
-
-      redirect_to rides_path
-    end
-
     private
     def ride_params
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
@@ -108,4 +113,9 @@ class RidesController < ApplicationController
       :end_street, :end_city, :end_state, :end_zip, :reason, :status)
     end
 
+    def rider_not_authorized
+      flash.notice = "You are not authorized to view this information"
+
+      redirect_to rides_path
+    end
 end

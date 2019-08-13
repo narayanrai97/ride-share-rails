@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 2019_08_05_183203) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.bigint "location_id"
-    t.boolean "is_recurring", default: false, null: false
+    t.boolean "is_recurring", default: false
     t.index ["driver_id"], name: "index_schedule_windows_on_driver_id"
     t.index ["location_id"], name: "index_schedule_windows_on_location_id"
   end

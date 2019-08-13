@@ -36,46 +36,36 @@
     <div class="row">
       <div class="col-md border-top border-bottom">
 
-      <strong>Background Check:</strong>
+        <strong>Background Check:</strong>
 
-       <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
+        <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
 
-      <% if false %>
-      <%= @driver.background_check %>
-      <% end %>
+        <% if false %>
+          <%= @driver.background_check %>
 
-      <%= link_to "Accept",driver_pass_path(@driver),method: :put,
-                     data: { confirm: 'Are you sure you want to approve the application?' },
-                     class: "btn btn-green btn-sm" %>
-      <%= link_to "Reject",driver_fail_path(@driver),method: :put,
-                      data: { confirm: 'Are you sure you want to reject the application?' },
-                      class: "btn btn-darkgray btn-sm" %>
-      </div>
-      <div class="col-md border-top border-bottom">
+          <%= link_to "Accept",driver_pass_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-green btn-sm" %>
+          <%= link_to "Reject",driver_fail_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-darkgray btn-sm" %>
+        </div>
+        <div class="col-md border-top border-bottom">
 
+          <strong>Application Status:</strong>
+          <%= @driver.application_state %>
 
-        <strong>Application Status:</strong>
-        <%= @driver.application_state %>
+          <%if @driver.background_check %>
 
-        <%if @driver.background_check %>
+            <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-green btn-sm " %>
+          <% end %>
 
-          <%= link_to "Accept",driver_accept_path(@driver),method: :put,
-                         data: { confirm: 'Are you sure you want to approve the application?' },
-                         class: "btn btn-green btn-sm " %>
-
-        <%end%>
-        <%= link_to "Reject",driver_reject_path(@driver),method: :put,
-                      data: { confirm: 'Are you sure you want to reject the application?' },
-                      class: "btn btn-darkgray btn-sm" %>
+          <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-darkgray btn-sm" %>
         <% end %>
-        
+
       </div>
     </div>
     <div>
       <%= link_to 'Edit Driver', edit_driver_path(@driver), class:"btn btn-sm btn-green"%>
     </div>
   </div>
-  <h2 class ="bg-primary rounded mt-2 pl-2 ">Cars</h2>
+  <h2 class="bg-primary rounded mt-2 pl-2 ">Cars</h2>
 
   <% @driver.vehicles.each do |vehicle| %>
 
@@ -121,17 +111,17 @@
 
       <div class="row mb-2">
 
-        <div class ="col-sm border-top border-bottom">
+        <div class="col-sm border-top border-bottom">
           <strong>Insurance Provider:</strong>
           <%= vehicle.insurance_provider %>
         </div>
 
-        <div class ="col-sm border-top border-bottom">
+        <div class="col-sm border-top border-bottom">
           <strong>Insurance Start:</strong>
           <%= vehicle.insurance_start.strftime("%B %d, %Y") %>
         </div>
 
-        <div class ="col-sm border-top border-bottom">
+        <div class="col-sm border-top border-bottom">
           <strong>Insurance stop:</strong>
           <%= vehicle.insurance_stop.strftime("%B %d, %Y") %>
         </div>
@@ -148,29 +138,31 @@
           <%= link_to "Delete Car", vehicle_path(:id=>vehicle.id),method: :delete, class: "btn btn-darkgray btn-sm"%>
         </div>
 
-        <div class="col-sm ">
-
-        </div>
+        <div class="col-sm "></div>
 
       </div>
-     </div>
-  <%end%>
+    </div>
+  <% end %>
 
   <div class="ml-5 mt-2">
     <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-primary"%>
   </div>
 
   <div>
-    <h2 class ="bg-primary rounded mt-2 pl-2 ">Schedules:</h2>
+    <h2 class="bg-primary rounded mt-2 pl-2 ">Schedules:</h2>
     <%= @schedules %>
   </div>
 
-  <h2 class ="bg-primary rounded mt-2 pl-2 ">Locations</h2>
+  <h2 class="bg-primary rounded mt-2 pl-2 ">Locations</h2>
 
   <% @locations.each do |location| %>
-      <div><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></div>
+    <div><%= location.street %>,
+      <%= location.city %>
+      <%= location.state %>,
+      <%= location.zip %></div>
   <% end %>
 
-  <%= link_to 'Edit', edit_driver_path(@driver) %> |
+  <%= link_to 'Edit', edit_driver_path(@driver) %>
+  |
   <%= link_to 'Back', drivers_path %>
 </div>
