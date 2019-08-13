@@ -1,6 +1,8 @@
 class RidesController < ApplicationController
 
   before_action :authenticate_rider!
+  rescue_from Pundit::NotAuthorizedError, with: :rider_not_authorized
+
   layout 'rider_layout'
 
     def new
@@ -9,6 +11,9 @@ class RidesController < ApplicationController
 
     def show
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).show?
+          raise Pundit::NotAuthorizedError
+        end
       @start_location = Location.find(@ride.start_location_id)
       @end_location = Location.find(@ride.end_location_id)
     end
@@ -26,9 +31,9 @@ class RidesController < ApplicationController
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
 
-          if !@start_location.save
+        if !@start_location.save
             render 'new' and return
-          end
+        end
 
         @end_location = Location.new(
           street: ride_params[:end_street],
@@ -39,7 +44,7 @@ class RidesController < ApplicationController
           if !@end_location.save
             render 'new' and return
           end
-        
+
         @ride = Ride.new(
           organization_id: current_rider.organization.id,
           rider_id: current_rider.id,
@@ -57,22 +62,30 @@ class RidesController < ApplicationController
           render 'new'
         end
       else
-        flash[:notice] = "Sorry you do not have enough valid tokens to request this ride"
+        flash[:notice] = "Sorry, you do not have enough valid tokens to request this ride"
+
         redirect_to rides_path
       end
     end
 
     def edit
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).edit?
+        raise Pundit::NotAuthorizedError
+      end
     end
 
     def update
       @ride = Ride.find(params[:id])
+      unless RidePolicy.new(current_rider, @ride).update?
+        raise Pundit::NotAuthorizedError
+      end
+
       @start_location = @ride.start_location
       @end_location = @ride.end_location
 
       if !@start_location.update(
-        street: ride_params[:start_street], 
+        street: ride_params[:start_street],
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
@@ -82,7 +95,7 @@ class RidesController < ApplicationController
       end
 
       if !@end_location.update(
-        street: ride_params[:end_street], 
+        street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
@@ -101,13 +114,6 @@ class RidesController < ApplicationController
       end
     end
 
-    def destroy
-      @ride = Ride.find(params[:id])
-      @ride.destroy
-
-      redirect_to rides_path
-    end
-
     private
     def ride_params
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
@@ -115,4 +121,9 @@ class RidesController < ApplicationController
       :end_street, :end_city, :end_state, :end_zip, :reason, :status)
     end
 
+    def rider_not_authorized
+      flash.notice = "You are not authorized to view this information"
+
+      redirect_to rides_path
+    end
 end

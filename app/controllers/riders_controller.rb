@@ -1,6 +1,8 @@
 class RidersController < ApplicationController
 
   before_action :authenticate_user!
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   layout "administration"
 
   def new
@@ -9,6 +11,7 @@ class RidersController < ApplicationController
 
   def show
     @rider = Rider.find(params[:id])
+    authorize @rider
     @location_ids = LocationRelationship.where(rider_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
   end
@@ -37,10 +40,12 @@ class RidersController < ApplicationController
 
   def edit
     @rider = Rider.find(params[:id])
+    authorize @rider
   end
 
   def update
     @rider = Rider.find(params[:id])
+    authorize @rider
 
     if @rider.update(rider_params)
       flash.notice = "The rider information has been updated"
@@ -52,6 +57,8 @@ class RidersController < ApplicationController
 
   def bulk_update
     @rider = Rider.find(params[:rider_id])
+    authorize @rider
+
     quantity = params[:quantity].to_i
     if params[:commit] == "Add"
       add_bulk(@rider, quantity)
@@ -65,13 +72,17 @@ class RidersController < ApplicationController
       params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
     end
 
+    def user_not_authorized
+      flash.notice = "You are not authorized to view this information"
+      redirect_to riders_path
+    end
+
     def add_bulk(rider, quantity)
       previous_count = rider.valid_tokens.count
       quantity.times { rider.valid_tokens.create }
       diff = rider.valid_tokens.count - previous_count
       flash.notice = "#{diff} #{'token'.pluralize(diff)} added."
       redirect_to request.referrer
-
     end
 
     def remove_bulk(rider, quantity)
@@ -87,5 +98,4 @@ class RidersController < ApplicationController
         redirect_to request.referrer
       end
     end
-
 end
