@@ -17,6 +17,7 @@ class AdminRideController < ApplicationController
 
   def index
     @rides = current_user.organization.rides
+    @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
 
   def edit
