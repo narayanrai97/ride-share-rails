@@ -1,6 +1,8 @@
 class DriversController < ApplicationController
 
   before_action :authenticate_user!
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   layout "administration"
 
   def new
@@ -9,10 +11,10 @@ class DriversController < ApplicationController
 
   def show
     @driver = Driver.find(params[:id])
+    authorize @driver
     @vehicle = Vehicle.all
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
-
   end
 
   def index
@@ -49,10 +51,12 @@ class DriversController < ApplicationController
 
   def edit
     @driver = Driver.find(params[:id])
+    authorize @driver
   end
 
   def update
     @driver = Driver.find(params[:id])
+    authorize @driver
 
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated"
@@ -60,13 +64,6 @@ class DriversController < ApplicationController
     else
       render 'edit'
     end
-  end
-
-  def destroy
-    @driver = Driver.find(params[:id])
-    @driver.destroy
-
-    redirect_to drivers_path
   end
 
   #Method to Accept application
@@ -79,6 +76,7 @@ class DriversController < ApplicationController
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(application_state: "rejected")
     redirect_to driver_path(params[:driver_id])
   end
@@ -86,6 +84,7 @@ class DriversController < ApplicationController
   #change background_check to true
   def pass
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(background_check: true)
     redirect_to driver_path(params[:driver_id])
   end
@@ -93,13 +92,19 @@ class DriversController < ApplicationController
   #change background_check to false
   def fail
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.update(background_check: false)
     redirect_to driver_path(params[:driver_id])
   end
-
 
   private
   def driver_params
     params.require(:driver).permit(:first_name, :last_name, :phone, :email, :address, :car_make, :car_model, :car_color)
   end
+
+  def user_not_authorized
+    flash.notice = "You are not authorized to view this information"
+    redirect_to drivers_path
+  end
+
 end
