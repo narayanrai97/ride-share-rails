@@ -66,16 +66,6 @@ class DriversController < ApplicationController
     end
   end
 
-# Ramiro, can the following method be trashed since
-# we are not using destroy anymore?)
-
-  def destroy
-    @driver = Driver.find(params[:id])
-    @driver.destroy
-
-    redirect_to drivers_path
-  end
-
   #Method to Accept application
   def accept
    @driver = Driver.find(params[:driver_id])
