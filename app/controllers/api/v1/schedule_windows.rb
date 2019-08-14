@@ -68,7 +68,6 @@ module Api
       desc "Update an schedule window for a driver"
       params do
         requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
-        requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
         requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
         requires :start_time, type: String, desc: "Start date and time of availability"
         requires :end_time, type: String, desc: "End date and time of availability "
@@ -76,17 +75,19 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       put "availabilities/:id" do
-        driver = current_driver
-        schedule_window = ScheduleWindow.find(id: params[:id]).where(driver_id: driver.id).first
-        schedule_window.update(driver_id: driver.id, start_date: params[:start_date], end_date: params[:end_date], start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], is_recurring: params[:is_recurring])
-        pattern = RecurringPattern.where(schedule_window_id: schedule_window.id).first
+        
+        schedule_window = ScheduleWindow.find(params[:id])
+        schedule_window.update start_date: params[:start_date], end_date: params[:end_date], 
+        start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
+        is_recurring: params[:is_recurring]
+        pattern = RecurringPattern.where(schedule_window_id: schedule_window.id)
         if pattern != nil
-          pattern.destroy
+          pattern.destroy(schedule_window.id)
         end
-        if schedule_window.is_recurring == true
+        if schedule_window.is_recurring?
           RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
         end
-        render schedule_window
+        render json: schedule_window
       end
 
 
@@ -96,7 +97,7 @@ module Api
       end
       delete "availabilities/:id" do
         driver = current_driver
-        schedule_window = ScheduleWindow.where(id: params[:id]).where(driver_id: driver.id).first
+        schedule_window = ScheduleWindow.find(params[:id])
         if schedule_window.is_recurring
           pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
           pattern.destroy
