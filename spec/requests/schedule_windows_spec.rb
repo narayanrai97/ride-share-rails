@@ -13,7 +13,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     let!(:recurring_pattern) { FactoryBot.create(:recurring_weekly_pattern) }
     let!(:location) { FactoryBot.create(:location) }
     let!(:headers) {  {"ACCEPT" => "application/json", "Token" => logintoken}
-    }
+    
     
     it "Creates a availabilities with recurring false " do 
         post '/api/v1/availabilities', headers: headers,  params: { 
