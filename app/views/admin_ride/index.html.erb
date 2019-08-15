@@ -2,7 +2,11 @@
 
 
 <h1>Rides</h1>
-<%= paginate @rides %>
+<div class="mb-3">
+  <%= link_to 'Approved', admin_ride_index_path(status: "approved"), class:"btn btn-primary" %> |
+  <%= link_to 'Rejected', admin_ride_index_path(status: "rejected"), class:"btn btn-primary" %> |
+  <%= link_to 'Canceled', admin_ride_index_path(status: "canceled"), class:"btn btn-primary" %>
+</div>
 <table class="table table-striped">
   <tr class="border-bot">
     <th scope="col">Rider</th>

@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     as :driver do
       post   "v1/sign-in"       => "v1/sessions#create"
       delete "v1/sign-out"      => "v1/sessions#destroy"
+      resources :vehicles
     end
   end
 
