@@ -12,7 +12,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
     let!(:recurring_pattern) { FactoryBot.create(:recurring_weekly_pattern) }
     let!(:location) { FactoryBot.create(:location) }
-    let!(:headers) {  {"ACCEPT" => "application/json", "Token" => logintoken}
+    let!(:headers)  { {"ACCEPT" => "application/json", "Token" => logintoken} }
     
     
     it "Creates a availabilities with recurring false " do 
