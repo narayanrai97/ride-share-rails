@@ -80,9 +80,9 @@ module Api
         schedule_window.update start_date: params[:start_date], end_date: params[:end_date], 
         start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
         is_recurring: params[:is_recurring]
-        pattern = RecurringPattern.where(schedule_window_id: schedule_window.id)
+        pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
         if pattern != nil
-          pattern.destroy(schedule_window.id)
+          pattern.destroy
         end
         if schedule_window.is_recurring?
           RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)

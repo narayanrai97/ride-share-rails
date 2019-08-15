@@ -99,7 +99,6 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
       
     it "Delete" do
         delete "/api/v1/availabilities/#{recurring_pattern.schedule_window.id}", headers: headers
-        
         expect(ScheduleWindow.count).to eq(0)
     end
   end
