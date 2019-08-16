@@ -35,8 +35,8 @@
           <td><%= driver.application_state %></td>
           <td><%= link_to 'Review', driver_path(driver) %> </td>
           <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
-          <td><%= link_to 'Delete', driver_path(driver),
-                          method: :delete,
+          <td><%= link_to 'Deactivate', driver_deactivate_path(driver),
+                          method: :put,
                           data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>

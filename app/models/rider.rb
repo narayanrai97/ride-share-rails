@@ -7,7 +7,7 @@ class Rider < ApplicationRecord
   has_many   :rides
 
   validates :first_name, :last_name, :phone, :organization, presence: true
-  # validates :email, presence: true
+  scope :active, -> { where(is_active: true) }
 
 
   def full_name

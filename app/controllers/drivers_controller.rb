@@ -19,11 +19,11 @@ class DriversController < ApplicationController
 
   def index
     if params[:application_state]== "pending"
-      @drivers = current_user.organization.drivers.where(:application_state =>"pending").order(last_name: :desc)
+      @drivers = current_user.organization.drivers.active.where(:application_state =>"pending").order(last_name: :desc)
     elsif params[:application_state]== "approved"
-      @drivers = current_user.organization.drivers.where(:application_state =>"approved").order(last_name: :desc)
+      @drivers = current_user.organization.drivers.active.where(:application_state =>"approved").order(last_name: :desc)
     else
-      @drivers = current_user.organization.drivers.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.active.order(last_name: :desc)
     end
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
     @vehicle = Vehicle.all
@@ -95,6 +95,13 @@ class DriversController < ApplicationController
     authorize @driver
     @driver.update(background_check: false)
     redirect_to driver_path(params[:driver_id])
+  end
+
+  def deactivate
+    @driver = Driver.find(params[:driver_id])
+    @driver.toggle(:is_active).save
+    flash.notice = "Driver deactivated."
+    redirect_to request.referrer || drivers_path
   end
 
   private
