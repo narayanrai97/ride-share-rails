@@ -34,7 +34,6 @@ module Api
       end
 
       def destroy_token
-        byebug
         resource = current_driver
         if (resource != nil)
           resource.invalidate_auth_token
@@ -49,7 +48,6 @@ module Api
 
       private
       def invalid_login_attempt
-        byebug
         status 401
         render json: { errors: [ { detail:"Error with your login or password" }]}
       end
