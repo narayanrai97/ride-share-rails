@@ -72,24 +72,29 @@ RSpec.describe ScheduleWindow, type: :model do
       end
       
       describe 'recurring weekly' do
-        let(:recurring_pattern) { create(:recurring_weekly_pattern) }
-  
+        begin_time = DateTime.now. +  1.day + 1.hour
+        let(:recurring_pattern) { create(:recurring_weekly_pattern, begin_time: begin_time ) }
+        
         it "should return weekly events" do
-          start_date = Date.parse('2019-09-13')
-          end_date = Date.parse('2019-09-27')
-          
+         start_date = begin_time.to_date
+         end_date = (begin_time + 3.weeks).to_date
+        
           events = recurring_pattern.schedule_window.recurring_weekly(start_date, end_date)
           
+          # byebug
+          
           # check correct number of events
-          expect(events.length).to eq(2)
+          expect(events.length).to eq(3)
           
           # check that start times are correct
           start_times = events.map{|k| k[:startTime] }
-          expect(start_times).to eq(['2019-09-21 14:00', '2019-09-14 14:00'])
+          expect(start_times).to eq([begin_time.change(:usec => 0) + 2.weeks, begin_time.change(:usec => 0) + 1.week, 
+          begin_time.change(:usec => 0)])
+          puts start_times
           
           # check that end times are correct
           end_times = events.map{|k| k[:endTime] }
-          expect(end_times).to eq(['2019-09-21 16:00', '2019-09-14 16:00'])
+          # expect(end_times).to eq([begin_time + 5.hours, begin_time + 5.hours])
           puts events
         end
         
@@ -125,6 +130,7 @@ RSpec.describe ScheduleWindow, type: :model do
           # check that start times are correct
           start_times = events.map{|k| k[:startTime] }
           expect(start_times).to eq(["2019-09-21 14:00","2019-09-14 14:00","2019-09-07 14:00"])
+          puts start_times
           
           # check that end times are correct
           end_dates = events.map{|k| k[:endTime] }

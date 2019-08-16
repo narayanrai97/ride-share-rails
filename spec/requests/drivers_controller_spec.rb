@@ -37,9 +37,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     end
     
     it 'update driver infomation ' do
-        byebug
-        
-    #   post '/api/v1/login', headers: headers, params: { email: "user3@sample.com", password: "password" }
+
        put "/api/v1/drivers", headers: {"ACCEPT" => "application/json", "Token" => logintoken }, params: 
        {driver: { email: "sample@sample.com", password: "password",
        first_name: "Bob", last_name: "Martin",
@@ -53,7 +51,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     it 'logout driver and destorys token' do
         delete '/api/v1/logout', headers: headers
-        expect(response).to have_http_status(405)
+        expect(response).to have_http_status(201)
 
         # this test makes sure that the token has been destory
         delete '/api/v1/logout', headers: headers

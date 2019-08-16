@@ -1,12 +1,15 @@
 FactoryBot.define do 
    factory :recurring_pattern do 
       factory :recurring_weekly_pattern do
+         transient do
+            begin_time { Time.now }
+         end
          schedule_window { 
             create(:schedule_window, 
-                   start_date: '2019-09-07', 
-                   end_date: '2019-10-21', 
-                   start_time: '2019-09-07 14:00', 
-                   end_time: '2019-09-07 16:00',
+                   start_date:  begin_time,
+                   end_date:    begin_time + 3.months ,
+                   start_time:  begin_time,
+                   end_time:    begin_time + 5.hours ,
                    is_recurring: true)
          }
          separation_count { 0 }
