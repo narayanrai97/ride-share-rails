@@ -18,7 +18,7 @@ module Api
       desc "Destroys token"
       params do
       end
-      post "logout", root: :driver do
+      delete "logout", root: :driver do
         destroy_token
       end
 
