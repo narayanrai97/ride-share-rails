@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     put :reject
     put :pass
     put :fail
+    put :deactivate
   end
 
   devise_scope :driver do
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
       get 'edit/:rider_id' => 'riders#edit'
       post 'bulk_update'
     end
+    put :deactivate
   end
 
   devise_scope :rider do

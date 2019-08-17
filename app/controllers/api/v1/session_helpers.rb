@@ -25,8 +25,8 @@ module Api
         resource ||= Driver.new
         if resource.valid_password?(password)
           auth_token = resource.generate_auth_token
+          status 201
           render json: { auth_token: auth_token }
-
         else
           invalid_login_attempt
         end
@@ -37,16 +37,19 @@ module Api
         resource = current_driver
         if (resource != nil)
           resource.invalidate_auth_token
+          status 201
           render json: {Success: "Logged Out"}
         else
-          render json: { errors: [ { detail:"Valid token not provided for logout." }]}, status: 401
+          status 401
+          render json: { errors: [ { detail:"Valid token not provided for logout." }]}
         end
       end
 
 
       private
       def invalid_login_attempt
-        render json: { errors: [ { detail:"Error with your login or password" }]}, status: 401
+        status 401
+        render json: { errors: [ { detail:"Error with your login or password" }]}
       end
 
       private
