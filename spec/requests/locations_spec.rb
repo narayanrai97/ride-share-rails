@@ -9,10 +9,7 @@ RSpec.describe Api::V1::Locations, type: :request do
      auth_token: "1234",token_created_at: Time.zone.now) }
      #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
-  let!(:location1){FactoryBot.create(:location,zip: '27709')}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id)}
-  let!(:locationrelationship1){LocationRelationship.create(driver_id: driver.id, location_id: location1.id )}
-
 
 
     #Created a Location based on the logged in user. Uses token previously created
@@ -26,6 +23,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(201)
       parsed_json = JSON.parse(response.body)
+      puts parsed_json
 
       expect(parsed_json['location']['street']).to eq('200 Front Street')
       expect(parsed_json['location']['city']).to eq("Burlington")
@@ -46,12 +44,12 @@ RSpec.describe Api::V1::Locations, type: :request do
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
     
-      expect(parsed_json['locations'][0]['street']).to eq('1200 front st.')
+      locations = parsed_json['locations']
+      location = locations.first
+      expect(location['street']).to eq('1200 front st.')
       expect(parsed_json['locations'][0]['city']).to eq('Durham')
       expect(parsed_json['locations'][0]['state']).to eq('NC')
       expect(parsed_json['locations'][0]['zip']).to eq( "27705")
-      expect(parsed_json['locations'][1]['zip']).to eq( "27709")
-
   end
 
   #Give the api a location id and get back information for it
@@ -62,7 +60,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      #puts parsed_json
+      # puts parsed_json
       expect(parsed_json['location']['street']).to eq('1200 front st.')
       expect(parsed_json['location']['city']).to eq('Durham')
       expect(parsed_json['location']['state']).to eq('NC')
