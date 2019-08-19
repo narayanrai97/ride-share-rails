@@ -8,7 +8,7 @@ FactoryBot.define do
             create(:schedule_window, 
                    start_date:  begin_time,
                    end_date:    begin_time + 3.months ,
-                   start_time:  begin_time,
+                   start_time:  begin_time + 1.hour,
                    end_time:    begin_time + 2.hours ,
                    is_recurring: true)
          }

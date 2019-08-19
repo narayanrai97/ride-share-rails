@@ -75,8 +75,7 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       put "availabilities/:id" do
-        
-        schedule_window = ScheduleWindow.find(params[:id])
+        schedule_window = current_driver.schedule_windows.find(params[:id])
         schedule_window.update start_date: params[:start_date], end_date: params[:end_date], 
         start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
         is_recurring: params[:is_recurring]
@@ -96,8 +95,7 @@ module Api
         requires :id, type: String, desc: "ID of avaliablity"
       end
       delete "availabilities/:id" do
-        driver = current_driver
-        schedule_window = ScheduleWindow.find(params[:id])
+        schedule_window = current_driver.schedule_windows.find(params[:id])
         if schedule_window.is_recurring
           pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
           pattern.destroy

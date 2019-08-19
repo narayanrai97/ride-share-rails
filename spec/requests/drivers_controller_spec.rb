@@ -19,7 +19,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     it "enrolls a driver" do
        post '/api/v1/drivers', headers: headers, 
-       params: {driver: { email: "sample@sample.com", password: "password",
+       params: {driver: { email: "v1@sample.com", password: "password",
        first_name: "Bob", last_name: "Steve", 
        phone: "3361234567", 
        organization_id: organization.id, radius: 50, is_active: true
@@ -28,7 +28,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
        expect(response).to have_http_status(201)
        parsed_json = JSON.parse(response.body)
     
-       expect(parsed_json['driver']['email']).to eq('sample@sample.com')
+       expect(parsed_json['driver']['email']).to eq('v1@sample.com')
        expect(parsed_json['driver']['first_name']).to eq('Bob')
        expect(parsed_json ['driver']['last_name']).to eq('Steve')
        expect(parsed_json['driver']['phone']).to eq('3361234567')
@@ -38,13 +38,13 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     it 'update driver infomation ' do
 
-       put "/api/v1/drivers", headers: {"ACCEPT" => "application/json", "Token" => logintoken }, params: 
+       put "/api/v1/drivers", headers: headers, params: 
        {driver: { email: "sample@sample.com", password: "password",
        first_name: "Bob", last_name: "Martin",
        phone: "7180987654", 
        organization_id: organization.id, radius: 50, is_active: true
        }}
-     
+       
        expect(response).to have_http_status(200)
        
     end
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
 
         # this test makes sure that the token has been destory
         delete '/api/v1/logout', headers: headers
-        expect(response).to have_http_status(405)
+        expect(response).to have_http_status(401)
     end
 end
 
