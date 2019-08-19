@@ -5,7 +5,7 @@ module Api
 
         desc "Return all riders"
         get "riders", root: :riders do
-          render Rider.all
+          render json: Rider.all
         end
 
 
