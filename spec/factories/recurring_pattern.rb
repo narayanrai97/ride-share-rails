@@ -9,7 +9,7 @@ FactoryBot.define do
                    start_date:  begin_time,
                    end_date:    begin_time + 3.months ,
                    start_time:  begin_time,
-                   end_time:    begin_time + 5.hours ,
+                   end_time:    begin_time + 2.hours ,
                    is_recurring: true)
          }
          separation_count { 0 }
