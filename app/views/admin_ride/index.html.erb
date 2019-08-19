@@ -1,8 +1,8 @@
 <div class="container">
 
-
 <h1 style="text-align: center">List of All Rides</h1>
 <%= paginate @rides %>
+
 <table class="table table-striped">
   <tr class="border-bot">
     <th scope="col">Rider</th>
@@ -40,8 +40,8 @@
 </table>
 
 <%= paginate @rides %>
-<%= link_to 'Back', welcome_index_path %> |
-<%= link_to 'New Ride', new_admin_ride_path %>
+<%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
+<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-outline-info my-2 my-sm-0" %>
 
 </div>
 
