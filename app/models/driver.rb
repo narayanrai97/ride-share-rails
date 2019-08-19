@@ -12,12 +12,13 @@ class Driver < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  scope :active, -> { where(is_active: true) }
 
 
   def full_name
     "#{first_name} #{last_name}"
   end
-  
+
   def generate_auth_token
     token = SecureRandom.hex
     self.update_columns(auth_token: token, token_created_at: Time.zone.now)
