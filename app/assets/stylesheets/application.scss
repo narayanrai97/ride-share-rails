@@ -13,7 +13,7 @@
 
  */
  $theme-colors: (
-  "primary" : #ff8262,
+  "primary" : #17a2b8,
   "green" : #1EAA70,
   "creamOffwhite" : #fcfcf6,
   "darkgray" : #475c67,
@@ -26,9 +26,11 @@
    background-color: orange;
  }
 
-.table tr th {
- // background-color: red;
- // border-top: none;
+body {
+  background-color: ash;
+  width: 100%;
+  position: absolute;
+  height: 100%;
 }
 
 .border-bot {
@@ -70,10 +72,50 @@
   flex-direction: column;
 }
 
-a.dropdown-toggle {
+.bg-light {
+  background-color: #ff8262 !important;
+}
+
+.sessions a {
   color: black;
 }
 
-.nav-link {
-  padding: 0.001rem;
+.jumbotron {
+  margin: 25px;
+}
+
+.navbar-collapse ul li:hover {
+  background-color: white;
+}
+
+.sessions a:hover {
+  background-color: white;
+  padding: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: #F0F8FF;
+  border: solid darkgray 2px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: white;}
+
+th {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.table th, .table td {
+  border-top: none;
+}
+
+.card {
+  border: solid darkgray 2px;
 }
