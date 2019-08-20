@@ -48,7 +48,7 @@ module Api
         location.attributes= (params[:location])
         if location.save
           LocationRelationship.create(location_id: location.id, driver_id: driver.id)
-          render json: location
+          render location
         end
       end
 
@@ -98,11 +98,11 @@ module Api
           #Create new location and locationrelationship
           new_location = Location.create(params[:location])
           LocationRelationship.create(location_id: new_location.id, driver_id: driver.id)
-          render json: new_location
+          render new_location
         else
           #update old location
           old_location.update(params[:location])
-          render json: old_location
+          render old_location
         end
       end
     end
