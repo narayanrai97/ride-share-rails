@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Locations, type: :request do
+  
   #Drivers require a organization to assosiate with
   let!(:organization) { FactoryBot.create(:organization) }
   #Created a token to by pass login but had to include
@@ -23,19 +24,13 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(201)
       parsed_json = JSON.parse(response.body)
-      puts parsed_json
 
       expect(parsed_json['location']['street']).to eq('200 Front Street')
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27215")
       expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
-
-
   end
-
-
-
 
   it 'will return locations of driver ' do
 
@@ -60,13 +55,10 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      # puts parsed_json
       expect(parsed_json['location']['street']).to eq('1200 front st.')
       expect(parsed_json['location']['city']).to eq('Durham')
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27705")
-
-
   end
   #Delete Record based on id
   it 'will delete a location based on id passed ' do
@@ -75,11 +67,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      #puts parsed_json
       expect(parsed_json['success']).to eq(true)
-
-
-
   end
 
   it 'will update a location related to logged in user' do
@@ -92,16 +80,11 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      #puts parsed_json
       expect(parsed_json['location']['street']).to eq('210 Front Street')
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27217")
       expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
-
-
   end
-
-
 
 end
