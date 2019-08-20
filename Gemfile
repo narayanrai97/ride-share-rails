@@ -83,6 +83,7 @@ gem 'grape-entity'
 gem 'rack-cors', :require => 'rack/cors'
 
 #seralizer
+gem 'active_model_serializers', '0.10.8'
 gem 'grape-active_model_serializers'
 
 #api documentation

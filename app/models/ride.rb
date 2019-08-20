@@ -13,6 +13,11 @@ class Ride < ApplicationRecord
   validates :status, inclusion: { in: %w(requested pending approved scheduled matched canceled picking-up dropping-off completed),
   message: "%{value} is not a valid status" }
 
+  scope :approved, -> { where(status: "approved") }
+  scope :rejected, -> { where(status: "rejected") }
+  scope :canceled, -> { where(status: "canceled") }
+  scope :pending, -> { where(status: "pending") }
+
   # validate that start_location and end_location are valid
   def valid_locations
     if start_location.present? && !start_location.valid?

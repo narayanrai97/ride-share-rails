@@ -11,47 +11,38 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <%= link_to 'Home', welcome_index_path, :class => 'nav-link' %>
           </li>
-          <li class="nav-item">
-          <%= link_to 'Drivers', drivers_path, :class => 'nav-link' %>
+          <li class="nav-item active">
+            <%= link_to 'Drivers', drivers_path, :class => 'nav-link' %>
           </li>
-          <li class="nav-item">
-              <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
+          <li class="nav-item active">
+            <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
           </li>
-          <li class="nav-item">
-              <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link' %>
+          <li class="nav-item active">
+            <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link' %>
           </li>
           <% if current_user.organization.use_tokens %>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <%= link_to 'Tokens', tokens_path, :class => 'nav-link' %>
             </li>
           <% end %>
-           </li>
           <li class="nav-item">
               <%= link_to 'Change Password', edit_user_registration_path, :class => 'nav-link' %>
           </li>
-
-
         </ul>
-        <div><% if user_signed_in? %>
-          Logged in as <strong><%= current_user.email %></strong>.
-
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-        <% else %>
-
-          <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-        <% end %>
+        <div class="sessions">
+          <% if user_signed_in? %>
+            <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+          <% end %>
         </div>
       </div>
     </nav>
-
-
 
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
@@ -59,6 +50,7 @@
     <% if alert %>
       <p class="alert alert-danger"><%= alert %></p>
     <% end %>
-        <%= yield %>
+
+    <%= yield %>
   </body>
 </html>
