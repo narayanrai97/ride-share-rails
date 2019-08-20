@@ -1,15 +1,26 @@
 <div class="container">
 
-
-<h1>Rides</h1>
+<h1 style="text-align: center">List of All Rides</h1>
 <%= paginate @rides %>
+
 <table class="table table-striped">
   <tr class="border-bot">
     <th scope="col">Rider</th>
     <th scope="col">Driver</th>
     <th scope="col">Pick Up Time</th>
     <th scope="col">Reason</th>
-    <th scope="col">Status</th>
+    <th scope="col">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Status
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to 'Approved', admin_ride_index_path(status: "approved") if current_user.organization.rides.approved.count > 0 %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Rejected', admin_ride_index_path(status: "rejected") if current_user.organization.rides.rejected.count > 0 %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") if current_user.organization.rides.canceled.count > 0%>
+        </div>
+    </th>
     <th scope="col"></th>
     <th scope="col"></th>
     <th scope="col"></th>
@@ -18,21 +29,23 @@
   <% @rides.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
     <tr>
-      <td><%= ride.rider&.full_name %></td>
+      <td><%= ride.rider.full_name %></td>
       <td><%= ride.driver&.full_name %></td>
       <td><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p")  %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
-      <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
-      <% if ride.status == 'approved' %>
-        <td><%= link_to 'Approve', "#", class: "btn btn-sm btn-success disabled"%></td>
-      <% else %>
-        <td><%= link_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
-      <% end %>
-      <% if ride.status == 'rejected' %>
-        <td><%= link_to 'Reject', "#", class: "btn btn-sm btn-success disabled" %></td>
-      <% else %>
-        <td><%= link_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+      <% if ride.status != 'canceled' %>
+        <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
+        <% if ride.status == 'approved' %>
+          <td><%= link_to 'Approve', "#", class: "btn btn-sm btn-success disabled"%></td>
+        <% else %>
+          <td><%= link_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
+        <% end %>
+        <% if ride.status == 'rejected' %>
+          <td><%= link_to 'Reject', "#", class: "btn btn-sm btn-success disabled" %></td>
+        <% else %>
+          <td><%= link_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+        <% end %>
       <% end %>
     </tr>
     <% end %>
@@ -40,8 +53,8 @@
 </table>
 
 <%= paginate @rides %>
-<%= link_to 'Back', welcome_index_path %> |
-<%= link_to 'New Ride', new_admin_ride_path %>
+<%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
+<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-outline-info my-2 my-sm-0" %>
 
 </div>
 

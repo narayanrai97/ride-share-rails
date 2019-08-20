@@ -1,6 +1,7 @@
 <div class="container">
 
-  <h1>Drivers</h1>
+  <h1 style="text-align: center">List of All Drivers</h1>
+  <%= paginate @drivers %>
 
   <div class="mb-3">
     <%= link_to 'All Applications', drivers_path, class:"btn btn-primary" %> |
@@ -35,8 +36,8 @@
           <td><%= driver.application_state %></td>
           <td><%= link_to 'Review', driver_path(driver) %> </td>
           <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
-          <td><%= link_to 'Delete', driver_path(driver),
-                          method: :delete,
+          <td><%= link_to 'Deactivate', driver_deactivate_path(driver),
+                          method: :put,
                           data: { confirm: 'Are you sure?' } %></td>
         </tr>
       <% end %>
@@ -44,6 +45,6 @@
   </table>
 
   <%= paginate @drivers %>
-  <%= link_to 'Back', welcome_index_path %> |
-  <%= link_to 'New Driver', new_driver_path %>
+  <%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
+  <%= link_to 'New Driver', new_driver_path, class: "btn btn-outline-info my-2 my-sm-0" %>
 </div>

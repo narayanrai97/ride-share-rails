@@ -11,40 +11,28 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <%= link_to 'Home', welcome_rider_path, :class => 'nav-link' %>
+          </li>
+          <li class="nav-item active">
+              <%= link_to 'Rides', rides_path, :class => 'nav-link' %>
+          </li>
+          <li class="nav-item">
+              <%= link_to 'Change Password', edit_rider_registration_path, :class => 'nav-link' %>
+          </li>
 
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <%= link_to 'Home', welcome_rider_path, :class => 'nav-link' %>
-      </li>
-    <% if false %>
-      <li class="nav-item">
-          <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
-      </li>
-    <% end %>
-      <li class="nav-item">
-          <%= link_to 'Rides', rides_path, :class => 'nav-link' %>
-      </li>
-      <li class="nav-item">
-          <%= link_to 'Change Password', edit_rider_registration_path, :class => 'nav-link' %>
-      </li>
-
-    </ul>
-    <div><% if rider_signed_in? %>
-      Logged in as <strong><%= current_rider.email %></strong>.
-
-      <%= link_to "Logout", destroy_rider_session_path, method: :delete, :class => 'navbar-link'  %>
-    <% else %>
-
-      <%= link_to "Login", new_rider_session_path, :class => 'navbar-link'  %>
-    <% end %>
-    </div>
-  </div>
-</nav>
-
-
-
+        </ul>
+        <div class="sessions">
+          <% if rider_signed_in? %>
+            <%= link_to "Logout", destroy_rider_session_path, method: :delete, :class => 'navbar-link'  %>
+          <% else %>
+            <%= link_to "Login", new_rider_session_path, :class => 'navbar-link'  %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
 
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
@@ -52,6 +40,7 @@
     <% if alert %>
       <p class="alert alert-danger"><%= alert %></p>
     <% end %>
-        <%= yield %>
+
+    <%= yield %>
   </body>
 </html>
