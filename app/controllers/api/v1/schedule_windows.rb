@@ -54,7 +54,7 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       post "availabilities" do
-        current_driver.schedule_windows.create( 
+       schedule_window = current_driver.schedule_windows.new( 
           start_date: params[:start_date], 
           end_date: params[:end_date], 
           start_time: params[:start_time],
@@ -62,6 +62,8 @@ module Api
           location_id: params[:location_id], 
           is_recurring: params[:is_recurring]
         )
+        schedule_window.save
+        schedule_window
       end
 
 

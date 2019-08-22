@@ -17,15 +17,18 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     
     it "Creates a availabilities with recurring false " do 
         post '/api/v1/availabilities', headers: headers,  params: { 
-            start_time: "09/01/2025 1400", 
-            end_time: "09/01/2025 1600", 
+            start_date: "2025-09-01",
+            start_time: "2025-09-01 14:00", 
+            end_time: "2025-09-01 16:00",
+            end_date: "2025-09-02",
             is_recurring: false,
             location_id: location.id
             } 
           parsed_json = JSON.parse(response.body)
-          expect(parsed_json['start_time']).to eq("2025-01-09T00:00:00.000Z")
-          expect(parsed_json['end_time']).to eq("2025-01-09T00:00:00.000Z")
-          expect(parsed_json['is_recurring']).to eq(false)
+          puts parsed_json
+          expect(parsed_json['schedule_window']['start_time']).to eq("2025-09-01T14:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_time']).to eq("2025-09-01T16:00:00.000Z")
+          expect(parsed_json['schedule_window']['is_recurring']).to eq(false)
       end
      
      it "Creates availabilities with recurring true" do
@@ -37,11 +40,13 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             is_recurring: true,
             location_id: location.id
           }
-          expect(recurring_pattern.separation_count).to eq(0)
-          expect(recurring_pattern.day_of_week).to eq(6)
-          expect(recurring_pattern.week_of_month).to eq(nil)
-          expect(recurring_pattern.month_of_year).to eq(nil)
-          expect(recurring_pattern.type_of_repeating).to eq('weekly')
+          parsed_json = JSON.parse(response.body)
+          puts parsed_json
+          expect(parsed_json['schedule_window']['start_date']).to eq("2025-10-01T00:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_date']).to eq("2025-12-31T00:00:00.000Z")
+          expect(parsed_json['schedule_window']['start_time']).to eq("2025-10-01T14:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_time']).to eq("2025-10-01T17:00:00.000Z")
+          expect(parsed_json['schedule_window']['is_recurring']).to eq(true)
       end
       
       it 'Gets recurring schedule window that is true ' do

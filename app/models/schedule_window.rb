@@ -45,7 +45,7 @@ class ScheduleWindow < ApplicationRecord
 
   def end_date_after_start_date
     if start_date.present? && end_date.present?
-      if start_date == end_date
+      if start_date == end_date && is_recurring == true
         errors.add(:end_date, "cannot be same as start date")
       elsif start_date > end_date
         errors.add(:start_date, "cannot be later than the end date")
@@ -83,6 +83,7 @@ class ScheduleWindow < ApplicationRecord
   end
   
   def nonrecurring_event(query_start_date, query_end_date)
+    byebug
     if query_start_date <= start_time && end_time < query_end_date 
       [{
         eventId: id, 
