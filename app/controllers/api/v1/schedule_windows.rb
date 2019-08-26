@@ -25,6 +25,11 @@ module Api
         start_time = params[:start] || DateTime.now
         end_time = params[:end] ||  DateTime.now+3.months
         result = current_driver.events(start_time, end_time)
+        if result != nil
+          status 200
+        else
+          status 400
+        end
         render json: result
       end
 
@@ -40,6 +45,11 @@ module Api
         start_time = params[:start] || DateTime.now
         end_time = params[:end] ||  DateTime.now+3.months
         result = schedule.events(start_time, end_time)
+        if result != nil
+          status 201
+        else
+          status 401
+        end
         render json: result
       end
 
@@ -62,8 +72,13 @@ module Api
           location_id: params[:location_id], 
           is_recurring: params[:is_recurring]
         )
-        schedule_window.save
-        schedule_window
+          if schedule_window.save
+           status 201
+           schedule_window
+          else
+           status 401
+           schedule_window.errors.messages
+          end
       end
 
 
@@ -103,7 +118,7 @@ module Api
           pattern.destroy
         end
         if schedule_window.destroy != nil
-          return { sucess:true }
+          return { success:true }
         end
       end
     end
