@@ -28,7 +28,7 @@ module Api
         if result != nil
           status 200
         else
-          status 400
+          status 404
         end
         render json: result
       end
@@ -46,9 +46,9 @@ module Api
         end_time = params[:end] ||  DateTime.now+3.months
         result = schedule.events(start_time, end_time)
         if result != nil
-          status 201
+          status 200
         else
-          status 401
+          status 404
         end
         render json: result
       end
@@ -64,19 +64,23 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       post "availabilities" do
-       schedule_window = current_driver.schedule_windows.new( 
-          start_date: params[:start_date], 
-          end_date: params[:end_date], 
-          start_time: params[:start_time],
-          end_time: params[:end_time], 
-          location_id: params[:location_id], 
-          is_recurring: params[:is_recurring]
-        )
+        attributes = {start_date: params[:start_date], end_date: params[:end_date], 
+        start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
+        is_recurring: params[:is_recurring]}
+        
+       schedule_window = current_driver.schedule_windows.new(attributes)
+       pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
+       if pattern != nil
+          pattern.destroy
+        end
+        if schedule_window.is_recurring?
+          RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+        end
           if schedule_window.save
            status 201
            schedule_window
           else
-           status 401
+           status 404
            schedule_window.errors.messages
           end
       end
@@ -92,10 +96,12 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       put "availabilities/:id" do
-        schedule_window = current_driver.schedule_windows.find(params[:id])
-        schedule_window.update start_date: params[:start_date], end_date: params[:end_date], 
+        attributes = {start_date: params[:start_date], end_date: params[:end_date], 
         start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
-        is_recurring: params[:is_recurring]
+        is_recurring: params[:is_recurring]}
+        
+        schedule_window = current_driver.schedule_windows.find(params[:id])
+        schedule_window.update(attributes)
         pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
         if pattern != nil
           pattern.destroy
@@ -103,7 +109,14 @@ module Api
         if schedule_window.is_recurring?
           RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
         end
-        render json: schedule_window
+        if schedule_window.update(attributes)
+          status 202
+          schedule_window
+        else 
+          status 404
+           schedule_window.errors.messages
+        end
+        # render json: schedule_window
       end
 
 

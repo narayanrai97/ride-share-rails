@@ -83,7 +83,6 @@ class ScheduleWindow < ApplicationRecord
   end
   
   def nonrecurring_event(query_start_date, query_end_date)
-    byebug
     if query_start_date <= start_time && end_time < query_end_date 
       [{
         eventId: id, 
