@@ -45,7 +45,7 @@ module Api
         location_ids.each do |id|
           locations.push(Location.where(id: id))
         end
-        render driver
+        render json: driver
         #render json: {"driver": driver, "location": locations}
       end
 
@@ -66,7 +66,7 @@ module Api
         driver = current_driver
         driver.attributes= (params[:driver])
         if driver.save
-          render current_driver
+          render json: current_driver
         end
       end
 

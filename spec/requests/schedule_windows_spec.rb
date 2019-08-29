@@ -2,129 +2,137 @@ require 'rails_helper'
 
 RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     def logintoken
-       post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: "v1@sample.com", password: "password" }
+       post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { 
+          email: recurring_pattern.schedule_window.driver.email,
+       password: "password" }
        parsed_json = JSON.parse(response.body)
        parsed_json['json']['auth_token']
     end
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
-    let!(:schedule_window) { FactoryBot.create(:schedule_window, driver_id: driver.id) }
+    let!(:recurring_pattern) { FactoryBot.create(:recurring_weekly_pattern) }
     let!(:location) { FactoryBot.create(:location) }
-    let!(:headers) {  {"ACCEPT" => "application/json", "Token" => logintoken}
-    }
+    let!(:headers)  { {"ACCEPT" => "application/json", "Token" => logintoken} }
     
-    # Avariablities used for test below
-    time = Time.now 
-    start_date = time + 3.months 
-    end_date = time + 5.months
-    start_time = time + 2.hours
-    end_time = time + 5.hours
-
-   
+    
     it "Creates a availabilities with recurring false " do 
         post '/api/v1/availabilities', headers: headers,  params: { 
-            start_date: start_date,
-            end_date: end_date, 
-            start_time: start_time, 
-            end_time: end_time, 
+            start_date: "2025-09-01",
+            start_time: "2025-09-01 14:00", 
+            end_time: "2025-09-01 16:00",
+            end_date: "2025-09-02",
             is_recurring: false,
             location_id: location.id
             } 
           parsed_json = JSON.parse(response.body)
-          expect(Time.parse(parsed_json['start_date'])).to eq(start_date.change(usec: 0))
-          expect(Time.parse(parsed_json['end_date'])).to eq(end_date.change(usec: 0))
-          expect(Time.parse(parsed_json['start_time'])).to eq(start_time.change(usec: 0))
-          expect(Time.parse(parsed_json['end_time'])).to eq(end_time.change(usec: 0))
-          expect(parsed_json['is_recurring']).to eq(false)
+          expect(parsed_json['schedule_window']['start_time']).to eq("2025-09-01T14:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_time']).to eq("2025-09-01T16:00:00.000Z")
+          expect(parsed_json['schedule_window']['is_recurring']).to eq(false)
+          expect(response).to have_http_status(201)
+      end
+      
+      # This test should return a 401, since start time and end_time can not be after the start and end dates.
+      it "returns a error message when endate is before end time" do 
+        post '/api/v1/availabilities', headers: headers,  params: { 
+            start_date: "2025-10-03",
+            start_time: "2025-09-22 14:00", 
+            end_time: "2025-10-22 16:00",
+            end_date: "2025-10-15",
+            is_recurring: true,
+            location_id: location.id
+            } 
+          parsed_json = JSON.parse(response.body)
+          expect(response).to have_http_status(404)
+          
       end
      
      it "Creates availabilities with recurring true" do
-        post '/api/v1/availabilities', headers: {"ACCEPT" => "application/json", "Token" => logintoken}, params: { 
-            start_date: '2019-07-16',
-            end_date: '2019-12-03', 
-            start_time: '2019-07-16 14:00', 
-            end_time: '2019-07-16 15:00', 
+        post '/api/v1/availabilities', headers: headers, params: { 
+            start_date: '2025-10-01',
+            end_date: '2025-12-31', 
+            start_time: '2025-10-01 14:00', 
+            end_time: '2025-10-01 17:00', 
             is_recurring: true,
             location_id: location.id
           }
-          
-          recurring_pattern = RecurringPattern.first
-          puts recurring_pattern.inspect
           parsed_json = JSON.parse(response.body)
-          puts parsed_json
-          expect(recurring_pattern.separation_count).to eq(0)
-          expect(recurring_pattern.day_of_week).to eq(2)
-          expect(recurring_pattern.week_of_month).to eq(nil)
-          expect(recurring_pattern.month_of_year).to eq(nil)
-          expect(recurring_pattern.type_of_repeating).to eq('weekly')
+          expect(parsed_json['schedule_window']['start_date']).to eq("2025-10-01T00:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_date']).to eq("2025-12-31T00:00:00.000Z")
+          expect(parsed_json['schedule_window']['start_time']).to eq("2025-10-01T14:00:00.000Z")
+          expect(parsed_json['schedule_window']['end_time']).to eq("2025-10-01T17:00:00.000Z")
+          expect(parsed_json['schedule_window']['is_recurring']).to eq(true)
+          expect(response).to have_http_status(201)
       end
       
       it 'Gets recurring schedule window that is true ' do
-        schedule_window = FactoryBot.create(:schedule_window, 
-        driver_id: driver.id,
-        start_date: "2019-07-16",
-        end_date: "2019-07-30",
-        start_time: "2019-07-16, 2:00pm",
-        end_time: "2019-07-16, 6:00pm",
-        is_recurring: true,
-        location_id: location.id
-        )
-        puts schedule_window.inspect
-        FactoryBot.create(:recurring_pattern, schedule_window_id: schedule_window.id, day_of_week: 2 )
-          get '/api/v1/availabilities', headers: headers
+          get '/api/v1/availabilities', headers: headers, params: {
+              start_time: "2025-08-26",
+              end_time: '2025-09-20',
+              }
           parsed_json = JSON.parse(response.body)
+          # check that start times are correct
+          startTime = parsed_json['json'].map{|k| k["startTime"] }
+          expect(startTime).to eq(["2025-09-06 14:00", "2025-09-13 14:00", "2025-09-20 14:00"])
           
-          puts "START TIME"
-           puts parsed_json['json'].map{|k| k['startDate'] }
-           puts "END TIME"
-           puts parsed_json['json'].map{|k| k['endTime'] }
-
-            # expect(Time.parse(parsed_json['json'][0]['startDate']).strftime("%D")).to eq( "2019-07-16")
-          # expect(Time.parse(parsed_json['end_date'])).to eq(end_date.change(usec: 0))
-          # expect(Time.parse(parsed_json['start_time'])).to eq(start_time.change(usec: 0))
-          # expect(Time.parse(parsed_json['end_time'])).to eq(end_time.change(usec: 0))
-          # expect(parsed_json['is_recurring']).to eq(true)
+          #check that end times are correct
+          endTime = parsed_json['json'].map{|k| k['endTime'] }
+          expect(endTime).to eq(["2025-09-06 16:00", "2025-09-13 16:00", "2025-09-20 16:00"])
+          expect(response).to have_http_status(200)
       end
-    
-    it "Get schedule_window" do
-        get '/api/v1/availabilities',  headers: headers
-        expect(response).to have_http_status(200)
-        expect(ScheduleWindow.count).to eq(1)
-        parsed_json = JSON.parse(response.body)
-    end
       
     it "Gets schedule_window by ID" do
-        get "/api/v1/availabilities/window/#{schedule_window.id}", headers: headers
-        expect(response).to have_http_status(200)
-        parsed_json = JSON.parse(response.body)
-        # puts parsed_json
-        puts parsed_json['json'][0]["startDate"]
-        # expect(parsed_json["json"][0]["startDate"]).to eq(startDate.change(usec: 0))
+        get "/api/v1/availabilities/window/#{recurring_pattern.schedule_window.id}", headers: headers, params: {
+            start_date: "2025-08-26",
+            end_date: "2025-09-20",
+        }
+            parsed_json = JSON.parse(response.body)
+            # check that start times are correct
+             startTime = parsed_json['json'].map{|k| k["startTime"] }
+             expect(startTime).to eq(["2025-09-20 14:00", "2025-09-13 14:00", "2025-09-06 14:00"])
+
+            #check that end times are correct
+            endTime = parsed_json['json'].map{|k| k['endTime'] }
+            expect(endTime).to eq(["2025-09-20 16:00", "2025-09-13 16:00", "2025-09-06 16:00"])
+            expect(response).to have_http_status(200)
+            
     end
 
-      it "Updates the schedule_window" do
-        put "/api/v1/availabilities/#{schedule_window.id}", headers: headers,
+        it "Updates the schedule_window" do
+        put "/api/v1/availabilities/#{recurring_pattern.schedule_window.id}", headers: headers,
         params: { 
-          start_date: start_date,
-          end_date: end_date, 
-          start_time: start_time, 
-          end_time: end_time, 
+          start_date: "2025-09-01",
+          end_date: "2025-10-21", 
+          start_time: "2025-09-01 15:00", 
+          end_time: "2025-09-01 17:00", 
+          is_recurring: true,
+          location_id: location.id
+      } 
+        parsed_json = JSON.parse(response.body)
+        expect(parsed_json['schedule_window']["start_date"]).to eq("2025-09-01T00:00:00.000Z")
+        expect(parsed_json['schedule_window']["end_date"]).to eq("2025-10-21T00:00:00.000Z")
+        expect(parsed_json['schedule_window']["start_time"]).to eq("2025-09-01T15:00:00.000Z")
+        expect(parsed_json['schedule_window']["end_time"]).to eq("2025-09-01T17:00:00.000Z")
+        expect(parsed_json['schedule_window']["is_recurring"]).to eq(true)
+        expect(response).to have_http_status(202)
+        end
+        
+        # this test should recieve a 400 error code. Dates can not be in the past
+        it "returns and error code when date is in the past" do
+        put "/api/v1/availabilities/#{recurring_pattern.schedule_window.id}", headers: headers,
+        params: { 
+          start_date: "2000-10-01",
+          end_date: "2000-10-21", 
+          start_time: "2000-09-01 15:00", 
+          end_time: "2000-09-01 17:00", 
           is_recurring: false,
           location_id: location.id
       } 
         parsed_json = JSON.parse(response.body)
-        expect(Time.parse(parsed_json['start_date'])).to eq(start_date.change(usec: 0))
-        expect(Time.parse(parsed_json['end_date'])).to eq(end_date.change(usec: 0))
-        expect(Time.parse(parsed_json['start_time'])).to eq(start_time.change(usec: 0))
-        expect(Time.parse(parsed_json['end_time'])).to eq(end_time.change(usec: 0))
-        expect(parsed_json['is_recurring']).to eq(false)
+        expect(response).to have_http_status(404)
         end
       
     it "Delete" do
-        delete "/api/v1/availabilities/#{schedule_window.id}", headers: headers, 
-        params: {id: schedule_window }
-        parsed_json = JSON.parse(response.body)
-        expect(parsed_json).to eq("sucess"=>true)
+        delete "/api/v1/availabilities/#{recurring_pattern.schedule_window.id}", headers: headers
         expect(ScheduleWindow.count).to eq(0)
         expect(response).to have_http_status(200)
     end
