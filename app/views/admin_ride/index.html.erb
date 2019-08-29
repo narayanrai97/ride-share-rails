@@ -16,8 +16,6 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <%= link_to 'Approved', admin_ride_index_path(status: "approved") if current_user.organization.rides.approved.count > 0 %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Rejected', admin_ride_index_path(status: "rejected") if current_user.organization.rides.rejected.count > 0 %>
-          <div class="dropdown-divider"></div>
           <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") if current_user.organization.rides.canceled.count > 0%>
         </div>
     </th>
@@ -36,15 +34,11 @@
       <td><%= ride.status %></td>
       <% if ride.status != 'canceled' %>
         <td><%= link_to 'Edit', edit_admin_ride_path(ride) %></td>
-        <% if ride.status == 'approved' %>
-          <td><%= link_to 'Approve', "#", class: "btn btn-sm btn-success disabled"%></td>
-        <% else %>
+        <% if ride.status != 'approved' %>
           <td><%= link_to 'Approve', approve_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put%></td>
         <% end %>
-        <% if ride.status == 'rejected' %>
-          <td><%= link_to 'Reject', "#", class: "btn btn-sm btn-success disabled" %></td>
-        <% else %>
-          <td><%= link_to 'Reject', reject_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+        <% if ride.status != 'canceled' %>
+          <td><%= link_to 'Cancel', cancel_admin_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
         <% end %>
       <% end %>
     </tr>
@@ -57,4 +51,3 @@
 <%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-outline-info my-2 my-sm-0" %>
 
 </div>
-

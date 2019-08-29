@@ -14,7 +14,6 @@ class Ride < ApplicationRecord
   message: "%{value} is not a valid status" }
 
   scope :approved, -> { where(status: "approved") }
-  scope :rejected, -> { where(status: "rejected") }
   scope :canceled, -> { where(status: "canceled") }
   scope :pending, -> { where(status: "pending") }
 

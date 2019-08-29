@@ -21,8 +21,6 @@ class RidesController < ApplicationController
     def index
       if params[:status] == "approved"
         @rides = current_rider.rides.approved
-      elsif params[:status] == "rejected"
-        @rides = current_rider.rides.rejected
       elsif params[:status] == 'canceled'
         @rides = current_rider.rides.canceled
       else

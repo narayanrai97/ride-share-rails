@@ -18,8 +18,6 @@ class AdminRideController < ApplicationController
   def index
     if params[:status] == "approved"
       @rides = current_user.organization.rides.approved
-    elsif params[:status] == "rejected"
-      @rides = current_user.organization.rides.rejected
     elsif params[:status] == 'canceled'
       @rides = current_user.organization.rides.canceled
     else
@@ -111,15 +109,16 @@ class AdminRideController < ApplicationController
     redirect_to request.referrer || admin_ride_index_path
   end
 
-  def reject
+  def cancel
     @ride = Ride.find(params[:id])
     authorize @ride
-    @ride.update_attributes(status: 'rejected')
-    flash.notice = 'Ride rejected'
+    @ride.update_attributes(status: 'canceled')
+    flash.notice = 'Ride canceled'
     redirect_to request.referrer || admin_ride_index_path
   end
 
-    private
+
+  private
 
   def ride_params
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
