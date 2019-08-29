@@ -10,7 +10,7 @@ class Ride < ApplicationRecord
   validates :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past
   validate :valid_locations
-  validates :status, inclusion: { in: %w(requested pending approved scheduled matched canceled picking-up dropping-off completed),
+  validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off completed canceled),
   message: "%{value} is not a valid status" }
 
   scope :approved, -> { where(status: "approved") }
@@ -107,4 +107,3 @@ class Ride < ApplicationRecord
   end
 
 end
-
