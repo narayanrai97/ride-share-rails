@@ -30,8 +30,6 @@ class Driver < ApplicationRecord
   end
 
   def events(query_start_date, query_end_date)
-    query_start_date = Date.parse(query_start_date)
-    query_end_date = Date.parse(query_end_date)
     list = []
     schedule_windows.each do |window|
       list += window.events(query_start_date, query_end_date)
