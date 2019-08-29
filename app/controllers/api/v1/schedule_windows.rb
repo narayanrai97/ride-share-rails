@@ -22,8 +22,8 @@ module Api
         optional :end, type: DateTime, desc: "End date for schedule"
       end
       get "availabilities", root: :schedule_windows do
-        start_time = params[:start] || DateTime.now
-        end_time = params[:end] ||  DateTime.now+3.months
+        start_time = params[:start_time] || DateTime.now
+        end_time = params[:end_time] ||  DateTime.now+3.months
         result = current_driver.events(start_time, end_time)
         if result != nil
           status 200
@@ -42,8 +42,8 @@ module Api
       end
       get "availabilities/window/:id", root: :schedule_windows do
         schedule = ScheduleWindow.find(permitted_params[:id])
-        start_time = params[:start] || DateTime.now
-        end_time = params[:end] ||  DateTime.now+3.months
+        start_time = params[:start_date] || DateTime.now
+        end_time = params[:end_date] ||  DateTime.now+3.months
         result = schedule.events(start_time, end_time)
         if result != nil
           status 200
@@ -68,21 +68,22 @@ module Api
         start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
         is_recurring: params[:is_recurring]}
         
-       schedule_window = current_driver.schedule_windows.new(attributes)
-       pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
-       if pattern != nil
-          pattern.destroy
-        end
-        if schedule_window.is_recurring?
-          RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
-        end
-          if schedule_window.save
-           status 201
-           schedule_window
-          else
-           status 404
-           schedule_window.errors.messages
-          end
+            schedule_window = current_driver.schedule_windows.new(attributes)
+            save_return = schedule_window.save
+           if (save_return)
+                 pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
+                if pattern != nil
+                    pattern.destroy
+                end
+                if schedule_window.is_recurring?
+                    RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+                end
+                 status 201
+                 schedule_window  
+                else
+                 status 404
+                 schedule_window.errors.messages
+           end
       end
 
 
@@ -101,22 +102,23 @@ module Api
         is_recurring: params[:is_recurring]}
         
         schedule_window = current_driver.schedule_windows.find(params[:id])
-        schedule_window.update(attributes)
+        update_return = schedule_window.update(attributes)
+  
         pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
-        if pattern != nil
-          pattern.destroy
-        end
-        if schedule_window.is_recurring?
-          RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
-        end
-        if schedule_window.update(attributes)
-          status 202
-          schedule_window
-        else 
-          status 404
-           schedule_window.errors.messages
-        end
-        # render json: schedule_window
+          if pattern != nil
+            pattern.destroy
+          end
+          if schedule_window.is_recurring?
+            RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+          end
+          if update_return
+            
+            status 202
+            schedule_window
+          else 
+            status 404
+             schedule_window.errors.messages
+          end
       end
 
 
@@ -131,7 +133,7 @@ module Api
           pattern.destroy
         end
         if schedule_window.destroy != nil
-          return { success:true }
+          status 200
         end
       end
     end

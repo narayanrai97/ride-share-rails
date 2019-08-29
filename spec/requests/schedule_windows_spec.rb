@@ -66,8 +66,8 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
       
       it 'Gets recurring schedule window that is true ' do
           get '/api/v1/availabilities', headers: headers, params: {
-              start: "2025-08-26",
-              'end': '2025-09-20',
+              start_time: "2025-08-26",
+              end_time: '2025-09-20',
               }
           parsed_json = JSON.parse(response.body)
           # check that start times are correct
@@ -82,8 +82,8 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
       
     it "Gets schedule_window by ID" do
         get "/api/v1/availabilities/window/#{recurring_pattern.schedule_window.id}", headers: headers, params: {
-            start: "2025-08-26",
-            'end': "2025-09-20",
+            start_date: "2025-08-26",
+            end_date: "2025-09-20",
         }
             parsed_json = JSON.parse(response.body)
             # check that start times are correct
@@ -94,6 +94,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             endTime = parsed_json['json'].map{|k| k['endTime'] }
             expect(endTime).to eq(["2025-09-20 16:00", "2025-09-13 16:00", "2025-09-06 16:00"])
             expect(response).to have_http_status(200)
+            
     end
 
         it "Updates the schedule_window" do
@@ -107,7 +108,6 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           location_id: location.id
       } 
         parsed_json = JSON.parse(response.body)
-        
         expect(parsed_json['schedule_window']["start_date"]).to eq("2025-09-01T00:00:00.000Z")
         expect(parsed_json['schedule_window']["end_date"]).to eq("2025-10-21T00:00:00.000Z")
         expect(parsed_json['schedule_window']["start_time"]).to eq("2025-09-01T15:00:00.000Z")
@@ -134,5 +134,6 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     it "Delete" do
         delete "/api/v1/availabilities/#{recurring_pattern.schedule_window.id}", headers: headers
         expect(ScheduleWindow.count).to eq(0)
+        expect(response).to have_http_status(200)
     end
   end
