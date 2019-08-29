@@ -18,25 +18,39 @@ module Api
 
       desc "Get a full schedule for a driver"
       params do
-        optional :start, type: Time, desc: "Start date for schedule"
-        optional :end, type: Time, desc: "End date for schedule"
+        optional :start, type: DateTime, desc: "Start date for schedule"
+        optional :end, type: DateTime, desc: "End date for schedule"
       end
       get "availabilities", root: :schedule_windows do
-        start_time = params[:start] || DateTime.now
-        end_time = params[:end] ||  DateTime.now+3.months
-        current_driver.events(start_time, end_time)
+        start_time = params[:start_time] || DateTime.now
+        end_time = params[:end_time] ||  DateTime.now+3.months
+        result = current_driver.events(start_time, end_time)
+        if result != nil
+          status 200
+        else
+          status 404
+        end
+        render json: result
       end
 
 
       desc "Get a specific schedule window for a driver"
       params do
         requires :id, type: String, desc: "ID of the event"
+        optional :start_date, DateTime, desc: "Start Date"
+        optional :end_date, DateTime, desc: "End Date"
       end
       get "availabilities/window/:id", root: :schedule_windows do
-        schedule = ScheduleWindow.where(id: permitted_params[:id])
-        all_events = []
-        create_all_events(schedule, Date.today, Date.today+1.year, all_events)
-        render json: all_events
+        schedule = ScheduleWindow.find(permitted_params[:id])
+        start_time = params[:start_date] || DateTime.now
+        end_time = params[:end_date] ||  DateTime.now+3.months
+        result = schedule.events(start_time, end_time)
+        if result != nil
+          status 200
+        else
+          status 404
+        end
+        render json: result
       end
 
 
@@ -50,20 +64,31 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       post "availabilities" do
-        current_driver.schedule_windows.create( 
-          start_date: params[:start_date], 
-          end_date: params[:end_date], 
-          start_time: params[:start_time],
-          end_time: params[:end_time], 
-          location_id: params[:location_id], 
-          is_recurring: params[:is_recurring]
-        )
+        attributes = {start_date: params[:start_date], end_date: params[:end_date], 
+        start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
+        is_recurring: params[:is_recurring]}
+        
+            schedule_window = current_driver.schedule_windows.new(attributes)
+            save_return = schedule_window.save
+           if (save_return)
+                 pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
+                if pattern != nil
+                    pattern.destroy
+                end
+                if schedule_window.is_recurring?
+                    RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+                end
+                 status 201
+                 schedule_window  
+                else
+                 status 404
+                 schedule_window.errors.messages
+           end
       end
 
 
       desc "Update an schedule window for a driver"
       params do
-        requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
         requires :start_date, type: String, desc: "Start date and time of when availability would begin recurring"
         requires :end_date, type: String, desc: "End date and time of when availability would end recurring"
         requires :start_time, type: String, desc: "Start date and time of availability"
@@ -72,17 +97,28 @@ module Api
         requires :location_id, type: String, desc: "ID of location"
       end
       put "availabilities/:id" do
-        driver = current_driver
-        schedule_window = ScheduleWindow.where(id: params[:id]).where(driver_id: driver.id).first
-        schedule_window.update(driver_id: driver.id, start_date: params[:start_date], end_date: params[:end_date], start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], is_recurring: params[:is_recurring])
-        pattern = RecurringPattern.where(schedule_window_id: schedule_window.id).first
-        if pattern != nil
-          pattern.destroy
-        end
-        if schedule_window.is_recurring == true
-          RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
-        end
-        render schedule_window
+        attributes = {start_date: params[:start_date], end_date: params[:end_date], 
+        start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id], 
+        is_recurring: params[:is_recurring]}
+        
+        schedule_window = current_driver.schedule_windows.find(params[:id])
+        update_return = schedule_window.update(attributes)
+  
+        pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
+          if pattern != nil
+            pattern.destroy
+          end
+          if schedule_window.is_recurring?
+            RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+          end
+          if update_return
+            
+            status 202
+            schedule_window
+          else 
+            status 404
+             schedule_window.errors.messages
+          end
       end
 
 
@@ -91,14 +127,13 @@ module Api
         requires :id, type: String, desc: "ID of avaliablity"
       end
       delete "availabilities/:id" do
-        driver = current_driver
-        schedule_window = ScheduleWindow.where(id: params[:id]).where(driver_id: driver.id).first
+        schedule_window = current_driver.schedule_windows.find(params[:id])
         if schedule_window.is_recurring
           pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
           pattern.destroy
         end
         if schedule_window.destroy != nil
-          return { sucess:true }
+          status 200
         end
       end
     end

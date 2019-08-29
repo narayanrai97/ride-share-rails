@@ -23,6 +23,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
        phone: "3361234567", organization_id: organization.id,
        radius: 50, is_active: true
        }}
+       
        expect(response).to have_http_status(201)
        parsed_json = JSON.parse(response.body)
     
@@ -42,9 +43,11 @@ RSpec.describe Api::V1::Drivers, type: :request do
        phone: "7180987654", organization_id: organization.id, 
        radius: 50, is_active: true
        }}
+       
        expect(response).to have_http_status(200)
        
     end
+    
     it 'logout driver and destorys token' do
         token = logintoken
         delete '/api/v1/logout', headers: {"ACCEPT" => "application/json", 'Token' => logintoken}
