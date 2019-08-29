@@ -37,7 +37,7 @@ module Api
 
 
             status = params[:status]
-            # status = Array["pending", "matched"]
+            # status = Array["pending", "scheduled"]
 
             if status != nil
               rides = rides.where(status: status)
