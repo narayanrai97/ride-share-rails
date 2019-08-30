@@ -21,30 +21,39 @@ RSpec.describe Api::V1::Locations, type: :request do
       city:"Burlington",
       state:"NC",
       zip: "27215"}}
-
       expect(response).to have_http_status(201)
       parsed_json = JSON.parse(response.body)
-
       expect(parsed_json['location']['street']).to eq('200 Front Street')
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27215")
       expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
   end
+  
+  # test should return a error message. Zip code must be numbers
+  it 'should return a error code. Zip code must be number' do
+
+    post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+      params: {location:{street:"500 Front Street",
+      city:"Burlington",
+      state:"NC",
+      zip: "call me"}}
+      
+      expect(response).to have_http_status(404)
+  end
 
   it 'will return locations of driver ' do
 
     get '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
 
-      expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-    
       locations = parsed_json['locations']
       location = locations.first
       expect(location['street']).to eq('1200 front st.')
       expect(parsed_json['locations'][0]['city']).to eq('Durham')
       expect(parsed_json['locations'][0]['state']).to eq('NC')
       expect(parsed_json['locations'][0]['zip']).to eq( "27705")
+      expect(response).to have_http_status(200)
   end
 
   #Give the api a location id and get back information for it
@@ -52,39 +61,52 @@ RSpec.describe Api::V1::Locations, type: :request do
   it 'will return a location based on id passed ' do
 
     get "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-
-      expect(response).to have_http_status(200)
+    
       parsed_json = JSON.parse(response.body)
       expect(parsed_json['location']['street']).to eq('1200 front st.')
       expect(parsed_json['location']['city']).to eq('Durham')
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27705")
-  end
-  #Delete Record based on id
-  it 'will delete a location based on id passed ' do
-
-    delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-
       expect(response).to have_http_status(200)
-      parsed_json = JSON.parse(response.body)
-      expect(parsed_json['success']).to eq(true)
   end
-
+ 
   it 'will update a location related to logged in user' do
 
     put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
-      params: {location:{street:"210 Front Street",
+      params: {location:{street:"2210 Front Street",
       city:"Burlington",
       state:"NC",
-      zip: "27217"}}
+      zip: "27215"}}
 
       expect(response).to have_http_status(200)
       parsed_json = JSON.parse(response.body)
-      expect(parsed_json['location']['street']).to eq('210 Front Street')
+      expect(parsed_json['location']['street']).to eq('2210 Front Street')
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
-      expect(parsed_json['location']['zip']).to eq( "27217")
+      expect(parsed_json['location']['zip']).to eq( "27215")
       expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
+  end
+  
+   it 'Should return a error message.' do
+    put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+      params: {location:{street:"2210 Front Street",
+      city:"Burlington",
+      state:"NC",
+      zip: "Rails rules!"}}
+
+      expect(response).to have_http_status(400)
+      #uncomment these to see the error messages
+      #parsed_json = JSON.parse(response.body)
+      #puts parsed_json
+  end
+  
+  
+   #Delete Record based on id
+  it 'will delete a location based on id passed ' do
+
+    delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+      expect(Location.count).to eq(0)
+      expect(response).to have_http_status(200)
   end
 
 end
