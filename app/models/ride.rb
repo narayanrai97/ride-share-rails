@@ -16,6 +16,10 @@ class Ride < ApplicationRecord
   scope :approved, -> { where(status: "approved") }
   scope :canceled, -> { where(status: "canceled") }
   scope :pending, -> { where(status: "pending") }
+  scope :scheduled, -> { where(status: "scheduled") }
+  scope :picking_up, -> { where(status: "picking-up") }
+  scope :dropping_off, -> { where(status: "dropping-off") }
+  scope :completed, -> { where(status: "completed") }
 
   # validate that start_location and end_location are valid
   def valid_locations

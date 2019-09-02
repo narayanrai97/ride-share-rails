@@ -23,6 +23,14 @@ class RidesController < ApplicationController
         @rides = current_rider.rides.approved
       elsif params[:status] == 'canceled'
         @rides = current_rider.rides.canceled
+      elsif params[:status] == 'scheduled'
+        @rides = current_rider.rides.scheduled
+      elsif params[:status] == 'picking-up'
+        @rides = current_rider.rides.picking_up
+      elsif params[:status] == 'dropping-off'
+        @rides = current_rider.rides.dropping_off
+      elsif params[:status] == 'completed'
+        @rides = current_rider.rides.completed
       else
         @rides = current_rider.rides.pending
       end
@@ -115,10 +123,14 @@ class RidesController < ApplicationController
     def cancel
       @ride = Ride.find(params[:id])
       @ride.rider_id == current_rider.id
-      # authorize @ride
-      @ride.update_attributes(status: 'canceled')
-      flash.notice = 'Ride canceled'
-      redirect_to request.referrer || rides_path
+      if ['pending', 'approved', 'scheduled'].include? @ride.status
+        @ride.update_attributes(status: 'canceled')
+        flash.notice = 'Ride canceled'
+        redirect_to request.referrer || rides_path
+      else
+        flash.notice = "Sorry the ride status is uncancellable."
+        redirect_to request.referrer || rides_path
+      end
     end
 
     private

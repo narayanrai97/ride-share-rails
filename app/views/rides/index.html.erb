@@ -12,19 +12,21 @@
     <th scope="col">
       <a id="status" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to 'Approved', rides_path(status: "approved") if current_rider.rides.approved.count > 0 %>
-          <div class="dropdown-divider"></div>
-          <%= link_to 'Canceled', rides_path(status: "canceled") if current_rider.rides.canceled.count > 0 %>
-          <div class="dropdown-divider"></div>
-          <%= link_to 'Pending', rides_path(status: "pending") if current_rider.rides.pending.count > 0 %>
-        </div>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <%= link_to 'Approved', rides_path(status: "approved") if current_rider.rides.approved.count > 0 %>
+        <%= link_to 'Canceled', rides_path(status: "canceled") if current_rider.rides.canceled.count > 0 %>
+        <%= link_to 'Pending', rides_path(status: "pending") if current_rider.rides.pending.count > 0 %>
+        <%= link_to 'Scheduled', rides_path(status: "scheduled") if current_rider.rides.scheduled.count > 0 %>
+        <%= link_to 'Picking Up', rides_path(status: "picking-up") if current_rider.rides.picking_up.count > 0 %>
+        <%= link_to 'Dropping Off', rides_path(status: "dropping-off") if current_rider.rides.dropping_off.count > 0 %>
+        <%= link_to 'Completed', rides_path(status: "completed") if current_rider.rides.completed.count > 0 %>
+      </div>
     </th>
-    <% if params[:status] == 'approved' || params[:status] == 'pending' || params[:status] == nil %>
+    <% if ['approved', 'pending', 'scheduled'].include? params[:status] %>
       <th scope="col"></th>
       <th scope="col"></th>
-    <% elsif params[:status] == 'canceled' %>
+    <% else %>
       <th scope="col"></th>
     <% end %>
   </tr>
@@ -37,7 +39,7 @@
       <td><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
-      <% if ride.status != 'canceled' %>
+      <% if ['approved', 'pending', 'scheduled'].include? ride.status %>
         <td><%= link_to 'Cancel', cancel_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
       <% end %>
       <td></td>
