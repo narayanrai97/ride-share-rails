@@ -16,9 +16,17 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <%= link_to 'Approved', rides_path(status: "approved") if current_rider.rides.approved.count > 0 %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'Canceled', rides_path(status: "canceled") if current_rider.rides.canceled.count > 0%>
+          <%= link_to 'Canceled', rides_path(status: "canceled") if current_rider.rides.canceled.count > 0 %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'Pending', rides_path(status: "pending") if current_rider.rides.pending.count > 0 %>
         </div>
     </th>
+    <% if params[:status] == 'approved' || params[:status] == 'pending' || params[:status] == nil %>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    <% elsif params[:status] == 'canceled' %>
+      <th scope="col"></th>
+    <% end %>
   </tr>
 
   <% @rides.each do |ride| %>
@@ -29,6 +37,10 @@
       <td><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %></td>
       <td><%= ride.reason %></td>
       <td><%= ride.status %></td>
+      <% if ride.status != 'canceled' %>
+        <td><%= link_to 'Cancel', cancel_ride_path(ride), class: "btn btn-sm btn-success", method: :put %></td>
+      <% end %>
+      <td></td>
     </tr>
     <% end %>
   <% end %>

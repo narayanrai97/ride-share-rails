@@ -112,6 +112,15 @@ class RidesController < ApplicationController
       end
     end
 
+    def cancel
+      @ride = Ride.find(params[:id])
+      @ride.rider_id == current_rider.id
+      # authorize @ride
+      @ride.update_attributes(status: 'canceled')
+      flash.notice = 'Ride canceled'
+      redirect_to request.referrer || rides_path
+    end
+
     private
     def ride_params
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
@@ -121,7 +130,6 @@ class RidesController < ApplicationController
 
     def rider_not_authorized
       flash.notice = "You are not authorized to view this information"
-
       redirect_to rides_path
     end
 end
