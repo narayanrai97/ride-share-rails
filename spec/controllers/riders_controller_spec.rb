@@ -53,8 +53,8 @@ RSpec.describe RidersController, type: :controller do
 
     expect(rider_outside_organization.first_name).to_not eq('Jane')
     expect(test_response.response_code).to eq(302)
-    # Test that it redirect you to rider index page
-    # Test that the toast message is present about being unauthorized
+    expect(test_response).to redirect_to(riders_path)
+    expect(flash[:notice]).to match(/not authorized/)
   end
 
   # It statements to be created below:
