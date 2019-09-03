@@ -23,7 +23,7 @@
         <%= link_to 'Completed', rides_path(status: "completed") if current_rider.rides.completed.count > 0 %>
       </div>
     </th>
-    <% if ['approved', 'pending', 'scheduled'].include? params[:status] %>
+    <% if ['approved', 'pending', 'scheduled', nil].include? params[:status] %>
       <th scope="col"></th>
       <th scope="col"></th>
     <% else %>
