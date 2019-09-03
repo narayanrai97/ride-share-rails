@@ -36,4 +36,8 @@ class Driver < ApplicationRecord
     end
     list.sort_by{|i| i[:start_time]}.reverse
   end
+
+  def ride_cancel_alert
+    
+  end
 end

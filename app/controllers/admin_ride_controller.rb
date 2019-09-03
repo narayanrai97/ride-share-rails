@@ -20,6 +20,14 @@ class AdminRideController < ApplicationController
       @rides = current_user.organization.rides.approved
     elsif params[:status] == 'canceled'
       @rides = current_user.organization.rides.canceled
+    elsif params[:status] == 'scheduled'
+      @rides = current_user.organization.rides.scheduled
+    elsif params[:status] == 'picking-up'
+      @rides = current_user.organization.rides.picking_up
+    elsif params[:status] == 'dropping-off'
+      @rides = current_user.organization.rides.dropping_off
+    elsif params[:status] == 'completed'
+      @rides = current_user.organization.rides.completed
     else
       @rides = current_user.organization.rides.pending
     end
@@ -94,7 +102,7 @@ class AdminRideController < ApplicationController
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason]
     )
-      flash.notice = 'The ride information has been updated'
+      flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
     else
       render 'edit'
@@ -105,16 +113,19 @@ class AdminRideController < ApplicationController
     @ride = Ride.find(params[:id])
     authorize @ride
     @ride.update_attributes(status: 'approved')
-    flash.notice = 'Ride approved'
+    flash.notice = 'Ride approved.'
     redirect_to request.referrer || admin_ride_index_path
   end
 
   def cancel
     @ride = Ride.find(params[:id])
     authorize @ride
-    @ride.update_attributes(status: 'canceled')
-    flash.notice = 'Ride canceled'
-    redirect_to request.referrer || admin_ride_index_path
+    if ['pending', 'approved', 'scheduled'].include? @ride.status
+      if @ride.update_attributes(status: 'canceled')
+        flash.notice = 'Ride canceled.'
+        redirect_to request.referrer || admin_ride_index_path
+      end
+    end
   end
 
 
