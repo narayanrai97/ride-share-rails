@@ -33,7 +33,7 @@ RSpec.describe RidersController, type: :controller do
     test_response = put :update, params: {
       id: rider.id,
       rider: {
-        first_name: 'Jane'
+        first_name: 'Jane',
       }
     }
 
@@ -57,10 +57,39 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
   end
 
-  # It statements to be created below:
+  it 'bulk updates tokens for a rider' do
+    test_response = post :bulk_update, params: {
+      rider_id: rider.id,
+      quantity: 5,
+      commit: "Add"
+    }
 
-  # it 'bulk updates tokens for a rider'
-  # it 'fails to update tokens for a rider in a different organization than the active user'
+    expect(rider.valid_tokens.count).to eq(5)
+    expect(test_response.response_code).to eq(302)
+
+    test_response_2 = post :bulk_update, params: {
+      rider_id: rider.id,
+      quantity: 3,
+      commit: "Remove"
+    }
+
+    expect(rider.valid_tokens.count).to eq(2)
+    expect(test_response_2.response_code).to eq(302)
+  end
+
+  it 'fails to update tokens for a rider in a different organization than the active user' do
+    test_response = post :bulk_update, params: {
+      rider_id: rider_outside_organization.id,
+      quantity: 5,
+      commit: "Add"
+    }
+
+    expect(rider_outside_organization.valid_tokens.count).to_not eq(5)
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/not authorized/)
+  end
+
+
   # it 'deactivates a rider'
   # it 'fails to deactivate a rider in a different organization than the active user'
 end
