@@ -19,7 +19,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     driver_id: driver.id,status: "pending",
     start_location_id: location.id, end_location_id: location1.id)}
   let!(:ride3){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "matched",
+     driver_id: driver.id,status: "scheduled",
      start_location_id: location.id, end_location_id: location1.id)}
 
 
@@ -86,12 +86,12 @@ RSpec.describe Api::V1::Rides, type: :request do
       expect(parsed_json['rides'][2]['driver_id']).to eq(driver.id)
     end
 
-    #Returns rides based on status matching matched and driver accepted
-    it 'will return all rides with status matched' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "matched"}
+    #Returns rides based on status matching scheduled and driver accepted
+    it 'will return all rides with status scheduled' do
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "scheduled"}
       parsed_json = JSON.parse(response.body)
-      #should only have matched result, only should return one object
-      expect(parsed_json['rides'][0]['status']).to eq("matched")
+      #should only have scheduled result, only should return one object
+      expect(parsed_json['rides'][0]['status']).to eq("scheduled")
     end
   #Returns rides of driver with a start and end time and drivewr accepted, May want to loop through results
     it 'will return all rides start date' do

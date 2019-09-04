@@ -21,10 +21,16 @@ class RidesController < ApplicationController
     def index
       if params[:status] == "approved"
         @rides = current_rider.rides.approved
-      elsif params[:status] == "rejected"
-        @rides = current_rider.rides.rejected
       elsif params[:status] == 'canceled'
         @rides = current_rider.rides.canceled
+      elsif params[:status] == 'scheduled'
+        @rides = current_rider.rides.scheduled
+      elsif params[:status] == 'picking-up'
+        @rides = current_rider.rides.picking_up
+      elsif params[:status] == 'dropping-off'
+        @rides = current_rider.rides.dropping_off
+      elsif params[:status] == 'completed'
+        @rides = current_rider.rides.completed
       else
         @rides = current_rider.rides.pending
       end
@@ -114,6 +120,19 @@ class RidesController < ApplicationController
       end
     end
 
+    def cancel
+      @ride = Ride.find(params[:id])
+      @ride.rider_id == current_rider.id
+      if ['pending', 'approved', 'scheduled'].include? @ride.status
+        @ride.update_attributes(status: 'canceled')
+        flash.notice = 'Ride canceled'
+        redirect_to request.referrer || rides_path
+      else
+        flash.notice = "Sorry the ride status is uncancellable."
+        redirect_to request.referrer || rides_path
+      end
+    end
+
     private
     def ride_params
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
@@ -123,7 +142,6 @@ class RidesController < ApplicationController
 
     def rider_not_authorized
       flash.notice = "You are not authorized to view this information"
-
       redirect_to rides_path
     end
 end

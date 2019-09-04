@@ -119,3 +119,23 @@ th {
 .card {
   border: solid darkgray 2px;
 }
+
+a#status {
+  margin-top: -8px;
+  color: white;
+}
+
+.dropdown-menu a {
+  color: black;
+  padding: 4px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  background-color: yellow;
+}
+
+td.no-wrap {
+  white-space: nowrap;
+}
