@@ -102,22 +102,20 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(400)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
   
-  # Testing for when a driver edits a location and inputs new location
      it 'returns a new address when a location is shared by two drivers but update by one driver' do
     put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: {location:{street:"1052 Canell Street",
       city:"Durham",
       state:"NC",
       zip: "27225"}}
-      # byebug
       expect(response).to have_http_status(200)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
   
   
