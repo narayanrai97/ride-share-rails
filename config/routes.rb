@@ -53,11 +53,16 @@ Rails.application.routes.draw do
   get 'welcome/rider'
 
 
-  resources :rides
+  resources :rides do
+    member do
+      put 'cancel' => 'rides#cancel'
+    end
+  end
+
   resources :admin_ride do
     member do
       put 'approve' => 'admin_ride#approve'
-      put 'reject' => 'admin_ride#reject'
+      put 'cancel' => 'admin_ride#cancel'
     end
   end
 

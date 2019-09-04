@@ -10,13 +10,16 @@ class Ride < ApplicationRecord
   validates :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past
   validate :valid_locations
-  validates :status, inclusion: { in: %w(requested pending approved scheduled matched canceled picking-up dropping-off completed),
+  validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off completed canceled),
   message: "%{value} is not a valid status" }
 
   scope :approved, -> { where(status: "approved") }
-  scope :rejected, -> { where(status: "rejected") }
   scope :canceled, -> { where(status: "canceled") }
   scope :pending, -> { where(status: "pending") }
+  scope :scheduled, -> { where(status: "scheduled") }
+  scope :picking_up, -> { where(status: "picking-up") }
+  scope :dropping_off, -> { where(status: "dropping-off") }
+  scope :completed, -> { where(status: "completed") }
 
   # validate that start_location and end_location are valid
   def valid_locations
@@ -101,10 +104,11 @@ class Ride < ApplicationRecord
   end
 
   def pick_up_time_cannot_be_in_the_past
-    if pick_up_time.present? && pick_up_time < Date.today
-      errors.add(:pick_up_time, "can't be in the past")
+    if ['pending', 'approved', 'scheduled'].include? self.status
+      if pick_up_time.present? && pick_up_time < Date.today
+        errors.add(:pick_up_time, "can't be in the past")
+      end
     end
   end
 
 end
-
