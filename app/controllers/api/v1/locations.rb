@@ -79,41 +79,38 @@ module Api
       end
   
       put "locations/:id" do
-        driver = current_driver
         #Find location to change
         old_location = Location.find(params[:id])
-        if old_location != nil
-          #If location has more than one locationrelationship run code
-          #Keeps location from having more than one user
-          if LocationRelationship.where(location_id: params[:id]).count > 1
-            #Fix for new location creation so id changes
-            #Create new location and locationrelationship
-            new_location = Location.new(params[:location])
-            save_seccuss = new_location.save
-            if save_seccuss
-              status 201
-              render_value = new_location
-              LocationRelationship.create(location_id: new_location.id, driver_id: driver.id)
-            else
-              render_value = new_location.errors.messages
-              status 400
-            end
+        if old_location == nil
+          status 404 
+          return ""
+        end
+        driver = current_driver
+        if !driver_owns_location(driver, old_location) 
+          status 401
+          return ""
+        end
+        if LocationRelationship.where(location: permitted_params[:id]).count > 1
+          new_location = Location.new(params[:location])
+          save_success = new_location.save
+          if !save_success
+            status 400
+            return new_location.errors.messages
+          end
+          location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
+          location_relationship.location = new_location
+        else
+          #update old location
+          update_success = old_location.update(params[:location])
+          if update_success 
+            old_location.reload
+            render_value=old_location
+            status 200
           else
-            #update old location
-            update_success = old_location.update(params[:location])
-            if update_success 
-              old_location.reload
-              render_value=old_location
-              status 200
-            else
-              render_value = old_location.errors.messages
-              status 400
-            end
+            render_value = old_location.errors.messages
+            status 400
           end
           render_value
-        else
-          status 404
-          ""
         end
       end
       
@@ -123,21 +120,26 @@ module Api
       end
       delete 'locations/:id' do
         driver = current_driver
-        location = Location.find(permitted_params[:id])
-        if location != nil
+        old_location = Location.find(params[:id])
+        if driver_owns_location(driver, old_location)
           LocationRelationship.find_by(location_id: permitted_params[:id],
              driver_id: driver.id).destroy
           #Logic about multiple users using the same location
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
-            location.destroy
+            old_location.destroy
             status 200
-            #Needed to return if successful or not
-            # Was just always returning success
-          else
-            status 404
           end
+        else
+          status 400
         end
+        return ""
       end
     end
   end
 end
+
+private 
+     def driver_owns_location(driver, location)
+     location_ids = LocationRelationship.where(driver_id: driver.id).pluck("location_id")
+     location_ids.include?(location.id)
+     end

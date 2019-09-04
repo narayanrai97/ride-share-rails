@@ -8,9 +8,15 @@ RSpec.describe Api::V1::Locations, type: :request do
   #token_created_at in the last day so it would function
   let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id,
      auth_token: "1234",token_created_at: Time.zone.now) }
+  let(:driver_two) { FactoryBot.create(:driver, organization_id: organization.id,
+     auth_token: "5678",token_created_at: Time.zone.now) }
      #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
+  let!(:location2){FactoryBot.create(:location, street: "1202 Dublin driver")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id)}
+  let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id)}
+  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver_two.id, location_id: location2.id)}
+
 
 
     #Created a Location based on the logged in user. Uses token previously created
@@ -96,8 +102,22 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(400)
       #uncomment these to see the error messages
-      #parsed_json = JSON.parse(response.body)
-      #puts parsed_json
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+  end
+  
+  # Testing for when a driver edits a location and inputs new location
+     it 'returns a new address when a location is shared by two drivers but update by one driver' do
+    put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: {location:{street:"1052 Canell Street",
+      city:"Durham",
+      state:"NC",
+      zip: "27225"}}
+      # byebug
+      expect(response).to have_http_status(200)
+      #uncomment these to see the error messages
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
   end
   
   
@@ -105,8 +125,14 @@ RSpec.describe Api::V1::Locations, type: :request do
   it 'will delete a location based on id passed ' do
 
     delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-      expect(Location.count).to eq(0)
+      expect(Location.count).to eq(1)
       expect(response).to have_http_status(200)
+  end
+  
+  it 'will return a error when location does not belong to a driver ' do
+    delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
+      expect(Location.count).to eq(2)
+      expect(response).to have_http_status(400)
   end
 
 end
