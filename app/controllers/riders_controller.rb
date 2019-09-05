@@ -69,6 +69,7 @@ class RidersController < ApplicationController
 
    def deactivate
     @rider = Rider.find(params[:rider_id])
+    authorize @rider
     @rider.toggle(:is_active).save
     flash.notice = "Rider deactivated"
     redirect_to request.referrer || riders_path

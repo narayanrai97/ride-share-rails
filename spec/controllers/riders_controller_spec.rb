@@ -89,7 +89,22 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
   end
 
+  it 'deactivates a rider' do
+    test_response = put :deactivate, params: {
+      rider_id: rider.id,
+    }
 
-  # it 'deactivates a rider'
-  # it 'fails to deactivate a rider in a different organization than the active user'
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/deactivated/)
+  end
+
+  it 'fails to deactivate a rider in a different organization than the active user' do
+    test_response = put :deactivate, params: {
+      rider_id: rider_outside_organization.id,
+    }
+
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/not authorized/)
+  end
+
 end
