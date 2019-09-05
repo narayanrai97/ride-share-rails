@@ -38,14 +38,13 @@ RSpec.describe Api::V1::Locations, type: :request do
   
   # test should return a error message. Zip code must be numbers
   it 'should return a error code. Zip code must be number' do
-
     post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
       params: {location:{street:"500 Front Street",
       city:"Burlington",
       state:"NC",
       zip: "call me"}}
       
-      expect(response).to have_http_status(404)
+      expect(response).to have_http_status(400)
   end
 
   it 'will return locations of driver ' do

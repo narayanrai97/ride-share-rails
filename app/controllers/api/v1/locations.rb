@@ -61,7 +61,7 @@ module Api
           status 201
           location
         else
-          status 404
+          status 400
           location.errors.messages
         end
       end
