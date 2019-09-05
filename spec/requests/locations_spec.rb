@@ -76,24 +76,7 @@ RSpec.describe Api::V1::Locations, type: :request do
       expect(response).to have_http_status(200)
   end
  
-  it 'will update a location related to logged in user' do
-
-    put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
-      params: {location:{street:"2210 Front Street",
-      city:"Burlington",
-      state:"NC",
-      zip: "27215"}}
-
-      expect(response).to have_http_status(200)
-      parsed_json = JSON.parse(response.body)
-      expect(parsed_json['location']['street']).to eq('2210 Front Street')
-      expect(parsed_json['location']['city']).to eq("Burlington")
-      expect(parsed_json['location']['state']).to eq('NC')
-      expect(parsed_json['location']['zip']).to eq( "27215")
-      expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
-  end
-  
-   it 'Should return a error message.' do
+  it ' Updating a location with bad values should return an error message.' do
     put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
       params: {location:{street:"2210 Front Street",
       city:"Burlington",
@@ -127,10 +110,15 @@ RSpec.describe Api::V1::Locations, type: :request do
       expect(response).to have_http_status(200)
   end
   
-  it 'will return a error when location does not belong to a driver ' do
+  it 'will return a error code of 401 when location does not belong to a driver ' do
     delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
-      expect(Location.count).to eq(2)
-      expect(response).to have_http_status(400)
+      expect(response).to have_http_status(401)
   end
-
+  
+  it 'will return a error of code 404 when location is nil ' do
+    delete "/api/v1/locations/#{44444}", headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
+      expect(response).to have_http_status(404)
+  end
+  
 end
+

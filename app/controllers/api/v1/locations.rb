@@ -78,6 +78,7 @@ module Api
           end
       end
   
+    
       put "locations/:id" do
         #Find location to change
         old_location = Location.find(params[:id])
@@ -121,16 +122,19 @@ module Api
       delete 'locations/:id' do
         driver = current_driver
         old_location = Location.find(params[:id])
+        if old_location.nil?
+         status 404
+         return ""
+        end
         if driver_owns_location(driver, old_location)
           LocationRelationship.find_by(location_id: permitted_params[:id],
              driver_id: driver.id).destroy
-          #Logic about multiple users using the same location
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             old_location.destroy
             status 200
           end
         else
-          status 400
+          status 401
         end
         return ""
       end
