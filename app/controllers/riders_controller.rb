@@ -69,8 +69,9 @@ class RidersController < ApplicationController
 
    def deactivate
     @rider = Rider.find(params[:rider_id])
+    authorize @rider
     @rider.toggle(:is_active).save
-    flash.notice = "Rider deactivated."
+    flash.notice = "Rider deactivated"
     redirect_to request.referrer || riders_path
   end
 
@@ -89,7 +90,7 @@ class RidersController < ApplicationController
       quantity.times { rider.valid_tokens.create }
       diff = rider.valid_tokens.count - previous_count
       flash.notice = "#{diff} #{'token'.pluralize(diff)} added."
-      redirect_to request.referrer
+      redirect_to request.referrer || riders_path
     end
 
     def remove_bulk(rider, quantity)
@@ -99,10 +100,10 @@ class RidersController < ApplicationController
         tokens.update_all(is_valid: false)
         diff = previous_count - rider.valid_tokens.count
         flash.notice = "#{diff} #{'token'.pluralize(diff)} removed."
-        redirect_to request.referrer
+        redirect_to request.referrer || riders_path
       else
-        flash.notice = "Rider does not have any valid token."
-        redirect_to request.referrer
+        flash.notice = "Rider does not have any valid tokens"
+        redirect_to request.referrer || riders_path
       end
     end
 end
