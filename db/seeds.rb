@@ -76,7 +76,7 @@ Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time:
 Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
 
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "matched")
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
 Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
 Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
 Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
@@ -95,7 +95,7 @@ Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time:
 Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-15 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
 
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "matched")
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
 Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-25 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
 Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-25 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
 Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
