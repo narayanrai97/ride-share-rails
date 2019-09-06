@@ -84,8 +84,8 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       expect(response).to have_http_status(400)
       #uncomment these to see the error messages
-      # parsed_json = JSON.parse(response.body)
-      # puts parsed_json
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
   end
   
      it 'returns a new address when a location is shared by two drivers but update by one driver' do

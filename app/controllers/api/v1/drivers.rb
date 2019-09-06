@@ -66,8 +66,17 @@ module Api
       put "drivers" do
         driver = current_driver
         driver.attributes= (params[:driver])
+        if !driver
+          status 401
+          return ""
+        end
         if driver.save
-          render json: current_driver
+          status 200
+          render current_driver
+        else
+          status 400
+          render driver.errors.messages
+           return ""
         end
       end
 
@@ -78,7 +87,9 @@ module Api
       delete "drivers" do
         driver = current_driver
         if driver.destroy != nil
-          return { sucess:true }
+          status 200
+        else
+          status 400 
         end
       end
     end

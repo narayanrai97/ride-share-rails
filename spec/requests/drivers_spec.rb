@@ -35,18 +35,55 @@ RSpec.describe Api::V1::Drivers, type: :request do
        expect(parsed_json['driver']['is_active']).to eq(true)
     end
     
+    # should recieve error code 400 when fields are missing
+    it "will render error code when fields are missing" do
+       post '/api/v1/drivers', headers: {"ACCEPT" => "application/json"}, 
+       params: {driver: { email: "sample@sample.com", password: "password",
+       first_name: "Frank", 
+        organization_id: organization.id,
+       radius: 50, is_active: true
+       }}
+       expect(response).to have_http_status(400)
+      # uncomment to see error codes
+    #   parsed_json = JSON.parse(response.body)
+    #   puts parsed_json
+    end
+    
     it 'update driver infomation ' do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken }, 
        params:  {driver: 
        { email: "sample@sample.com", password: "password",
-       first_name: "Bob", last_name: "Martin",
-       phone: "7180987654", organization_id: organization.id, 
+       first_name: "Tom", last_name: "Martin",
+       phone: "6152239090", organization_id: organization.id, 
        radius: 50, is_active: true
        }}
        
        expect(response).to have_http_status(200)
+       parsed_json = JSON.parse(response.body)
+       expect(parsed_json['driver']['email']).to eq('sample@sample.com')
+       expect(parsed_json['driver']['first_name']).to eq('Tom')
+       expect(parsed_json ['driver']['last_name']).to eq('Martin')
+       expect(parsed_json['driver']['phone']).to eq('6152239090')
+       expect(parsed_json['driver']['radius']).to eq(50)
+       expect(parsed_json['driver']['is_active']).to eq(true)
        
     end
+    
+    it 'returns a 400 error message when fields are not valid ' do
+       put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken }, 
+       params:  {driver: 
+       { email: "sample@sample.com", password: "password",
+       first_name: "Tom", last_name: "Jumper",
+       phone: "Rails", organization_id: organization.id, 
+       radius: 50, is_active: true
+       }}
+       
+       expect(response).to have_http_status(400)
+       parsed_json = JSON.parse(response.body)
+       puts parsed_json
+       
+    end
+    
     
     it 'logout driver and destorys token' do
         token = logintoken
