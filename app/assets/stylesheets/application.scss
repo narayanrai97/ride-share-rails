@@ -117,12 +117,12 @@ th {
 }
 
 .card {
-  border: solid skyblue 3px;
+  border: solid #17a2b8 3px;
   border-radius: 5px;
 }
 
 .card2 {
-  border: solid skyblue 2px;
+  border: solid #17a2b8 2px;
   border-radius: 5px;
   margin-right: 80px;
   margin-left: 80px;
@@ -130,14 +130,17 @@ th {
 }
 
 .card3 {
-  border: solid skyblue 3px;
-  border-radius: 5px;
+  border: solid #17a2b8 3px;
+  border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 20px;
 }
 
 .bg-primary {
   text-align: center;
+  color: white;
+  font-style: oblique;
+  margin-right: -1px;
 }
 
 .ml-5, .mx-5 {
