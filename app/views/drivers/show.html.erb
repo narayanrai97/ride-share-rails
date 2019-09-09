@@ -1,6 +1,6 @@
 <div class="container">
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2">Driver Information</h3>
+    <h3 class="bg-primary rounded pl-2 headings">Driver Information</h3>
     <div class="ml-5">
       <div class="row">
         <div class="col-md border-top border-bottom">
@@ -63,13 +63,13 @@
         </div>
       </div>
       <div class="driver-show-page-buttons">
-        <%= link_to 'Edit Driver', edit_driver_path(@driver), class:"btn btn-sm btn-green"%>
+        <%= link_to 'Edit Driver', edit_driver_path(@driver), class:"btn btn-sm btn-outline-success my-2 my-sm-0"%>
       </div>
     </div>
   </div>
 
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 ">Cars</h3>
+    <h3 class="bg-primary rounded pl-2 headings">Cars</h3>
     <% @driver.vehicles.each do |vehicle| %>
 
       <div class="ml-5">
@@ -133,11 +133,11 @@
         <div class="row5">
 
           <div class="col-sm driver-show-page-buttons">
-            <%=link_to "Edit Car",edit_vehicle_path(:id =>vehicle.id), class: "btn btn-green btn-sm"%>
+            <%=link_to "Edit Car",edit_vehicle_path(vehicle), class: "btn btn-sm btn-outline-success my-2 my-sm-0"%>
           </div>
 
           <div class="col-sm driver-show-page-buttons">
-            <%= link_to "Delete Car", vehicle_path(:id=>vehicle.id),method: :delete, class: "btn btn-warning btn-sm"%>
+            <%= link_to "Delete Car", vehicle_path(vehicle), method: :delete, class: "btn btn-sm btn-outline-warning my-2 my-sm-0", data: { confirm: "Are you sure?"}%>
           </div>
 
           <div class="col-sm "></div>
@@ -147,18 +147,24 @@
     <% end %>
 
     <div class="ml-5 mt-2 driver-show-page-buttons">
-      <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-primary"%>
+      <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-outline-info my-2 my-sm-0"%>
     </div>
   </div>
 
   <div class="card3">
-      <h3 class="bg-primary rounded pl-2 ">Schedules</h3>
+      <h3 class="bg-primary rounded pl-2 headings">Schedules</h3>
       <% @schedules.each do |s| %>
-        <div class="ml-5">
-          <div class="row">
-
-            <div class="col-sm border-top border-bottom">
-              <p><b>Start Date:</b> <%= s.start_date %> | <b>End date:</b> <%= s.end_date %></p><br/>
+        <div class="ml-5 schedule_windows">
+          <div class="row rows">
+            <div class="col-sm border-top border-bottom schedules">
+              <div class="col-md-6">
+                <p><b>Start Date:</b> <%= s.start_date.strftime("%b %d, %Y %I:%M %p") %><br/>
+                <b>End date:</b> <%= s.end_date.strftime("%b %d, %Y %I:%M %p") %></p>
+              </div>
+              <div class="col-md-6">
+                <p><b>Recurring:</b> <%= s.is_recurring %><br/>
+                <b>Location:</b> <%= s.location.full_address %></p>
+              </div>
             </div>
           </div>
         </div>
@@ -166,7 +172,7 @@
   </div>
 
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 ">Locations</h3>
+    <h3 class="bg-primary rounded pl-2 headings">Locations</h3>
     <% @locations.each do |location| %>
     <div class="ml-5">
       <div class="row">
