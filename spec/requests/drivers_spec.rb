@@ -10,7 +10,6 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
-    
     it 'driver login in' do
     post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
        expect(response).to have_http_status(201)
@@ -26,7 +25,6 @@ RSpec.describe Api::V1::Drivers, type: :request do
        
        expect(response).to have_http_status(201)
        parsed_json = JSON.parse(response.body)
-    
        expect(parsed_json['driver']['email']).to eq('sample@sample.com')
        expect(parsed_json['driver']['first_name']).to eq('Bob')
        expect(parsed_json ['driver']['last_name']).to eq('Steve')
@@ -44,9 +42,6 @@ RSpec.describe Api::V1::Drivers, type: :request do
        radius: 50, is_active: true
        }}
        expect(response).to have_http_status(400)
-      # uncomment to see error codes
-    #   parsed_json = JSON.parse(response.body)
-    #   puts parsed_json
     end
     
     it 'update driver infomation ' do
@@ -79,9 +74,6 @@ RSpec.describe Api::V1::Drivers, type: :request do
        }}
        
        expect(response).to have_http_status(400)
-       parsed_json = JSON.parse(response.body)
-       puts parsed_json
-       
     end
     
     
