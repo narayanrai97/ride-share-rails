@@ -24,10 +24,16 @@
         <td><%= rider.last_name %></td>
         <td><%= rider.phone %></td>
         <td><%= rider.email %></td>
-        <td><%= link_to 'Edit', edit_rider_path(rider) %></td>
-        <td><%= link_to 'Deactivate', rider_deactivate_path(rider),
-                          method: :put,
-                          data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to edit_rider_path(rider), class: "btn btn-sm btn-success" do %>
+            <i class="fa fa-pencil-square-o">Edit</i>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to rider_deactivate_path(rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
+              <i class="fa fa-power-off">Deactivate</i>
+            <% end %>
+        </td>
       </tr>
   <% end %>
 </table>
@@ -35,4 +41,3 @@
 <%= paginate @riders %>
 <%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
 <%= link_to 'New Rider', new_rider_path, class: "btn btn-outline-info my-2 my-sm-0" %>
-
