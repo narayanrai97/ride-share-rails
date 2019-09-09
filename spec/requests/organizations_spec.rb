@@ -13,6 +13,7 @@ RSpec.describe Api::V1::Organizations, type: :request do
       #Checkout out that response is what it should be
       #Only testing parts I changed on the second and third object
       parsed_json = JSON.parse(response.body)
+      puts parsed_json
       expect(parsed_json['organization'][0]['name']).to eq('Duke')
       expect(parsed_json['organization'][0]['street']).to eq('200 Front Street')
       expect(parsed_json['organization'][0]['city']).to eq('Durham')

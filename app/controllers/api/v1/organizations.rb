@@ -15,9 +15,6 @@ module Api
         organizations = Organization.all
         render organizations
         end
-
-
-
-      end
     end
   end
+end
