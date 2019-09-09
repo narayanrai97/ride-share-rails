@@ -45,6 +45,7 @@ class DriversController < ApplicationController
       flash.notice = "The driver information has been saved"
       redirect_to @driver
     else
+      flash[:error] = @driver.errors.full_messages
       render 'new'
     end
   end
