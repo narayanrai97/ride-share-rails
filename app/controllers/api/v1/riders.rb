@@ -31,7 +31,6 @@ module Api
          status 201
          render json: {"rider": rider, "locations": locations}
         else 
-          byebug
          status 404
          return ""
         end
