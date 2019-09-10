@@ -111,7 +111,7 @@ module Api
               render ride
             end
           else
-             status(404)
+             status 401
              render "Unauthorized"
           end
         end
