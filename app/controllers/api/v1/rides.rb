@@ -88,11 +88,12 @@ module Api
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "scheduled")
+              status 201
               render ride
             end
           else
-            status(404)
-            render "Unauthorized"
+            status 404
+            return "Unauthorized"
           end
         end
 
@@ -106,6 +107,7 @@ module Api
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "completed")
+              status 201
               render ride
             end
           else

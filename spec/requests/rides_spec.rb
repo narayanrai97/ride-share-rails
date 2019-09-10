@@ -7,6 +7,8 @@ RSpec.describe Api::V1::Rides, type: :request do
   #token_created_at in the last day so it would function
   let!(:driver) {create(:driver, organization_id: organization.id,
      auth_token: "1234",token_created_at: Time.zone.now) }
+  let!(:driver2) {create(:driver, organization_id: organization.id,
+     auth_token: "4567",token_created_at: Time.zone.now) }
   let!(:rider){create(:rider)}
   let!(:location) {create(:location)}
   let!(:location1) {create(:location,  street:"10 Front Street")}
@@ -29,14 +31,26 @@ RSpec.describe Api::V1::Rides, type: :request do
   it 'will accept a ride for the driver' do
     post "/api/v1/rides/#{ride.id}/accept",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
+    puts parsed_json
     expect(response).to have_http_status(201)
     expect(parsed_json['ride']['driver_id']).to eq(driver.id)
     expect(parsed_json['ride']['status']).to eq("scheduled")
   end
+  #Accepts a ride for the current logged user
+  it 'will return a 404 error when ride does not belong to driver ' do
+    post "/api/v1/rides/#{1123}/accept",  headers: {"ACCEPT" => "application/json",  "Token" => "4567"}
+    parsed_json = JSON.parse(response.body)
+    puts parsed_json
+    expect(response).to have_http_status(404)
+    
+  end
+
   #Changes status of ride to completed
   it 'will complete a ride for a driver' do
     post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
+    puts parsed_json
+    expect(response).to have_http_status(201)
     expect(parsed_json['ride']['status']).to eq("completed")
   end
 
@@ -90,6 +104,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     it 'will return all rides with status scheduled' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: "scheduled"}
       parsed_json = JSON.parse(response.body)
+      puts parsed_json
       #should only have scheduled result, only should return one object
       expect(parsed_json['rides'][0]['status']).to eq("scheduled")
     end
@@ -97,6 +112,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     it 'will return all rides start date' do
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start: Date.today, end: Date.today + 15}
       parsed_json = JSON.parse(response.body)
+      puts parsed_json
       #Time formatting includes timezone information z and miliseconds
       expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 5.days).round(10).iso8601(3).to_date))
     end
