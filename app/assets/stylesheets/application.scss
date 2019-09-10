@@ -27,12 +27,22 @@
  }
 
 body {
-  background-color: ash;
+  background-color: #ffffff;
+  background-image: url("background-image.png");
   width: 100%;
   position: absolute;
   height: 100%;
 }
 
+.login-menu {
+  display: inline-flex;
+  flex-direction: row;
+  align-content: space-evenly;
+}
+
+#rider-login {
+  margin-left: 25px;
+}
 .border-bot {
   border-bottom: inset 3px gray;
 }
@@ -82,6 +92,7 @@ body {
 
 .jumbotron {
   margin: 25px;
+  background-color: lightgray;
 }
 
 .navbar-collapse ul li:hover {
