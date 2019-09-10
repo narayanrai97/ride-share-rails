@@ -39,6 +39,6 @@ class Driver < ApplicationRecord
   end
 
   def ride_cancel_alert
-    
+
   end
 end
