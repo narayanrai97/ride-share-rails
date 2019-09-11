@@ -5,7 +5,14 @@ module Api
 
         desc "Return all riders"
         get "riders", root: :riders do
-          render json: Rider.all
+          riders = Rider.all
+          if riders.all.empty?
+            status 404
+            return ""
+          else 
+            status 201
+            render json: riders
+          end
         end
 
 
@@ -20,7 +27,13 @@ module Api
         location_ids.each do |id|
           locations.push(Location.where(id: id))
         end
-        render json: {"rider": rider, "locations": locations}
+        if rider != nil
+         status 201
+         render json: {"rider": rider, "locations": locations}
+        else 
+         status 404
+         return ""
+        end
       end
 
     end
