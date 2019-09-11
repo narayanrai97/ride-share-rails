@@ -76,4 +76,55 @@ RSpec.describe DriversController, type: :controller do
       expect(flash[:notice]).to match(/not authorized/)
   end
 
+  it 'accepts application' do
+    test_response = put :accept, params: {
+      driver_id: driver.id }
+
+      driver.reload
+      expect(driver.application_state).to eq("approved")
+      # expect(test_response.response_code).to eq(302)
+      # expect(flash[:notice]).to match(/updated/)
+      # expect(test_response).to redirect_to(driver)
+  end
+
+  # PLEASE IGNORE FOLLOWING COMMENTS AS I AM STILL WORKING OUT THE CODE.
+  #
+  # it 'rejects application' do
+  #   test_response = put :update, params: {
+  #     id: driver_outside_organization.id,
+  #     driver: {
+  #       first_name: 'Tim'
+  #     }
+  #   }
+  #
+  #   driver_outside_organization.reload
+  #   expect(driver.first_name).to_not eq('Tim')
+  #   expect(test_response.response_code).to eq(302)
+  #   expect(flash[:notice]).to match(/not authorized/)
+  #   expect(test_response).to redirect_to(drivers_path)
+  # end
+  #
+  # it 'passes background check' do
+  #   test_response = put :pass, params: {
+  #     id: driver.id,
+  #     driver: {
+  #       first_name: 'Alex'
+  #     }
+  #   }
+  #
+  #   driver.reload
+  #   expect(driver.first_name).to eq('Alex')
+  #   expect(test_response.response_code).to eq(302)
+  #   expect(flash[:notice]).to match(/updated/)
+  #   expect(test_response).to redirect_to(driver)
+  #
+  # end
+
+  # it 'fails background check' do #put
+  #
+  # end
+  #
+  # it 'deactivates a driver' do #put
+  #
+  # end
 end
