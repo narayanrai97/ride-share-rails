@@ -70,6 +70,7 @@ class DriversController < ApplicationController
   #Method to Accept application
   def accept
    @driver = Driver.find(params[:driver_id])
+   authorize @driver
    @driver.update(application_state: "approved")
    redirect_to driver_path(params[:driver_id])
   end
@@ -100,6 +101,7 @@ class DriversController < ApplicationController
 
   def deactivate
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
     @driver.toggle(:is_active).save
     flash.notice = "Driver deactivated."
     redirect_to request.referrer || drivers_path
