@@ -13,11 +13,14 @@ module Api
         end
         get "organizations", root: :organization do
         organizations = Organization.all
-        render organizations
+         if organizations.all.empty?
+          status 404
+          return ""
+         else 
+           status 201
+           render organizations
+         end
         end
-
-
-
-      end
     end
   end
+end
