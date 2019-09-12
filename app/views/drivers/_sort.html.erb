@@ -12,15 +12,19 @@
   <table class="table table-striped">
     <tr class="border-bot">
       <th scope="col">First name</th>
-      <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to drivers_path, class: "links" do %>
-                                                           <%= fa_icon "sort-up" %>
-                                                       <% end %>
-                                                       <%= link_to ascending_sort_path, class: "links" do %>
-                                                           <%= fa_icon "sort-down"%>
-                                                       <% end %></span></th>
+      <th scope="col">Last name</th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
-      <th scope="col">Application State</th>
+      <th scope="col">
+        <a id="status" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Application status
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to 'Pending', drivers_path(application_state: "pending") if current_user.organization.drivers.pending.count > 0 %>
+          <%= link_to 'Accepted', drivers_path(application_state: "accepted") if current_user.organization.drivers.accepted.count > 0%>
+          <%= link_to 'Rejected', drivers_path(application_state: "rejected") if current_user.organization.drivers.rejected.count > 0%>
+        </div>
+      </th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>

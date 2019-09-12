@@ -13,6 +13,9 @@ class Driver < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   scope :active, -> { where(is_active: true) }
+  scope :pending, -> { where(application_state: "pending") }
+  scope :accepted, -> { where(application_state: "accepted") }
+  scope :rejected, -> { where(application_state: "rejected") }
 
 
   def full_name
@@ -38,6 +41,6 @@ class Driver < ApplicationRecord
   end
 
   def ride_cancel_alert
-    
+
   end
 end
