@@ -1,7 +1,6 @@
 <div class="container">
 
 <h1 style="text-align: center">Rides</h1>
-<%= paginate @rides %>
 
 <table class="table table-striped">
   <tr class="border-bot">
@@ -14,59 +13,50 @@
           Status
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <%= link_to 'Approved', admin_ride_index_path(status: "approved") if current_user.organization.rides.approved.count > 0 %>
-        <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") if current_user.organization.rides.canceled.count > 0%>
-        <%= link_to 'Pending', admin_ride_index_path(status: "pending") if current_user.organization.rides.pending.count > 0%>
-        <%= link_to 'Scheduled', admin_ride_index_path(status: "scheduled") if current_user.organization.rides.scheduled.count > 0 %>
-        <%= link_to 'Picking Up', admin_ride_index_path(status: "picking-up") if current_user.organization.rides.picking_up.count > 0 %>
-        <%= link_to 'Dropping Off', admin_ride_index_path(status: "dropping-off") if current_user.organization.rides.dropping_off.count > 0 %>
-        <%= link_to 'Completed', admin_ride_index_path(status: "completed") if current_user.organization.rides.completed.count > 0 %>
+        <%= link_to 'Pending', admin_ride_index_path(status: "pending") %>
+        <%= link_to 'Approved', admin_ride_index_path(status: "approved") %>
+        <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") %>
+        <%= link_to 'Scheduled', admin_ride_index_path(status: "scheduled") %>
+        <%= link_to 'Picking Up', admin_ride_index_path(status: "picking-up") %>
+        <%= link_to 'Dropping Off', admin_ride_index_path(status: "dropping-off") %>
+        <%= link_to 'Completed', admin_ride_index_path(status: "completed") %>
       </div>
     </th>
-    <% if ['pending', nil].include? params[:status] %>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    <% elsif ['approved', 'scheduled'].include? params[:status] %>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    <% end %>
+    <th scope="col"></th>
   </tr>
 
   <% @rides.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
-    <tr class="rides">
-      <td class="no-wrap"><%= ride.rider.full_name %></td>
-      <td class="no-wrap"><%= ride.driver&.full_name %></td>
-      <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p")  %></td>
-      <td><%= ride.reason %></td>
-      <td><%= ride.status %></td>
-      <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
-        <td>
-          <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-success" do %>
-            <i class="fa fa-pencil-square-o">Edit</i>
+      <tr>
+        <td class="no-wrap"><%= ride.rider.full_name %></td>
+        <td class="no-wrap"><%= ride.driver&.full_name %></td>
+        <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p")  %></td>
+        <td><%= ride.reason %></td>
+        <td><%= ride.status %></td>
+        <td class="my-buttons">
+          <% if ride.status == 'pending' %>
+            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-success" do %>
+              <i class="fa fa-pencil-square-o">Edit</i>
+            <% end %>
+
+            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+              <i class="fa fa-ban">Cancel</i>
+            <% end %>
+
+            <%= link_to approve_admin_ride_path(ride), class: "btn btn-sm btn-info", method: :put do %>
+              <i class="fa fa-thumbs-up">Approve</i>
+            <% end %>
+          <% elsif ['approved', 'scheduled'].include? ride.status %>
+            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-success" do %>
+              <i class="fa fa-pencil-square-o">Edit</i>
+            <% end %>
+
+            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+              <i class="fa fa-ban">Cancel</i>
+            <% end %>
           <% end %>
         </td>
-      <% end %>
-      <% if ride.status == 'pending' && ride.status != 'approved' %>
-        <td>
-          <%= link_to approve_admin_ride_path(ride), class: "btn btn-sm btn-info", method: :put do %>
-            <i class="fa fa-thumbs-up">Approve</i>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
-            <i class="fa fa-ban">Cancel</i>
-          <% end %>
-        </td>
-      <% elsif ['approved', 'pending', 'scheduled'].include? ride.status %>
-        <td>
-          <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
-            <i class="fa fa-ban">Cancel</i>
-          <% end %>
-        </td>
-      <% end %>
-    </tr>
+      </tr>
     <% end %>
   <% end %>
 </table>

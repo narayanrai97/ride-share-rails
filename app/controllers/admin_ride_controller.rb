@@ -16,7 +16,9 @@ class AdminRideController < ApplicationController
   end
 
   def index
-    if params[:status] == "approved"
+    if params[:status] == "pending"
+      @rides = current_user.organization.rides.pending
+    elsif params[:status] == 'approved'
       @rides = current_user.organization.rides.approved
     elsif params[:status] == 'canceled'
       @rides = current_user.organization.rides.canceled
@@ -29,7 +31,7 @@ class AdminRideController < ApplicationController
     elsif params[:status] == 'completed'
       @rides = current_user.organization.rides.completed
     else
-      @rides = current_user.organization.rides.pending
+      @rides = current_user.organization.rides
     end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
