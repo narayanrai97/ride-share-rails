@@ -111,16 +111,22 @@ RSpec.describe DriversController, type: :controller do
   #     }
   #
   #   driver.reload
-  #   # expect(driver.background_check).to eq(true)
-  #   expect(driver.update).to eq(true)
+  #   expect(driver.background_check).to eq(true)
   #   expect(test_response.response_code).to eq(302)
   #   expect(driver.background_check).to eq("approved")
   # end
-  #
+
   # it 'fails driver background check' do
+  #   test_response = put :fail, params: {
+  #     driver_id: driver_outside_organization.id
+  #     }
   #
+  #   driver_outside_organization.reload
+  #   expect(driver_outside_organization.background_check).to eq(false)
+  #   expect(test_response.response_code).to eq(302)
+  #   expect(flash[:notice]).to match(/not authorized/)
   # end
-  #
+
   # it 'deactivates driver' do
   #
   # end
