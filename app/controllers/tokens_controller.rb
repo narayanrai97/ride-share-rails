@@ -1,20 +1,15 @@
 class TokensController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authorize_token_belongs_to_org!, only: [:index, :show]
   layout "administration"
 
   def show
     @token = Token.find(params[:id])
+    authorize @token
   end
 
   def index
-    @tokens = Token.all
+    @tokens = Token.all #I'm leaving as is now. We'll need to modify it later!
   end
-
-  private
-    def authorize_token_belongs_to_org!
-      authorize Token
-    end
 
 end
