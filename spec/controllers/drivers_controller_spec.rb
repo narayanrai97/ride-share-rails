@@ -104,7 +104,7 @@ RSpec.describe DriversController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
     expect(test_response).to redirect_to(drivers_path)
   end
-
+  #
   # it 'passes driver background check' do
   #   test_response = put :pass, params: {
   #     driver_id: driver.id
