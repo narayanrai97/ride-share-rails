@@ -6,6 +6,6 @@ class TokenPolicy < ApplicationPolicy
     end
 
     %i(show? edit? update? delete?).each do |ali|
-      alias_method ali, :token_or_up?
+      alias_method ali, :token_belongs_to_org?
     end
   end
