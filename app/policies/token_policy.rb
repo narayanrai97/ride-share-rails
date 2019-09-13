@@ -5,7 +5,7 @@ class TokenPolicy < ApplicationPolicy
       token.organization == current_user.organization
     end
 
-    %i(show? edit? update? delete?).each do |ali|
+    %i(show?).each do |ali|
       alias_method ali, :token_belongs_to_org?
     end
   end
