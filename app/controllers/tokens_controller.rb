@@ -11,6 +11,7 @@ class TokensController < ApplicationController
 
   def show
     @token = Token.find(params[:id])
+    authorize Token
   end
 
   def index
@@ -26,25 +27,29 @@ class TokensController < ApplicationController
       authorize Token
     end
 
-    def add_bulk(rider, quantity)
-      previous_count = rider.valid_tokens.count
-      quantity.times { rider.valid_tokens.create }
-      diff = rider.valid_tokens.count - previous_count
-      flash.notice = "#{diff} #{'Token'.pluralize(diff)} given to #{rider.full_name}."
-      redirect_to request.referrer
-    end
+    # I think the following two methods were moved to the
+    # riders controller.. just didn't want to delete preemptively
+    # without knowing for sure.
 
-    def remove_bulk(rider, quantity)
-      previous_count = rider.valid_tokens.count
-      tokens = rider.valid_tokens.limit(quantity)
-      if rider.valid_tokens_count > 0
-        tokens.update_all(is_valid: false)
-        diff = previous_count - rider.valid_tokens.count
-        flash.notice = "#{diff} #{'Token'.pluralize(diff)} taken away from #{rider.full_name}."
-        redirect_to request.referrer
-      else
-        flash.notice = "Rider does not have any valid token."
-        redirect_to request.referrer
-      end
-    end
+    # def add_bulk(rider, quantity)
+    #   previous_count = rider.valid_tokens.count
+    #   quantity.times { rider.valid_tokens.create }
+    #   diff = rider.valid_tokens.count - previous_count
+    #   flash.notice = "#{diff} #{'Token'.pluralize(diff)} given to #{rider.full_name}."
+    #   redirect_to request.referrer
+    # end
+    #
+    # def remove_bulk(rider, quantity)
+    #   previous_count = rider.valid_tokens.count
+    #   tokens = rider.valid_tokens.limit(quantity)
+    #   if rider.valid_tokens_count > 0
+    #     tokens.update_all(is_valid: false)
+    #     diff = previous_count - rider.valid_tokens.count
+    #     flash.notice = "#{diff} #{'Token'.pluralize(diff)} taken away from #{rider.full_name}."
+    #     redirect_to request.referrer
+    #   else
+    #     flash.notice = "Rider does not have any valid token."
+    #     redirect_to request.referrer
+    #   end
+    # end
 end
