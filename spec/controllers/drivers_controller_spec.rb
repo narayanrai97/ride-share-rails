@@ -106,7 +106,15 @@ RSpec.describe DriversController, type: :controller do
   end
 
   # it 'passes driver background check' do
+  #   test_response = put :pass, params: {
+  #     driver_id: driver.id
+  #     }
   #
+  #   driver.reload
+  #   # expect(driver.background_check).to eq(true)
+  #   expect(driver.update).to eq(true)
+  #   expect(test_response.response_code).to eq(302)
+  #   expect(driver.background_check).to eq("approved")
   # end
   #
   # it 'fails driver background check' do

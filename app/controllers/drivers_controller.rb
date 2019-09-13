@@ -88,6 +88,8 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(background_check: true)
+    # Ask Narayan if the "background_check" needs to be in the Schema
+    # or if it changed to something else?
     redirect_to driver_path(params[:driver_id])
   end
 
