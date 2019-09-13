@@ -37,7 +37,7 @@ module Api
               rides = Ride.where(organization_id: driver.organization_id)
               if rides.length == 0
                 status 404
-                return "maybe"
+                return ""
               end
             end
 
@@ -48,14 +48,14 @@ module Api
               rides = rides.where(status: status)
               if rides.length == 0
                 status 404
-                return "wow"
+                return ""
               end
             end
             if params[:driver_specific] == true
               rides = rides.where(driver_id: driver.id)
               if rides.length == 0
                 status 404
-                return "lets go"
+                return ""
               end
             end
 
