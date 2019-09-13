@@ -8,14 +8,14 @@ RSpec.describe Api::V1::Locations, type: :request do
   #token_created_at in the last day so it would function
   let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id,
      auth_token: "1234",token_created_at: Time.zone.now) }
-  let(:driver_two) { FactoryBot.create(:driver, organization_id: organization.id,
+  let(:driver2) { FactoryBot.create(:driver, organization_id: organization.id,
      auth_token: "5678",token_created_at: Time.zone.now) }
      #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
   let!(:location2){FactoryBot.create(:location, street: "1202 Dublin driver")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id)}
   let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id)}
-  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver_two.id, location_id: location2.id)}
+  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id)}
 
 
 
