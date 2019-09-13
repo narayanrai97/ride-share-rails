@@ -25,6 +25,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
             } 
           parsed_json = JSON.parse(response.body)
+          puts parsed_json
           expect(parsed_json['schedule_window']['start_time']).to eq("2025-09-01T14:00:00.000Z")
           expect(parsed_json['schedule_window']['end_time']).to eq("2025-09-01T16:00:00.000Z")
           expect(parsed_json['schedule_window']['is_recurring']).to eq(false)
