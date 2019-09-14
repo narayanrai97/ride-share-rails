@@ -12,7 +12,7 @@ class DriversController < ApplicationController
   def show
     @driver = Driver.find(params[:id])
     authorize @driver
-    @vehicle = Vehicle.all
+    @vehicles = @driver.vehicles
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
   end
@@ -26,7 +26,6 @@ class DriversController < ApplicationController
       @drivers = current_user.organization.drivers.active.order(last_name: :desc)
     end
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
-    @vehicle = Vehicle.all
   end
 
   def ascending_sort

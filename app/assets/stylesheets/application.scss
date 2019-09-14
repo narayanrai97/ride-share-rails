@@ -139,3 +139,56 @@ a#status {
 td.no-wrap {
   white-space: nowrap;
 }
+
+
+
+
+
+
+
+#section3 {
+  padding-top: 20px;
+}
+
+.vehicle-name {
+  text-align: center;
+}
+.vehicle-name strong {
+  font-size: 20px;
+}
+
+.well-vehicle .lead {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 5px;
+}
+
+.flex-row {
+  display: -ms-flex;
+	display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.flex-row > [class*='col-'] {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-row .caption,
+.flex-row .thumbnail {
+    flex-direction: column;
+    display: flex;
+    flex: 1 0 auto;
+    height: 100%;
+    position: relative;
+}
+
+.flex-text {
+    flex-grow: 1;
+}
