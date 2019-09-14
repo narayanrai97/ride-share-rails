@@ -15,6 +15,7 @@ class DriversController < ApplicationController
     @vehicles = @driver.vehicles
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
+    @schedules = @driver.schedule_windows
   end
 
   def index

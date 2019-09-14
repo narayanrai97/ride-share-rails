@@ -6,15 +6,9 @@
             <strong class="text-white">Update Rider</strong>
         </h5>
         <%= render 'form' %>
-        <div>
-            <%= render 'bulk_form' %>
-        </div><br/>
-    </div>
-    <div>
-        <%= link_to 'Back', riders_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
+        <%= render 'bulk_form' %>
+        <div class="form-group offset-md-1 col-md-2">
+            <%= link_to 'Back', riders_path, class: "btn btn-sm btn-outline-primary my-2 my-sm-0" %>
+        </div>
     </div>
 </div>
-
-<% if false %>
-<% link_to 'Back', riders_path %>
-<% end %>

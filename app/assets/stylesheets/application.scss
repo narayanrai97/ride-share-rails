@@ -27,14 +27,24 @@
  }
 
 body {
-  background-color: ash;
+  background-color: #ffffff;
+  background-image: url("background-image.png");
   width: 100%;
   position: absolute;
   height: 100%;
 }
 
+.login-menu {
+  display: inline-flex;
+  flex-direction: row;
+  align-content: space-evenly;
+}
+
+#rider-login {
+  margin-left: 25px;
+}
 .border-bot {
-  border-bottom: inset 3px gray;
+  border-bottom: inset 1px #17a2b8;
 }
 
 .left {
@@ -82,6 +92,7 @@ body {
 
 .jumbotron {
   margin: 25px;
+  background-color: lightgray;
 }
 
 .navbar-collapse ul li:hover {
@@ -97,7 +108,7 @@ table {
   border-collapse: collapse;
   width: 100%;
   background: #F0F8FF;
-  border: solid darkgray 2px;
+  border: solid #17a2b8 1px;
 }
 
 th, td {
@@ -117,7 +128,60 @@ th {
 }
 
 .card {
-  border: solid darkgray 2px;
+  border: solid #17a2b8 3px;
+  border-radius: 6px;
+}
+
+.card2 {
+  border: solid #17a2b8 2px;
+  border-radius: 5px;
+  margin-right: 80px;
+  margin-left: 80px;
+  margin-bottom: 3px;
+}
+
+.card3 {
+  border: solid #17a2b8 3px;
+  border-radius: 8px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.bg-primary {
+  text-align: center;
+  color: white;
+  margin-right: -1px;
+}
+
+h3.headings {
+  margin-top: -1px;
+  padding: 0 4px 4px 4px;
+}
+
+.ml-5, .mx-5 {
+  margin-right: 3rem !important;
+}
+
+.schedules {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.schedule_windows:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-left: 35px;
+}
+
+.driver-show-page-buttons {
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.row5 {
+  display: flex;
+  flex-direction: row;
+  margin-right: 1px;
+  border-bottom: solid #17a2b8 2px;
 }
 
 a#status {
