@@ -148,10 +148,16 @@ th {
 }
 
 .card4 {
+  position: relative;
+  height: 240px;
   background-color: white;
   border: solid lightgray 1px;
   border-radius: 6px;
   margin-right: 45px;
+}
+
+.card4:hover .btn {
+  display: block;
 }
 
 .bg-primary {
@@ -191,6 +197,7 @@ h3.headings {
 
 .car-buttons .btn {
   margin-right: 15px;
+  display: none;
 }
 
 .row5 {
