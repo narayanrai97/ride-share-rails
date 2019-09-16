@@ -123,6 +123,6 @@ module Api
             render "Not Authorized"
           end
         end
-      end
     end
   end
+end
