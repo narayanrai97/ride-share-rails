@@ -1,79 +1,12 @@
 <div class="container">
   <div class="card3">
     <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-address-card">Driver Information</i></h3>
-    <div class="ml-5">
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>First Name:</strong>
-          <%= @driver.first_name %>
-        </div>
-
-        <div class="col-md border-top border-bottom">
-          <strong>Last Name:</strong>
-          <%= @driver.last_name %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>Phone:</strong>
-          <%= number_to_phone(@driver.phone) %>
-        </div>
-        <div class="col-md border-top border-bottom">
-          <strong>Email:</strong>
-          <%= @driver.email %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>Radius:</strong>
-          <%= @driver.radius %>
-        </div>
-        <div class="col-md border-top border-bottom">
-          <strong>Active:</strong>
-          <%= @driver.is_active %>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-
-          <strong>Background Check:</strong>
-
-          <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
-
-          <% if true %>
-            <%= @driver.background_check %>
-
-            <%= link_to "Accept",driver_pass_path(@driver),method: :put, data: { confirm: "Are you sure the driver passed the background check?" }, class: "btn btn-sm btn-outline-info" %>
-            <%= link_to "Reject",driver_fail_path(@driver),method: :put, data: { confirm: "Are you sure the driver didn't pass the background check?" }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
-          </div>
-          <div class="col-md border-top border-bottom">
-
-            <strong>Application Status:</strong>
-            <%= @driver.application_state %>
-
-            <%if @driver.application_state %>
-
-              <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-info my-2 my-sm-0" %>
-            <% end %>
-
-            <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
-          <% end %>
-
-        </div>
-      </div>
-      <div class="driver-show-page-buttons">
-        <%= link_to 'Edit Driver', edit_driver_path(@driver), class:"btn btn-sm btn-success"%>
-      </div>
-    </div>
+    <%= render 'driver_info' %>
   </div>
 
   <div class="card3">
     <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-car">Cars</i></h3>
-    <%= render 'section1' %>
-    <div class="ml-5 mt-2 driver-show-page-buttons">
-      <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-info"%>
-    </div>
+    <%= render 'cars' %>
   </div>
 
   <div class="card3">

@@ -12,4 +12,8 @@ class Vehicle < ApplicationRecord
       errors.add(:insurance_stop, "date can't be in the past")
     end
   end
+
+  def car_info
+    "#{car_year} #{car_make} #{car_model}"
+  end
 end

@@ -147,6 +147,13 @@ th {
   margin-bottom: 20px;
 }
 
+.card4 {
+  background-color: white;
+  border: solid lightgray 1px;
+  border-radius: 6px;
+  margin-right: 45px;
+}
+
 .bg-primary {
   text-align: center;
   color: white;
@@ -174,7 +181,16 @@ h3.headings {
 
 .driver-show-page-buttons {
   margin-bottom: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+
+.car-buttons {
+  padding: 8px;
+  display: flex;
+}
+
+.car-buttons .btn {
+  margin-right: 15px;
 }
 
 .row5 {
@@ -207,26 +223,20 @@ td.no-wrap {
 
 
 
-
-
-
 #section3 {
   padding-top: 20px;
 }
 
-.vehicle-name {
+p.car-info {
   text-align: center;
-}
-.vehicle-name strong {
   font-size: 20px;
+  border-bottom: solid lightgray 1px;
+  padding: 10px;
 }
 
-.well-vehicle .lead {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 18px;
-    line-height: 22px;
-    margin-top: 5px;
+.car-other-info {
+  margin-left: 20px;
+  padding-bottom: 5px;
 }
 
 .flex-row {
@@ -234,6 +244,7 @@ td.no-wrap {
 	display: -webkit-flex;
   display: flex;
   flex-flow: row wrap;
+  padding-left: 45px;
 }
 
 .flex-row > [class*='col-'] {
