@@ -82,7 +82,7 @@ RSpec.describe DriversController, type: :controller do
       }
 
       driver.reload
-      expect(driver.application_state).to eq("approved")
+      expect(driver.application_state).to eq("accepted")
       expect(test_response.response_code).to eq(302)
       expect(test_response).to redirect_to(driver)
   end
@@ -104,30 +104,40 @@ RSpec.describe DriversController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
     expect(test_response).to redirect_to(drivers_path)
   end
-  #
-  # it 'passes driver background check' do
-  #   test_response = put :pass, params: {
-  #     driver_id: driver.id
-  #     }
-  #
-  #   driver.reload
-  #   expect(driver.background_check).to eq(true)
-  #   expect(test_response.response_code).to eq(302)
-  #   expect(driver.background_check).to eq("approved")
-  # end
 
-  # it 'fails driver background check' do
-  #   test_response = put :fail, params: {
-  #     driver_id: driver_outside_organization.id
-  #     }
-  #
-  #   driver_outside_organization.reload
-  #   expect(driver_outside_organization.background_check).to eq(false)
-  #   expect(test_response.response_code).to eq(302)
-  #   expect(flash[:notice]).to match(/not authorized/)
-  # end
+  it 'passes driver background check' do
+    test_response = put :pass, params: {
+      driver_id: driver.id
+      }
 
-  # it 'deactivates driver' do
-  #
-  # end
+    driver.reload
+    expect(driver.background_check).to eq(true)
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/passed/)
+    expect(test_response).to redirect_to(driver)
+  end
+
+  it 'fails driver background check' do
+    test_response = put :fail, params: {
+      driver_id: driver_outside_organization.id
+      }
+
+    driver_outside_organization.reload
+    expect(driver_outside_organization.background_check).to eq(false)
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/not authorized/)
+    expect(test_response).to redirect_to(drivers_path)
+  end
+
+  it 'deactivates driver' do
+    test_response = put :deactivate, params: {
+      driver_id: driver.id
+      }
+
+    expect(driver.is_active).to eq(true)
+    driver.reload
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/deactivated/)
+    expect(test_response).to redirect_to(drivers_path)
+  end
 end
