@@ -26,26 +26,37 @@ module Api
 
             start_time = params[:start]
             end_time = params[:end]
-
-
-
+            
             if start_time != nil and end_time != nil
               rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
-            else
+              if rides.length == 0
+                status 404
+                return "yes"
+              end
+            else 
               rides = Ride.where(organization_id: driver.organization_id)
+              if rides.length == 0
+                status 404
+                return ""
+              end
             end
-
 
             status = params[:status]
             # status = Array["pending", "scheduled"]
 
             if status != nil
               rides = rides.where(status: status)
+              if rides.length == 0
+                status 404
+                return ""
+              end
             end
             if params[:driver_specific] == true
               rides = rides.where(driver_id: driver.id)
-            else
-              rides = rides.where(driver_id: nil)
+              if rides.length == 0
+                status 404
+                return ""
+              end
             end
 
             # if params[:radius] == true
@@ -53,8 +64,7 @@ module Api
             #     if check_radius(ride)
             #   end
             # end
-
-
+            status 200
             return rides
 
           end
@@ -68,9 +78,10 @@ module Api
           end
           get "rides/:ride_id", root: :ride do
             driver = current_driver
-            #Only can see rides they  the driver own for or have no driver
+            #Only can see rides that the driver own for or have no driver
             ride = Ride.find(permitted_params[:ride_id])
             if (ride.driver_id == nil or ride.driver_id ==driver.id)
+              status 201 
               render ride
             else
               status(404)
@@ -86,13 +97,14 @@ module Api
         post "rides/:ride_id/accept" do
           driver = current_driver
           ride = Ride.find(permitted_params[:ride_id])
-          if (ride.driver_id == nil or ride.driver_id ==driver.id)
+          if (ride.driver_id == nil or ride.driver_id == driver.id)
             if ride.update(driver_id: driver.id, status: "scheduled")
+              status 201
               render ride
             end
           else
-            status(404)
-            render "Unauthorized"
+            status 401
+            return "Unauthorized"
           end
         end
 
@@ -106,10 +118,11 @@ module Api
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "completed")
+              status 201
               render ride
             end
           else
-             status(404)
+             status 401
              render "Unauthorized"
           end
         end
@@ -123,6 +136,7 @@ module Api
         ride = Ride.find(permitted_params[:ride_id])
         if (ride.driver_id == nil or ride.driver_id ==driver.id)
           if ride.update(driver_id: driver.id, status: "canceled")
+            status 201
             render ride
           end
         else
@@ -141,6 +155,7 @@ module Api
         ride = Ride.find(permitted_params[:ride_id])
         if (ride.driver_id == nil or ride.driver_id ==driver.id)
           if ride.update(driver_id: driver.id, status: "picking-up")
+            status 201
             render ride
           end
         else
@@ -158,6 +173,7 @@ module Api
         ride = Ride.find(permitted_params[:ride_id])
         if (ride.driver_id == nil or ride.driver_id ==driver.id)
           if ride.update(driver_id: driver.id, status: "dropping-off")
+            status 201
             render ride
           end
         else
