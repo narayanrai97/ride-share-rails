@@ -20,9 +20,11 @@ class DriversController < ApplicationController
 
   def index
     if params[:application_state]== "pending"
-      @drivers = current_user.organization.drivers.active.where(:application_state =>"pending").order(last_name: :desc)
-    elsif params[:application_state]== "approved"
-      @drivers = current_user.organization.drivers.active.where(:application_state =>"approved").order(last_name: :desc)
+      @drivers = current_user.organization.drivers.active.pending.order(last_name: :desc)
+    elsif params[:application_state]== "accepted"
+      @drivers = current_user.organization.drivers.active.accepted.order(last_name: :desc)
+    elsif params[:application_state]== "rejected"
+      @drivers = current_user.organization.drivers.active.rejected.order(last_name: :desc)
     else
       @drivers = current_user.organization.drivers.active.order(last_name: :desc)
     end
@@ -60,7 +62,7 @@ class DriversController < ApplicationController
     authorize @driver
 
     if @driver.update(driver_params)
-      flash.notice = "The driver information has been updated"
+      flash.notice = "The driver information has been updated."
       redirect_to @driver
     else
       render 'edit'
@@ -70,8 +72,9 @@ class DriversController < ApplicationController
   #Method to Accept application
   def accept
    @driver = Driver.find(params[:driver_id])
-   @driver.update(application_state: "approved")
-   redirect_to driver_path(params[:driver_id])
+   @driver.update(application_state: "accepted")
+   flash.notice = "The driver application has been accepted."
+   redirect_to @driver
   end
 
   #Method to Reject application
@@ -79,7 +82,8 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(application_state: "rejected")
-    redirect_to driver_path(params[:driver_id])
+    flash.alert = "The driver application has been rejected."
+    redirect_to @driver
   end
 
   #change background_check to true
@@ -87,7 +91,8 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(background_check: true)
-    redirect_to driver_path(params[:driver_id])
+    flash.notice = "The driver passed."
+    redirect_to @driver
   end
 
   #change background_check to false
@@ -95,7 +100,8 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(background_check: false)
-    redirect_to driver_path(params[:driver_id])
+    flash.alert = "The driver failed."
+    redirect_to @driver
   end
 
   def deactivate
