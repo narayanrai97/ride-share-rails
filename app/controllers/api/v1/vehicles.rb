@@ -59,8 +59,9 @@ module Api
         get "vehicle", root: :vehicle do
           if drivers_vehicle(params[:id])
             vehicle = Vehicle.find(params[:id])
+            byebug
+            status 200
             return vehicle
-
           else
             #Return Not authorized, not formatted
             status 401
@@ -75,8 +76,13 @@ module Api
         end
         get "vehicles", root: :vehicle do
           driver = current_driver
-          render driver.vehicles
-
+          if driver.vehicles.length != 0
+            status 200
+            render driver.vehicles
+          else
+            status 404
+            return ""
+          end
         end
 
 
@@ -96,19 +102,14 @@ module Api
           end
         end
         put "vehicles" do
-          if  drivers_vehicle(params[:vehicle][:id])
-            vehicle = Vehicle.find(params[:vehicle][:id])
-            vehicle.attributes = (params[:vehicle])
-            if vehicle.save
-              render vehicle
-            else
-              render vehicle.errors
-            end
-
+          vehicle = current_driver.vehicles.find(params[:vehicle][:id])
+          vehicle.attributes = (params[:vehicle])
+          if vehicle.save
+            status 200
+            render vehicle
           else
-            status 401
-            render "Not Authorized"
-             params[:vehicle][:id]
+            status 400
+            render vehicle.errors
           end
         end
 
