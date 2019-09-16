@@ -1,26 +1,23 @@
 <div class="container">
 
-  <h1 style="text-align: center">List of All Drivers</h1>
-  <%= paginate @drivers %>
-
-  <div class="mb-3">
-    <%= link_to 'All Applications', drivers_path, class:"btn btn-primary" %> |
-    <%= link_to 'Pending Applications', drivers_path(application_state: "pending"), class:"btn btn-primary" %> |
-    <%= link_to 'Approved Applications', drivers_path(application_state: "approved"), class:"btn btn-primary" %>
-  </div>
+  <h1 style="text-align: center">Drivers</h1>
 
   <table class="table table-striped">
     <tr class="border-bot">
       <th scope="col">First name</th>
-      <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to drivers_path, class: "links" do %>
-                                                           <%= fa_icon "sort-up" %>
-                                                       <% end %>
-                                                       <%= link_to ascending_sort_path, class: "links" do %>
-                                                           <%= fa_icon "sort-down"%>
-                                                       <% end %></span></th>
+      <th scope="col">Last name</th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
-      <th scope="col">Application State</th>
+      <th scope="col">
+        <a id="status" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Application status
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to 'Pending', drivers_path(application_state: "pending") if current_user.organization.drivers.pending.count > 0 %>
+          <%= link_to 'Accepted', drivers_path(application_state: "accepted") if current_user.organization.drivers.accepted.count > 0%>
+          <%= link_to 'Rejected', drivers_path(application_state: "rejected") if current_user.organization.drivers.rejected.count > 0%>
+        </div>
+      </th>
       <th scope="col"></th>
       <th scope="col"></th>
       <th scope="col"></th>
@@ -34,11 +31,21 @@
           <td><%= driver.phone %></td>
           <td><%= driver.email %></td>
           <td><%= driver.application_state %></td>
-          <td><%= link_to 'Review', driver_path(driver) %> </td>
-          <td><%= link_to 'Edit', edit_driver_path(driver) %></td>
-          <td><%= link_to 'Deactivate', driver_deactivate_path(driver),
-                          method: :put,
-                          data: { confirm: 'Are you sure?' } %></td>
+          <td>
+            <%= link_to edit_driver_path(driver), class: "btn btn-sm btn-success" do %>
+              <i class="fa fa-pencil-square-o">Edit</i>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to driver_path(driver), class: "btn btn-sm btn-info" do %>
+              <i class="fa fa-check-square">Review</i>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to driver_deactivate_path(driver), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
+              <i class="fa fa-power-off">Deactivate</i>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     <% end %>

@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Admin</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<div class="container">
+  <h1>FRUBER</h1>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <div class="login-menu">
+      <%= link_to "Login as Admin", new_user_session_path, :class => 'btn btn-danger', id: "admin-login" %>
+      <%= link_to "Login as Rider", new_rider_session_path, :class => 'btn btn-danger', id: "rider-login" %>
+  </div>
 
-  <body>
-
-<h1>FRUBER</h1>
-
-<%= link_to "Admin Login", new_user_session_path, :class => 'btn btn-danger', id: "admin-login" %>
-
-<%= link_to "Rider Login", new_rider_session_path, :class => 'btn btn-danger', id: "rider-login" %>
-</body>
-</html>
+</div>
