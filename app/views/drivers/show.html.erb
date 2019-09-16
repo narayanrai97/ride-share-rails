@@ -10,36 +10,13 @@
   </div>
 
   <div class="card3">
-      <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar">Schedules</i></h3>
-      <% @schedules.each do |s| %>
-        <div class="ml-5 schedule_windows">
-          <div class="row rows">
-            <div class="col-sm border-top border-bottom schedules">
-              <div class="col-md-6">
-                <p><b>Start Date:</b> <%= s.start_date.strftime("%b %d, %Y %I:%M %p") %><br/>
-                <b>End date:</b> <%= s.end_date.strftime("%b %d, %Y %I:%M %p") %></p>
-              </div>
-              <div class="col-md-6">
-                <p><b>Recurring:</b> <%= s.is_recurring %><br/>
-                <b>Location:</b> <%= s.location.full_address %></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar">Schedules</i></h3>
+    <%= render 'schedules' %>
   </div>
 
   <div class="card3">
     <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-map-marker">Locations</i></h3>
-    <% @locations.each do |location| %>
-    <div class="ml-5">
-      <div class="row">
-        <div class="col-sm border-top border-bottom">
-          <%= location.full_address %>
-        </div>
-      </div>
-    </div>
-    <% end %>
+    <%= render 'locations' %>
   </div>
   <%= link_to 'Back', drivers_path, class: "btn btn-sm btn-outline-primary my-2 my-sm-0" %>
 </div>

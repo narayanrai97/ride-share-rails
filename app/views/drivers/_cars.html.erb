@@ -1,25 +1,29 @@
 <section class="container-fluid" id="section3">
   <div class="flex-row row">
-    <% @vehicles.each do |vehicle| %>
-      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 card4">
-        <div class="col-xs-12 well well-sm well-vehicle">
-          <div class="card_title">
-            <p class="car-info"><%= vehicle.car_info%></p>
-          </div>
-          <div class="car-other-info">
-            <strong>Color:</strong> <%= vehicle.car_color %><br>
-            <strong>License plate:</strong> <%= vehicle.car_plate %><br>
-            <strong>Number of seat belts:</strong> <%= vehicle.seat_belt_num %><br>
-            <strong>Insurance:</strong> <%= vehicle.insurance_provider %><br>
-            <strong>Effective</strong> <%= vehicle.insurance_start.strftime("%m-%d-%Y")%> <strong>to</strong>
-            <%= vehicle.insurance_stop.strftime("%m-%d-%Y")%>
-            <div class="car-buttons">
-              <%= link_to "Edit", edit_vehicle_path(vehicle), class: "btn btn-sm btn-outline-primary" %>
-              <%= link_to "Delete", vehicle_path(vehicle), method: :delete, data: { confirm: "Are you sure?"}, class: "btn btn-sm btn-outline-danger"%>
+    <% if @vehicles.blank? %>
+       <h3>No cars just yet, would you like to add the first?</h3><br/>
+     <% else %>
+       <% @vehicles.each do |vehicle| %>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 card4">
+          <div class="col-xs-12 well well-sm well-vehicle">
+            <div class="card_title">
+              <p class="car-info"><%= vehicle.car_info%></p>
+            </div>
+            <div class="car-other-info">
+              <strong>Color:</strong> <%= vehicle.car_color %><br>
+              <strong>License plate:</strong> <%= vehicle.car_plate %><br>
+              <strong>Number of seat belts:</strong> <%= vehicle.seat_belt_num %><br>
+              <strong>Insurance:</strong> <%= vehicle.insurance_provider %><br>
+              <strong>Effective</strong> <%= vehicle.insurance_start.strftime("%m-%d-%Y")%> <strong>to</strong>
+              <%= vehicle.insurance_stop.strftime("%m-%d-%Y")%>
+              <div class="car-buttons">
+                <%= link_to "Edit", edit_vehicle_path(vehicle), class: "btn btn-sm btn-outline-primary" %>
+                <%= link_to "Delete", vehicle_path(vehicle), method: :delete, data: { confirm: "Are you sure?"}, class: "btn btn-sm btn-outline-danger"%>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
   <div class="ml-5 mt-2 driver-show-page-buttons">
