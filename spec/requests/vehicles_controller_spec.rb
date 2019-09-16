@@ -25,8 +25,6 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         insurance_stop: "2020/3/11",
         seat_belt_num: 5}
         }
-
-
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
         #puts parsed_json
@@ -39,9 +37,24 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['insurance_start']).to eq('2019-03-11')
         expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
-
-
     end
+    
+     it 'will return error 400 if fields are missing or not correct. Will not save' do
+      post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+       params: {vehicle: {car_make: "Chevorlet",
+        car_model: "Impala",
+        car_year: "Rails Rule",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: "2019/3/11",
+        insurance_stop: "2020/3/11",
+        seat_belt_num: 5}
+        }
+        expect(response).to have_http_status(400)
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
+      end
+    
     #API response of all vehicles of  a driver
     it 'will generate all vehicles of user' do
 

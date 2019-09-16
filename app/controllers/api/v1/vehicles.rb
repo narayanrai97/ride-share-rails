@@ -40,7 +40,13 @@ module Api
                 driver.application_state ="pending"
                 driver.save
               end
+              if vehicle.save
+                status 201
               render vehicle
+              else 
+               status 400
+               vehicle.errors.messages
+              end
             end
 
         end
