@@ -105,10 +105,10 @@ module Api
           vehicle = current_driver.vehicles.find(params[:vehicle][:id])
           vehicle.attributes = (params[:vehicle])
           if vehicle.save
-            status 200
+            status 201
             render vehicle
           else
-            status 400
+            status 404
             render vehicle.errors
           end
         end

@@ -133,8 +133,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
     
-    it "returns a 404 error when not current driver" do
-      
+     it "returns a 404 error when not current driver" do
     put '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"},
         params: {vehicle: {id: vehicle.id, car_make: "Chevorlet",
           car_model: "Impala",
@@ -146,7 +145,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           insurance_stop: "2020/3/11",
           seat_belt_num: 5}
         }
-        # byebug
+        expect(response).to have_http_status(404)
         parsed_json = JSON.parse(response.body)
         puts parsed_json
     end
