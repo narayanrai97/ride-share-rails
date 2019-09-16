@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_222948) do
+ActiveRecord::Schema.define(version: 2019_09_11_161321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,8 @@ ActiveRecord::Schema.define(version: 2019_08_14_222948) do
     t.datetime "updated_at", null: false
     t.string "auth_token"
     t.datetime "token_created_at"
-    t.string "application_state"
+    t.string "application_state", default: "pending"
+    t.boolean "background_check", default: false, null: false
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
   end
