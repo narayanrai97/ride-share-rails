@@ -6,6 +6,7 @@ RSpec.describe DriversController, type: :controller do
   let!(:user) { create :user }
   let!(:driver) { create :driver, organization_id: user.organization.id }
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
+  # let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com', organization_id:  }
 
   before do
     sign_in user
@@ -88,8 +89,19 @@ RSpec.describe DriversController, type: :controller do
       expect(test_response).to redirect_to(driver)
   end
 
-  # John, isn't the following a test that drivers from outside
-  # the organization can't be accepted?
+  it 'does not accept a driver outside organization' do
+      test_response = put :accept, params: {
+        driver_id: driver_outside_organization.id,
+        driver: { application_state: "accepted"
+          }
+        }
+
+      driver_outside_organization.reload
+      expect(driver_outside_organization.application_state).to eq("pending")
+      expect(test_response.response_code).to eq(302)
+      expect(test_response.body).to match(/You are being/)
+      expect(test_response).to redirect_to(driver_outside_organization)
+  end
 
   it 'rejects application' do
     test_response = put :reject, params: {
@@ -97,7 +109,7 @@ RSpec.describe DriversController, type: :controller do
       }
 
     driver_outside_organization.reload
-    expect(driver.application_state).to_not eq("approved")
+    expect(driver.application_state).to_not eq("accepted")
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/not authorized/)
     expect(test_response).to redirect_to(drivers_path)
