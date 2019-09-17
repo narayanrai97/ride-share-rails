@@ -57,9 +57,8 @@ module Api
            requires :id, type: Integer, desc: "ID of vehicle"
         end
         get "vehicle", root: :vehicle do
-          if drivers_vehicle(params[:id])
-            vehicle = Vehicle.find(params[:id])
-            byebug
+            vehicle = current_driver.vehicles.find(params[:id])
+            if vehicle != nil
             status 200
             return vehicle
           else
@@ -75,10 +74,9 @@ module Api
 
         end
         get "vehicles", root: :vehicle do
-          driver = current_driver
-          if driver.vehicles.length != 0
+          if current_driver.vehicles.length != 0
             status 200
-            render driver.vehicles
+            render current_driver.vehicles
           else
             status 404
             return ""
@@ -120,14 +118,13 @@ module Api
 
         end
         delete "vehicles" do
-          if drivers_vehicle(params[:id])
-            vehicle = Vehicle.find(params[:id])
-            if vehicle.destroy != nil
+            vehicle = current_driver.vehicles.find(params[:id])
+            if vehicle.destroy
+              status 200
               return { sucess:true }
-            end
           else
-            status 401
-            render "Not Authorized"
+            status 400
+            render "could not delete vehicle"
           end
         end
     end
