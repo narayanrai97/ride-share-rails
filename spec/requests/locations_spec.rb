@@ -57,6 +57,7 @@ RSpec.describe Api::V1::Locations, type: :request do
       expect(parsed_json['locations'][0]['city']).to eq('Durham')
       expect(parsed_json['locations'][0]['state']).to eq('NC')
       expect(parsed_json['locations'][0]['zip']).to eq( "27705")
+      
       expect(response).to have_http_status(200)
   end
 
