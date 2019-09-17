@@ -89,7 +89,7 @@ RSpec.describe DriversController, type: :controller do
       expect(test_response).to redirect_to(driver)
   end
 
-  it 'does not accept a driver outside organization' do
+  it 'does not accept application for driver outside organization' do
       test_response = put :accept, params: {
         driver_id: driver_outside_organization.id,
         driver: { application_state: "accepted"
