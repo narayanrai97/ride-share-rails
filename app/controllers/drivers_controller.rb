@@ -73,6 +73,7 @@ class DriversController < ApplicationController
   #Method to Accept application
   def accept
    @driver = Driver.find(params[:driver_id])
+   authorize @driver
    if @driver.organization == current_user.organization
      @driver.update(application_state: "accepted")
      flash.notice = "The driver application has been accepted."
