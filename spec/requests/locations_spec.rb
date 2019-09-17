@@ -112,7 +112,6 @@ RSpec.describe Api::V1::Locations, type: :request do
   it 'will return a error code of 401 when location does not belong to a driver ' do
     delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
       expect(response).to have_http_status(401)
-      puts response.body
   end
   
   it 'will return a error of code 404 when location is nil ' do

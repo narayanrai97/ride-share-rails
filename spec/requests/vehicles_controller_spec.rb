@@ -81,9 +81,6 @@ RSpec.describe Api::V1::Vehicles, type: :request do
       Vehicle.destroy_all
       get '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
         expect(response).to have_http_status(404)
-        
-        
-        
       end
       
     #Returns information about a specific vehicle based on param of vehicle_id,
@@ -100,8 +97,6 @@ RSpec.describe Api::V1::Vehicles, type: :request do
       expect(parsed_json['vehicle']['insurance_start'].to_date).to eq(Time.now.to_date)
       expect(parsed_json['vehicle']['insurance_stop'].to_date).to eq((Time.now + 6.months).to_date)
       expect(parsed_json['vehicle']['seat_belt_num']).to eq(4)
-      #puts response.body
-
     end
 
     #Test update vehicle method
@@ -144,7 +139,6 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           seat_belt_num: 5}
         }
         expect(response).to have_http_status(404)
-        parsed_json = JSON.parse(response.body)
     end
 
     #Test deleting a vehicle using vehicle id.
