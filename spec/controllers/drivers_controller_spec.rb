@@ -84,14 +84,12 @@ RSpec.describe DriversController, type: :controller do
       driver.reload
       expect(driver.application_state).to eq("accepted")
       expect(test_response.response_code).to eq(302)
+      expect(flash[:notice]).to match(/accepted/)
       expect(test_response).to redirect_to(driver)
   end
 
-  # it 'handles bad driver ID for accept' do
-  #   test_response = put :accept, params: {
-  #     driver_id: 9678
-  #   }
-  # end
+  # John, isn't the following a test that drivers from outside
+  # the organization can't be accepted?
 
   it 'rejects application' do
     test_response = put :reject, params: {
