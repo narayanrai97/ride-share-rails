@@ -53,7 +53,6 @@ RSpec.describe Api::V1::Locations, type: :request do
 
       parsed_json = JSON.parse(response.body)
       locations = parsed_json['locations']
-      location = locations.first
       expect(location['street']).to eq('1200 front st.')
       expect(parsed_json['locations'][0]['city']).to eq('Durham')
       expect(parsed_json['locations'][0]['state']).to eq('NC')
