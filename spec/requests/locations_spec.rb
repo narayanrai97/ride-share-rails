@@ -59,7 +59,6 @@ RSpec.describe Api::V1::Locations, type: :request do
         break
        end
       end
-      puts parsed_json  
       expect(locations.length).to eq(2)
       expect(response).to have_http_status(200)
   end
