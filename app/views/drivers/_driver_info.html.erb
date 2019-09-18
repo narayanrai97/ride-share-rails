@@ -40,9 +40,9 @@
 
       <% if true %>
         <%= pass_fail(@driver.background_check) %>
-
-        <%= link_to "Pass", driver_pass_path(@driver), method: :put, data: { confirm: "Are you sure the driver passed the background check?" }, class: "btn btn-sm btn-outline-info" %>
-        <%= link_to "Fail", driver_fail_path(@driver), method: :put, data: { confirm: "Are you sure the driver didn't pass the background check?" }, class: "btn btn-sm btn-outline-warning" %>
+        <% if !@driver.background_check? %>
+          <%= link_to "Pass", driver_pass_path(@driver), method: :put, data: { confirm: "Did the driver pass the background check?" }, class: "btn btn-sm btn-outline-info" %>
+        <% end %>
       </div>
       <div class="col-md border-top border-bottom">
 
