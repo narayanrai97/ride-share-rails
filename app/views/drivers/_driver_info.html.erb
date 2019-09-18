@@ -39,10 +39,10 @@
       <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
 
       <% if true %>
-        <%= @driver.background_check %>
+        <%= pass_fail(@driver.background_check) %>
 
-        <%= link_to "Accept",driver_pass_path(@driver),method: :put, data: { confirm: "Are you sure the driver passed the background check?" }, class: "btn btn-sm btn-outline-info" %>
-        <%= link_to "Reject",driver_fail_path(@driver),method: :put, data: { confirm: "Are you sure the driver didn't pass the background check?" }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
+        <%= link_to "Pass", driver_pass_path(@driver), method: :put, data: { confirm: "Are you sure the driver passed the background check?" }, class: "btn btn-sm btn-outline-info" %>
+        <%= link_to "Fail", driver_fail_path(@driver), method: :put, data: { confirm: "Are you sure the driver didn't pass the background check?" }, class: "btn btn-sm btn-outline-warning" %>
       </div>
       <div class="col-md border-top border-bottom">
 
@@ -51,10 +51,10 @@
 
         <%if @driver.application_state %>
 
-          <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-info my-2 my-sm-0" %>
+          <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-info" %>
         <% end %>
 
-        <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
+        <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning" %>
       <% end %>
 
     </div>
