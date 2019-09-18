@@ -41,9 +41,12 @@ module Api
       get "drivers", root: :driver do
         driver = current_driver
         location_ids = LocationRelationship.where(driver_id: current_driver.id)
+        byebug
         locations = []
         location_ids.each do |id|
+          byebug
           locations.push(Location.where(id: id))
+          byebug
         end
         render json: driver
         #render json: {"driver": driver, "location": locations}

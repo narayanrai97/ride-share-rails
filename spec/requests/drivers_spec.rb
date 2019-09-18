@@ -10,6 +10,9 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
+    let!(:location) { FactoryBot.create(:location) }
+    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
+    
     it 'driver login in' do
     post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
        expect(response).to have_http_status(201)
@@ -62,6 +65,12 @@ RSpec.describe Api::V1::Drivers, type: :request do
        expect(parsed_json['driver']['radius']).to eq(50)
        expect(parsed_json['driver']['is_active']).to eq(true)
        
+    end
+    
+    it "returns all drivers" do
+       get "/api/v1/drivers", headers: { "ACCEPT" => "application/json", "Token" => logintoken }
+       parsed_json = JSON.parse(response.body)
+       puts parsed_json
     end
     
     it 'returns a 400 error message when fields are not valid ' do
