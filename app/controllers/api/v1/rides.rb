@@ -31,7 +31,7 @@ module Api
               rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
               if rides.length == 0
                 status 404
-                return "yes"
+                return ""
               end
             else 
               rides = Ride.where(organization_id: driver.organization_id)
