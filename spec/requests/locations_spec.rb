@@ -50,14 +50,16 @@ RSpec.describe Api::V1::Locations, type: :request do
   it 'will return locations of driver ' do
 
     get '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-
       parsed_json = JSON.parse(response.body)
       locations = parsed_json['locations']
-      location = locations.first
-      expect(location['street']).to eq('1200 front st.')
-      expect(parsed_json['locations'][0]['city']).to eq('Durham')
-      expect(parsed_json['locations'][0]['state']).to eq('NC')
-      expect(parsed_json['locations'][0]['zip']).to eq( "27705")
+      thislocation = nil
+      locations.each do |loc|
+      if location['street'] == '1200 front st.'
+       thislocation = location
+        break
+       end
+      end
+      expect(locations.length).to eq(2)
       expect(response).to have_http_status(200)
   end
 
