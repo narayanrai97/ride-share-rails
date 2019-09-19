@@ -167,7 +167,7 @@ RSpec.describe DriversController, type: :controller do
   it 'prevents unauthorized users from marking a driver background failed' do
     driver_outside_organization.update(background_check: true)
     test_response = put :fail, params: {
-      driver_id: driver_outside_organization
+      driver_id: driver_outside_organization.id
       }
 
     driver_outside_organization.reload
@@ -199,7 +199,15 @@ RSpec.describe DriversController, type: :controller do
     expect(test_response_2).to redirect_to(drivers_path)
   end
 
-  # it 'prevents unauthorized users from deactivating a driver outside org' do
-  #
-  # end
+  it 'prevents unauthorized users from deactivating a driver outside org' do
+    test_response = put :deactivate, params: {
+      driver_id: driver_outside_organization.id
+    }
+
+    driver_outside_organization.reload
+    expect(driver_outside_organization.is_active).to be(true)
+    expect(test_response.response_code).to eq(302)
+    expect(flash[:notice]).to match(/not authorized/)
+    expect(test_response).to redirect_to(drivers_path)
+  end
 end
