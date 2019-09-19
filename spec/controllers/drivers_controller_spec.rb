@@ -82,8 +82,7 @@ RSpec.describe DriversController, type: :controller do
       }
 
       driver.reload
-      # Uncomment out this line - expect(driver.application_state).to eq("accepted")
-      # Delete this line - expect(driver.application_state).to_not eq("rejected")
+      expect(driver.application_state).to eq("accepted")
       expect(test_response.response_code).to eq(302)
       expect(flash[:notice]).to match(/accepted/)
       expect(test_response).to redirect_to(driver)
