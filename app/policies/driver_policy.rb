@@ -5,7 +5,7 @@ class DriverPolicy < ApplicationPolicy
       record.organization == user.organization
     end
 
-    %i(show? edit? update? reject? pass? fail?).each do |ali|
+    %i(show? edit? update? accept? reject? pass? fail? deactivate?).each do |ali|
       alias_method ali, :user_belongs_to_org?
     end
   end
