@@ -52,9 +52,12 @@ RSpec.describe Api::V1::Drivers, type: :request do
     it 'update driver infomation ' do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken }, 
        params:  {driver: 
-       { email: "sample@sample.com", password: "password",
-       first_name: "Tom", last_name: "Martin",
-       phone: "6152239090", organization_id: organization.id, 
+       { email: "sample@sample.com", 
+       password: "password",
+       first_name: "Tom",
+       last_name: "Martin",
+       phone: "6152239090",
+       organization_id: organization.id, 
        radius: 50, is_active: true
        }}
        

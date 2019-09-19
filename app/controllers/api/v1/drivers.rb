@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class Drivers < Grape::API
@@ -5,44 +7,42 @@ module Api
 
       helpers SessionHelpers
 
-      #Method to Create a Driver using api calls
-      desc "Create a Driver"
+      # Method to Create a Driver using api calls
+      desc 'Create a Driver'
       params do
         requires :driver, type: Hash do
-          requires :email , type:String
-          requires :password, type:String
+          requires :email, type: String
+          requires :password, type: String
           requires :first_name, type: String
           requires :last_name, type: String
           requires :phone, type: String
           requires :organization_id, type: Integer
-          requires :is_active , type: Boolean
+          requires :is_active, type: Boolean
           optional :radius, type: Integer
         end
       end
-      post "drivers" do
+      post 'drivers' do
         driver = Driver.new
-        driver.attributes= (params[:driver])
+        driver.attributes = params[:driver]
         if driver.save
           status 201
-          render driver
-        #Return bad request error code and error
+          return driver
+        # Return bad request error code and error
         else
           status 400
-          render driver.errors.message
+          return driver.errors.message
         end
       end
 
-
-
-      desc "Return a driver with a given id"
+      desc 'Return a driver with a given id'
       params do
         # requires :id, type: String, desc: "ID of driver"
       end
-      get "drivers", root: :driver do
+      get 'drivers', root: :driver do
         driver = current_driver
         if driver.nil?
           status 400
-          return ""
+          return ''
         else
           location_ids = LocationRelationship.where(driver_id: current_driver.id)
           locations = []
@@ -51,55 +51,53 @@ module Api
           end
         end
         status 200
-        render json: {"driver": driver, "location": locations}
+        return { "driver": driver, "location": locations }
       end
 
-
-      desc "Update a driver with a given id"
+      desc 'Update a driver with a given id'
       params do
         requires :driver, type: Hash do
-          optional  :email , type:String
-          optional :password, type:String
+          optional :email, type: String
+          optional :password, type: String
           optional :first_name, type: String
           optional :last_name, type: String
           optional :phone, type: String
-          optional :is_active , type: Boolean
+          optional :is_active, type: Boolean
           optional :radius, type: Integer
         end
       end
-      put "drivers" do
-        driver = current_driver
-        if driver.nil?
-          status 400 
-          return ""
-        else 
-         driver.attributes= (params[:driver])
-         if driver.save
-           status 200
-           render driver 
-         else
-           status 400
-           render driver.errors.messages
-         end
-        end
-      end
-
-
-      desc "Delete a driver with a given id"
-      params do
-      end
-      delete "drivers" do
+      put 'drivers' do
         driver = current_driver
         if driver.nil?
           status 400
-          return ""
-        else 
-          if driver.destroy != nil
+          return ''
+        else
+          driver.attributes = params[:driver]
+          if driver.save
+            status 200
+            return driver
+          else
+            status 400
+            return driver.errors.messages
+          end
+        end
+      end
+
+      desc 'Delete a driver with a given id'
+      params do
+      end
+      delete 'drivers' do
+        driver = current_driver
+        if driver.nil?
+          status 400
+          return ''
+        else
+          if !driver.destroy.nil?
             status 200
             return { success: true }
           else
-            status 400 
-            return ""
+            status 400
+            return ''
           end
         end
       end
