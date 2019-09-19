@@ -69,18 +69,18 @@ module Api
       end
       put "drivers" do
         driver = current_driver
-      if driver.nil?
+        if driver.nil?
           status 400 
-          return "yes"
-      else 
+          return ""
+        else 
          driver.attributes= (params[:driver])
          if driver.save
            status 200
-           render json: { "driver": driver }
+           render driver 
          else
            status 400
            render driver.errors.messages
-          end
+         end
         end
       end
 
@@ -92,12 +92,12 @@ module Api
         driver = current_driver
         if driver.nil?
           status 400
-          return "yes"
+          return ""
         else 
-           if driver.destroy != nil
+          if driver.destroy != nil
             status 200
             return { success: true }
-           else
+          else
             status 400 
             return ""
           end
