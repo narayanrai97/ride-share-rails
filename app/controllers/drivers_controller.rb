@@ -112,12 +112,12 @@ class DriversController < ApplicationController
     was_active = @driver.is_active
     @driver.toggle(:is_active).save
 
-    if was_active == true
-    flash.notice = "Driver deactivated."
+      if was_active == true
+      flash.notice = "Driver deactivated."
 
-    else #was_active == false
-    flash.notice = "Driver set to active."
-    end
+      else #was_active == false
+      flash.notice = "Driver set to active."
+      end
 
     redirect_to request.referrer || drivers_path
   end
