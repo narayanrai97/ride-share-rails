@@ -10,7 +10,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
-    let!(:driver2) { FactoryBot.create(:driver, organization_id: organization.id,
+    let!(:driver2) { FactoryBot.create(:driver, first_name: "Phil", organization_id: organization.id,
     auth_token: "5678", token_created_at: Time.zone.now) }
     let!(:location) { FactoryBot.create(:location) }
     let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
@@ -71,8 +71,31 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     it "returns current drivers" do
        get "/api/v1/drivers", headers: { "ACCEPT" => "application/json", "Token" => logintoken }
-      
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
       expect(response).to have_http_status(200)
+    end
+    
+    it "returns a 400 when driver does not have a token" do 
+       get "/api/v1/drivers", headers: { "ACCEPT" => "application/json"}
+       parsed_json = JSON.parse(response.body)
+       puts parsed_json
+       expect(response).to have_http_status(400)
+    end
+    
+    it 'updates the driver ' do
+       put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken }, 
+       params:  {driver: 
+       { email: "sample@sample.com", password: "password",
+       first_name: "Tom", 
+       last_name: "Jumper",
+       phone: "9193217890", 
+       organization_id: organization.id, 
+       radius: 50, is_active: true
+       }}
+       parsed_json = JSON.parse(response.body)
+       puts parsed_json
+       expect(response).to have_http_status(200)
     end
     
     it 'returns a 400 error message when fields are not valid ' do
@@ -83,7 +106,8 @@ RSpec.describe Api::V1::Drivers, type: :request do
        phone: "Rails", organization_id: organization.id, 
        radius: 50, is_active: true
        }}
-       
+       parsed_json = JSON.parse(response.body)
+       puts parsed_json
        expect(response).to have_http_status(400)
     end
     
@@ -92,10 +116,17 @@ RSpec.describe Api::V1::Drivers, type: :request do
         token = logintoken
         delete '/api/v1/logout', headers: {"ACCEPT" => "application/json", 'Token' => logintoken}
         expect(response).to have_http_status(201)
+        puts response.body
 
         # this test makes sure that the token has been destory
         delete '/api/v1/logout', headers: {"ACCEPT" => "application/json", 'Token' =>   token}
         expect(response).to have_http_status(401)
+        puts response.body
+        
+        delete '/api/v1/logout', headers: {"ACCEPT" => "application/json"}
+        expect(response).to have_http_status(401)
+        puts response.body
+        
     end
 end
 
