@@ -28,7 +28,7 @@
   <% @rides.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
       <tr>
-        <td class="no-wrap"><%= ride.rider.full_name %></td>
+        <td class="no-wrap"><%= link_to ride.rider.full_name, admin_ride_path(ride) %></td>
         <td class="no-wrap"><%= ride.driver&.full_name %></td>
         <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p")  %></td>
         <td><%= ride.reason %></td>
@@ -62,7 +62,7 @@
 </table>
 
 <%= paginate @rides %>
-<%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary my-2 my-sm-0" %>
-<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-outline-info my-2 my-sm-0" %>
+<%= link_to 'Back', welcome_index_path, class: "btn btn-outline-primary" %>
+<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-outline-info" %>
 
 </div>
