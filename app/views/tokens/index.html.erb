@@ -1,27 +1,28 @@
 <div class="container">
+  <h1>Tokens</h1>
 
-<h4>LISTING TOKENS</h4>
+  <table class="table table-striped">
+    <tr class="border-bot">
+      <th scope="col">Rider</th>
+      <th scope="col">Created at</th>
+      <th scope="col">Expiration</th>
+      <th scope="col">Used at</th>
+      <th scope="col">Validity</th>
+    </tr>
 
-<table class="table table-striped">
-  <tr class="border-bot">
-    <th scope="col">Rider</th>
-    <th scope="col">Created at</th>
-    <th scope="col">Expiration</th>
-    <th scope="col">Used at</th>
-    <th scope="col">Validity</th>
-  </tr>
-
-  <% @tokens.each do |token| %>
-    <% if token.rider.organization_id==current_user.organization_id %>
-      <tr>
-        <td scope="row"><%= token.rider.full_name %></td>
-        <td><%= token.created_at.strftime("%b %d, %Y %I:%M %p") unless token.created_at.nil? %></td>
-        <td><%= token.expires_at.strftime("%b %d, %Y %I:%M %p") unless token.expires_at.nil? %></td>
-        <td><%= token.used_at.strftime("%b %d, %Y %I:%M %p") unless token.used_at.nil? %></td>
-        <td><%= t token.is_valid.class %></td>
-      </tr>
+    <% @tokens.each do |token| %>
+      <% if token.rider.organization_id==current_user.organization_id %>
+        <tr>
+          <td scope="row"><%= token.rider.full_name %></td>
+          <td><%= token.created_at.strftime("%b %d, %Y %I:%M %p") unless token.created_at.nil? %></td>
+          <td><%= token.expires_at.strftime("%b %d, %Y %I:%M %p") unless token.expires_at.nil? %></td>
+          <td><%= token.used_at.strftime("%b %d, %Y %I:%M %p") unless token.used_at.nil? %></td>
+          <td><%= t token.is_valid.class %></td>
+        </tr>
+      <% end %>
     <% end %>
-  <% end %>
-</table>
+  </table>
 
-<%= link_to 'Back', welcome_index_path, class:"btn btn-danger" %>
+  <%= paginate @tokens %>
+  <%= link_to 'Back', welcome_index_path, class:"btn btn-outline-info" %>
+</div>

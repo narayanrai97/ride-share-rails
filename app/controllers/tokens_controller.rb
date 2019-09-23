@@ -11,6 +11,7 @@ class TokensController < ApplicationController
 
   def index
     @tokens = current_user.organization.tokens
+    @tokens = Kaminari.paginate_array(@tokens).page(params[:page]).per(10)
   end
 
   private
