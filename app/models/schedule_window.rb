@@ -10,7 +10,7 @@ class ScheduleWindow < ApplicationRecord
   validate  :end_date_after_start_date
   validate  :start_date_cannot_be_later_than_start_time
   validate  :end_date_cannot_be_before_end_time
-  
+
 # Instance methods
 
   def dates_cannot_be_in_the_past
@@ -70,9 +70,9 @@ class ScheduleWindow < ApplicationRecord
       end
     end
   end
-  belongs_to :location
-
-  has_one :recurring_pattern
+  # belongs_to :location
+  #
+  # has_one :recurring_pattern
 
   def events(query_start_date, query_end_date)
     if is_recurring
@@ -81,21 +81,21 @@ class ScheduleWindow < ApplicationRecord
       nonrecurring_event(query_start_date, query_end_date)
     end
   end
-  
+
   def nonrecurring_event(query_start_date, query_end_date)
-    if query_start_date <= start_time && end_time < query_end_date 
+    if query_start_date <= start_time && end_time < query_end_date
       [{
-        eventId: id, 
-        startTime: start_time, 
-        endTime: end_time, 
-        isRecurring: false, 
+        eventId: id,
+        startTime: start_time,
+        endTime: end_time,
+        isRecurring: false,
         location: location
       }]
     else
       []
     end
   end
-  
+
   def recurring_event(query_start_date, query_end_date)
     case recurring_pattern.type_of_repeating
     when 'weekly'
@@ -104,30 +104,30 @@ class ScheduleWindow < ApplicationRecord
       return []
     end
   end
-  
+
   def recurring_weekly(query_start_date, query_end_date)
-    current_start_date = query_start_date < start_date ? start_date : query_start_date 
+    current_start_date = query_start_date < start_date ? start_date : query_start_date
     dow = recurring_pattern.day_of_week
     start_dow = current_start_date.wday
-    
+
     if start_dow <= dow
       current = current_start_date + (dow - start_dow).days
     else
       current = current_start_date + (7 - (start_dow - dow)).days
     end
-      
+
     results = []
-    while current <= query_end_date && current <= end_date  
+    while current <= query_end_date && current <= end_date
       results.unshift({
-        eventId: id, 
-        startTime: current.strftime('%Y-%m-%d') + " " + start_time.strftime('%H:%M'), 
-        endTime: current.strftime('%Y-%m-%d') + " " + end_time.strftime('%H:%M'), 
-        isRecurring: true, 
+        eventId: id,
+        startTime: current.strftime('%Y-%m-%d') + " " + start_time.strftime('%H:%M'),
+        endTime: current.strftime('%Y-%m-%d') + " " + end_time.strftime('%H:%M'),
+        isRecurring: true,
         location: location
       })
       current = current + (7 * (recurring_pattern.separation_count + 1)).days
     end
-    
+
     return results
 
   end
