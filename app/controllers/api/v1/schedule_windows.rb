@@ -80,7 +80,7 @@ module Api
                 end
                  status 201
                  schedule_window  
-                else
+           else
                  status 404
                  schedule_window.errors.messages
            end

@@ -62,8 +62,6 @@ module Api
         end
         return Driver.where(auth_token: token).where("token_created_at >= ?", 1.day.ago).first
       end
-
-    
     end
   end
 end

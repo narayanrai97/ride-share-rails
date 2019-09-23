@@ -66,10 +66,7 @@ module Api
             # end
             status 200
             return rides
-
           end
-
-
 
           desc "Return a ride with given ID"
           params do
@@ -88,7 +85,6 @@ module Api
               render "Unauthorized"
             end
           end
-
 
         desc "Accept a ride"
         params do
