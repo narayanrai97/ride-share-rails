@@ -27,7 +27,7 @@
  }
 
 body {
-  background-color: #ffffff;
+  background-color: PapayaWhip;
   background-image: url("background-image.png");
   width: 100%;
   position: absolute;
@@ -43,6 +43,7 @@ body {
 #rider-login {
   margin-left: 25px;
 }
+
 .border-bot {
   border-bottom: inset 1px #17a2b8;
 }
@@ -107,24 +108,39 @@ body {
 table {
   border-collapse: collapse;
   width: 100%;
-  background: #F0F8FF;
-  border: solid #17a2b8 1px;
+  background-color: white;
 }
 
 th, td {
   text-align: left;
-  padding: 8px;
+  font-size: 90%;
 }
-
-tr:nth-child(even){background-color: white;}
 
 th {
   background-color: #17a2b8;
   color: white;
 }
 
+.table tr {
+  border: solid darkgray 1px;
+  background: white;
+}
+
 .table th, .table td {
+  padding: none;
+  vertical-align: none;
   border-top: none;
+}
+
+td.my-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
+}
+
+td.my-buttons a {
+  margin-left: 15px;
 }
 
 .card {
@@ -148,9 +164,12 @@ th {
 }
 
 .bg-primary {
-  text-align: center;
   color: white;
   margin-right: -1px;
+}
+
+.bg-primary i {
+  margin-left: 40px;
 }
 
 h3.headings {
@@ -165,11 +184,6 @@ h3.headings {
 .schedules {
   display: flex;
   justify-content: space-evenly;
-}
-
-.schedule_windows:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.05);
-  margin-left: 35px;
 }
 
 .driver-show-page-buttons {
@@ -202,4 +216,10 @@ a#status {
 
 td.no-wrap {
   white-space: nowrap;
+}
+
+.admin-ride {
+  margin-top: 15px;
+  background-color: #fcfcf6;
+  padding: 15px;
 }
