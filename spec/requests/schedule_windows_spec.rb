@@ -73,7 +73,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           # check that start times are correct
           startTime = parsed_json['json'].map{|k| k["startTime"] }
           expect(startTime).to eq(["2025-09-06 14:00", "2025-09-13 14:00", "2025-09-20 14:00"])
-          
+         
           #check that end times are correct
           endTime = parsed_json['json'].map{|k| k['endTime'] }
           expect(endTime).to eq(["2025-09-06 16:00", "2025-09-13 16:00", "2025-09-20 16:00"])

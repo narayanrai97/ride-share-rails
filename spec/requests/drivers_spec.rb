@@ -10,6 +10,11 @@ RSpec.describe Api::V1::Drivers, type: :request do
     
     let!(:organization) { FactoryBot.create(:organization) }
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id) }
+    let!(:driver2) { FactoryBot.create(:driver, first_name: "Phil", organization_id: organization.id,
+    auth_token: "5678", token_created_at: Time.zone.now) }
+    let!(:location) { FactoryBot.create(:location) }
+    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
+    
     it 'driver login in' do
     post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
        expect(response).to have_http_status(201)
@@ -47,9 +52,12 @@ RSpec.describe Api::V1::Drivers, type: :request do
     it 'update driver infomation ' do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken }, 
        params:  {driver: 
-       { email: "sample@sample.com", password: "password",
-       first_name: "Tom", last_name: "Martin",
-       phone: "6152239090", organization_id: organization.id, 
+       { email: "sample@sample.com", 
+       password: "password",
+       first_name: "Tom",
+       last_name: "Martin",
+       phone: "6152239090",
+       organization_id: organization.id, 
        radius: 50, is_active: true
        }}
        
@@ -72,10 +80,18 @@ RSpec.describe Api::V1::Drivers, type: :request do
        phone: "Rails", organization_id: organization.id, 
        radius: 50, is_active: true
        }}
-       
        expect(response).to have_http_status(400)
     end
     
+    it "returns current drivers" do
+       get "/api/v1/drivers", headers: { "ACCEPT" => "application/json", "Token" => logintoken }
+      expect(response).to have_http_status(200)
+    end
+    
+    it "returns a 400 when driver does not have a token" do 
+       get "/api/v1/drivers", headers: { "ACCEPT" => "application/json"}
+       expect(response).to have_http_status(400)
+    end
     
     it 'logout driver and destorys token' do
         token = logintoken
@@ -84,6 +100,9 @@ RSpec.describe Api::V1::Drivers, type: :request do
 
         # this test makes sure that the token has been destory
         delete '/api/v1/logout', headers: {"ACCEPT" => "application/json", 'Token' =>   token}
+        expect(response).to have_http_status(401)
+
+        delete '/api/v1/logout', headers: {"ACCEPT" => "application/json"}
         expect(response).to have_http_status(401)
     end
 end
