@@ -48,6 +48,7 @@ class DriversController < ApplicationController
       flash.notice = "The driver information has been saved"
       redirect_to @driver
     else
+      flash[:error] = @driver.errors.full_messages
       render 'new'
     end
   end
@@ -70,19 +71,20 @@ class DriversController < ApplicationController
   end
 
   #Method to Accept application
-  def accept
-   @driver = Driver.find(params[:driver_id])
-   @driver.update(application_state: "accepted")
-   flash.notice = "The driver application has been accepted."
-   redirect_to @driver
-  end
+   def accept
+    @driver = Driver.find(params[:driver_id])
+    authorize @driver
+      @driver.update(application_state: "accepted")
+      flash.notice = "The driver application has been accepted."
+    redirect_to request.referrer || @driver
+   end
 
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(application_state: "rejected")
-    flash.alert = "The driver application has been rejected."
+    flash.notice = "The driver application has been rejected."
     redirect_to @driver
   end
 
@@ -100,14 +102,23 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     @driver.update(background_check: false)
-    flash.alert = "The driver failed."
+    flash.notice = "The driver failed."
     redirect_to @driver
   end
 
   def deactivate
     @driver = Driver.find(params[:driver_id])
+    authorize @driver
+    was_active = @driver.is_active
     @driver.toggle(:is_active).save
-    flash.notice = "Driver deactivated."
+
+      if was_active == true
+      flash.notice = "Driver deactivated."
+
+      else #was_active == false
+      flash.notice = "Driver set to active."
+      end
+
     redirect_to request.referrer || drivers_path
   end
 
