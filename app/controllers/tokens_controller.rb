@@ -1,4 +1,5 @@
 class TokensController < ApplicationController
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :authenticate_user!
   layout "administration"
@@ -9,7 +10,14 @@ class TokensController < ApplicationController
   end
 
   def index
-    @tokens = Token.all #I'm leaving as is now. We'll need to modify it later!
+    @tokens = current_user.organization.tokens
+    @rides = Kaminari.paginate_array(@tokens).page(params[:page]).per(10)
   end
 
+  private
+
+  def user_not_authorized
+    flash.notice = "You are not authorized to view this information"
+    redirect_to tokens_path
+  end
 end
