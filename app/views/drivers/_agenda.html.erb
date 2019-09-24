@@ -10,7 +10,7 @@
           <%= Date.parse(agenda[1][0][:startTime]).strftime("%d") %>
         </div>
         <div class="time-and-location">
-            <div><%= Date.parse(agenda[1][0][:startTime]).strftime("%b %d, %I:%M %p") %> - <%= Date.parse(agenda[1][0][:startTime]).strftime("%b %d, %I:%M %p") %></div>
+            <div><%= Date.parse(agenda[1][0][:startTime]).strftime("%I:%M %P") %> - <%= Date.parse(agenda[1][0][:startTime]).strftime("%I:%M %P") %></div>
             <div><%= agenda[1][0][:location].full_address %></div>
         </div>
       </div>
