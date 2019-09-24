@@ -16,7 +16,12 @@ class DriversController < ApplicationController
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
     @schedules = @driver.schedule_windows
-    @events = @driver.events(DateTime.now, DateTime.now + 3.months)
+
+    @agenda = Hash.new{ |h,k| h[k] = []}
+    events = @driver.events(DateTime.now, DateTime.now + 3.months).sort_by { |event| event[:startTime] }
+    events.each do |event|
+      @agenda[Date.parse(event[:startTime]).beginning_of_week] << event
+    end
   end
 
   def index

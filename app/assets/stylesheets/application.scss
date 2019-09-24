@@ -157,6 +157,8 @@ td.my-buttons a {
 }
 
 .card3 {
+  background-color: #ffffff;
+  background-image: url("background-image.png");
   border: solid #17a2b8 3px;
   border-radius: 8px;
   margin-top: 5px;
@@ -192,11 +194,6 @@ h3.headings {
 
 .ml-5, .mx-5 {
   margin-right: 3rem !important;
-}
-
-.schedules {
-  display: flex;
-  justify-content: space-evenly;
 }
 
 .driver-show-page-buttons {
@@ -291,4 +288,38 @@ p.car-info {
   margin-top: 15px;
   background-color: #fcfcf6;
   padding: 15px;
+}
+
+// Agenda
+
+.schedules {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 20px;
+}
+
+.schedules .row {
+  margin-left: 115px;
+  padding: 10px;
+}
+
+.agenda {
+  display: flex;
+  flex-direction: row;
+  padding: 15px;
+}
+
+.day-and-date {
+  margin-right: 25px;
+  padding: 10px;
+}
+
+.time-and-location {
+  background-color: #ff8262;
+  padding: 5px;
+  padding-right: 580px;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
 }
