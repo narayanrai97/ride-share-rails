@@ -113,6 +113,7 @@ GEM
     geocoder (1.5.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    gmaps4rails (2.1.2)
     grape (1.2.4)
       activesupport
       builder
@@ -326,6 +327,7 @@ DEPENDENCIES
   factory_bot_rails
   font-awesome-rails
   geocoder
+  gmaps4rails
   grape
   grape-active_model_serializers
   grape-entity
