@@ -70,9 +70,6 @@ class ScheduleWindow < ApplicationRecord
       end
     end
   end
-  # belongs_to :location
-  #
-  # has_one :recurring_pattern
 
   def events(query_start_date, query_end_date)
     if is_recurring
