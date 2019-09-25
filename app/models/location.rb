@@ -15,6 +15,11 @@ class Location < ApplicationRecord
       self.city = self.city.split.map(&:capitalize).join(' ')
     end
   end
+  
+  def full_address
+    sub_address = [address, city, state].compact.join(', ')
+    [sub_address, zipcode].compact.join(' ')
+  end
 
   def upcase_fields
     if state
