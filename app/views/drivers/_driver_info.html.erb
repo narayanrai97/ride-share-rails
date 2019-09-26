@@ -51,12 +51,14 @@
         <strong>Application Status:</strong>
         <mark><%= @driver.application_state %></mark>
 
-        <%if @driver.application_state %>
+        <%if @driver.application_state != "accepted"%>
 
           <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-success" %>
         <% end %>
 
-        <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning" %>
+        <% if @driver.application_state != "rejected"%>
+          <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning" %>
+        <% end %>
       <% end %>
 
     </div>
