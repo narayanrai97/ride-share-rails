@@ -4,7 +4,7 @@ module Api
       include Api::V1::Defaults
 
       helpers SessionHelpers
-      helpers VehicleHelpers
+      
 
 
       before do
@@ -61,11 +61,11 @@ module Api
             if vehicle != nil
             status 200
             return vehicle
-          else
+            else
             #Return Not authorized, not formatted
             status 401
             render "Not Authorized"
-          end
+            end
         end
 
 
@@ -122,10 +122,10 @@ module Api
             if vehicle.destroy
               status 200
               return { sucess:true }
-          else
+            else
             status 400
             render "could not delete vehicle"
-          end
+            end
         end
     end
   end

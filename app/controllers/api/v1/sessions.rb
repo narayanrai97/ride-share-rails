@@ -21,8 +21,6 @@ module Api
       delete "logout", root: :driver do
         destroy_token
       end
-
-
     end
   end
 end
