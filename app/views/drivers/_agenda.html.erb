@@ -5,6 +5,7 @@
     <div class="row">
       <%= (agenda[0] - 1.day).strftime("%b %d")%> - <%= (agenda[0] + 5.days).strftime("%b %d")%>
     </div>
+
     <% agenda[1].each do |event| %>
       <div class="agenda">
         <div class="day-and-date">
@@ -12,16 +13,22 @@
           <span><%= Date.parse(event[:startTime].to_s).strftime("%d") %></span>
         </div>
         <div class="time-and-address">
-          <div><%= Date.parse(event[:startTime].to_s).strftime("%I:%M %P") %> - <%= Date.parse(event[:startTime].to_s).strftime("%I:%M %P") %></div>
+          <div><%= Time.parse(event[:startTime].to_s).strftime("%I:%M %P") %> - <%= Time.parse(event[:endTime].to_s).strftime("%I:%M %P") %></div>
           <div><%= event[:location].full_address %></div>
         </div>
       </div>
     <% end %>
+
     <% if (agenda[0] - 1.day).strftime("%B") != (agenda[0] + 5.days).strftime("%B") %>
       <div class="gray-banner">
         <%= (agenda[0] + 5.days).strftime("%B %Y") %>
       </div>
+    <% elsif (agenda[0] + 5.days).strftime("%b %d") ==  (agenda[0] + 5.days).end_of_month.strftime("%b %d") %>
+      <div class="gray-banner">
+        <%= (agenda[0] + 5.days).next_month.strftime("%B %Y") %>
+      </div>
     <% end %>
+
   <% end %>
 
 </div>
