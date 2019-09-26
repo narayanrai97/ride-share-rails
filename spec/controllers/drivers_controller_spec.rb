@@ -148,7 +148,7 @@ RSpec.describe DriversController, type: :controller do
     driver.reload
     expect(driver.background_check).to eq(false)
     expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/failed/)
+    expect(flash[:alert]).to match(/The driver failed./)
     expect(test_response).to redirect_to(driver)
   end
 
