@@ -103,14 +103,15 @@ class ScheduleWindow < ApplicationRecord
   end
 
   def recurring_weekly(query_start_date, query_end_date)
+
     current_start_date = query_start_date < start_date ? start_date : query_start_date
     dow = recurring_pattern.day_of_week
-    start_dow = current_start_date.wday
+    start_dow = current_start_date.to_datetime.wday
 
     if start_dow <= dow
-      current = current_start_date + (dow - start_dow).days
+      current = current_start_date.to_datetime + (dow - start_dow).days
     else
-      current = current_start_date + (7 - (start_dow - dow)).days
+      current = current_start_date.to_datetime + (7 - (start_dow - dow)).days
     end
 
     results = []

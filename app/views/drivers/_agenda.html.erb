@@ -1,19 +1,27 @@
 <div class="schedules">
-
+  <%= render 'calendar' %>
   <% @agenda.each do |agenda| %>
-  <div class="row">
-      <%= (agenda[0] - 1.day).strftime("%B %d")%> - <%= (agenda[0] + 5.days).strftime("%B %d")%>
-  </div>
+
+    <div class="row">
+      <%= (agenda[0] - 1.day).strftime("%b %d")%> - <%= (agenda[0] + 5.days).strftime("%b %d")%>
+    </div>
+    <% agenda[1].each do |event| %>
       <div class="agenda">
         <div class="day-and-date">
-          <%= Date.parse(agenda[1][0][:startTime]).strftime("%A") %>
-          <%= Date.parse(agenda[1][0][:startTime]).strftime("%d") %>
+          <span style="color: gray;"><%= Date.parse(event[:startTime].to_s).strftime("%a") %></span>
+          <span><%= Date.parse(event[:startTime].to_s).strftime("%d") %></span>
         </div>
-        <div class="time-and-location">
-            <div><%= Date.parse(agenda[1][0][:startTime]).strftime("%I:%M %P") %> - <%= Date.parse(agenda[1][0][:startTime]).strftime("%I:%M %P") %></div>
-            <div><%= agenda[1][0][:location].full_address %></div>
+        <div class="time-and-address">
+          <div><%= Date.parse(event[:startTime].to_s).strftime("%I:%M %P") %> - <%= Date.parse(event[:startTime].to_s).strftime("%I:%M %P") %></div>
+          <div><%= event[:location].full_address %></div>
         </div>
       </div>
+    <% end %>
+    <% if (agenda[0] - 1.day).strftime("%B") != (agenda[0] + 5.days).strftime("%B") %>
+      <div class="gray-banner">
+        <%= (agenda[0] + 5.days).strftime("%B %Y") %>
+      </div>
+    <% end %>
   <% end %>
 
 </div>

@@ -18,9 +18,9 @@ class DriversController < ApplicationController
     @schedules = @driver.schedule_windows
 
     @agenda = Hash.new{ |h,k| h[k] = []}
-    events = @driver.events(DateTime.now, DateTime.now + 3.months).sort_by { |event| event[:startTime] }
+    events = @driver.events(params[:query_start_date] ||= DateTime.now, params[:query_end_date] ||= (DateTime.now + 3.months)).sort_by { |event| event[:startTime] }
     events.each do |event|
-      @agenda[Date.parse(event[:startTime]).beginning_of_week] << event
+      @agenda[Date.parse(event[:startTime].to_s).beginning_of_week] << event
     end
   end
 
@@ -117,12 +117,11 @@ class DriversController < ApplicationController
     was_active = @driver.is_active
     @driver.toggle(:is_active).save
 
-      if was_active == true
+    if was_active == true
       flash.notice = "Driver deactivated."
-
-      else #was_active == false
+    else #was_active == false
       flash.notice = "Driver set to active."
-      end
+    end
 
     redirect_to request.referrer || drivers_path
   end

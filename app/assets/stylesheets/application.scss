@@ -181,6 +181,7 @@ td.my-buttons a {
 .bg-primary {
   color: white;
   margin-right: -1px;
+  margin-bottom: .75px;
 }
 
 .bg-primary i {
@@ -293,33 +294,68 @@ p.car-info {
 // Agenda
 
 .schedules {
+  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin-left: 20px;
+  // margin: 0 80px 0 80px;
 }
 
 .schedules .row {
-  margin-left: 115px;
-  padding: 10px;
+  margin-left: 90px;
+  padding: 5px;
+  color: gray;
 }
 
 .agenda {
   display: flex;
   flex-direction: row;
-  padding: 15px;
+  margin-left: 55px;
+  padding-bottom: 15px;
 }
 
 .day-and-date {
-  margin-right: 25px;
-  padding: 10px;
-}
-
-.time-and-location {
-  background-color: #ff8262;
-  padding: 5px;
-  padding-right: 580px;
   display: flex;
   flex-direction: column;
-  justify-content:space-around;
+  margin-right: 3px;
+  padding: 5px;
+}
+
+.time-and-address {
+  background-color: #ff8262;
+  padding-top: 3px;
+  padding-left: 5px;
+  padding-right: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.schedules .gray-banner {
+  background-color: #9495a0;
+  height: 50px;
+  width: 100%;
+  padding-top: 11px;
+  padding-left: 15px;
+  margin-top: 10px;
+  color: white;
+}
+
+.start-end {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1px;
+}
+
+.start-end p {
+  margin: 15px;
+}
+
+p.submit {
+  margin-top: 40px;
+}
+
+.container {
+  // margin-top: -8px;
 }
