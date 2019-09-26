@@ -79,8 +79,8 @@ class DriversController < ApplicationController
    def accept
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-      @driver.update(application_state: "accepted")
-      flash.notice = "The driver application has been accepted."
+    @driver.update_attribute(:application_state, "accepted")
+    flash.notice = "The driver application has been accepted."
     redirect_to request.referrer || @driver
    end
 
@@ -88,8 +88,8 @@ class DriversController < ApplicationController
   def reject
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(application_state: "rejected")
-    flash.notice = "The driver application has been rejected."
+    @driver.update_attribute(:application_state, "rejected")
+    flash.alert = "The driver application has been rejected."
     redirect_to @driver
   end
 
@@ -97,7 +97,7 @@ class DriversController < ApplicationController
   def pass
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(background_check: true)
+    @driver.update_attribute(:background_check, true)
     flash.notice = "The driver passed."
     redirect_to @driver
   end
@@ -106,8 +106,8 @@ class DriversController < ApplicationController
   def fail
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(background_check: false)
-    flash.notice = "The driver failed."
+    @driver.update_attribute(:background_check, false)
+    flash.alert = "The driver failed."
     redirect_to @driver
   end
 

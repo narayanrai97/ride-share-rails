@@ -4,4 +4,8 @@ module ApplicationHelper
     application_state ? "passed" : "failed"
   end
 
+  def driver_active_inactive(is_active)
+    is_active ? "Yes" : "No"
+  end
+
 end
