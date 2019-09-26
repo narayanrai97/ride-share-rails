@@ -12,10 +12,16 @@ class DriversController < ApplicationController
   def show
     @driver = Driver.find(params[:id])
     authorize @driver
-    @vehicle = Vehicle.all
+    @vehicles = @driver.vehicles
     @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
     @locations = Location.where(id: @location_ids)
     @schedules = @driver.schedule_windows
+
+    @agenda = Hash.new{ |h,k| h[k] = []}
+    events = @driver.events(params[:query_start_date] ||= DateTime.now, params[:query_end_date] ||= (DateTime.now + 3.months)).sort_by { |event| event[:startTime] }
+    events.each do |event|
+      @agenda[Date.parse(event[:startTime].to_s).beginning_of_week] << event
+    end
   end
 
   def index
@@ -29,7 +35,6 @@ class DriversController < ApplicationController
       @drivers = current_user.organization.drivers.active.order(last_name: :desc)
     end
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
-    @vehicle = Vehicle.all
   end
 
   def ascending_sort
@@ -74,8 +79,8 @@ class DriversController < ApplicationController
    def accept
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-      @driver.update(application_state: "accepted")
-      flash.notice = "The driver application has been accepted."
+    @driver.update_attribute(:application_state, "accepted")
+    flash.notice = "The driver application has been accepted."
     redirect_to request.referrer || @driver
    end
 
@@ -83,8 +88,8 @@ class DriversController < ApplicationController
   def reject
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(application_state: "rejected")
-    flash.notice = "The driver application has been rejected."
+    @driver.update_attribute(:application_state, "rejected")
+    flash.alert = "The driver application has been rejected."
     redirect_to @driver
   end
 
@@ -92,7 +97,7 @@ class DriversController < ApplicationController
   def pass
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(background_check: true)
+    @driver.update_attribute(:background_check, true)
     flash.notice = "The driver passed."
     redirect_to @driver
   end
@@ -101,8 +106,8 @@ class DriversController < ApplicationController
   def fail
     @driver = Driver.find(params[:driver_id])
     authorize @driver
-    @driver.update(background_check: false)
-    flash.notice = "The driver failed."
+    @driver.update_attribute(:background_check, false)
+    flash.alert = "The driver failed."
     redirect_to @driver
   end
 
@@ -112,12 +117,11 @@ class DriversController < ApplicationController
     was_active = @driver.is_active
     @driver.toggle(:is_active).save
 
-      if was_active == true
+    if was_active == true
       flash.notice = "Driver deactivated."
-
-      else #was_active == false
+    else #was_active == false
       flash.notice = "Driver set to active."
-      end
+    end
 
     redirect_to request.referrer || drivers_path
   end

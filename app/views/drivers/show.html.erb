@@ -1,187 +1,22 @@
 <div class="container">
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-address-card"> Driver Information</i></h3>
-    <div class="ml-5">
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>First Name:</strong>
-          <%= @driver.first_name %>
-        </div>
-
-        <div class="col-md border-top border-bottom">
-          <strong>Last Name:</strong>
-          <%= @driver.last_name %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>Phone:</strong>
-          <%= number_to_phone(@driver.phone) %>
-        </div>
-        <div class="col-md border-top border-bottom">
-          <strong>Email:</strong>
-          <%= @driver.email %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-          <strong>Radius:</strong>
-          <%= @driver.radius %>
-        </div>
-        <div class="col-md border-top border-bottom">
-          <strong>Active:</strong>
-          <%= @driver.is_active %>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md border-top border-bottom">
-
-          <strong>Background Check:</strong>
-
-          <!-- The following background check code is temporarily commented out because is not yet functioning properly. -->
-
-          <% if true %>
-            <%= @driver.background_check %>
-
-            <%= link_to "Accept",driver_pass_path(@driver),method: :put, data: { confirm: "Are you sure the driver passed the background check?" }, class: "btn btn-sm btn-outline-info" %>
-            <%= link_to "Reject",driver_fail_path(@driver),method: :put, data: { confirm: "Are you sure the driver didn't pass the background check?" }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
-          </div>
-          <div class="col-md border-top border-bottom">
-
-            <strong>Application Status:</strong>
-            <%= @driver.application_state %>
-
-            <%if @driver.application_state %>
-
-              <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-info my-2 my-sm-0" %>
-            <% end %>
-
-            <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning my-2 my-sm-0" %>
-          <% end %>
-
-        </div>
-      </div>
-      <div class="driver-show-page-buttons">
-        <%= link_to 'Edit Driver', edit_driver_path(@driver), class:"btn btn-sm btn-success"%>
-      </div>
-    </div>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-address-card">Driver Information</i></h3>
+    <%= render 'driver_info' %>
   </div>
 
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-car"> Cars</i></h3>
-    <% @driver.vehicles.each do |vehicle| %>
-
-      <div class="ml-5">
-        <div class="row">
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Car Make:</strong>
-            <%= vehicle.car_make %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Car Model:</strong>
-            <%= vehicle.car_model %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Car Year:</strong>
-            <%= vehicle.car_year %>
-          </div>
-
-        </div>
-
-        <div class="row">
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Car Color:</strong>
-            <%= vehicle.car_color %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Liscense Plate:</strong>
-            <%= vehicle.car_plate %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Number of seats:</strong>
-            <%= vehicle.seat_belt_num %>
-          </div>
-
-        </div>
-
-        <div class="row mb-2">
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Insurance Provider:</strong>
-            <%= vehicle.insurance_provider %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Insurance Start:</strong>
-            <%= vehicle.insurance_start.strftime("%B %d, %Y") %>
-          </div>
-
-          <div class="col-sm border-top border-bottom">
-            <strong>Insurance stop:</strong>
-            <%= vehicle.insurance_stop.strftime("%B %d, %Y") %>
-          </div>
-
-        </div>
-
-        <div class="row5">
-
-          <div class="col-sm driver-show-page-buttons">
-            <%=link_to "Edit Car",edit_vehicle_path(vehicle), class: "btn btn-sm btn-success"%>
-          </div>
-
-          <div class="col-sm driver-show-page-buttons">
-            <%= link_to "Delete Car", vehicle_path(vehicle), method: :delete, class: "btn btn-sm btn-danger", data: { confirm: "Are you sure?"}%>
-          </div>
-
-          <div class="col-sm "></div>
-
-        </div>
-      </div>
-    <% end %>
-
-    <div class="ml-5 mt-2 driver-show-page-buttons">
-      <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-info"%>
-    </div>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-car">Cars</i></h3>
+    <%= render 'cars' %>
   </div>
 
   <div class="card3">
-      <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar"> Schedules</i></h3>
-      <% @schedules.each do |s| %>
-        <div class="ml-5">
-          <div class="row rows">
-            <div class="col-sm border-top border-bottom schedules">
-              <div class="col-md-6">
-                <p><b>Start Date:</b> <%= s.start_date.strftime("%b %d, %Y %I:%M %p") %><br/>
-                <b>End date:</b> <%= s.end_date.strftime("%b %d, %Y %I:%M %p") %></p>
-              </div>
-              <div class="col-md-6">
-                <p><b>Recurring:</b> <%= s.is_recurring %><br/>
-                <b>Location:</b> <%= s.location.full_address %></p>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar">Agenda</i></h3>
+    <%= render 'agenda' %>
   </div>
 
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-map-marker"> Locations</i></h3>
-    <% @locations.each do |location| %>
-    <div class="ml-5">
-      <div class="row">
-        <div class="col-sm border-top border-bottom">
-          <%= location.full_address %>
-        </div>
-      </div>
-    </div>
-    <% end %>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-map-marker">Locations</i></h3>
+    <%= render 'locations' %>
   </div>
   <%= link_to 'Back', drivers_path, class: "btn btn-sm btn-outline-primary my-2 my-sm-0" %>
 </div>

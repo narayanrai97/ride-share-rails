@@ -157,15 +157,31 @@ td.my-buttons a {
 }
 
 .card3 {
+  background-color: #ffffff;
+  background-image: url("background-image.png");
   border: solid #17a2b8 3px;
   border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 20px;
 }
 
+.card4 {
+  position: relative;
+  height: 240px;
+  background-color: white;
+  border: solid lightgray 1px;
+  border-radius: 6px;
+  margin-right: 45px;
+}
+
+.card4:hover .btn {
+  display: block;
+}
+
 .bg-primary {
   color: white;
   margin-right: -1px;
+  margin-bottom: .75px;
 }
 
 .bg-primary i {
@@ -181,14 +197,19 @@ h3.headings {
   margin-right: 3rem !important;
 }
 
-.schedules {
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .driver-show-page-buttons {
   margin-bottom: 10px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+
+.car-buttons {
+  padding: 8px;
+  display: flex;
+}
+
+.car-buttons .btn {
+  margin-right: 15px;
+  display: none;
 }
 
 .row5 {
@@ -218,8 +239,120 @@ td.no-wrap {
   white-space: nowrap;
 }
 
+
+#section3 {
+  padding-top: 20px;
+}
+
+p.car-info {
+  text-align: center;
+  font-size: 20px;
+  border-bottom: solid lightgray 1px;
+  padding: 10px;
+}
+
+.car-other-info {
+  margin-left: 20px;
+  padding-bottom: 5px;
+}
+
+.flex-row {
+  display: -ms-flex;
+	display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  padding-left: 45px;
+}
+
+.flex-row > [class*='col-'] {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex-row .caption,
+.flex-row .thumbnail {
+    flex-direction: column;
+    display: flex;
+    flex: 1 0 auto;
+    height: 100%;
+    position: relative;
+}
+
+.flex-text {
+    flex-grow: 1;
+}
+
 .admin-ride {
   margin-top: 15px;
   background-color: #fcfcf6;
   padding: 15px;
+}
+
+// Agenda
+
+.schedules {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  // margin: 0 80px 0 80px;
+}
+
+.schedules .row {
+  margin-left: 90px;
+  padding: 5px;
+  color: gray;
+}
+
+.agenda {
+  display: flex;
+  flex-direction: row;
+  margin-left: 55px;
+  padding-bottom: 15px;
+}
+
+.day-and-date {
+  display: flex;
+  flex-direction: column;
+  margin-right: 3px;
+  padding: 5px;
+}
+
+.time-and-address {
+  background-color: #ff8262;
+  padding-top: 3px;
+  padding-left: 5px;
+  padding-right: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.schedules .gray-banner {
+  background-color: #8ea0ad;
+  height: 50px;
+  width: 100%;
+  padding-top: 11px;
+  padding-left: 15px;
+  margin-top: 10px;
+  color: white;
+}
+
+.start-end {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1px;
+}
+
+.start-end p {
+  margin: 15px;
+}
+
+p.submit {
+  margin-top: 40px;
+  border: solid 2px white;
 }

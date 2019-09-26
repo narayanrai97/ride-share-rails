@@ -1,0 +1,17 @@
+<div class="container-fluid">
+  <div class="flex-row row">
+    <% if @vehicles.blank? %>
+       <h3>No locations just yet!</h3><br/>
+    <% else %>
+      <% @locations.each do |location| %>
+        <div class="ml-5">
+          <div class="row">
+            <div class="col-sm border-top border-bottom">
+              <%= location.full_address %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
