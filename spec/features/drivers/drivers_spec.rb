@@ -1,43 +1,45 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.feature "Drivers", type: :feature, js: true do
+RSpec.feature 'Drivers', type: :feature, js: true do
   include Features::SessionHelpers
 
-  let!(:organization) { create :organization}
-  let!(:organization_2) {create :organization, name: 'NC State' }
+  let!(:organization) { create :organization }
+  let!(:organization_2) { create :organization, name: 'NC State' }
   let!(:admin) { create :user }
   let!(:driver) { create :driver, organization_id: admin.organization.id }
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
 
-    scenario "log in as admin" do
-      visit root_path
-      click_link 'Login as Admin'
-      expect(page).to have_text "Log in"
-      signin('user@example.com', 'password')
-      expect(page).to have_text "Welcome Admins!"
-    end
+  scenario 'log in as admin' do
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'password')
+    expect(page).to have_text 'Welcome Admins!'
+  end
 
-    # Example:
-    # scenario 'user can sign in with valid credentials' do
-    #   user = create(:user)
-    #   signin(user.email, user.password)
-    #   expect(page).to have_content I18n.t 'devise.sessions.signed_in'
-    # end
+  # Example:
+  # scenario 'user can sign in with valid credentials' do
+  #   user = create(:user)
+  #   signin(user.email, user.password)
+  #   expect(page).to have_content I18n.t 'devise.sessions.signed_in'
+  # end
 
-    # Example:
-    # scenario 'user cannot sign in if not registered' do
-    #   signin('test@example.com', 'please123')
-    #   expect(page).to have_content I18n.t 'devise.failure.invalid', authentication_keys: 'email'
-    # end
+  # Example:
+  # scenario 'user cannot sign in if not registered' do
+  #   signin('test@example.com', 'please123')
+  #   expect(page).to have_content I18n.t 'devise.failure.invalid', authentication_keys: 'email'
+  # end
 
-    # scenario "fail if given invalid name or password for admin" do
-    #   # visit http://localhost:3000/welcome/index
-    #
-    # end
+  # scenario "fail if given invalid name or password for admin" do
+  #   # visit http://localhost:3000/welcome/index
+  #
+  # end
 
-    # scenario "show and validate the Drivers page" do
+  # scenario "show and validate the Drivers page" do
 
-    # end
+  # end
 end
 
 # EXAMPLE:
