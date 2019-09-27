@@ -19,6 +19,8 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text 'Welcome Admins!'
   end
 
+  # Ignore examples below.
+
   # Example:
   # scenario 'user can sign in with valid credentials' do
   #   user = create(:user)
