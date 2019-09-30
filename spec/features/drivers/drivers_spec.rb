@@ -20,11 +20,21 @@ RSpec.feature 'Drivers', type: :feature, js: true do
   end
 
   scenario 'attempt to login as admin with incorrect password' do
-  visit root_path
-  click_link 'Login as Admin'
-  expect(page).to have_text 'Log in'
-  signin('user@example.com', 'wrongpw')
-  expect(page).to have_text 'Invalid Email or password.'
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'wrongpw')
+    expect(page).to have_text 'Invalid Email or password.'
   end
 
+  scenario 'when admin selects list of drivers, check that all drivers are in org 'do
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'password')
+    expect(page).to have_text 'Welcome Admins!'
+    visit drivers_path
+    expect(page).to have_text 'Ben'
+    expect(page).not_to have_text 'adriver@gmail.com'
+  end
 end
