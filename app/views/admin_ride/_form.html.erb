@@ -10,7 +10,7 @@
     <div id="error_explanation">
       <h2>
         <%= pluralize(@ride.errors.count, "error") %> prohibited
-        this article from being saved:
+        this ride from being saved:
       </h2>
       <ul>
         <% @ride.errors.full_messages.each do |msg| %>
@@ -23,7 +23,7 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-8">
     <%= form.label :rider_id %><br>
-    <%= form.collection_select :rider_id, Rider.where("organization_id = ?", current_user.organization_id), :id, :full_name, { :include_blank => ' ' } %>
+    <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' } %>
 
 
   </div >
