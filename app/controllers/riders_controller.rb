@@ -17,7 +17,7 @@ class RidersController < ApplicationController
   end
 
   def index
-    @riders = current_user.organization.riders.active.order(last_name: :desc)
+    @riders = current_user.organization.riders.order(last_name: :desc)
     @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(10)
   end
 
