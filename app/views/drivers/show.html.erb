@@ -18,5 +18,9 @@
     <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-map-marker">Locations</i></h3>
     <%= render 'locations' %>
   </div>
+  <p>
+<%= image_tag "https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=400x300&center=#{@driver.schedule_windows.last.location.latitude},
+#{@driver.schedule_windows.last.location.longitude}&key=#{Rails.application.credentials.GOOGLE_API_KEY}", alt: "Map" %>
+</p>
   <%= link_to 'Back', drivers_path, class: "btn btn-sm btn-outline-primary my-2 my-sm-0" %>
 </div>

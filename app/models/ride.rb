@@ -5,6 +5,7 @@ class Ride < ApplicationRecord
   belongs_to :rider
   belongs_to :start_location, :class_name => "Location", autosave: true
   belongs_to :end_location, :class_name => "Location", autosave: true
+  has_many :location
   has_one :token
 
   validates :pick_up_time, :reason, :status, presence: true
@@ -103,12 +104,17 @@ class Ride < ApplicationRecord
     end
   end
 
-  def pick_up_time_cannot_be_in_the_past
-    if ['pending', 'approved', 'scheduled'].include? self.status
-      if pick_up_time.present? && pick_up_time < Date.today
-        errors.add(:pick_up_time, "can't be in the past")
-      end
+  def is_near?(position,radius)
+   start_distance = self.start_location.distance_from(position)
+   if start_distance.nil? || start_distance > radius
+     return false
+   end
+   end_distance = self.end_location.distance_from(position)
+    if end_distance.nil? || end_distance > radius
+     return false
     end
+      return true
   end
 
 end
+
