@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     put :reject
     put :pass
     put :fail
-    put :deactivate
+    put :activation
   end
 
   devise_scope :driver do
