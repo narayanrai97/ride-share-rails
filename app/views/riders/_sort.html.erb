@@ -14,7 +14,6 @@
     <th scope="col">Phone</th>
     <th scope="col">Email</th>
     <th scope="col"></th>
-    <th scope="col"></th>
   </tr>
 
   <% @riders.each do |rider| %>
@@ -27,11 +26,6 @@
           <%= link_to edit_rider_path(rider), class: "btn btn-sm btn-success" do %>
             <i class="fa fa-pencil-square-o">Edit</i>
           <% end %>
-        </td>
-        <td>
-          <%= link_to rider_deactivate_path(rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
-              <i class="fa fa-power-off">Deactivate</i>
-            <% end %>
         </td>
       </tr>
   <% end %>
