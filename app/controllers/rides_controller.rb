@@ -1,6 +1,7 @@
 class RidesController < ApplicationController
 
   before_action :authenticate_rider!
+  before_action :is_active_check, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :rider_not_authorized
 
   layout 'rider_layout'
@@ -145,5 +146,12 @@ class RidesController < ApplicationController
     def rider_not_authorized
       flash.notice = "You are not authorized to view this information"
       redirect_to rides_path
+    end
+
+    def is_active_check
+      if !current_rider.is_active?
+        redirect_to rides_path
+        flash.alert = "Sorry, you're deactivated."
+      end
     end
 end

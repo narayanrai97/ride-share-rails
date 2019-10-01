@@ -2,6 +2,7 @@
 
 class AdminRideController < ApplicationController
   before_action :authenticate_user!
+  before_action :rider_is_active, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout 'administration'
@@ -142,5 +143,13 @@ class AdminRideController < ApplicationController
   def user_not_authorized
     flash.notice = 'You are not authorized to view this information'
     redirect_to admin_ride_index_url
+  end
+
+  def rider_is_active
+    rider = Rider.find(params[:ride][:rider_id])
+    if  !rider.is_active?
+      redirect_to admin_ride_index_path
+      flash.alert = "Rider is deactivated."
+    end
   end
 end
