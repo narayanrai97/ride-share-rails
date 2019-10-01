@@ -11,7 +11,8 @@ class VehiclesController < ApplicationController
       flash.notice = "The vehicle information has been created"
       redirect_to driver_path(params[:driver_id])
     else
-      render 'new'
+      flash.alert = @vehicle.errors.full_messages.join(' ')
+      redirect_to driver_path(params[:driver_id])
     end
   end
 
