@@ -37,7 +37,7 @@ Rails.application.routes.draw do
   end
 
   devise_scope :rider do
-    resource :riders,
+    resource :riders_devise,
              controller: 'devise/registrations',
              as: :rider_registration do
               get 'cancel'
