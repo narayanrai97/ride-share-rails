@@ -50,7 +50,6 @@ Location.create(street: "2200 Erwin" , city: "Durham", state: "NC", zip: "27705"
 Location.create(street: "203 Club Ave." , city: "Durham", state: "NC", zip: "27705")
 Location.create(street: "2938 Main Street" , city: "Durham", state: "NC", zip: "27705")
 Location.create(street: "123 Row Way" , city: "Durham", state: "NC", zip: "27705")
-Location.create(street: "3842 Kennedy Lane" , city: "Durham", state: "NC", zip: "27705")
 Location.create(street: "2303 Sandy Street" , city: "Durham", state: "NC", zip: "27705")
 Location.create(street: "30 New Drive" , city: "Durham", state: "NC", zip: "27705")
 Location.create(street: "101 Erwin" , city: "Durham", state: "NC", zip: "27705")
@@ -64,41 +63,41 @@ Location.create(street: "101 Erwin" , city: "Durham", state: "NC", zip: "27705")
 
 
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
+Ride.create(organization_id: "1", rider_id: "1" ,  pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
+Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
 
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
+Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
+Ride.create(organization_id: "2", rider_id: "4" ,  pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
-
-
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
+Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
 
 
-
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
-
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
-
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-15 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
+Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
+Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
 
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2019-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2019-02-25 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2019-02-25 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2019-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
+
+Ride.create(organization_id: "1", rider_id: "1" ,  pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
+Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
+
+Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
+Ride.create(organization_id: "2", rider_id: "4" ,  pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
+
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
+Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-15 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
+
+
+Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-25 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
+Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-25 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
+Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
 
 
 
