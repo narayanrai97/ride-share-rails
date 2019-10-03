@@ -8,7 +8,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
     let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id,
        auth_token: "1234",token_created_at: Time.zone.now) }
     let!(:driver2) { FactoryBot.create(:driver, organization_id: organization.id,
-       auth_token: "5678",token_created_at: Time.zone.now) }   
+       auth_token: "5678",token_created_at: Time.zone.now) }
     let!(:vehicle){FactoryBot.create(:vehicle, driver_id: driver.id, car_year: 2017)}
     let!(:vehicle1){FactoryBot.create(:vehicle, driver_id: driver.id)}
     let!(:vehicle2){FactoryBot.create(:vehicle, driver_id: driver2.id, car_make: "Chevy", car_color: "Black")}
@@ -41,7 +41,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
-    
+
      it 'will return error 400 if fields are missing or not correct. Will not save' do
       post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
        params: {vehicle: {car_make: "Chevorlet",
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         }
         expect(response).to have_http_status(400)
       end
-    
+
     #API response of all vehicles of  a driver
     it 'will generate all vehicles of user' do
 
@@ -63,26 +63,25 @@ RSpec.describe Api::V1::Vehicles, type: :request do
 
         expect(response).to have_http_status(200)
         parsed_json = JSON.parse(response.body)
-  
+
         #Needs Index [0] because returns 2 vehicles
         expect(parsed_json['vehicle'][0]['car_make']).to eq('Nissan')
         expect(parsed_json['vehicle'][0]['car_year']).to eq(2017)
         expect(parsed_json['vehicle'][0]['car_color']).to eq('Silver')
-        expect(parsed_json['vehicle'][0]['car_plate']).to eq('ZQWOPQ')
         expect(parsed_json['vehicle'][0]['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
         expect(parsed_json['vehicle'][0]['insurance_start'].to_date).to eq(Time.now.to_date)
         expect(parsed_json['vehicle'][0]['insurance_stop'].to_date).to eq((Time.now + 6.months).to_date)
         expect(parsed_json['vehicle'][0]['seat_belt_num']).to eq(4)
-        
+
     end
-    
+
     it 'return 404 error code if its not current driver' do
       Vehicle.destroy_all
       get '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
         expect(response).to have_http_status(404)
       end
-      
+
     #Returns information about a specific vehicle based on param of vehicle_id,
     #Has to be owned by driver
     it 'will return one vehicle based on id' do
@@ -91,7 +90,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
       expect(parsed_json['vehicle']['car_make']).to eq('Nissan')
       expect(parsed_json['vehicle']['car_year']).to eq(2017)
       expect(parsed_json['vehicle']['car_color']).to eq('Silver')
-      expect(parsed_json['vehicle']['car_plate']).to eq('ZQWOPQ')
+      expect(parsed_json['vehicle']['car_plate']).to eq(vehicle.car_plate)
       expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
       #Dates a formatted when they are accepted so appear slightly different than above
       expect(parsed_json['vehicle']['insurance_start'].to_date).to eq(Time.now.to_date)
@@ -125,7 +124,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
-    
+
      it "returns a 404 error when not current driver" do
     put '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"},
         params: {vehicle: {id: vehicle.id, car_make: "Chevorlet",
@@ -151,7 +150,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
        expect(response).to have_http_status(200)
        expect(Vehicle.count).to eq(2)
     end
-    
+
      it 'will return 404 error when vehicle does not belong to driver.' do
       delete '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"}, params: {id: vehicle.id }
       expect(response).to have_http_status(404)
