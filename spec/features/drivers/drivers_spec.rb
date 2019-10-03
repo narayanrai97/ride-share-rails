@@ -9,8 +9,9 @@ RSpec.feature 'Drivers', type: :feature, js: true do
   let!(:organization_2) { create :organization, name: 'NC State' }
   let!(:admin) { create :user }
   let!(:driver) { create :driver, organization_id: admin.organization.id }
-  let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
+  let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com', first_name: 'Jerry' }
   let!(:location) { create :location, street: '200 Person St', city: 'Raleigh', state: 'NC', zip: 23459 }
+  let!(:location_relationship) { create :location_relationship, driver_id: driver.id, location_id: location.id }
   let!(:vehicle1) { create :vehicle, driver_id: driver.id }
   let!(:schedule1) { create :schedule_window, driver_id: driver.id, location_id: location.id }
 
@@ -21,7 +22,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome Admins!'
   end
-
+  
   scenario 'attempt to login as admin with incorrect password' do
     visit root_path
     click_link 'Login as Admin'
@@ -34,11 +35,13 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    fill_in 'Email', with: admin.email
+    fill_in 'Password', with: 'password'
+    click_on 'Log in'
     expect(page).to have_text 'Welcome Admins!'
-    visit drivers_path
-    expect(page).to have_text 'Ben'
-    expect(page).not_to have_text 'adriver@gmail.com'
+    click_link 'Drivers'
+    expect(page).to have_text driver.first_name
+    expect(page).not_to have_text driver_outside_organization.first_name
   end
 
   scenario 'when admin clicks review, fields should be populated' do
@@ -47,12 +50,14 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text 'Log in'
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome Admins!'
-    visit drivers_path
+    click_link 'Drivers'
     click_link 'Review'
     expect(page).to have_text 'Driver Information'
-    expect(page).to have_text 'Ben'
-    expect(page).to have_text 'Nissan'
+    expect(page).to have_text driver.first_name
+    expect(page).to have_text driver.vehicles[0].car_make
     # expect... schedule
-    # expect... location
+    # Notes: (date setting filters them, should come up showing any
+    # created schedule windows) try screen_shot to see what it does
+    expect(page).to have_text location.street
   end
 end
