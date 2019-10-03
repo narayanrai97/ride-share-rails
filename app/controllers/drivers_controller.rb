@@ -32,7 +32,7 @@ class DriversController < ApplicationController
     elsif params[:application_state]== "rejected"
       @drivers = current_user.organization.drivers.active.rejected.order(last_name: :desc)
     else
-      @drivers = current_user.organization.drivers.active.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.order(last_name: :desc)
     end
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
   end
@@ -111,18 +111,17 @@ class DriversController < ApplicationController
     redirect_to @driver
   end
 
-  def deactivate
+  def activation
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     was_active = @driver.is_active
     @driver.toggle(:is_active).save
 
     if was_active == true
-      flash.notice = "Driver deactivated."
+      flash.alert = "Driver deactivated."
     else #was_active == false
-      flash.notice = "Driver set to active."
+      flash.notice = "Driver reactivated."
     end
-
     redirect_to request.referrer || drivers_path
   end
 

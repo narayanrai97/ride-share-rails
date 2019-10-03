@@ -29,9 +29,9 @@
           <% end %>
         </td>
         <td>
-          <%= link_to rider_deactivate_path(rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
-              <i class="fa fa-power-off">Deactivate</i>
-            <% end %>
+          <%= link_to rider_path(rider), class: "btn btn-sm btn-info" do %>
+            <i class="fa fa-eye">Show</i>
+          <% end %>
         </td>
       </tr>
   <% end %>

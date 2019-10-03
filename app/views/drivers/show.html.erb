@@ -1,6 +1,17 @@
 <div class="container">
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-address-card">Driver Information</i></h3>
+    <h3 class="bg-primary rounded pl-2 headings">
+      <i class="fa fa-address-card">Driver Information</i>
+      <% if @driver.is_active %>
+        <%= link_to driver_activation_path(@driver), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-power-off">Deactivate</i>
+        <% end %>
+      <% else %>
+        <%= link_to driver_activation_path(@driver), class: "btn btn-sm btn-success", method: :put, data: { confirm: 'Are you sure?' } do %>
+          <i class="fa fa-power-off">Reactivate</i>
+        <% end %>
+      <% end %>
+    </h3>
     <%= render 'driver_info' %>
   </div>
 
