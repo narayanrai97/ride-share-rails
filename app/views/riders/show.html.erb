@@ -1,6 +1,5 @@
-<div class="container">
-  <h1>
-    <%= @rider.full_name %>
+<div class="container" style="margin-top: 35px;">
+  <h4 class="green">Personal Information
     <% if @rider.is_active %>
       <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
         <i class="fa fa-power-off">Deactivate</i>
@@ -10,27 +9,29 @@
         <i class="fa fa-power-off">Reactivate</i>
       <% end %>
     <% end %>
-  </h1><br/>
+  </h4>
+  <div class="card5 mb-3">
+    <div class="row no-gutters">
+      <div class="col-md col-md-offset-2">
+        <p><strong>Name:</strong> <%= @rider.full_name %></p>
+        <p><strong>Phone:</strong> <%= @rider.phone %></p>
+        <p><strong>Email:</strong> <%= @rider.email %></p>
+        <p><strong>Valid Tokens:</strong> <%= @rider.valid_tokens_count %></p>
+        <p><strong>Organization:</strong> <%= @rider.organization.name %></p>
+      </div>
+    </div>
+  </div><br/>
 
-  <p>
-    <strong>Phone:</strong>
-    <%= @rider.phone %>
-  </p>
-
-  <p>
-    <strong>Email:</strong>
-    <%= @rider.email %>
-  </p>
-
-  <p>
-    <strong>Valid Tokens:</strong>
-    <%= @rider.valid_tokens_count %>
-  </p>
-
-  <h2>Locations</h2>
-  <% @locations.each do |location| %>
-    <p><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></p>
-  <% end %>
+  <h4 class="green">Locations</h4>
+  <div class="card5 mb-3">
+    <div class="row no-gutters">
+      <div class="col-md col-md-offset-2">
+        <% @locations.each do |location| %>
+          <p><%= location.full_address %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="container">
