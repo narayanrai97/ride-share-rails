@@ -1,43 +1,39 @@
-<h1> Rider </h1>
+<div class="container">
+  <h1>
+    <%= @rider.full_name %>
+    <% if @rider.is_active %>
+      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
+        <i class="fa fa-power-off">Deactivate</i>
+      <% end %>
+    <% else %>
+      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-success", method: :put, data: { confirm: 'Are you sure?' } do %>
+        <i class="fa fa-power-off">Reactivate</i>
+      <% end %>
+    <% end %>
+  </h1><br/>
 
-<p>
-  <strong>ID:</strong>
-  <%= @rider.id %>
-</p>
+  <p>
+    <strong>Phone:</strong>
+    <%= @rider.phone %>
+  </p>
 
-<p>
-  <strong>First Name:</strong>
-  <%= @rider.first_name %>
-</p>
+  <p>
+    <strong>Email:</strong>
+    <%= @rider.email %>
+  </p>
 
-<p>
-  <strong>Last Name:</strong>
-  <%= @rider.last_name %>
-</p>
+  <p>
+    <strong>Valid Tokens:</strong>
+    <%= @rider.valid_tokens_count %>
+  </p>
 
+  <h2>Locations</h2>
+  <% @locations.each do |location| %>
+    <p><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></p>
+  <% end %>
+</div>
 
-<p>
-  <strong>Phone:</strong>
-  <%= @rider.phone %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @rider.email %>
-</p>
-
-<p>
-  <strong>Valid Tokens:</strong>
-  <%= @rider.valid_tokens_count %>
-</p>
-
-<h2>Locations</h2>
-<% @locations.each do |location| %>
-  <p><%= location.street %>, <%= location.city %> <%= location.state %>, <%= location.zip  %></p>
-<% end %>
-
-<%= link_to 'Edit', edit_rider_path(@rider) %> |
-<%= link_to 'Back', riders_path %> |
-
-
-
+<div class="container">
+  <%= link_to 'Edit', edit_rider_path(@rider), class: "btn btn-outline-primary" %>
+  <%= link_to 'Back', riders_path, class: "btn btn-outline-success" %>
+</div>

@@ -17,7 +17,7 @@ class RidersController < ApplicationController
   end
 
   def index
-    @riders = current_user.organization.riders.active.order(last_name: :desc)
+    @riders = current_user.organization.riders.order(last_name: :desc)
     @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(10)
   end
 
@@ -67,11 +67,16 @@ class RidersController < ApplicationController
     end
   end
 
-   def deactivate
+   def activation
     @rider = Rider.find(params[:rider_id])
     authorize @rider
+    was_active = @rider.is_active
     @rider.toggle(:is_active).save
-    flash.notice = "Rider deactivated"
+    if was_active == true
+      flash.alert = "Rider deactivated."
+    else
+      flash.notice = "Rider reactivated."
+    end
     redirect_to request.referrer || riders_path
   end
 

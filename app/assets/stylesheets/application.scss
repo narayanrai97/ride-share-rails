@@ -182,6 +182,9 @@ td.my-buttons a {
   color: white;
   margin-right: -1px;
   margin-bottom: .75px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .bg-primary i {
