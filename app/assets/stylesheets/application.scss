@@ -187,10 +187,6 @@ td.my-buttons a {
   justify-content: space-between;
 }
 
-.bg-primary i {
-  margin-left: 40px;
-}
-
 h3.headings {
   margin-top: -1px;
   padding: 0 4px 4px 4px;
@@ -361,6 +357,24 @@ p.submit {
 }
 
 // Styleing riders show page
+.personal-info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#rider-activation{
+  height: 33px;
+  border: solid .5px white;
+  border-radius: 6px;
+}
+
+#driver-activation {
+  width: 100px;
+  border: solid .5px white;
+  border-radius: 6px;
+}
+
 .card5 {
   display: flex;
   flex-direction: column;

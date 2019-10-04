@@ -1,15 +1,16 @@
 <div class="container" style="margin-top: 35px;">
-  <h4 class="green">Personal Information
+  <div class="personal-info">
+    <h4 class="green">Personal Information</h4>
     <% if @rider.is_active %>
-      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-danger", method: :put, data: { confirm: 'Are you sure?' } do %>
+      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-danger", id: "rider-activation", method: :put, data: { confirm: 'Are you sure?' } do %>
         <i class="fa fa-power-off">Deactivate</i>
       <% end %>
     <% else %>
-      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-success", method: :put, data: { confirm: 'Are you sure?' } do %>
+      <%= link_to rider_activation_path(@rider), class: "btn btn-sm btn-success", id: "rider-activation", method: :put, data: { confirm: 'Are you sure?' } do %>
         <i class="fa fa-power-off">Reactivate</i>
       <% end %>
     <% end %>
-  </h4>
+  </div>
   <div class="card5 mb-3">
     <div class="row no-gutters">
       <div class="col-md col-md-offset-2">
