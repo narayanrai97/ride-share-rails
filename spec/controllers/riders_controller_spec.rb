@@ -17,7 +17,7 @@ RSpec.describe RidersController, type: :controller do
         rider: {
           first_name: 'John',
           last_name: 'Doe',
-          phone: '12345',
+          phone: '123-452-9999',
           email: 'wasemail@this.com',
           password: 'password',
           password_confirmation: 'password'
@@ -89,17 +89,32 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
   end
 
-  it 'deactivates a rider' do
-    test_response = put :deactivate, params: {
+  it 'deactivates and reactivates back a rider' do
+    # Deactivates a Rider first
+    test_response = put :activation, params: {
       rider_id: rider.id,
     }
 
+    rider.reload
+    expect(rider.is_active).to be(false)
     expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/deactivated/)
+    expect(flash[:alert]).to match("Rider deactivated.")
+    expect(test_response).to redirect_to(riders_path)
+
+    # Reactivates the Rider back again
+    test_response_2 = put :activation, params: {
+      rider_id: rider.id
+    }
+
+    rider.reload
+    expect(rider.is_active).to be(true)
+    expect(test_response_2.response_code).to eq(302)
+    expect(flash[:notice]).to match("Rider reactivated.")
+    expect(test_response_2).to redirect_to(riders_path)
   end
 
   it 'fails to deactivate a rider in a different organization than the active user' do
-    test_response = put :deactivate, params: {
+    test_response = put :activation, params: {
       rider_id: rider_outside_organization.id,
     }
 

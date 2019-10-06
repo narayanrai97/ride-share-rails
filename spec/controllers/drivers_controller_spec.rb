@@ -202,7 +202,7 @@ RSpec.describe DriversController, type: :controller do
   end
 
   it 'prevents unauthorized users from deactivating a driver outside org' do
-    test_response = put :deactivate, params: {
+    test_response = put :activation, params: {
       driver_id: driver_outside_organization.id
     }
 
