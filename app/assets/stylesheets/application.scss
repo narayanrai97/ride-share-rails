@@ -182,14 +182,14 @@ td.my-buttons a {
   color: white;
   margin-right: -1px;
   margin-bottom: .75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 h3.headings {
   margin-top: -1px;
   padding: 0 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .ml-5, .mx-5 {
@@ -297,7 +297,6 @@ p.car-info {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  // margin: 0 80px 0 80px;
 }
 
 .schedules .row {
@@ -387,6 +386,10 @@ p.submit {
   border-radius: 0.25rem;
 }
 
-.green{
+.green {
   color: #ff8262 !important;
+}
+
+.text-white {
+  text-align: center;
 }
