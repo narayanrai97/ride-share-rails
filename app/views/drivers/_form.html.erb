@@ -45,10 +45,10 @@
 
 <div class="row">
   <div  class="form-group col-md-1 offset-md-1">
-    <%= link_to 'Back', drivers_path,class: "btn btn-outline-primary my-2 my-sm-0" %>
+    <%= link_to 'Back', drivers_path,class: "btn btn-outline-primary" %>
   </div>
   <div  class="form-group col-md-1 offset-md-8">
-    <%= form.submit "Update", class: "btn btn-outline-success my-2 my-sm-0" %>
+    <%= form.submit yield(:button_text), class: "btn btn-outline-success" %>
   </div>
 </div>
 
