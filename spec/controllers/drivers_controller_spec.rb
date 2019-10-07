@@ -17,7 +17,7 @@ RSpec.describe DriversController, type: :controller do
         driver: {
           first_name: 'John',
           last_name: 'Doe',
-          phone: '1234567',
+          phone: '123-456-7',
           email: 'wasemail@this.com',
           password: 'password',
           password_confirmation: 'password'
@@ -35,7 +35,7 @@ RSpec.describe DriversController, type: :controller do
         driver: {
           first_name: 'John',
           last_name: 'Doe',
-          phone: '1234567891',
+          phone: '123-456-7891',
           email: 'wasemail@this.com',
           password: 'password',
           password_confirmation: 'password'

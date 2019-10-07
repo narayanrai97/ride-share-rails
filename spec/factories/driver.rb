@@ -4,7 +4,7 @@ FactoryBot.define do
        password {'password'}
        first_name { 'Ben' }
        last_name {'smith'}
-       phone {'3367867121'}
+       phone {'336-786-7121'}
        organization
     end
 end
