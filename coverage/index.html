@@ -14,7 +14,7 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2019-10-03T17:18:03-04:00">2019-10-03T17:18:03-04:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2019-10-08T13:25:52-04:00">2019-10-08T13:25:52-04:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -24,8 +24,8 @@
     (<span class="covered_percent"><span class="red">62.12%</span></span>
      covered at
      <span class="covered_strength">
-       <span class="red">
-         0.91
+       <span class="green">
+         1.14
        </span>
     </span> hits/line)
   </h2>
@@ -187,17 +187,17 @@
         <td>13</td>
         <td>11</td>
         <td>2</td>
-        <td>1.0</td>
+        <td>2.0</td>
       </tr>
       
       <tr>
         <td class="strong"><a href="#ef5fe51fecb447492ccae4e7f97c043a97372293" class="src_link" title="app/controllers/drivers_controller.rb">app/controllers/drivers_controller.rb</a></td>
         <td class="red strong">38.2 %</td>
-        <td>139</td>
+        <td>138</td>
         <td>89</td>
         <td>34</td>
         <td>55</td>
-        <td>0.4</td>
+        <td>0.5</td>
       </tr>
       
       <tr>
@@ -207,7 +207,7 @@
         <td>5</td>
         <td>4</td>
         <td>1</td>
-        <td>0.8</td>
+        <td>1.8</td>
       </tr>
       
       <tr>
@@ -217,7 +217,7 @@
         <td>19</td>
         <td>13</td>
         <td>6</td>
-        <td>0.7</td>
+        <td>1.7</td>
       </tr>
       
       <tr>
@@ -327,7 +327,7 @@
         <td>28</td>
         <td>23</td>
         <td>5</td>
-        <td>1.0</td>
+        <td>1.1</td>
       </tr>
       
       <tr>
@@ -337,7 +337,7 @@
         <td>18</td>
         <td>18</td>
         <td>0</td>
-        <td>1.4</td>
+        <td>2.9</td>
       </tr>
       
       <tr>
@@ -377,7 +377,7 @@
         <td>66</td>
         <td>40</td>
         <td>26</td>
-        <td>0.6</td>
+        <td>1.3</td>
       </tr>
       
       <tr>
@@ -397,7 +397,7 @@
         <td>11</td>
         <td>10</td>
         <td>1</td>
-        <td>0.9</td>
+        <td>1.2</td>
       </tr>
       
       <tr>
@@ -607,7 +607,7 @@
         <td>8</td>
         <td>8</td>
         <td>0</td>
-        <td>2.0</td>
+        <td>5.0</td>
       </tr>
       
       <tr>
@@ -647,7 +647,7 @@
         <td>13</td>
         <td>13</td>
         <td>0</td>
-        <td>2.5</td>
+        <td>6.8</td>
       </tr>
       
       <tr>
@@ -707,7 +707,7 @@
         <td>9</td>
         <td>9</td>
         <td>0</td>
-        <td>1.6</td>
+        <td>3.2</td>
       </tr>
       
       <tr>
@@ -727,7 +727,7 @@
         <td>5</td>
         <td>5</td>
         <td>0</td>
-        <td>1.4</td>
+        <td>2.6</td>
       </tr>
       
       <tr>
@@ -737,7 +737,7 @@
         <td>11</td>
         <td>11</td>
         <td>0</td>
-        <td>1.8</td>
+        <td>4.3</td>
       </tr>
       
       <tr>
@@ -747,7 +747,7 @@
         <td>13</td>
         <td>8</td>
         <td>5</td>
-        <td>0.6</td>
+        <td>1.2</td>
       </tr>
       
     </tbody>
@@ -6841,8 +6841,8 @@
           <code class="ruby">  def configure_permitted_parameters</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="12">
-          <span class="hits">3</span>
+        <li class="covered" data-hits="12" data-linenumber="12">
+          <span class="hits">12</span>
           
           <code class="ruby">    devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password,</code>
         </li>
@@ -6877,14 +6877,14 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="18">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="18">
+          <span class="hits">3</span>
           
           <code class="ruby">		if resource.class == User</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="19">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="19">
+          <span class="hits">3</span>
           
           <code class="ruby">		stored_location_for(resource) || welcome_index_path</code>
         </li>
@@ -7136,8 +7136,8 @@
           <code class="ruby">  def index</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="28">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="28">
+          <span class="hits">2</span>
           
           <code class="ruby">    if params[:application_state]== &quot;pending&quot;</code>
         </li>
@@ -7148,8 +7148,8 @@
           <code class="ruby">      @drivers = current_user.organization.drivers.active.pending.order(last_name: :desc)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="30">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="30">
+          <span class="hits">2</span>
           
           <code class="ruby">    elsif params[:application_state]== &quot;accepted&quot;</code>
         </li>
@@ -7160,8 +7160,8 @@
           <code class="ruby">      @drivers = current_user.organization.drivers.active.accepted.order(last_name: :desc)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="32">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="32">
+          <span class="hits">2</span>
           
           <code class="ruby">    elsif params[:application_state]== &quot;rejected&quot;</code>
         </li>
@@ -7178,10 +7178,10 @@
           <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="35">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="35">
+          <span class="hits">2</span>
           
-          <code class="ruby">      @drivers = current_user.organization.drivers.active.order(last_name: :desc)</code>
+          <code class="ruby">      @drivers = current_user.organization.drivers.order(last_name: :desc)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="36">
@@ -7190,8 +7190,8 @@
           <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="37">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="37">
+          <span class="hits">2</span>
           
           <code class="ruby">    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)</code>
         </li>
@@ -7655,7 +7655,7 @@
         <li class="covered" data-hits="1" data-linenumber="114">
           <span class="hits">1</span>
           
-          <code class="ruby">  def deactivate</code>
+          <code class="ruby">  def activation</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="115">
@@ -7697,7 +7697,7 @@
         <li class="missed" data-hits="0" data-linenumber="121">
           
           
-          <code class="ruby">      flash.notice = &quot;Driver deactivated.&quot;</code>
+          <code class="ruby">      flash.alert = &quot;Driver deactivated.&quot;</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="122">
@@ -7709,7 +7709,7 @@
         <li class="missed" data-hits="0" data-linenumber="123">
           
           
-          <code class="ruby">      flash.notice = &quot;Driver set to active.&quot;</code>
+          <code class="ruby">      flash.notice = &quot;Driver reactivated.&quot;</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="124">
@@ -7718,91 +7718,85 @@
           <code class="ruby">    end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="125">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="missed" data-hits="0" data-linenumber="126">
+        <li class="missed" data-hits="0" data-linenumber="125">
           
           
           <code class="ruby">    redirect_to request.referrer || drivers_path</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="127">
+        <li class="never" data-hits="" data-linenumber="126">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="128">
+        <li class="never" data-hits="" data-linenumber="127">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="129">
+        <li class="covered" data-hits="1" data-linenumber="128">
           <span class="hits">1</span>
           
           <code class="ruby">  private</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="130">
+        <li class="covered" data-hits="1" data-linenumber="129">
           <span class="hits">1</span>
           
           <code class="ruby">  def driver_params</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="131">
+        <li class="missed" data-hits="0" data-linenumber="130">
           
           
           <code class="ruby">    params.require(:driver).permit(:first_name, :last_name, :phone, :email, :address, :car_make, :car_model, :car_color)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="132">
+        <li class="never" data-hits="" data-linenumber="131">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="133">
+        <li class="never" data-hits="" data-linenumber="132">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="134">
+        <li class="covered" data-hits="1" data-linenumber="133">
           <span class="hits">1</span>
           
           <code class="ruby">  def user_not_authorized</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="135">
+        <li class="missed" data-hits="0" data-linenumber="134">
           
           
           <code class="ruby">    flash.notice = &quot;You are not authorized to view this information&quot;</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="136">
+        <li class="missed" data-hits="0" data-linenumber="135">
           
           
           <code class="ruby">    redirect_to drivers_path</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="137">
+        <li class="never" data-hits="" data-linenumber="136">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="138">
+        <li class="never" data-hits="" data-linenumber="137">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="139">
+        <li class="never" data-hits="" data-linenumber="138">
           
           
           <code class="ruby">end</code>
@@ -7899,14 +7893,14 @@
           <code class="ruby">   def create</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="13">
+          <span class="hits">4</span>
           
           <code class="ruby">     super</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="14">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="14">
+          <span class="hits">3</span>
           
           <code class="ruby">     if rider_signed_in?</code>
         </li>
@@ -8050,8 +8044,8 @@
           <code class="ruby">  def welcome</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="5">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="5">
+          <span class="hits">4</span>
           
           <code class="ruby">    if (current_user)</code>
         </li>
@@ -8062,8 +8056,8 @@
           <code class="ruby">      redirect_to welcome_index_path</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="7">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="7">
+          <span class="hits">4</span>
           
           <code class="ruby">    elsif (current_rider)</code>
         </li>
@@ -8134,8 +8128,8 @@
           <code class="ruby">  def index</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="19">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="19">
+          <span class="hits">3</span>
           
           <code class="ruby">    if (!current_user)</code>
         </li>
@@ -8182,8 +8176,8 @@
           <code class="ruby">  def resolve_layout</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="27">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="7" data-linenumber="27">
+          <span class="hits">7</span>
           
           <code class="ruby">    case action_name</code>
         </li>
@@ -8206,8 +8200,8 @@
           <code class="ruby">    when &quot;index&quot;</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="31">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="31">
+          <span class="hits">3</span>
           
           <code class="ruby">      &quot;administration&quot;</code>
         </li>
@@ -8218,8 +8212,8 @@
           <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="33">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="33">
+          <span class="hits">4</span>
           
           <code class="ruby">      &quot;application&quot;</code>
         </li>
@@ -8727,26 +8721,26 @@
           <code class="ruby">         :recoverable, :rememberable, :validatable</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="16">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="1" data-linenumber="16">
+          <span class="hits">1</span>
           
           <code class="ruby">  scope :active, -&gt; { where(is_active: true) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="17">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="17">
+          <span class="hits">3</span>
           
           <code class="ruby">  scope :pending, -&gt; { where(application_state: &quot;pending&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="18">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="18">
+          <span class="hits">3</span>
           
           <code class="ruby">  scope :accepted, -&gt; { where(application_state: &quot;accepted&quot;) }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="19">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="19">
+          <span class="hits">3</span>
           
           <code class="ruby">  scope :rejected, -&gt; { where(application_state: &quot;rejected&quot;) }</code>
         </li>
@@ -8986,8 +8980,8 @@
           <code class="ruby">  geocoded_by :full_address</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="9">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="9">
+          <span class="hits">5</span>
           
           <code class="ruby">  after_validation :geocode, if: -&gt;(obj) { obj.full_address.present? &amp;&amp; obj.street_changed? }</code>
         </li>
@@ -9016,14 +9010,14 @@
           <code class="ruby">  def capitalize_first_letter</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="14">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="14">
+          <span class="hits">4</span>
           
           <code class="ruby">    if self.city</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="15">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="15">
+          <span class="hits">4</span>
           
           <code class="ruby">      self.city = self.city.split.map(&amp;:capitalize).join(&#39; &#39;)</code>
         </li>
@@ -9052,14 +9046,14 @@
           <code class="ruby">  def upcase_fields</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="20">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="20">
+          <span class="hits">4</span>
           
           <code class="ruby">    if state</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="21">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="21">
+          <span class="hits">4</span>
           
           <code class="ruby">      state.upcase!</code>
         </li>
@@ -9088,14 +9082,14 @@
           <code class="ruby">  def full_address</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="26">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="10" data-linenumber="26">
+          <span class="hits">10</span>
           
           <code class="ruby">    sub_address = [street, city, state].compact.join(&#39;, &#39;)</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="27">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="10" data-linenumber="27">
+          <span class="hits">10</span>
           
           <code class="ruby">    [sub_address, zip].compact.join(&#39; &#39;)</code>
         </li>
@@ -9578,8 +9572,8 @@
           <code class="ruby">  def dates_cannot_be_in_the_past</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="17">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="17">
+          <span class="hits">4</span>
           
           <code class="ruby">    if start_time.present? &amp;&amp; start_time &lt; DateTime.now</code>
         </li>
@@ -9602,8 +9596,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="21">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="21">
+          <span class="hits">4</span>
           
           <code class="ruby">    if end_time.present? &amp;&amp; end_time &lt; DateTime.now</code>
         </li>
@@ -9626,8 +9620,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="25">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="25">
+          <span class="hits">4</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; start_date &lt; Date.today</code>
         </li>
@@ -9650,8 +9644,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="29">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="29">
+          <span class="hits">4</span>
           
           <code class="ruby">    if end_date.present? &amp;&amp; end_date &lt; Date.today</code>
         </li>
@@ -9686,14 +9680,14 @@
           <code class="ruby">  def end_time_after_start_time</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="35">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="35">
+          <span class="hits">4</span>
           
           <code class="ruby">    if start_time.present? &amp;&amp; end_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="36">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="36">
+          <span class="hits">4</span>
           
           <code class="ruby">      if start_time == end_time</code>
         </li>
@@ -9704,8 +9698,8 @@
           <code class="ruby">        errors.add(:end_time, &quot;cannot be same as start time&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="38">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="38">
+          <span class="hits">4</span>
           
           <code class="ruby">      elsif start_time &gt; end_time</code>
         </li>
@@ -9722,8 +9716,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="41">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="41">
+          <span class="hits">4</span>
           
           <code class="ruby">        true</code>
         </li>
@@ -9758,14 +9752,14 @@
           <code class="ruby">  def end_date_after_start_date</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="47">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="47">
+          <span class="hits">4</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; end_date.present?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="48">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="48">
+          <span class="hits">4</span>
           
           <code class="ruby">      if start_date == end_date &amp;&amp; is_recurring == true</code>
         </li>
@@ -9776,8 +9770,8 @@
           <code class="ruby">        errors.add(:end_date, &quot;cannot be same as start date&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="50">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="50">
+          <span class="hits">4</span>
           
           <code class="ruby">      elsif start_date &gt; end_date</code>
         </li>
@@ -9794,8 +9788,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="53">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="53">
+          <span class="hits">4</span>
           
           <code class="ruby">        true</code>
         </li>
@@ -9830,14 +9824,14 @@
           <code class="ruby">  def start_date_cannot_be_later_than_start_time</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="59">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="59">
+          <span class="hits">4</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; start_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="60">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="60">
+          <span class="hits">4</span>
           
           <code class="ruby">      if start_date &gt; start_time</code>
         </li>
@@ -9878,14 +9872,14 @@
           <code class="ruby">  def end_date_cannot_be_before_end_time</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="67">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="67">
+          <span class="hits">4</span>
           
           <code class="ruby">    if end_date.present? &amp;&amp; end_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="68">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="68">
+          <span class="hits">4</span>
           
           <code class="ruby">      if end_date &lt; end_time</code>
         </li>
@@ -10426,8 +10420,8 @@
           <code class="ruby">  def insurance_stop_cannot_be_in_the_past</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="12">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="4" data-linenumber="12">
+          <span class="hits">4</span>
           
           <code class="ruby">    if insurance_stop.present? &amp;&amp; insurance_stop &lt; Date.today</code>
         </li>
@@ -10869,7 +10863,7 @@
         <li class="covered" data-hits="1" data-linenumber="8">
           <span class="hits">1</span>
           
-          <code class="ruby">    %i(show? edit? update? accept? reject? pass? fail? deactivate?).each do |ali|</code>
+          <code class="ruby">    %i(show? edit? update? accept? reject? pass? fail? activation?).each do |ali|</code>
         </li>
       
         <li class="covered" data-hits="8" data-linenumber="9">
@@ -14445,7 +14439,7 @@
         <li class="covered" data-hits="1" data-linenumber="9">
           <span class="hits">1</span>
           
-          <code class="ruby">    put :deactivate</code>
+          <code class="ruby">    put :activation</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="10">
@@ -14607,7 +14601,7 @@
         <li class="covered" data-hits="1" data-linenumber="36">
           <span class="hits">1</span>
           
-          <code class="ruby">    put :deactivate</code>
+          <code class="ruby">    put :activation</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="37">
@@ -14631,7 +14625,7 @@
         <li class="covered" data-hits="1" data-linenumber="40">
           <span class="hits">1</span>
           
-          <code class="ruby">    resource :riders,</code>
+          <code class="ruby">    resource :riders_devise,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="41">
@@ -14965,32 +14959,32 @@
           <code class="ruby">    factory :driver do</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="3">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="3">
+          <span class="hits">5</span>
           
           <code class="ruby">       sequence(:email) { |id| &quot;user#{id}@sample.com&quot;}</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="4">
-          <span class="hits">3</span>
+        <li class="covered" data-hits="9" data-linenumber="4">
+          <span class="hits">9</span>
           
           <code class="ruby">       password {&#39;password&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="5">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="5">
+          <span class="hits">5</span>
           
           <code class="ruby">       first_name { &#39;Ben&#39; }</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="6">
-          <span class="hits">3</span>
+        <li class="covered" data-hits="9" data-linenumber="6">
+          <span class="hits">9</span>
           
           <code class="ruby">       last_name {&#39;smith&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="3" data-linenumber="7">
-          <span class="hits">3</span>
+        <li class="covered" data-hits="9" data-linenumber="7">
+          <span class="hits">9</span>
           
           <code class="ruby">       phone {&#39;3367867121&#39;}</code>
         </li>
@@ -15233,32 +15227,32 @@
           <code class="ruby">  factory :organization do</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="3">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="13" data-linenumber="3">
+          <span class="hits">13</span>
           
           <code class="ruby">    name {&#39;Duke&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="4">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="17" data-linenumber="4">
+          <span class="hits">17</span>
           
           <code class="ruby">    street {&#39;200 Front Street&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="5">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="17" data-linenumber="5">
+          <span class="hits">17</span>
           
           <code class="ruby">    city {&#39;Durham&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="6">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="17" data-linenumber="6">
+          <span class="hits">17</span>
           
           <code class="ruby">    state {&#39;NC&#39;}</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="7">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="17" data-linenumber="7">
+          <span class="hits">17</span>
           
           <code class="ruby">    zip {&#39;27708&#39;}</code>
         </li>
@@ -15833,32 +15827,32 @@
           <code class="ruby">    factory :schedule_window do</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="3">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="3">
+          <span class="hits">5</span>
           
           <code class="ruby">        start_date { Time.now + 1.month }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="4">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="4">
+          <span class="hits">5</span>
           
           <code class="ruby">        end_date   { Time.now + 5.months }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="5">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="5">
+          <span class="hits">5</span>
           
           <code class="ruby">        start_time { Time.now + 1.month + 2.hours}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="6">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="6">
+          <span class="hits">5</span>
           
           <code class="ruby">        end_time   { Time.now + 1.month + 5.hours } </code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="7">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="7">
+          <span class="hits">5</span>
           
           <code class="ruby">        is_recurring { false }</code>
         </li>
@@ -16003,14 +15997,14 @@
           <code class="ruby">  factory :user do</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="3">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="3">
+          <span class="hits">5</span>
           
           <code class="ruby">    email { &quot;user@example.com&quot; }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="4">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="4">
+          <span class="hits">5</span>
           
           <code class="ruby">    password { &quot;password&quot; }</code>
         </li>
@@ -16070,56 +16064,56 @@
           <code class="ruby">    factory :vehicle do</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="3">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="3">
+          <span class="hits">5</span>
           
           <code class="ruby">      car_make { &quot;Nissan&quot;}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="4">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="4">
+          <span class="hits">5</span>
           
           <code class="ruby">      car_model {&quot;Altima&quot;}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="5">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="5">
+          <span class="hits">5</span>
           
           <code class="ruby">      car_color {&quot;Silver&quot;}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="6">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="6">
+          <span class="hits">5</span>
           
           <code class="ruby">      car_year {2010}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="7">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="7">
+          <span class="hits">5</span>
           
-          <code class="ruby">      car_plate {&quot;ZQWOPQ&quot;}</code>
+          <code class="ruby">      car_plate {Faker::Name.unique.last_name}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="8">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="8">
+          <span class="hits">5</span>
           
           <code class="ruby">      seat_belt_num {4}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="9">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="9">
+          <span class="hits">5</span>
           
           <code class="ruby">      insurance_provider {&quot;Geico&quot;}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="10">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="10">
+          <span class="hits">5</span>
           
           <code class="ruby">      insurance_start { Date.today }</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="11">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="5" data-linenumber="11">
+          <span class="hits">5</span>
           
           <code class="ruby">      insurance_stop { Date.today + 6.months }</code>
         </li>
@@ -16233,20 +16227,20 @@
           <code class="ruby">    def signin(email, password)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="13">
+          <span class="hits">3</span>
           
           <code class="ruby">      visit new_user_session_path</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="14">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="14">
+          <span class="hits">3</span>
           
           <code class="ruby">      fill_in &#39;Email&#39;, with: email</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="15">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="15">
+          <span class="hits">3</span>
           
           <code class="ruby">      fill_in &#39;Password&#39;, with: password</code>
         </li>
@@ -16257,8 +16251,8 @@
           <code class="ruby">      # save_and_open_page</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="17">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="3" data-linenumber="17">
+          <span class="hits">3</span>
           
           <code class="ruby">      click_button &#39;Log in&#39;</code>
         </li>

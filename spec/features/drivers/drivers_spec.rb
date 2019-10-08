@@ -22,7 +22,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome Admins!'
   end
-  
+
   scenario 'attempt to login as admin with incorrect password' do
     visit root_path
     click_link 'Login as Admin'
@@ -55,9 +55,6 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text 'Driver Information'
     expect(page).to have_text driver.first_name
     expect(page).to have_text driver.vehicles[0].car_make
-    # expect... schedule
-    # Notes: (date setting filters them, should come up showing any
-    # created schedule windows) try screen_shot to see what it does
     expect(page).to have_text location.street
   end
 end
