@@ -182,18 +182,14 @@ td.my-buttons a {
   color: white;
   margin-right: -1px;
   margin-bottom: .75px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.bg-primary i {
-  margin-left: 40px;
 }
 
 h3.headings {
   margin-top: -1px;
   padding: 0 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .ml-5, .mx-5 {
@@ -301,7 +297,6 @@ p.car-info {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  // margin: 0 80px 0 80px;
 }
 
 .schedules .row {
@@ -358,4 +353,43 @@ p.car-info {
 p.submit {
   margin-top: 40px;
   border: solid 2px white;
+}
+
+// Styleing riders show page
+.personal-info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#rider-activation{
+  height: 33px;
+  border: solid .5px white;
+  border-radius: 6px;
+}
+
+#driver-activation {
+  width: 100px;
+  border: solid .5px white;
+  border-radius: 6px;
+}
+
+.card5 {
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  background-clip: border-box;
+  background-color: white;
+  max-width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.green {
+  color: #ff8262 !important;
+}
+
+.text-white {
+  text-align: center;
 }

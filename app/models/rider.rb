@@ -7,8 +7,9 @@ class Rider < ApplicationRecord
   has_many   :rides
 
   validates :first_name, :last_name, :phone, :organization, presence: true
+  validates_format_of :phone, :with => /\(?[0-9]{3}\)?-[0-9]{3}-[0-9]{4}/,
+                              :message => "number must be in xxx-xxx-xxxx format."
   scope :active, -> { where(is_active: true) }
-
 
   def full_name
     first_name + " " + last_name

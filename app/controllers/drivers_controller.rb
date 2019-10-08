@@ -50,7 +50,7 @@ class DriversController < ApplicationController
     @driver.organization_id = current_user.organization_id
 
     if @driver.save
-      flash.notice = "The driver information has been saved"
+      flash.notice = "Driver created."
       redirect_to @driver
     else
       flash[:error] = @driver.errors.full_messages
