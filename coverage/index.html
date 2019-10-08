@@ -14,26 +14,26 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2019-10-08T13:25:52-04:00">2019-10-08T13:25:52-04:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2019-10-08T15:46:32-04:00">2019-10-08T15:46:32-04:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="red">62.12%</span></span>
+    (<span class="covered_percent"><span class="red">62.15%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         1.14
+         1.26
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>70</b> files in total.
-    <b>1143</b> relevant lines. 
-    <span class="green"><b>710</b> lines covered</span> and
+    <b>1144</b> relevant lines. 
+    <span class="green"><b>711</b> lines covered</span> and
     <span class="red"><b>433</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -337,7 +337,7 @@
         <td>18</td>
         <td>18</td>
         <td>0</td>
-        <td>2.9</td>
+        <td>5.0</td>
       </tr>
       
       <tr>
@@ -362,12 +362,12 @@
       
       <tr>
         <td class="strong"><a href="#af4dc7603470a088134e664146fe760fd3651940" class="src_link" title="app/models/rider.rb">app/models/rider.rb</a></td>
-        <td class="red strong">73.33 %</td>
-        <td>32</td>
-        <td>15</td>
-        <td>11</td>
+        <td class="red strong">75.0 %</td>
+        <td>33</td>
+        <td>16</td>
+        <td>12</td>
         <td>4</td>
-        <td>0.7</td>
+        <td>0.8</td>
       </tr>
       
       <tr>
@@ -377,7 +377,7 @@
         <td>66</td>
         <td>40</td>
         <td>26</td>
-        <td>1.3</td>
+        <td>2.4</td>
       </tr>
       
       <tr>
@@ -707,7 +707,7 @@
         <td>9</td>
         <td>9</td>
         <td>0</td>
-        <td>3.2</td>
+        <td>5.4</td>
       </tr>
       
       <tr>
@@ -7094,8 +7094,8 @@
           <code class="ruby">    @agenda = Hash.new{ |h,k| h[k] = []}</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="21">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="21">
+          <span class="hits">3</span>
           
           <code class="ruby">    events = @driver.events(params[:query_start_date] ||= DateTime.now, params[:query_end_date] ||= (DateTime.now + 3.months)).sort_by { |event| event[:startTime] }</code>
         </li>
@@ -7106,8 +7106,8 @@
           <code class="ruby">    events.each do |event|</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="23">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="23">
+          <span class="hits">2</span>
           
           <code class="ruby">      @agenda[Date.parse(event[:startTime].to_s).beginning_of_week] &lt;&lt; event</code>
         </li>
@@ -7289,7 +7289,7 @@
         <li class="missed" data-hits="0" data-linenumber="53">
           
           
-          <code class="ruby">      flash.notice = &quot;The driver information has been saved&quot;</code>
+          <code class="ruby">      flash.notice = &quot;Driver created.&quot;</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="54">
@@ -8859,8 +8859,8 @@
           <code class="ruby">    schedule_windows.each do |window|</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="39">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="39">
+          <span class="hits">2</span>
           
           <code class="ruby">      list += window.events(query_start_date, query_end_date)</code>
         </li>
@@ -8871,8 +8871,8 @@
           <code class="ruby">    end</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="41">
-          <span class="hits">2</span>
+        <li class="covered" data-hits="3" data-linenumber="41">
+          <span class="hits">3</span>
           
           <code class="ruby">    list.sort_by{|i| i[:start_time]}.reverse</code>
         </li>
@@ -8980,8 +8980,8 @@
           <code class="ruby">  geocoded_by :full_address</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="9">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="9">
+          <span class="hits">9</span>
           
           <code class="ruby">  after_validation :geocode, if: -&gt;(obj) { obj.full_address.present? &amp;&amp; obj.street_changed? }</code>
         </li>
@@ -9010,14 +9010,14 @@
           <code class="ruby">  def capitalize_first_letter</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="14">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="14">
+          <span class="hits">8</span>
           
           <code class="ruby">    if self.city</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="15">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="15">
+          <span class="hits">8</span>
           
           <code class="ruby">      self.city = self.city.split.map(&amp;:capitalize).join(&#39; &#39;)</code>
         </li>
@@ -9046,14 +9046,14 @@
           <code class="ruby">  def upcase_fields</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="20">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="20">
+          <span class="hits">8</span>
           
           <code class="ruby">    if state</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="21">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="21">
+          <span class="hits">8</span>
           
           <code class="ruby">      state.upcase!</code>
         </li>
@@ -9082,14 +9082,14 @@
           <code class="ruby">  def full_address</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="26">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="19" data-linenumber="26">
+          <span class="hits">19</span>
           
           <code class="ruby">    sub_address = [street, city, state].compact.join(&#39;, &#39;)</code>
         </li>
       
-        <li class="covered" data-hits="10" data-linenumber="27">
-          <span class="hits">10</span>
+        <li class="covered" data-hits="19" data-linenumber="27">
+          <span class="hits">19</span>
           
           <code class="ruby">    [sub_address, zip].compact.join(&#39; &#39;)</code>
         </li>
@@ -9254,10 +9254,10 @@
         <div class="source_table" id="af4dc7603470a088134e664146fe760fd3651940">
   <div class="header">
     <h3>app/models/rider.rb</h3>
-    <h4><span class="red">73.33 %</span> covered</h4>
+    <h4><span class="red">75.0 %</span> covered</h4>
     <div>
-      <b>15</b> relevant lines. 
-      <span class="green"><b>11</b> lines covered</span> and
+      <b>16</b> relevant lines. 
+      <span class="green"><b>12</b> lines covered</span> and
       <span class="red"><b>4</b> lines missed.</span>
     </div>
   </div>
@@ -9322,136 +9322,142 @@
         <li class="covered" data-hits="1" data-linenumber="10">
           <span class="hits">1</span>
           
-          <code class="ruby">  scope :active, -&gt; { where(is_active: true) }</code>
+          <code class="ruby">  validates_format_of :phone, :with =&gt; /\(?[0-9]{3}\)?-[0-9]{3}-[0-9]{4}/,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="11">
           
           
-          <code class="ruby"></code>
+          <code class="ruby">                              :message =&gt; &quot;number must be in xxx-xxx-xxxx format.&quot;</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="12">
+        <li class="covered" data-hits="1" data-linenumber="12">
+          <span class="hits">1</span>
+          
+          <code class="ruby">  scope :active, -&gt; { where(is_active: true) }</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="13">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="13">
+        <li class="covered" data-hits="1" data-linenumber="14">
           <span class="hits">1</span>
           
           <code class="ruby">  def full_name</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="14">
+        <li class="missed" data-hits="0" data-linenumber="15">
           
           
           <code class="ruby">    first_name + &quot; &quot; + last_name</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="15">
+        <li class="never" data-hits="" data-linenumber="16">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="16">
+        <li class="never" data-hits="" data-linenumber="17">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="17">
+        <li class="covered" data-hits="1" data-linenumber="18">
           <span class="hits">1</span>
           
           <code class="ruby">  def valid_tokens</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="18">
+        <li class="never" data-hits="" data-linenumber="19">
           
           
           <code class="ruby">    self.tokens.where(is_valid: true).</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="19">
+        <li class="never" data-hits="" data-linenumber="20">
           
           
           <code class="ruby">                where(&#39;expires_at &gt;= ?&#39;, Time.zone.now).</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="20">
+        <li class="never" data-hits="" data-linenumber="21">
           
           
           <code class="ruby">                where(ride_id: nil).</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="21">
+        <li class="missed" data-hits="0" data-linenumber="22">
           
           
           <code class="ruby">                order(:expires_at)</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="22">
+        <li class="never" data-hits="" data-linenumber="23">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="23">
+        <li class="never" data-hits="" data-linenumber="24">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="24">
+        <li class="covered" data-hits="1" data-linenumber="25">
           <span class="hits">1</span>
           
           <code class="ruby">  def next_valid_token</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="25">
+        <li class="missed" data-hits="0" data-linenumber="26">
           
           
           <code class="ruby">      self.valid_tokens.first</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="26">
+        <li class="never" data-hits="" data-linenumber="27">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="27">
+        <li class="never" data-hits="" data-linenumber="28">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="28">
+        <li class="covered" data-hits="1" data-linenumber="29">
           <span class="hits">1</span>
           
           <code class="ruby">  def valid_tokens_count</code>
         </li>
       
-        <li class="missed" data-hits="0" data-linenumber="29">
+        <li class="missed" data-hits="0" data-linenumber="30">
           
           
           <code class="ruby">    self.valid_tokens.size</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="30">
+        <li class="never" data-hits="" data-linenumber="31">
           
           
           <code class="ruby">  end</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="31">
+        <li class="never" data-hits="" data-linenumber="32">
           
           
           <code class="ruby"></code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="32">
+        <li class="never" data-hits="" data-linenumber="33">
           
           
           <code class="ruby">end</code>
@@ -9572,8 +9578,8 @@
           <code class="ruby">  def dates_cannot_be_in_the_past</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="17">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="17">
+          <span class="hits">8</span>
           
           <code class="ruby">    if start_time.present? &amp;&amp; start_time &lt; DateTime.now</code>
         </li>
@@ -9596,8 +9602,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="21">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="21">
+          <span class="hits">8</span>
           
           <code class="ruby">    if end_time.present? &amp;&amp; end_time &lt; DateTime.now</code>
         </li>
@@ -9620,8 +9626,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="25">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="25">
+          <span class="hits">8</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; start_date &lt; Date.today</code>
         </li>
@@ -9644,8 +9650,8 @@
           <code class="ruby"></code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="29">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="29">
+          <span class="hits">8</span>
           
           <code class="ruby">    if end_date.present? &amp;&amp; end_date &lt; Date.today</code>
         </li>
@@ -9680,14 +9686,14 @@
           <code class="ruby">  def end_time_after_start_time</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="35">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="35">
+          <span class="hits">8</span>
           
           <code class="ruby">    if start_time.present? &amp;&amp; end_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="36">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="36">
+          <span class="hits">8</span>
           
           <code class="ruby">      if start_time == end_time</code>
         </li>
@@ -9698,8 +9704,8 @@
           <code class="ruby">        errors.add(:end_time, &quot;cannot be same as start time&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="38">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="38">
+          <span class="hits">8</span>
           
           <code class="ruby">      elsif start_time &gt; end_time</code>
         </li>
@@ -9716,8 +9722,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="41">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="41">
+          <span class="hits">8</span>
           
           <code class="ruby">        true</code>
         </li>
@@ -9752,14 +9758,14 @@
           <code class="ruby">  def end_date_after_start_date</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="47">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="47">
+          <span class="hits">8</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; end_date.present?</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="48">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="48">
+          <span class="hits">8</span>
           
           <code class="ruby">      if start_date == end_date &amp;&amp; is_recurring == true</code>
         </li>
@@ -9770,8 +9776,8 @@
           <code class="ruby">        errors.add(:end_date, &quot;cannot be same as start date&quot;)</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="50">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="50">
+          <span class="hits">8</span>
           
           <code class="ruby">      elsif start_date &gt; end_date</code>
         </li>
@@ -9788,8 +9794,8 @@
           <code class="ruby">      else</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="53">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="53">
+          <span class="hits">8</span>
           
           <code class="ruby">        true</code>
         </li>
@@ -9824,14 +9830,14 @@
           <code class="ruby">  def start_date_cannot_be_later_than_start_time</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="59">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="59">
+          <span class="hits">8</span>
           
           <code class="ruby">    if start_date.present? &amp;&amp; start_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="60">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="60">
+          <span class="hits">8</span>
           
           <code class="ruby">      if start_date &gt; start_time</code>
         </li>
@@ -9872,14 +9878,14 @@
           <code class="ruby">  def end_date_cannot_be_before_end_time</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="67">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="67">
+          <span class="hits">8</span>
           
           <code class="ruby">    if end_date.present? &amp;&amp; end_time.present?</code>
         </li>
       
-        <li class="covered" data-hits="4" data-linenumber="68">
-          <span class="hits">4</span>
+        <li class="covered" data-hits="8" data-linenumber="68">
+          <span class="hits">8</span>
           
           <code class="ruby">      if end_date &lt; end_time</code>
         </li>
@@ -9920,8 +9926,8 @@
           <code class="ruby">  def events(query_start_date, query_end_date)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="75">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="75">
+          <span class="hits">2</span>
           
           <code class="ruby">    if is_recurring</code>
         </li>
@@ -9938,8 +9944,8 @@
           <code class="ruby">    else</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="78">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="78">
+          <span class="hits">2</span>
           
           <code class="ruby">      nonrecurring_event(query_start_date, query_end_date)</code>
         </li>
@@ -9968,14 +9974,14 @@
           <code class="ruby">  def nonrecurring_event(query_start_date, query_end_date)</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="83">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="83">
+          <span class="hits">2</span>
           
           <code class="ruby">    if query_start_date &lt;= start_time &amp;&amp; end_time &lt; query_end_date</code>
         </li>
       
-        <li class="covered" data-hits="1" data-linenumber="84">
-          <span class="hits">1</span>
+        <li class="covered" data-hits="2" data-linenumber="84">
+          <span class="hits">2</span>
           
           <code class="ruby">      [{</code>
         </li>
@@ -15827,32 +15833,32 @@
           <code class="ruby">    factory :schedule_window do</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="3">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="3">
+          <span class="hits">9</span>
           
           <code class="ruby">        start_date { Time.now + 1.month }</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="4">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="4">
+          <span class="hits">9</span>
           
           <code class="ruby">        end_date   { Time.now + 5.months }</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="5">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="5">
+          <span class="hits">9</span>
           
           <code class="ruby">        start_time { Time.now + 1.month + 2.hours}</code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="6">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="6">
+          <span class="hits">9</span>
           
           <code class="ruby">        end_time   { Time.now + 1.month + 5.hours } </code>
         </li>
       
-        <li class="covered" data-hits="5" data-linenumber="7">
-          <span class="hits">5</span>
+        <li class="covered" data-hits="9" data-linenumber="7">
+          <span class="hits">9</span>
           
           <code class="ruby">        is_recurring { false }</code>
         </li>
