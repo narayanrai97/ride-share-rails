@@ -66,7 +66,7 @@ module Api
             #   end
             # end
             if params[:location_id] != nil 
-              location = Location.find(params[:location.id]) 
+              location = Location.find(params[:location_id]) 
               if location != nil 
                 if location.latitude != nil && location.longitude != nil
                   rides_near = rides.select {|ride| ride.is_near?([location.latitude, location.longitude],driver.radius ) }
