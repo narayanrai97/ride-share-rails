@@ -5,6 +5,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:organization) {create(:organization) }
   #Created a token to by pass login but had to include
   #token_created_at in the last day so it would function
+  # radius is set to miles by geocode
   let!(:driver) {create(:driver, organization_id: organization.id,
      auth_token: "1234", radius: 5, token_created_at: Time.zone.now) }
   let!(:driver2) {create(:driver, organization_id: organization.id,
@@ -17,11 +18,14 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:location1) {create(:location,  street:"5410 Page Rd", city: "Durham", state: "NC", zip: "27703")}
   let!(:location2) {create(:location,  street:"955 Airport Blvd", city: "Morrisville", state: "NC", zip: "27560")}
   let!(:location3) {create(:location,  street:"1001 Shiloh Glenn Dr", city: "Morrisville", state: "NC", zip: "27560")}
-  let!(:location4) {create(:location,  street:"955 Airport Blvd", city: "Morrisville", state: "NC", zip: "27560")}
+  let!(:location4) {create(:location,  street:"2301 Erwin Rd", city: "Durham", state: "NC", zip: "27710")}
   let!(:location5) {create(:location,  street:"113 N Salem St", city: "Apex", state: "NC", zip: "27502")}
   let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
+  # fake location to test when address doesnt exsits
+  let!(:location7) {create(:location,  street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111"
+ )}
   
-  
+  # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride){create(:ride,rider_id: rider.id,organization_id: organization.id,
     start_location_id: location1.id, end_location_id: location1.id)}
   let!(:ride1){create(:ride,rider_id: rider.id,organization_id: organization.id,
@@ -41,7 +45,11 @@ RSpec.describe Api::V1::Rides, type: :request do
      start_location_id: location5.id, end_location_id: location5.id)}
   let!(:ride6){create(:ride,rider_id: rider.id,organization_id: organization.id,
      driver_id: driver.id,status: "scheduled",
-     start_location_id: location1.id, end_location_id: location6.id)}
+     start_location_id: location6.id, end_location_id: location1.id)}
+     # this ride test when ladditude is and longitude is nil
+  let!(:ride7){create(:ride,rider_id: rider.id,organization_id: organization.id,
+     driver_id: driver.id,status: "scheduled",
+     start_location_id: location7.id, end_location_id: location7.id)}
 
 
   #Accepts a ride for the current logged in user.
@@ -161,7 +169,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     # returns rides that only the driver has accepted
     it 'will return a 404 error when ride does not belong to driver ' do
-      Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id])
+      Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
       #Driver should own all of these rides
       expect(response).to have_http_status(404)
@@ -194,7 +202,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
 
      it 'will return a error 404 when ride does not belong to driver' do
-       Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id])
+       Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start: Date.today,
       end: Date.today + 15}
       expect(response).to have_http_status(404)
@@ -205,9 +213,34 @@ RSpec.describe Api::V1::Rides, type: :request do
         location_id: location.id
       }
       parsed_json = JSON.parse(response.body)
-      expect(parsed_json['rides'][0]['driver_id']).to eq(nil)
-      expect(parsed_json['rides'][1]['driver_id']).to eq(driver.id)
-      expect(parsed_json['rides'][2]['driver_id']).to eq(driver.id)
+      expect(response).to have_http_status(200)
+      expect(parsed_json['rides'].count).to eq(4)
+    end
+    
+    it "returns 404 when location does not exsit" do
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+        location_id: location6.id
+        }
+      expect(response).to have_http_status(404)
+    end
+    
+    it "returns 404 when ride does not exsit" do
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+        location_id: location7.id
+        }
+      expect(response).to have_http_status(400)
+    end
+     it "returns 400 when location ladditude and latitude does not exsit" do
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+        location_id: location7.id
+        }
+      expect(response).to have_http_status(400)
+    end
+    it "returns 400 when location does not exsit " do
+      Location.destroy_all
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+       location_id: 12344 }
+       expect(response).to have_http_status(400)
     end
   end
 end

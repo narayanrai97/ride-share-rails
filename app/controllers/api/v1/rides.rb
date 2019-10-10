@@ -66,7 +66,11 @@ module Api
             #   end
             # end
             if params[:location_id] != nil 
-              location = Location.find(params[:location_id]) 
+              begin 
+                location = Location.find(params[:location_id]) 
+              rescue ActiveRecord::RecordNotFound => e
+                location = nil
+              end
               if location != nil 
                 if location.latitude != nil && location.longitude != nil
                   rides_near = rides.select {|ride| ride.is_near?([location.latitude, location.longitude],driver.radius ) }
@@ -79,11 +83,11 @@ module Api
                   end
                 else 
                   status 400
-                  return "bad request"
+                  return "bad requests"
                 end
               else 
                 status 400
-                return "bad request"
+                return "bad requested"
               end
             end
             status 200
