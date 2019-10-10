@@ -23,8 +23,14 @@ module Api
           optional :location_id, type: Integer, desc: "location to use for radius" 
         end
           get "rides", root: :rides do
+            
             driver = current_driver
-
+            
+             if driver[:is_active] == false
+               return "Not Authorize"
+               status 404
+            end
+            
             start_time = params[:start]
             end_time = params[:end]
             
@@ -101,6 +107,10 @@ module Api
           end
           get "rides/:ride_id", root: :ride do
             driver = current_driver
+            if driver[:is_active] == false
+               return "Not Authorize"
+               status 404
+            end
             #Only can see rides that the driver own for or have no driver
             ride = Ride.find(permitted_params[:ride_id])
             if (ride.driver_id == nil or ride.driver_id ==driver.id)
