@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :location do
-    street { "1200 front st."}
+    street { "800 Park Offices Dr"}
     city { "Durham" }
     state { "NC" }
-    zip { "27705" }
+    zip { "27709" }
   end
 end

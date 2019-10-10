@@ -20,6 +20,7 @@ module Api
           optional :driver_specific, type: Boolean, desc: "Boolean if rides are driver specific"
           #Missing functionality for radius feature currently
           optional :radius, type: Boolean, desc: "Boolean if rides are within radius"
+          optional :location_id, type: Integer, desc: "location to use for radius" 
         end
           get "rides", root: :rides do
             driver = current_driver
@@ -64,6 +65,31 @@ module Api
             #     if check_radius(ride)
             #   end
             # end
+            if params[:location_id] != nil 
+              begin 
+                location = Location.find(params[:location_id]) 
+              rescue ActiveRecord::RecordNotFound => e
+                location = nil
+              end
+              if location != nil 
+                if location.latitude != nil && location.longitude != nil
+                  rides_near = rides.select {|ride| ride.is_near?([location.latitude, location.longitude],driver.radius ) }
+                  if rides_near.length > 0
+                    status 200 
+                    return rides_near
+                  else
+                    status 404
+                    return ""
+                  end
+                else 
+                  status 400
+                  return "bad requests"
+                end
+              else 
+                status 400
+                return "bad requested"
+              end
+            end
             status 200
             return rides
           end
