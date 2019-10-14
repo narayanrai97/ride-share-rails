@@ -263,5 +263,10 @@ RSpec.describe Api::V1::Rides, type: :request do
     post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     expect(response).to have_http_status(201)
     end
+    
+     it 'Will return a not authorized, when an inactived driver accept a pick-up ride' do
+     post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+     expect(response).to have_http_status(201)
+    end
   end
 end

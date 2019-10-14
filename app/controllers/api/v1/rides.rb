@@ -130,7 +130,7 @@ module Api
         post "rides/:ride_id/accept" do
           driver = current_driver
           if driver.is_active == false
-               return "Not Authorize"
+               return "Not Authorized"
                status 201
             end
             
@@ -154,7 +154,7 @@ module Api
         post "rides/:ride_id/complete" do
           driver = current_driver
           if driver.is_active == false
-               return "Not Authorize"
+               return "Not Authorized"
                status 200
             end
           ride = Ride.find(permitted_params[:ride_id])
@@ -195,9 +195,9 @@ module Api
       end
       post "rides/:ride_id/picking-up" do
         driver = current_driver
-        if driver[:is_active] == false
-          return "Not Authorize"
-          status 401
+        if driver.is_active == false
+          return "Not Authorized"
+          status 201
         end
         
         ride = Ride.find(permitted_params[:ride_id])
