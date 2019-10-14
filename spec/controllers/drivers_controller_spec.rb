@@ -42,7 +42,7 @@ RSpec.describe DriversController, type: :controller do
         }
       }
 
-      expect(flash[:notice]).to match(/has been saved/)
+      expect(flash[:notice]).to match("Driver created.")
       expect(test_response.response_code).to eq(302)
       expect(test_response).to redirect_to(Driver.last)
     end.to change(Driver, :count)
@@ -178,29 +178,29 @@ RSpec.describe DriversController, type: :controller do
   end
 
   it 'deactivates driver' do
-    test_response = put :deactivate, params: {
+    test_response = put :activation, params: {
       driver_id: driver.id
       }
 
     driver.reload
     expect(driver.is_active).to be(false)
     expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/deactivated/)
+    expect(flash[:alert]).to match("Driver deactivated.")
     expect(test_response).to redirect_to(drivers_path)
 
-    test_response_2 = put :deactivate, params: {
+    test_response_2 = put :activation, params: {
       driver_id: driver.id
     }
 
     driver.reload
     expect(driver.is_active).to be(true)
     expect(test_response_2.response_code).to eq(302)
-    expect(flash[:notice]).to match(/set to active/)
+    expect(flash[:notice]).to match("Driver reactivated.")
     expect(test_response_2).to redirect_to(drivers_path)
   end
 
   it 'prevents unauthorized users from deactivating a driver outside org' do
-    test_response = put :deactivate, params: {
+    test_response = put :activation, params: {
       driver_id: driver_outside_organization.id
     }
 
