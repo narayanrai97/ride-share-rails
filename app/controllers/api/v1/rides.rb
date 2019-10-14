@@ -129,9 +129,9 @@ module Api
         end
         post "rides/:ride_id/accept" do
           driver = current_driver
-          if driver[:is_active] == false
+          if driver.is_active == false
                return "Not Authorize"
-               status 401
+               status 201
             end
             
           ride = Ride.find(permitted_params[:ride_id])
@@ -153,6 +153,10 @@ module Api
         end
         post "rides/:ride_id/complete" do
           driver = current_driver
+          if driver.is_active == false
+               return "Not Authorize"
+               status 200
+            end
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "completed")
