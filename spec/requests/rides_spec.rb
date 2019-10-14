@@ -6,8 +6,9 @@ RSpec.describe Api::V1::Rides, type: :request do
   #Created a token to by pass login but had to include
   #token_created_at in the last day so it would function
   # radius is set to miles by geocode
+  # To see test case # 250 and 257, turn is_active to false.
   let!(:driver) {create(:driver, organization_id: organization.id,
-     auth_token: "1234", radius: 5,  token_created_at: Time.zone.now) }
+     auth_token: "1234", radius: 5, is_active: true, token_created_at: Time.zone.now) }
   let!(:driver2) {create(:driver, organization_id: organization.id,
      auth_token: "4567",token_created_at: Time.zone.now) }
   let!(:rider){create(:rider)}
@@ -213,8 +214,8 @@ RSpec.describe Api::V1::Rides, type: :request do
         location_id: location.id
       }
       parsed_json = JSON.parse(response.body)
-      # expect(response).to have_http_status(200)
-      # expect(parsed_json['rides'].count).to eq(4)
+      expect(response).to have_http_status(200)
+      expect(parsed_json['rides'].count).to eq(4)
     end
     
     it "returns 404 when location does not exsit" do
@@ -241,6 +242,21 @@ RSpec.describe Api::V1::Rides, type: :request do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
        location_id: 12344 }
        expect(response).to have_http_status(400)
+    end
+    
+    # Test below shows when a driver is an inactived. Inactive drivers will not be able to see the rides. 
+    # To see the results, turn of is_active driver in the let! to false
+    
+    it 'will return a 401 whend driver is inactive ' do
+    get "/api/v1/rides/#{ride1.id}",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    expect(response).to have_http_status(201)
+    end
+    
+    it "Will return a 401 to all rides when driver is inactive" do
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+        location_id: location.id
+      }
+      expect(response).to have_http_status(200)
     end
   end
 end

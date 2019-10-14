@@ -25,9 +25,9 @@ module Api
           get "rides", root: :rides do
             
             driver = current_driver
-             if driver[:is_active] == false
-               return "Not Authorize"
-               status 401
+             if driver.is_active == false
+               return "Not Authorized"
+               status 201
             end
             
             start_time = params[:start]
@@ -107,9 +107,9 @@ module Api
           
           get "rides/:ride_id", root: :ride do
             driver = current_driver
-            if driver[:is_active] == false
-               return "Not Authorize"
-               status 401
+            if driver.is_active == false
+               return "Not Authorized"
+               status 201
             end
             
             #Only can see rides that the driver own for or have no driver
