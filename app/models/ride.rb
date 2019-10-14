@@ -102,7 +102,7 @@ class Ride < ApplicationRecord
       nil
     end
   end
-
+  
   def pick_up_time_cannot_be_in_the_past
     if ['pending', 'approved', 'scheduled'].include? self.status
       if pick_up_time.present? && pick_up_time < Date.today
@@ -111,4 +111,17 @@ class Ride < ApplicationRecord
     end
   end
 
+  def is_near?(position,radius)
+   start_distance = self.start_location.distance_from(position)
+   if start_distance.nil? || start_distance > radius
+     return false
+   end
+   end_distance = self.end_location.distance_from(position)
+    if end_distance.nil? || end_distance > radius
+     return false
+    end
+      return true
+  end
+
 end
+
