@@ -65,7 +65,10 @@ class RidersController < ApplicationController
     @rider = Rider.find(params[:id])
     authorize @rider
 
-    if @rider.update(rider_params)
+    if @rider.update_columns(first_name: params[:rider][:first_name],
+                             last_name: params[:rider][:last_name],
+                             phone: params[:rider][:phone],
+                             email: params[:rider][:email])
       flash.notice = "The rider information has been updated"
       redirect_to @rider
     else
