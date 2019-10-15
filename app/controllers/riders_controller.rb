@@ -12,8 +12,7 @@ class RidersController < ApplicationController
   def show
     @rider = Rider.find(params[:id])
     authorize @rider
-    @location_ids = LocationRelationship.where(rider_id: params[:id]).ids
-    @locations = Location.where(id: @location_ids)
+    @locations = @rider.locations
     if params[:status] == "pending"
       @rides = @rider.rides.pending
     elsif params[:status] == 'approved'
