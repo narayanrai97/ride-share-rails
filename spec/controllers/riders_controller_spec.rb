@@ -34,6 +34,7 @@ RSpec.describe RidersController, type: :controller do
       id: rider.id,
       rider: {
         first_name: 'Jane',
+        email: 'jane@gmail.com'
       }
     }
 
