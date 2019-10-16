@@ -6,11 +6,14 @@ RSpec.describe Api::V1::Rides, type: :request do
   #Created a token to by pass login but had to include
   #token_created_at in the last day so it would function
   # radius is set to miles by geocode
-  # To see test case # 250 and 257, turn is_active to false.
   let!(:driver) {create(:driver, organization_id: organization.id,
-     auth_token: "1234", radius: 5, is_active: false, token_created_at: Time.zone.now) }
+     auth_token: "1234", radius: 5, is_active: true, token_created_at: Time.zone.now) }
   let!(:driver2) {create(:driver, organization_id: organization.id,
      auth_token: "4567",token_created_at: Time.zone.now) }
+    #This driver is to test when driver is inactived 
+  let!(:driver3) {create(:driver, organization_id: organization.id,
+     auth_token: "1020", is_active: false, token_created_at: Time.zone.now) 
+  }
   let!(:rider){create(:rider)}
   let!(:rider2){create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
@@ -244,29 +247,28 @@ RSpec.describe Api::V1::Rides, type: :request do
        expect(response).to have_http_status(400)
     end
     
-    # Test below shows when a driver is an inactived. Inactive drivers will not be able to see the rides. 
-    # To see the results, turn of is_active driver in the let! to false
+    # Test below shows when a driver is an inactived. Inactive drivers will not be able to get, complete or accept rides. 
     
     it 'Will return a not authorized, when a inactived driver tries to accept rides' do
-    get "/api/v1/rides/#{ride1.id}",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    expect(response).to have_http_status(200)
+    get "/api/v1/rides/#{ride1.id}",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
+    expect(response).to have_http_status(401)
     end
     
     it "Will return a not authorized, when an inactived driver tries to recieve rides." do
-      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
+      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1020"}, params: {
         location_id: location.id
       }
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(401)
     end
     
     it 'Will return a not authorized, when an inactived driver tries to complete a ride' do
-    post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    expect(response).to have_http_status(201)
+    post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
+    expect(response).to have_http_status(401)
     end
     
      it 'Will return a not authorized, when an inactived driver accept a pick-up ride' do
-     post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-     expect(response).to have_http_status(201)
+     post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
+     expect(response).to have_http_status(401)
     end
   end
 end
