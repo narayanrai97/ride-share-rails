@@ -5,9 +5,11 @@ class Driver < ApplicationRecord
   validates :email, presence: true
 
   belongs_to :organization
+  has_many :location_relationships
   has_many :rides
   has_many :schedule_windows
   has_many :vehicles ,dependent: :destroy
+  has_many :locations, -> { distinct }, through: :location_relationships
 
 
   devise :database_authenticatable, :registerable,
