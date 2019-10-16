@@ -26,8 +26,8 @@ module Api
             
             driver = current_driver
              if driver.is_active == false
+               status 401
                return "Not Authorized"
-               status 201
             end
             
             start_time = params[:start]
@@ -106,10 +106,11 @@ module Api
           end
           
           get "rides/:ride_id", root: :ride do
+            
             driver = current_driver
             if driver.is_active == false
-               return "Not Authorized"
-               status 201
+              status 401
+              return "Not Authorized "
             end
             
             #Only can see rides that the driver own for or have no driver
@@ -130,9 +131,9 @@ module Api
         post "rides/:ride_id/accept" do
           driver = current_driver
           if driver.is_active == false
-               return "Not Authorized"
-               status 201
-            end
+            status 401
+            return "Not Authorized"
+          end
             
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id == driver.id)
@@ -154,9 +155,10 @@ module Api
         post "rides/:ride_id/complete" do
           driver = current_driver
           if driver.is_active == false
-               return "Not Authorized"
-               status 200
-            end
+            status 401
+            return "Not Authorized"
+         end
+          
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "completed")
@@ -196,8 +198,8 @@ module Api
       post "rides/:ride_id/picking-up" do
         driver = current_driver
         if driver.is_active == false
+          status 401
           return "Not Authorized"
-          status 201
         end
         
         ride = Ride.find(permitted_params[:ride_id])
