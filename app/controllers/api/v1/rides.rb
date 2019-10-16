@@ -23,8 +23,13 @@ module Api
           optional :location_id, type: Integer, desc: "location to use for radius" 
         end
           get "rides", root: :rides do
+            
             driver = current_driver
-
+             if driver.is_active == false
+               status 401
+               return "Not Authorized"
+            end
+            
             start_time = params[:start]
             end_time = params[:end]
             
@@ -99,8 +104,15 @@ module Api
             requires :ride_id, type: String, desc: "ID of the
                 ride"
           end
+          
           get "rides/:ride_id", root: :ride do
+            
             driver = current_driver
+            if driver.is_active == false
+              status 401
+              return "Not Authorized "
+            end
+            
             #Only can see rides that the driver own for or have no driver
             ride = Ride.find(permitted_params[:ride_id])
             if (ride.driver_id == nil or ride.driver_id ==driver.id)
@@ -118,6 +130,11 @@ module Api
         end
         post "rides/:ride_id/accept" do
           driver = current_driver
+          if driver.is_active == false
+            status 401
+            return "Not Authorized"
+          end
+            
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id == driver.id)
             if ride.update(driver_id: driver.id, status: "scheduled")
@@ -137,6 +154,11 @@ module Api
         end
         post "rides/:ride_id/complete" do
           driver = current_driver
+          if driver.is_active == false
+            status 401
+            return "Not Authorized"
+         end
+          
           ride = Ride.find(permitted_params[:ride_id])
           if (ride.driver_id == nil or ride.driver_id ==driver.id)
             if ride.update(driver_id: driver.id, status: "completed")
@@ -155,6 +177,7 @@ module Api
       end
       post "rides/:ride_id/cancel" do
         driver = current_driver
+        
         ride = Ride.find(permitted_params[:ride_id])
         if (ride.driver_id == nil or ride.driver_id ==driver.id)
           if ride.update(driver_id: driver.id, status: "canceled")
@@ -174,6 +197,11 @@ module Api
       end
       post "rides/:ride_id/picking-up" do
         driver = current_driver
+        if driver.is_active == false
+          status 401
+          return "Not Authorized"
+        end
+        
         ride = Ride.find(permitted_params[:ride_id])
         if (ride.driver_id == nil or ride.driver_id ==driver.id)
           if ride.update(driver_id: driver.id, status: "picking-up")

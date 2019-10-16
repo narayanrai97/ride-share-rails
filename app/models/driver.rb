@@ -2,13 +2,14 @@ class Driver < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :phone, length: { is: 10 }, numericality: true
-  # validates :phone, presence: true
   validates :email, presence: true
 
   belongs_to :organization
+  has_many :location_relationships
   has_many :rides
   has_many :schedule_windows
   has_many :vehicles ,dependent: :destroy
+  has_many :locations, -> { distinct }, through: :location_relationships
 
 
   devise :database_authenticatable, :registerable,

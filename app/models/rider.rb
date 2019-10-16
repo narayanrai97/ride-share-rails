@@ -3,12 +3,14 @@ class Rider < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :organization
+  has_many :location_relationships
   has_many   :tokens, dependent: :destroy
   has_many   :rides
+  has_many :locations, -> { distinct }, through: :location_relationships
 
   validates :first_name, :last_name, :phone, :organization, presence: true
-  validates_format_of :phone, :with => /\(?[0-9]{3}\)?-[0-9]{3}-[0-9]{4}/,
-                              :message => "number must be in xxx-xxx-xxxx format."
+  validates :phone, length: { is: 10 }, numericality: true
+
   scope :active, -> { where(is_active: true) }
 
   def full_name

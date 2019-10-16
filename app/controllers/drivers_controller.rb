@@ -13,8 +13,7 @@ class DriversController < ApplicationController
     @driver = Driver.find(params[:id])
     authorize @driver
     @vehicles = @driver.vehicles
-    @location_ids = LocationRelationship.where(driver_id: params[:id]).ids
-    @locations = Location.where(id: @location_ids)
+    @locations = @driver.locations
     @schedules = @driver.schedule_windows
 
     @agenda = Hash.new{ |h,k| h[k] = []}
