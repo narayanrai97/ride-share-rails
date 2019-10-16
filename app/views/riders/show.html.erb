@@ -13,19 +13,6 @@
       <% end %>
     </h3>
     <%= render 'rider_info' %><br/>
-
-
-  <!-- <div class="card5 mb-3">
-    <div class="row no-gutters">
-      <div class="col-md col-md-offset-2">
-        <p><strong>Name:</strong> <%= @rider.full_name %></p>
-        <p><strong>Phone:</strong> <%= @rider.phone %></p>
-        <p><strong>Email:</strong> <%= @rider.email %></p>
-        <p><strong>Valid Tokens:</strong> <%= @rider.valid_tokens_count %></p>
-        <p><strong>Organization:</strong> <%= @rider.organization.name %></p>
-      </div>
-    </div>
-  </div> -->
   </div>
 
   <h4 class="green"><%= @rider.full_name %>'s Rides</h4>
@@ -54,7 +41,7 @@
             <th scope="col"></th>
             <th scope="col"></th>
           </tr>
-          <% if @rider_rides.blank? %>
+          <% if @rider.rides.blank? %>
             <tr>
               <td></td>
               <td></td>
