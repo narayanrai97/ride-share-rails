@@ -247,8 +247,7 @@ RSpec.describe Api::V1::Rides, type: :request do
        expect(response).to have_http_status(400)
     end
     
-    # Test below shows when a driver is an inactived. Inactive drivers will not be able to see the rides. 
-    # To see the results, turn of is_active driver in the let! to false
+    # Test below shows when a driver is an inactived. Inactive drivers will not be able to get, complete or accept rides. 
     
     it 'Will return a not authorized, when a inactived driver tries to accept rides' do
     get "/api/v1/rides/#{ride1.id}",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
@@ -259,7 +258,6 @@ RSpec.describe Api::V1::Rides, type: :request do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1020"}, params: {
         location_id: location.id
       }
-      puts response.body
       expect(response).to have_http_status(401)
     end
     
