@@ -1,6 +1,8 @@
 class RidersController < ApplicationController
 
   before_action :authenticate_user!
+  before_action :remove_password_params_if_blank, only: [:update]
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout "administration"
@@ -126,6 +128,13 @@ class RidersController < ApplicationController
       else
         flash.notice = "Rider does not have any valid tokens"
         redirect_to request.referrer || riders_path
+      end
+    end
+
+    def remove_password_params_if_blank
+      if params[:rider][:password].blank? && params[:rider][:password_confirmation].blank?
+        params[:rider].delete(:password)
+        params[:rider].delete(:password_confirmation)
       end
     end
 end
