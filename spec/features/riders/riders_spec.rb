@@ -22,8 +22,12 @@ RSpec.feature 'Riders', type: :feature, js: true do
     fill_in 'Email', with: admin.email
     fill_in 'Password', with: 'password'
     click_on 'Log in'
+<<<<<<< HEAD
     save_screenshot
     expect(page).to have_text admin.email
+=======
+    expect(page).to have_text "Welcome #{admin.email}!"
+>>>>>>> master
     click_link 'Riders'
     expect(page).to have_text rider.first_name
     expect(page).not_to have_text rider_outside_organization.first_name
@@ -34,13 +38,17 @@ RSpec.feature 'Riders', type: :feature, js: true do
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
     signin('user@example.com', 'password')
+<<<<<<< HEAD
     expect(page).to have_text admin.email
+=======
+    expect(page).to have_text 'Welcome user@example.com!'
+>>>>>>> master
     click_link 'Riders'
     click_link 'Show'
-    expect(page).to have_text 'Personal Information'
-    expect(page).to have_text rider.first_name
-    expect(page).to have_text rider.phone
-    expect(page).to have_text location.street
-    expect(page).to have_text ride.reason
+    expect(page).to have_text 'Rider Information'
+    expect(page).to have_text 'Ubber'
+    expect(page).to have_text '919-999-8888'
+    expect(page).to have_text '800 Park Offices Dr'
+    expect(page).to have_text 'Interview'
   end
 end
