@@ -18,8 +18,8 @@
     <div class="col-md border-top border-bottom">
       <strong>Valid tokens:</strong>
       <%= @rider.valid_tokens_count %>
-      <%= link_to edit_rider_path(@rider) do %>
-        <i class="fa fa-plus"></i>
+      <%= link_to edit_rider_path(@rider), class: "btn btn-sm btn-outline-success", id: "my-button" do %>
+        <i class="fa fa-tasks"> Manage</i>
       <% end %>
     </div>
   </div>
