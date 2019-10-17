@@ -18,6 +18,9 @@
     <div class="col-md border-top border-bottom">
       <strong>Valid tokens:</strong>
       <%= @rider.valid_tokens_count %>
+      <%= link_to edit_rider_path(@rider) do %>
+        <i class="fa fa-plus"></i>
+      <% end %>
     </div>
   </div>
   <div class="row">
