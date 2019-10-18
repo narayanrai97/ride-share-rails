@@ -31,6 +31,11 @@
 
     <%= form.label :pick_up_time %><br>
     <%= form.datetime_local_field :pick_up_time,class: "form-control" %>
+    
+    <div class= "save_location"> 
+      <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+      <h6>Save end location <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
+    </div>
   </div>
 
 </div>

@@ -7,6 +7,7 @@ class RidesController < ApplicationController
   layout 'rider_layout'
 
     def new
+      byebug
       @ride = Ride.new
     end
 
@@ -41,6 +42,7 @@ class RidesController < ApplicationController
     end
 
     def create
+      byebug
       token = current_rider.next_valid_token
       unless token.nil?
         start_location = Location.new(
@@ -62,6 +64,7 @@ class RidesController < ApplicationController
           end_location: end_location,
           reason: ride_params[:reason])
         @ride.status = "approved" if current_rider.organization.use_tokens?
+        
 
         if @ride.save
           token.ride_id = @ride.id
