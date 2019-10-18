@@ -23,11 +23,14 @@ class Ride < ApplicationRecord
 
   # validate that start_location and end_location are valid
   def valid_locations
-    if start_location.present? && !start_location.valid?
-      errors.add(:start_location, " is not valid")
+    result1 = Geocoder.search(start_location.full_address)
+    if result1.length == 0 || result1.first.data["partial_match"] == true
+      errors.add(:start_location, "is invalid.")
     end
-    if end_location.present? && !end_location.valid?
-      errors.add(:end_location, " is not valid")
+
+    result2 = Geocoder.search(end_location.full_address)
+    if result2.length == 0 || result2.first.data["partial_match"] == true
+      errors.add(:end_location, "is invalid.")
     end
   end
 
@@ -102,7 +105,7 @@ class Ride < ApplicationRecord
       nil
     end
   end
-  
+
   def pick_up_time_cannot_be_in_the_past
     if ['pending', 'approved', 'scheduled'].include? self.status
       if pick_up_time.present? && pick_up_time < Date.today
@@ -124,4 +127,3 @@ class Ride < ApplicationRecord
   end
 
 end
-
