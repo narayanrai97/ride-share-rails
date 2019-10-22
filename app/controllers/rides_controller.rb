@@ -7,7 +7,6 @@ class RidesController < ApplicationController
   layout 'rider_layout'
 
     def new
-      byebug
       @ride = Ride.new
     end
 
@@ -42,7 +41,6 @@ class RidesController < ApplicationController
     end
 
     def create
-      byebug
       token = current_rider.next_valid_token
       unless token.nil?
         start_location = Location.new(

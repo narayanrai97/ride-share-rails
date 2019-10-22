@@ -5,6 +5,7 @@ class Ride < ApplicationRecord
   belongs_to :rider
   belongs_to :start_location, :class_name => "Location", autosave: true
   belongs_to :end_location, :class_name => "Location", autosave: true
+  belongs_to :location
   has_one :token
 
   validates :pick_up_time, :reason, :status, presence: true
