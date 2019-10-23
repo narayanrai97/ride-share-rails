@@ -97,28 +97,19 @@ module Api
         return rides
       end
 
+      # Driver seeing only the rides that they own for or have an 'approved' status
       desc "Return a ride with given ID"
       params do
-        requires :ride_id, type: String, desc: "ID of the
-            ride"
+        requires :ride_id, type: String, desc: "ID of the ride"
       end
-
       get "rides/:ride_id", root: :ride do
-
-        driver = current_driver
-        if driver.is_active == false
-          status 401
-          return "Not Authorized "
-        end
-
-        #Only can see rides that the driver own for or have no driver
         ride = Ride.find(permitted_params[:ride_id])
-        if (ride.driver_id == nil or ride.driver_id ==driver.id)
+        if current_driver.is_active? && ((ride.driver_id == nil && ride.status == "approved") || ride.driver_id == current_driver.id)
           status 201
           render ride
         else
-          status(404)
-          render "Unauthorized"
+          status 401
+          render "Not Authorized"
         end
       end
 
