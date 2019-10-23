@@ -60,4 +60,41 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text location.street
     expect(page).to have_text '400 Main St'
   end
+
+  scenario 'when admin clicks review, should be able to add car' do
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'password')
+    expect(page).to have_text 'Welcome user@example.com!'
+    click_link 'Drivers'
+    click_link 'Review'
+    expect(page).to have_text 'Cars'
+    click_link 'Add Car'
+    expect(page).to have_text 'New Vehicle of'
+    expect(page).to have_text driver.first_name
+  end
+
+  scenario 'when admin clicks review, should be able edit driver' do
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'password')
+    expect(page).to have_text 'Welcome user@example.com!'
+    click_link 'Drivers'
+    click_link 'Review'
+    click_link 'Edit Driver'
+    expect(page).to have_text 'Update Driver'
+  end
+
+  scenario 'when admin clicks edit, Update Driver fields should appear' do
+    visit root_path
+    click_link 'Login as Admin'
+    expect(page).to have_text 'Log in'
+    signin('user@example.com', 'password')
+    expect(page).to have_text 'Welcome user@example.com!'
+    click_link 'Drivers'
+    click_link 'Edit'
+    expect(page).to have_text 'Update Driver'
+  end
 end
