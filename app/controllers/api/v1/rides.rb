@@ -198,21 +198,20 @@ module Api
         end
       end
 
-      desc "dropping off driver"
+      # Driver dropping off riders only with picking-up ride status
+      desc "Dropping off a rider"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/dropping-off" do
-        driver = current_driver
         ride = Ride.find(permitted_params[:ride_id])
-        if (ride.driver_id == nil or ride.driver_id ==driver.id)
-          if ride.update(driver_id: driver.id, status: "dropping-off")
-            status 201
-            render ride
-          end
+        if current_driver.is_active? && ride.status == "picking-up" && ride.driver_id == current_driver.id
+          ride.update(driver_id: current_driver.id, status: "dropping-off")
+          status 201
+          render ride
         else
-          status(404)
-          render "Unauthorized"
+          status 401
+          render "Not Authorized"
         end
       end
     end
