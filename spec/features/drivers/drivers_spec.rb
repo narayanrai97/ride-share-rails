@@ -75,6 +75,22 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text driver.first_name
   end
 
+  # Following scenario still in process. Need to do an xpath find by href.
+
+  # scenario 'when admin clicks review, should be able to edit car' do
+  #   visit root_path
+  #   click_link 'Login as Admin'
+  #   expect(page).to have_text 'Log in'
+  #   signin('user@example.com', 'password')
+  #   expect(page).to have_text 'Welcome user@example.com!'
+  #   click_link 'Drivers'
+  #   click_link 'Review'
+  #   expect(page).to have_text 'Cars'
+  #   click_link 'Edit'
+  #   expect(page).to have_text 'Edit Vehicle of'
+  #   expect(page).to have_text driver.first_name
+  # end
+
   scenario 'when admin clicks review, should be able edit driver' do
     visit root_path
     click_link 'Login as Admin'
