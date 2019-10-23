@@ -10,14 +10,14 @@ RSpec.describe Api::V1::Rides, type: :request do
      auth_token: "1234", radius: 5, is_active: true, token_created_at: Time.zone.now) }
   let!(:driver2) {create(:driver, organization_id: organization.id,
      auth_token: "4567",token_created_at: Time.zone.now) }
-    #This driver is to test when driver is inactived 
+    #This driver is to test when driver is inactived
   let!(:driver3) {create(:driver, organization_id: organization.id,
-     auth_token: "1020", is_active: false, token_created_at: Time.zone.now) 
+     auth_token: "1020", is_active: false, token_created_at: Time.zone.now)
   }
   let!(:rider){create(:rider)}
   let!(:rider2){create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
-  
+
   # added a few more locations to test ride radius
   let!(:location1) {create(:location,  street:"5410 Page Rd", city: "Durham", state: "NC", zip: "27703")}
   let!(:location2) {create(:location,  street:"955 Airport Blvd", city: "Morrisville", state: "NC", zip: "27560")}
@@ -25,10 +25,11 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:location4) {create(:location,  street:"2301 Erwin Rd", city: "Durham", state: "NC", zip: "27710")}
   let!(:location5) {create(:location,  street:"113 N Salem St", city: "Apex", state: "NC", zip: "27502")}
   let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
+  let!(:location7) {create(:location,  street:"201 W. Main st.", city: "Durham", state: "NC", zip: "27701")}
   # fake location to test when address doesnt exsits
-  let!(:location7) {create(:location,  street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111"
+  let!(:location8) {create(:location,  street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111"
  )}
-  
+
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride){create(:ride,rider_id: rider.id,organization_id: organization.id,
     start_location_id: location1.id, end_location_id: location1.id)}
@@ -211,7 +212,7 @@ RSpec.describe Api::V1::Rides, type: :request do
       end: Date.today + 15}
       expect(response).to have_http_status(404)
     end
-    # test for checking driver radius inconnection with rides 
+    # test for checking driver radius inconnection with rides
     it "Take a location id and returns back all in its radius" do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
         location_id: location.id
@@ -220,53 +221,55 @@ RSpec.describe Api::V1::Rides, type: :request do
       expect(response).to have_http_status(200)
       expect(parsed_json['rides'].count).to eq(4)
     end
-    
+
     it "returns 404 when location does not exsit" do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
         location_id: location6.id
         }
       expect(response).to have_http_status(404)
     end
-    
+
     it "returns 404 when ride does not exsit" do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location7.id
+        location_id: location8.id
         }
       expect(response).to have_http_status(400)
     end
-     it "returns 400 when location ladditude and latitude does not exsit" do
+
+     it "returns 400 when location latitude and longitude does not exsit" do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location7.id
+        location_id: location8.id
         }
       expect(response).to have_http_status(400)
     end
+
     it "returns 400 when location does not exsit " do
       Location.destroy_all
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
        location_id: 12344 }
        expect(response).to have_http_status(400)
     end
-    
-    # Test below shows when a driver is an inactived. Inactive drivers will not be able to get, complete or accept rides. 
-    
+
+    # Test below shows when a driver is an inactived. Inactive drivers will not be able to get, complete or accept rides.
+
     it 'Will return a not authorized, when a inactived driver tries to accept rides' do
     get "/api/v1/rides/#{ride1.id}",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
     expect(response).to have_http_status(401)
     end
-    
+
     it "Will return a not authorized, when an inactived driver tries to recieve rides." do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1020"}, params: {
         location_id: location.id
       }
       expect(response).to have_http_status(401)
     end
-    
+
     it 'Will return a not authorized, when an inactived driver tries to complete a ride' do
     post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
     expect(response).to have_http_status(401)
     end
-    
-     it 'Will return a not authorized, when an inactived driver accept a pick-up ride' do
+
+    it 'Will return a not authorized, when an inactived driver accept a pick-up ride' do
      post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1020"}
      expect(response).to have_http_status(401)
     end
