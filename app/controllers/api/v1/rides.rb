@@ -122,14 +122,13 @@ module Api
         end
       end
 
-      # Driver Acceting a ride
+      # Driver Acceting only an approved ride
       desc "Accept a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/accept" do
         ride = Ride.find(permitted_params[:ride_id])
-
         if current_driver.is_active? && ride.driver_id.nil? && ride.status == "approved"
           ride.update(driver_id: current_driver.id, status: "scheduled")
           status 201
@@ -182,27 +181,20 @@ module Api
         end
       end
 
-
-      desc "picking up rider"
+      # Driver picking up riders only with scheduled rides
+      desc "Picking up a rider"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/picking-up" do
-        driver = current_driver
-        if driver.is_active == false
-          status 401
-          return "Not Authorized"
-        end
-
         ride = Ride.find(permitted_params[:ride_id])
-        if (ride.driver_id == nil or ride.driver_id ==driver.id)
-          if ride.update(driver_id: driver.id, status: "picking-up")
-            status 201
-            render ride
-          end
+        if current_driver.is_active? && ride.status == "scheduled" && ride.driver_id == current_driver.id
+          ride.update(driver_id: current_driver.id, status: "picking-up")
+          status 201
+          render ride
         else
-          status(404)
-          render "Unauthorized"
+          status 401
+          render "Not Authorized"
         end
       end
 
