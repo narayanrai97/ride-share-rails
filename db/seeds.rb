@@ -8,17 +8,17 @@
 
 
 
-Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
-Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
-User.create(email: "admin@gmail.com", password: "password",organization_id: 1)
-User.create(email: "admin1@gmail.com", password: "password",organization_id: 2)
+org1 = Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
+org2 = Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
+User.create(email: "admin@gmail.com", password: "password",organization_id: org1.id)
+User.create(email: "admin1@gmail.com", password: "password",organization_id: org2.id)
 
 
 
-Driver.create(organization_id: "1", first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "password", password_confirmation: "password")
-Driver.create(organization_id: "1", first_name: "John", last_name: "Smith", phone: "4362484055", email: "j.smith@gmail.com", password: "password", password_confirmation: "password")
-Driver.create(organization_id: "1", first_name: "Katie", last_name: "Jones", phone: "92986948508", email: "katie@duke.edu", password: "password", password_confirmation: "password")
-Driver.create(organization_id: "2", first_name: "Sarah", last_name: "Kim", phone: "4029348508", email: "Sarah.Kim@yahoo.com", password: "password", password_confirmation: "password")
+Driver.create(organization_id: org1.id, first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "password", password_confirmation: "password")
+Driver.create(organization_id: org1.id, first_name: "John", last_name: "Smith", phone: "4362484055", email: "j.smith@gmail.com", password: "password", password_confirmation: "password")
+Driver.create(organization_id: org1.id, first_name: "Katie", last_name: "Jones", phone: "92986948508", email: "katie@duke.edu", password: "password", password_confirmation: "password")
+Driver.create(organization_id: org2.id, first_name: "Sarah", last_name: "Kim", phone: "4029348508", email: "Sarah.Kim@yahoo.com", password: "password", password_confirmation: "password")
 
 Vehicle.create(driver_id: "1", car_make: "Toyota", car_model: "Tacoma", car_color: "Silver", car_year: "2010", car_plate: "ZQWOPQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-02-19", insurance_stop: "2020-02-19" )
 Vehicle.create(driver_id: "2",car_make: "Toyota", car_model: "Camry", car_color: "Blue", car_year: "2010", car_plate: "ZQWOPQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-01-19", insurance_stop: "2020-01-19")
@@ -27,10 +27,10 @@ Vehicle.create(driver_id: "4", car_make: "Nissan", car_model: "Altima", car_colo
 
 
 
-Rider.create(organization_id: "1", first_name: "Katelyn", last_name: "Splint" , phone: "9293842930", email: "ks@duke.edu", password: "password", password_confirmation: "password")
-Rider.create(organization_id: "1", first_name: "James", last_name: "Cage" , phone: "3292842339",  email: "cage@gmail.com", password: "password", password_confirmation: "password")
-Rider.create(organization_id: "1", first_name: "Mary", last_name: "Young" , phone: "52934542930",  email: "myoung@yahoo.com", password: "password", password_confirmation: "password")
-Rider.create(organization_id: "2", first_name: "Jim", last_name: "Free" , phone: "9223842200",  email: "free_j@gmail.com", password: "password", password_confirmation: "password")
+Rider.create(organization_id: org1.id, first_name: "Katelyn", last_name: "Splint" , phone: "9293842930", email: "ks@duke.edu", password: "password", password_confirmation: "password")
+Rider.create(organization_id: org1.id, first_name: "James", last_name: "Cage" , phone: "3292842339",  email: "cage@gmail.com", password: "password", password_confirmation: "password")
+Rider.create(organization_id: org1.id, first_name: "Mary", last_name: "Young" , phone: "52934542930",  email: "myoung@yahoo.com", password: "password", password_confirmation: "password")
+Rider.create(organization_id: org2.id, first_name: "Jim", last_name: "Free" , phone: "9223842200",  email: "free_j@gmail.com", password: "password", password_confirmation: "password")
 
 
 
@@ -63,41 +63,41 @@ Location.create(street: "101 Erwin" , city: "Durham", state: "NC", zip: "27705")
 
 
 
-Ride.create(organization_id: "1", rider_id: "1" ,  pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
-Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
+Ride.create(organization_id: org1.id, rider_id: "1" ,  pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
+Ride.create(organization_id: org1.id, rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
 
-Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
-Ride.create(organization_id: "2", rider_id: "4" ,  pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
+Ride.create(organization_id: org1.id, rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
+Ride.create(organization_id: org2.id, rider_id: "4" ,  pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
-
-
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
-Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
+Ride.create(organization_id: org1.id, rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
+Ride.create(organization_id: org2.id, rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
 
 
-
-Ride.create(organization_id: "1", rider_id: "1" ,  pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
-Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
-
-Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
-Ride.create(organization_id: "2", rider_id: "4" ,  pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
-
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-15 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-19 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "2" ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
+Ride.create(organization_id: org1.id, rider_id: "3" ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
+Ride.create(organization_id: org2.id, rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-11 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
 
 
-Ride.create(organization_id: "1", rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
-Ride.create(organization_id: "1", rider_id: "2" ,  pick_up_time: "2022-02-25 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
-Ride.create(organization_id: "1", rider_id: "3" ,  pick_up_time: "2022-02-25 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
-Ride.create(organization_id: "2", rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
+
+Ride.create(organization_id: org1.id, rider_id: "1" ,  pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "pending")
+Ride.create(organization_id: org1.id, rider_id: "2" ,  pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "pending")
+
+Ride.create(organization_id: org1.id, rider_id: "3" ,  pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "approved")
+Ride.create(organization_id: org2.id, rider_id: "4" ,  pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "approved")
+
+Ride.create(organization_id: org1.id, rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-20 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "2" , driver_id: "2" , pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "3" , driver_id: "3" , pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "scheduled")
+Ride.create(organization_id: org2.id, rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-15 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "scheduled")
+
+
+Ride.create(organization_id: org1.id, rider_id: "1" , driver_id: "1" , pick_up_time: "2022-02-22 15:30:00" , start_location_id: "5", end_location_id: "12", reason: "Interview", status: "scheduled")
+Ride.create(organization_id: org1.id, rider_id: "2" ,  pick_up_time: "2022-02-25 08:30:00" ,   start_location_id: "6", end_location_id: "14", reason: "Doctor's appointment", status: "requested")
+Ride.create(organization_id: org1.id, rider_id: "3" ,  pick_up_time: "2022-02-25 12:15:00" ,  start_location_id: "7", end_location_id: "15", reason: "Haircut", status: "requested")
+Ride.create(organization_id: org2.id, rider_id: "4" , driver_id: "4" , pick_up_time: "2022-03-14 14:30:00" , start_location_id: "8", end_location_id: "13", reason: "Teacher Conference", status: "completed")
 
 
 
@@ -187,8 +187,8 @@ LocationRelationship.create(location_id: "6", driver_id: nil, rider_id: "2", org
 LocationRelationship.create(location_id: "7", driver_id: nil, rider_id: "3", organization_id: nil)
 LocationRelationship.create(location_id: "8", driver_id: nil, rider_id: "4", organization_id: nil)
 
-LocationRelationship.create(location_id: "9", driver_id: nil, rider_id: nil, organization_id: "1")
-LocationRelationship.create(location_id: "10", driver_id: nil, rider_id: nil, organization_id: "2")
+LocationRelationship.create(location_id: "9", driver_id: nil, rider_id: nil, organization_id: org1.id)
+LocationRelationship.create(location_id: "10", driver_id: nil, rider_id: nil, organization_id: org2.id)
 
 LocationRelationship.create(location_id: "11", driver_id: "1", rider_id: nil, organization_id: nil)
 
