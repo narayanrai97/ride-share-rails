@@ -139,26 +139,20 @@ module Api
         end
       end
 
+      # Driver completing a ride for a rider
       desc "Complete a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/complete" do
-        driver = current_driver
-        if driver.is_active == false
-          status 401
-          return "Not Authorized"
-       end
-
         ride = Ride.find(permitted_params[:ride_id])
-        if (ride.driver_id == nil or ride.driver_id ==driver.id)
-          if ride.update(driver_id: driver.id, status: "completed")
-            status 201
-            render ride
-          end
+        if current_driver.is_active? && ride.status == "dropping-off" && ride.driver_id == current_driver.id
+          ride.update(driver_id: current_driver.id, status: "completed")
+          status 201
+          render ride
         else
-           status 401
-           render "Unauthorized"
+          status 401
+          render "Not Authorized"
         end
       end
 
