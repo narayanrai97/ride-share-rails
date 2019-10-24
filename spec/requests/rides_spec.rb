@@ -32,12 +32,12 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride){create(:ride,rider_id: rider.id,organization_id: organization.id,
-    start_location_id: location1.id, end_location_id: location1.id)}
+    start_location_id: location1.id, end_location_id: location1.id, status: "approved")}
   let!(:ride1){create(:ride,rider_id: rider.id,organization_id: organization.id,
      driver_id: driver.id,status: "scheduled",
      start_location_id: location2.id, end_location_id: location2.id)}
   let!(:ride2){create(:ride,rider_id: rider.id,organization_id: organization.id,
-    driver_id: driver.id,status: "scheduled",
+    driver_id: driver.id,status: "picking-up",
     start_location_id: location3.id, end_location_id: location3.id)}
   let!(:ride3){create(:ride,rider_id: rider.id,organization_id: organization.id,
      driver_id: driver.id,status: "scheduled",
@@ -55,6 +55,9 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:ride7){create(:ride,rider_id: rider.id,organization_id: organization.id,
      driver_id: driver.id,status: "scheduled",
      start_location_id: location7.id, end_location_id: location7.id)}
+  let!(:ride8){create(:ride,rider_id: rider.id,organization_id: organization.id,
+      driver_id: driver.id,status: "dropping-off",
+      start_location_id: location2.id, end_location_id: location2.id)}
 
 
   #Accepts a ride for the current logged in user.
@@ -82,7 +85,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   #Changes status of ride to completed
   it 'will complete a ride for a driver' do
-    post "/api/v1/rides/#{ride1.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride8.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     expect(response).to have_http_status(201)
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("completed")
@@ -96,9 +99,9 @@ RSpec.describe Api::V1::Rides, type: :request do
   end
 
   it 'will cancel a ride for a driver' do
-    post "/api/v1/rides/#{ride.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
-    expect(parsed_json['ride']['status']).to eq("canceled")
+    expect(parsed_json['ride']['status']).to eq("approved")
   end
 
   it 'will return a 401 error when ride does not belong to driver ' do
@@ -114,7 +117,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   end
 
   it 'will change status to dropping off for a ride for a driver' do
-    post "/api/v1/rides/#{ride1.id}/dropping-off",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride2.id}/dropping-off",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("dropping-off")
   end
@@ -131,7 +134,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   it 'will return a 401 error when ride does not belong to driver ' do
     get "/api/v1/rides/#{ride4.id}/",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    expect(response).to have_http_status(404)
+    expect(response).to have_http_status(401)
   end
 
   context "rides list return different params " do
@@ -174,7 +177,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     # returns rides that only the driver has accepted
     it 'will return a 404 error when ride does not belong to driver ' do
-      Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id])
+      Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id, ride8.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
       #Driver should own all of these rides
       expect(response).to have_http_status(404)
@@ -203,11 +206,11 @@ RSpec.describe Api::V1::Rides, type: :request do
       end: Date.today + 15}
       parsed_json = JSON.parse(response.body)
       #Time formatting includes timezone information z and miliseconds
-      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 5.days).round(10).iso8601(3).to_date))
+      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 4.days).round(10).iso8601(3).to_date))
     end
 
      it 'will return a error 404 when ride does not belong to driver' do
-       Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id])
+       Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id, ride8.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start: Date.today,
       end: Date.today + 15}
       expect(response).to have_http_status(404)
@@ -219,7 +222,7 @@ RSpec.describe Api::V1::Rides, type: :request do
       }
       parsed_json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(parsed_json['rides'].count).to eq(4)
+      expect(parsed_json['rides'].count).to eq(5)
     end
 
     it "returns 404 when location does not exsit" do
