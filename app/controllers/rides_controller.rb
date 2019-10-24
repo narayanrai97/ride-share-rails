@@ -65,6 +65,13 @@ class RidesController < ApplicationController
         
 
         if @ride.save
+          
+          if ride_params[:save_start_location]
+          LocationRelationship.create(location_id: start_location.id, rider_id: rider.id)
+      
+            if ride_params[:save_end_location]
+            LocationRelationship.create(location_id: end_location.id, rider_id: rider.id)
+          
           token.ride_id = @ride.id
           token.save
           flash[:notice] = "Ride created."
@@ -75,6 +82,8 @@ class RidesController < ApplicationController
       else
         flash[:notice] = "You do not have enough valid tokens to request this ride"
         redirect_to rides_path
+            end
+         end
       end
     end
 

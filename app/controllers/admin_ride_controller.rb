@@ -67,10 +67,10 @@ class AdminRideController < ApplicationController
         
     if @ride.save
        if ride_params[:save_start_location]
-        LocationRelationship.create(location_id: start_location.id, rider_id: rider.id)
-      
+        LocationRelationship.create(location_id: start_location.id, organization_id: organization.id)
+      byebug
           if ride_params[:save_end_location]
-        LocationRelationship.create(location_id: end_location.id, rider_id: rider.id)
+        LocationRelationship.create(location_id: end_location.id, organization_id: organization.id)
       
       token.ride_id = @ride.id
       token.save

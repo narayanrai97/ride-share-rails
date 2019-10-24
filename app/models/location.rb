@@ -2,6 +2,7 @@ class Location < ApplicationRecord
   has_many :location_relationships
   has_many :schedule_windows
   #One location would most likely have only one driver. But logic currently not that
+  has_many :organization, -> { distinct }, through: :location_relationships
   has_many :drivers,  -> { distinct }, through: :location_relationships
   has_many :riders, -> { distinct }, through: :location_relationships
   has_many :start_rides, class_name: 'Ride', foreign_key: 'start_location_id'
