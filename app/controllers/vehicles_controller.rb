@@ -17,28 +17,26 @@ class VehiclesController < ApplicationController
   end
 
   def edit
-
     @vehicle = Vehicle.find(params[:id])
-
-
+    authorize @vehicle
   end
 
   def update
     @vehicle = Vehicle.find(params[:id])
+    authorize @vehicle
     if @vehicle.update(vehicle_params)
       flash.notice = "The vehicle information has been updated"
       redirect_to driver_path(@vehicle.driver_id)
     else
       render "edit"
     end
-
   end
 
   def destroy
     @vehicle = Vehicle.find(params[:id])
+    authorize @vehicle
     @vehicle.destroy
     redirect_to driver_path(@vehicle.driver_id)
-
   end
 
   private
