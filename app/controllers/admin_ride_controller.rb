@@ -145,7 +145,8 @@ class AdminRideController < ApplicationController
 
   def ride_params
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,:save_start_location, 
-                                 :save_end_location, :start_street, :start_city, :start_state, :start_zip,
+                                 :save_end_location, :organization_rider_start_location,  :start_street, :start_city,
+                                 :start_state, :start_zip, :organization_rider_end_location,
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
 

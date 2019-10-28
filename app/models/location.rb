@@ -1,4 +1,5 @@
 class Location < ApplicationRecord
+
   has_many :location_relationships
   has_many :schedule_windows
   #One location would most likely have only one driver. But logic currently not that
@@ -31,4 +32,9 @@ class Location < ApplicationRecord
     sub_address = [street, city, state].compact.join(', ')
     [sub_address, zip].compact.join(' ')
   end
+  
+  def address_parsed
+    self.to_json
+  end
+  
 end

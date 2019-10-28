@@ -82,8 +82,8 @@ class RidesController < ApplicationController
       else
         flash[:notice] = "You do not have enough valid tokens to request this ride"
         redirect_to rides_path
-            end
-         end
+          end
+        end
       end
     end
 
@@ -149,8 +149,8 @@ class RidesController < ApplicationController
     private
     def ride_params
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
-      :start_street, :start_city, :start_state, :start_zip,
-      :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+       :save_start_location, :start_street, :start_city, :start_state, :start_zip,
+       :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status)
     end
 
     def rider_not_authorized
