@@ -1,19 +1,33 @@
 class VehiclesController < ApplicationController
+
+  before_action :authenticate_user!
+
   def new
     @driver = Driver.find(params[:driver_id])
     @vehicle = Vehicle.new
   end
 
   def create
+
     @vehicle = Vehicle.new(vehicle_params)
     @vehicle.driver_id= params[:driver_id]
-    if @vehicle.save
-      flash.notice = "The vehicle information has been created"
-      redirect_to driver_path(params[:driver_id])
+    driver = Driver.find(params[:driver_id])
+
+    if current_user.organization_id == driver.organization_id
+
+      if @vehicle.save
+        flash.notice = "The vehicle information has been created"
+        redirect_to driver_path(params[:driver_id])
+      else
+        flash.alert = @vehicle.errors.full_messages.join(' ')
+        redirect_to driver_path(params[:driver_id])
+      end
+
     else
-      flash.alert = @vehicle.errors.full_messages.join(' ')
-      redirect_to driver_path(params[:driver_id])
+      flash.alert = "You cannot create vehicles outside your organization"
+      redirect_to drivers_path
     end
+
   end
 
   def edit
