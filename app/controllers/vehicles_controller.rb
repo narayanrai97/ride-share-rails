@@ -8,7 +8,6 @@ class VehiclesController < ApplicationController
   end
 
   def create
-
     @vehicle = Vehicle.new(vehicle_params)
     @vehicle.driver_id= params[:driver_id]
     driver = Driver.find(params[:driver_id])
@@ -32,25 +31,44 @@ class VehiclesController < ApplicationController
 
   def edit
     @vehicle = Vehicle.find(params[:id])
-    authorize @vehicle
+
+    if current_user.organization_id != @vehicle.driver.organization_id
+
+        flash.notice = "You are not authorized to view that vehicle"
+        redirect_to drivers_path
+    end
   end
 
   def update
     @vehicle = Vehicle.find(params[:id])
-    authorize @vehicle
-    if @vehicle.update(vehicle_params)
-      flash.notice = "The vehicle information has been updated"
-      redirect_to driver_path(@vehicle.driver_id)
-    else
-      render "edit"
-    end
+
+      if current_user.organization_id == @vehicle.driver.organization_id
+
+        if @vehicle.update(vehicle_params)
+          flash.notice = "The vehicle information has been updated"
+          redirect_to driver_path(@vehicle.driver_id)
+        else
+          flash.alert = @vehicle.errors.full_messages.join(' ')
+          render "edit"
+        end
+
+      else
+        flash.alert = "You cannot update vehicles outside your organization"
+        redirect_to drivers_path
+      end
+
   end
 
   def destroy
     @vehicle = Vehicle.find(params[:id])
-    authorize @vehicle
-    @vehicle.destroy
-    redirect_to driver_path(@vehicle.driver_id)
+
+    if current_user.organization_id == @vehicle.driver.organization_id
+      @vehicle.destroy
+      redirect_to driver_path(@vehicle.driver_id)
+    else
+      flash.alert = "You cannot delete vehicles outside your organization"
+      redirect_to drivers_path
+    end
   end
 
   private
