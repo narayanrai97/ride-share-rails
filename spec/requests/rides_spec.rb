@@ -206,7 +206,8 @@ RSpec.describe Api::V1::Rides, type: :request do
       end: Date.today + 15}
       parsed_json = JSON.parse(response.body)
       #Time formatting includes timezone information z and miliseconds
-      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 4.days).round(10).iso8601(3).to_date))
+#      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(((Time.now.utc + 4.days).round(10).iso8601(3).to_date))
+      expect(parsed_json['rides'][0]['pick_up_time'].to_date).to eq(ride.pick_up_time)
     end
 
      it 'will return a error 404 when ride does not belong to driver' do
