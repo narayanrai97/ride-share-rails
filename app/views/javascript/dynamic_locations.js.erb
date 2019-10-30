@@ -1,0 +1,21 @@
+var location = new Array();
+<% for location in @location -%>
+  location.push(new Array(<%= location.rider_id %>, '<%=h location.street %>', <%= location.id %>));
+<% end -%>
+
+function riderSelected() {
+  rider_id = $('rider_id').getValue();
+  options = $('rider_id').options;
+  options.length = 1;
+  location.each(function(location) {
+    if (location[0] == rider_id) {
+      options[options.length] = new Option(location[1], location[2]);
+    }
+  });
+  if (options.length == 1) {
+    $('state_field').hide();
+  } else {
+    $('state_field').show();
+  }
+}
+ 
