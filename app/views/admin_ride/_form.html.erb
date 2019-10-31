@@ -1,4 +1,4 @@
-<% javascript 'dynamic_locations' %>
+<!--< javascript 'dynamic_locations' %>-->
 
 <% if @ride.id %>
 <% url = admin_ride_path(@ride) %>
@@ -32,37 +32,23 @@
 
     <%= form.label :pick_up_time %><br>
     <%= form.datetime_local_field :pick_up_time,class: "form-control" %>
-    
-    <div class= "save_location"> 
-      <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
-      <h6>Save end location <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
-    </div>
   </div>
 
 </div>
 
 <div class="from-row">
   
-  <div class="form-group offset-md-1 col -4">
-    <%= form.label :start_location %><br/>
-    <%= form.collection_select :organization_rider_start_location,  
-    Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-    :address_parsed, :full_address, { :include_blank => ' ' } %>
-  </div>
-  
-    <div class="form-group offset-md-1 col -4">
-    <%= form.label :end_location %><br/>
-     <%= form.collection_select( :organization_rider_end_location, 
-     Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct,
-     :rider_ids,  :full_address,  { :include_blank => ' ' }) %> 
-       
-       <!--< form.collection_select(  :location_id, Location.order(:city), :id,  :full_address,  { :include_blank => ' ' }) %>-->
-
-  </div>
 </div>
 
 
 <div class="form-row">
+  
+   <div class="form-group offset-md-1 col -4">
+    <%= form.label :start_location %><br/>
+     Will you like to use a previous start location? <%= form.collection_select :organization_rider_start_location,  
+      Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
+      :address_parsed, :full_address, { :include_blank => ' ' } %>
+  </div>
 
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street %><br>
@@ -86,11 +72,21 @@
     <div class="form-group col-2">
       <%= form.label :start_zip %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
+       <div class= "start_location_checkbox"> 
+         <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+      </div>
     </div>
 
 </div>
 
 <div class="form-row">
+  
+  <div class="form-group offset-md-1 col -4">
+    <%= form.label :end_location %><br/>
+     <p> Will you like to use a previous end location? <%= form.collection_select( :organization_rider_end_location, 
+      Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct,
+      :rider_ids,  :full_address,  { :include_blank => ' ' }) %> </p>
+  </div>
 
     <div class="form-group offset-md-1 col-md-10">
     <%= form.label :end_street %><br>
@@ -122,7 +118,11 @@
     <div class="form-group  col-md-10 offset-md-1">
     <%= form.label :reason %><br>
     <%= form.text_field :reason,class: "form-control" %>
+    <div class = "end_location_checkbox">
+      <h6>Save new end location? <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
     </div>
+    </div>
+
   </div>
 <% if false %>
   <div class="form-row">
