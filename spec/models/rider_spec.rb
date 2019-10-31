@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Rider, type: :model do
   it "has a valid factory" do
-    FactoryBot.create(:rider).should be_valid
+    expect(FactoryBot.create(:rider)).to be_valid
   end
 
   let!(:rider) { create :rider, email: "new_email@example.com" }
@@ -11,15 +11,15 @@ RSpec.describe Rider, type: :model do
 #   let(:token1) { create :token }
 
   describe "Validations" do
-    it { should validate_presence_of(:first_name) }
-    it { should validate_presence_of(:last_name) }
-    it { should validate_presence_of(:phone) }
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_presence_of(:phone) }
   end
 
   describe "Associations" do
-    it { should belong_to(:organization) }
-    it { should have_many(:tokens) }
-    it { should have_many(:rides) }
+    it { is_expected.to belong_to(:organization) }
+    it { is_expected.to have_many(:tokens) }
+    it { is_expected.to have_many(:rides) }
   end
 
   describe "Instance methods" do  # INSTANCE METHODS TESTS
