@@ -86,6 +86,7 @@ body {
 
 .bg-light {
   background-color: #ff8262 !important;
+  height: 47px;
 }
 
 .sessions a {
@@ -98,11 +99,19 @@ body {
 }
 
 .navbar-collapse ul li:hover {
-  background-color: white;
+  background-color: #d7e9f1;
+  font-weight: bold;
+  color: white;
+}
+
+.navbar-collapse ul li.active {
+  background-color: #d7e9f1;
+  color: white;
+  font-weight: bold;
 }
 
 .sessions a:hover {
-  background-color: white;
+  background-color: #d7e9f1;
   padding: 10px;
 }
 
@@ -120,11 +129,6 @@ th, td {
 th {
   background-color: #17a2b8;
   color: white;
-}
-
-.table tr {
-  border: solid darkgray 1px;
-  background: white;
 }
 
 .table th, .table td {
@@ -416,4 +420,8 @@ h1.welcome {
 #my-button {
   padding-top: 1px;
   padding-bottom: 1px;
+}
+
+a.nav-link {
+  padding-bottom: 15px;
 }
