@@ -1,4 +1,4 @@
-<div class="container" style="background-color: #17a2b8;">
+<div class="container">
   <%= form_tag driver_path, method: :get do %>
     <div class="form-row">
       <div class="form-group offset-md-1 col-4">
@@ -6,7 +6,7 @@
           <div class="start-end">
             <p><b>From</b> <%= datetime_local_field :query_start_date, :driver, name: :query_start_date, class: "form-control"%></p>
             <p><b>To</b> <%= datetime_local_field :query_end_date, :driver, name: :query_end_date, class: "form-control"%></p>
-            <p class="submit"><%= submit_tag "Look Up", class: "btn btn-sm btn-success" %></p>
+            <p class="submit"><%= submit_tag "Look Up", class: "btn btn-sm btn-outline-success" %></p>
           </div>
         </div>
       </div>

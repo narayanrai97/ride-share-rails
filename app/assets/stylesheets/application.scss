@@ -45,10 +45,6 @@ body {
   margin-left: 25px;
 }
 
-.border-bot {
-  border-bottom: inset 1px #17a2b8;
-}
-
 .left {
   float: left;
   width: 50%;
@@ -149,12 +145,12 @@ td.my-buttons a {
 }
 
 .card {
-  border: solid #17a2b8 3px;
-  border-radius: 6px;
+  // border: solid #17a2b8 3px;
+  border-radius: 8px;
 }
 
 .card2 {
-  border: solid #17a2b8 2px;
+  border: solid #17a2b8 1px;
   border-radius: 5px;
   margin-right: 80px;
   margin-left: 80px;
@@ -163,7 +159,7 @@ td.my-buttons a {
 
 .card3 {
   background-color: #ffffff;
-  border: solid #17a2b8 3px;
+  // border: solid #17a2b8 3px;
   border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 20px;
@@ -203,6 +199,7 @@ h3.headings {
 .driver-show-page-buttons {
   margin-bottom: 10px;
   margin-top: 10px;
+  padding-bottom: 5px;
 }
 
 .car-buttons {
@@ -301,6 +298,7 @@ p.car-info {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  border-radius: 8px;
 }
 
 .schedules .row {

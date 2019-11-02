@@ -3,7 +3,7 @@
   <!-- <h1 style="text-align: center">Drivers</h1> -->
 
   <table class="table table-striped">
-    <tr class="border-bot">
+    <tr>
       <th scope="col">First name</th>
       <th scope="col">Last name</th>
       <th scope="col">Phone</th>
@@ -31,12 +31,12 @@
           <td><%= driver.email %></td>
           <td><%= driver.application_state %></td>
           <td>
-            <%= link_to edit_driver_path(driver), class: "btn btn-sm btn-success" do %>
+            <%= link_to edit_driver_path(driver), class: "btn btn-sm btn-outline-success" do %>
               <i class="fa fa-pencil-square-o">Edit</i>
             <% end %>
           </td>
           <td>
-            <%= link_to driver_path(driver), class: "btn btn-sm btn-info" do %>
+            <%= link_to driver_path(driver), class: "btn btn-sm btn-outline-info" do %>
               <i class="fa fa-check-square">Review</i>
             <% end %>
           </td>
@@ -47,5 +47,5 @@
 
   <%= paginate @drivers %>
   <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-  <%= link_to 'New Driver', new_driver_path, class: "btn btn-info" %>
+  <%= link_to 'New Driver', new_driver_path, class: "btn btn-success" %>
 </div>

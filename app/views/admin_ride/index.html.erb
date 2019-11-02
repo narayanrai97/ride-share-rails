@@ -3,7 +3,7 @@
 <!-- <h1 style="text-align: center">Rides</h1> -->
 
 <table class="table table-striped">
-  <tr class="border-bot">
+  <tr>
     <th scope="col">Rider</th>
     <th scope="col">Driver</th>
     <th scope="col">Pick Up Time</th>
@@ -35,23 +35,23 @@
         <td><%= ride.status %></td>
         <td class="my-buttons">
           <% if ride.status == 'pending' %>
-            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-success" do %>
+            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-outline-success" do %>
               <i class="fa fa-pencil-square-o">Edit</i>
             <% end %>
 
-            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
               <i class="fa fa-ban">Cancel</i>
             <% end %>
 
-            <%= link_to approve_admin_ride_path(ride), class: "btn btn-sm btn-info", method: :put do %>
+            <%= link_to approve_admin_ride_path(ride), class: "btn btn-sm btn-outline-info", method: :put do %>
               <i class="fa fa-thumbs-up">Approve</i>
             <% end %>
           <% elsif ['approved', 'scheduled'].include? ride.status %>
-            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-success" do %>
+            <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-outline-success" do %>
               <i class="fa fa-pencil-square-o">Edit</i>
             <% end %>
 
-            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+            <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
               <i class="fa fa-ban">Cancel</i>
             <% end %>
           <% end %>
@@ -63,6 +63,6 @@
 
 <%= paginate @rides %>
 <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-info" %>
+<%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-success" %>
 
 </div>
