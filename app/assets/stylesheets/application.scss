@@ -94,20 +94,20 @@ body {
   background-color: lightgray;
 }
 
-.navbar-collapse ul li:hover {
-  background-color: #d7e9f1;
-  font-weight: bold;
-  color: white;
+.navbar-collapse ul li {
+  font-weight: lighter;
 }
 
 .navbar-collapse ul li.active {
-  background-color: #d7e9f1;
-  color: white;
-  font-weight: bold;
+  background-color: #c2d4dd;
+}
+
+.sessions a {
+  font-weight: lighter;
 }
 
 .sessions a:hover {
-  background-color: #d7e9f1;
+  background-color: #c2d4dd;
   padding: 10px;
 }
 
