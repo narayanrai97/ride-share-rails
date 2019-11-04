@@ -45,10 +45,6 @@ body {
   margin-left: 25px;
 }
 
-.border-bot {
-  border-bottom: inset 1px #17a2b8;
-}
-
 .left {
   float: left;
   width: 50%;
@@ -86,6 +82,7 @@ body {
 
 .bg-light {
   background-color: #ff8262 !important;
+  height: 47px;
 }
 
 .sessions a {
@@ -97,12 +94,20 @@ body {
   background-color: lightgray;
 }
 
-.navbar-collapse ul li:hover {
-  background-color: white;
+.navbar-collapse ul li {
+  font-weight: lighter;
+}
+
+.navbar-collapse ul li.active {
+  background-color: #cfdce4;
+}
+
+.sessions a {
+  font-weight: lighter;
 }
 
 .sessions a:hover {
-  background-color: white;
+  background-color: #cfdce4;
   padding: 10px;
 }
 
@@ -120,11 +125,6 @@ th, td {
 th {
   background-color: #17a2b8;
   color: white;
-}
-
-.table tr {
-  border: solid darkgray 1px;
-  background: white;
 }
 
 .table th, .table td {
@@ -145,12 +145,12 @@ td.my-buttons a {
 }
 
 .card {
-  border: solid #17a2b8 3px;
-  border-radius: 6px;
+  // border: solid #17a2b8 3px;
+  border-radius: 8px;
 }
 
 .card2 {
-  border: solid #17a2b8 2px;
+  border: solid #17a2b8 1px;
   border-radius: 5px;
   margin-right: 80px;
   margin-left: 80px;
@@ -159,7 +159,7 @@ td.my-buttons a {
 
 .card3 {
   background-color: #ffffff;
-  border: solid #17a2b8 3px;
+  // border: solid #17a2b8 3px;
   border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 20px;
@@ -186,7 +186,7 @@ td.my-buttons a {
 
 h3.headings {
   margin-top: -1px;
-  padding: 0 4px 4px 4px;
+  padding: 2px 2px 4px 2px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -199,6 +199,7 @@ h3.headings {
 .driver-show-page-buttons {
   margin-bottom: 10px;
   margin-top: 10px;
+  padding-bottom: 5px;
 }
 
 .car-buttons {
@@ -219,7 +220,6 @@ h3.headings {
 }
 
 a#status {
-  margin-top: -8px;
   color: white;
 }
 
@@ -297,6 +297,7 @@ p.car-info {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  border-radius: 8px;
 }
 
 .schedules .row {
@@ -416,4 +417,21 @@ h1.welcome {
 #my-button {
   padding-top: 1px;
   padding-bottom: 1px;
+}
+
+a.nav-link {
+  padding-bottom: 15px;
+}
+
+
+tr th.row-height {
+  line-height: 4px;
+}
+
+th .dropdown-menu a {
+  padding: 10px;
+}
+
+tr th.table-heads {
+  padding-top: 20px;
 }

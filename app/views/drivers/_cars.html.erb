@@ -1,7 +1,7 @@
 <section class="container-fluid" id="section3">
   <div class="flex-row row">
     <% if @vehicles.blank? %>
-       <h3>No cars just yet, would you like to add the first?</h3><br/>
+       <p><strong>No cars just yet, would you like to add the first?</strong></p><br/>
      <% else %>
        <% @vehicles.each do |vehicle| %>
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 card4">
@@ -27,6 +27,6 @@
     <% end %>
   </div>
   <div class="ml-5 mt-2 driver-show-page-buttons">
-    <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-info"%>
+    <%=link_to "Add Car",new_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-outline-info"%>
   </div>
 </section>

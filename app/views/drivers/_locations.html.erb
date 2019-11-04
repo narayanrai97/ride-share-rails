@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="flex-row row">
     <% if @vehicles.blank? %>
-       <h3>No locations just yet!</h3><br/>
+       <p><strong>No locations just yet!</strong></p><br/>
     <% else %>
       <% @locations.each do |location| %>
         <div class="ml-5">
