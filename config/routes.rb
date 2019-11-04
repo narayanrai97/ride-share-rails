@@ -33,6 +33,9 @@ Rails.application.routes.draw do
       get 'edit/:rider_id' => 'riders#edit'
       post 'bulk_update'
     end
+    member do
+      get 'locations'
+    end
     put :activation
   end
 

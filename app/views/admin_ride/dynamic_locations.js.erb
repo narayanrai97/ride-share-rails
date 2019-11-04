@@ -4,6 +4,7 @@ var location = new Array();
 <% end -%>
 
 function riderSelected() {
+  console.log('reider selecred firing')
   rider_id = $('rider_id').getValue();
   options = $('rider_id').options;
   options.length = 1;
@@ -19,3 +20,4 @@ function riderSelected() {
   }
 }
  
+riderSelected()
