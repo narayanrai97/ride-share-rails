@@ -46,30 +46,32 @@ class AdminRideController < ApplicationController
     rider = Rider.find(ride_params[:rider_id])
     token = rider.next_valid_token
     token = rider.valid_tokens.create if token.nil?
-
-    start_location = Location.new(street: ride_params[:start_street],
+    
+    start_location = Location.find_or_create_by(street: ride_params[:start_street],
                                   city: ride_params[:start_city],
                                   state: ride_params[:start_state],
                                   zip: ride_params[:start_zip])
 
-    end_location = Location.new(street: ride_params[:end_street],
+    end_location = Location.find_or_create_by(street: ride_params[:end_street],
                                 city: ride_params[:end_city],
                                 state: ride_params[:end_state],
                                 zip: ride_params[:end_zip])
 
-    @ride = rider.rides.new(organization_id: current_user.organization_id,
+    @ride = rider.rides.find_or_create_by(organization_id: current_user.organization_id,
                             pick_up_time: ride_params[:pick_up_time],
                             start_location: start_location,
                             end_location: end_location,
                             reason: ride_params[:reason])
     @ride.status = "approved" if current_user.organization.use_tokens?
+    
 
-    if @ride.save
-      token.ride_id = @ride.id
-      token.save
-      flash[:notice] = "Ride created for #{rider.full_name}"
-      redirect_to admin_ride_path(@ride)
-    else
+
+      if @ride.save
+        token.ride_id = @ride.id
+        token.save
+        flash[:notice] = "Ride created for #{rider.full_name}"
+        redirect_to admin_ride_path(@ride)
+      else
       render 'new'
     end
   end

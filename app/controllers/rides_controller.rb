@@ -62,7 +62,7 @@ class RidesController < ApplicationController
           end_location: end_location,
           reason: ride_params[:reason])
         @ride.status = "approved" if current_rider.organization.use_tokens?
-
+        
         if @ride.save
           token.ride_id = @ride.id
           token.save
