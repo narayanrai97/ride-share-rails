@@ -220,7 +220,6 @@ h3.headings {
 }
 
 a#status {
-  margin-top: -8px;
   color: white;
 }
 
@@ -422,4 +421,17 @@ h1.welcome {
 
 a.nav-link {
   padding-bottom: 15px;
+}
+
+
+tr th.row-height {
+  line-height: 4px;
+}
+
+th .dropdown-menu a {
+  padding: 10px;
+}
+
+tr th.table-heads {
+  padding-top: 20px;
 }
