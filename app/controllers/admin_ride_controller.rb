@@ -50,7 +50,7 @@ class AdminRideController < ApplicationController
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
-    start_location = Location.new(street: ride_params[:start_street],
+    start_location = Location.find_or_create_by(street: ride_params[:start_street],
                                   city: ride_params[:start_city],
                                   state: ride_params[:start_state],
                                   zip: ride_params[:start_zip])
@@ -59,7 +59,7 @@ class AdminRideController < ApplicationController
       flash[:error] = start_location.errors.full_messages.join(" ")
       render 'new'
     end
-    end_location = Location.new(street: ride_params[:end_street],
+    end_location = Location.find_or_create_by(street: ride_params[:end_street],
                                 city: ride_params[:end_city],
                                 state: ride_params[:end_state],
                                 zip: ride_params[:end_zip])
@@ -68,7 +68,7 @@ class AdminRideController < ApplicationController
       flash[:error] = end_location.errors.full_messages.join(" ")
       render 'new'
     end
-    @ride = Ride.new(organization_id: current_user.organization_id, 
+    @ride = Ride.find_or_create_by(organization_id: current_user.organization_id, 
                             rider_id:  rider.id,
                             pick_up_time: ride_params[:pick_up_time],
                             start_location_id: start_location.id,
