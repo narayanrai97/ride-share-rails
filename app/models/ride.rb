@@ -23,18 +23,20 @@ class Ride < ApplicationRecord
 
   # validate that start_location and end_location are valid
   def valid_locations
-    if start_location.present?
+    if start_location.present? #start location validation
       result1 = Geocoder.search(start_location.full_address)
       if result1.length == 0 || result1.first.data["partial_match"] == true
         errors.add(:start_location, "is invalid.")
       end
+      start_location.zip = result1.first.data["address_components"][8]["long_name"]
     end
 
-    if end_location.present?
+    if end_location.present? #end locaiton validation
       result2 = Geocoder.search(end_location.full_address)
       if result2.length == 0 || result2.first.data["partial_match"] == true
         errors.add(:end_location, "is invalid.")
       end
+      end_location.zip = result2.first.data["address_components"][8]["long_name"]
     end
   end
 
