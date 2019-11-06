@@ -57,11 +57,10 @@ class RidersController < ApplicationController
     end
   end
   
-  def locations
-    @rider = Rider.find params[:id]
-    @locations = Location.find params[:id]
-    render layout: false
-  end
+  # def locations
+  #   @rider = Rider.find params[:id]
+  #   render layout: false
+  # end
 
   def edit
     @rider = Rider.find(params[:id])
