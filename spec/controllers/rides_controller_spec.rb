@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe RidesController, type: :controller do
-  let!(:rider) { create :rider, email: "noemail@example.com" }
+  let!(:organization) { create :organization, use_tokens: true }
+  let!(:rider) { create :rider, email: "noemail@example.com", organization_id: organization.id }
   let!(:valid_tokens) { create_list :token, 5, rider_id: rider.id }
   let!(:pick_up_time) { Time.zone.now + 15.days }
 
