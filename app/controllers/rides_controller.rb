@@ -41,49 +41,71 @@ class RidesController < ApplicationController
     end
 
     def create
-      token = current_rider.next_valid_token
-      unless token.nil?
+      token = nil
+      if current_rider.organization.use_tokens == true
+        token = current_rider.next_valid_token
+      end
+      
+      if current_rider.organization.use_tokens == false or token != nil 
         start_location = Location.new(
           street: ride_params[:start_street],
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
+          
+        sl = start_location.save
+        if sl == nil 
+          flash[:error] = start_location.errors.full_messages.join(" ")
+          render 'new'
+        end
 
         end_location = Location.new(
           street: ride_params[:end_street],
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
+          
+        el = end_location.save
+        if el == nil
+          flash[:error] = end_location.errors.full_messages.join(" ")
+          render 'new'
+        end
 
-        @ride = current_rider.rides.new(
+        @ride = Ride.new(
+          rider_id: current_rider.id,
           organization_id: current_rider.organization.id,
           pick_up_time: ride_params[:pick_up_time],
-          start_location: start_location,
-          end_location: end_location,
+          start_location_id: start_location.id,
+          end_location_id: end_location.id,
           reason: ride_params[:reason])
-        @ride.status = "approved" if current_rider.organization.use_tokens?
-        
-
+        if current_rider.organization.use_tokens?
+          @ride.status = "approved" 
+        else
+          @ride.status = "pending"
+        end
         if @ride.save
           
           if ride_params[:save_start_location]
-          LocationRelationship.create(location_id: start_location.id, rider_id: rider.id)
+            LocationRelationship.create(location_id: start_location.id, rider_id: current_rider.id)
+          end
       
-            if ride_params[:save_end_location]
-            LocationRelationship.create(location_id: end_location.id, rider_id: rider.id)
+          if ride_params[:save_end_location]
+            LocationRelationship.create(location_id: end_location.id, rider_id: current_rider.id)
+          end
           
-          token.ride_id = @ride.id
-          token.save
+          if token != nil 
+            token.ride_id = @ride.id
+            token.save
+          end
           flash[:notice] = "Ride created."
           redirect_to @ride
         else
+          flash[:error] = @ride.errors.full_messages.join(" ")
           render 'new'
         end
       else
         flash[:notice] = "You do not have enough valid tokens to request this ride"
         redirect_to rides_path
-          end
-        end
       end
     end
 

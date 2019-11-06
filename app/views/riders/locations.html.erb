@@ -1,16 +1,18 @@
 
-<div class: "start_location">
-<p> Will you like to use a previous start location? <%= select_tag "organization_rider_start_location", 
-options_from_collection_for_select( Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-      :address_parsed, :full_address, { :include_blank => ' ' })  %> 
-</p>
-</div>
+<!--<div class: "start_location">-->
+<!--    < label_tag :start_location %>-->
+<!--<p> Will you like to use a previous start location? < select_tag "organization_rider_start_location", -->
+<!--options_from_collection_for_select( Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, -->
+<!--      :address_parsed, :full_address, { :include_blank => ' ' })  %> -->
+<!--</p>-->
+<!--</div>-->
 
-<div class: "end_location">
-<p> Will you like to use a previous end location? <%= select_tag "organization_rider_end_location", 
-options_from_collection_for_select( Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-      :address_parsed, :full_address, { :include_blank => ' ' })  %> 
-</p>
-</div>
+<!--<div class: "end_location">-->
+<!--    < label_tag :end_location %>-->
+<!--<p> Will you like to use a previous end location? <select_tag "organization_rider_end_location", -->
+<!--options_from_collection_for_select( Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, -->
+<!--      :address_parsed, :full_address, { :include_blank => ' ' })  %> -->
+<!--</p>-->
+<!--</div>-->
       
       
