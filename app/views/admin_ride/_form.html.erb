@@ -1,3 +1,6 @@
+<div class="locations"></div>
+
+<div>
 <% if @ride.id %>
 <% url = admin_ride_path(@ride) %>
 <% else %>
@@ -23,10 +26,11 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-8">
     <%= form.label :rider_id %><br>
-    <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' } %>
+    <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
+  </div
+</div>
 
-
-  </div >
+  
   <div class="form-group offset-md-1 col-4">
 
     <%= form.label :pick_up_time %><br>
@@ -35,8 +39,10 @@
 
 </div>
 
-<div class="form-row">
 
+
+<div class="form-row">
+  
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street %><br>
     <%= form.text_field :start_street,class: "form-control" %>
@@ -59,6 +65,9 @@
     <div class="form-group col-2">
       <%= form.label :start_zip %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
+       <div class= "start_location_checkbox"> 
+         <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+      </div>
     </div>
 
 </div>
@@ -95,7 +104,11 @@
     <div class="form-group  col-md-10 offset-md-1">
     <%= form.label :reason %><br>
     <%= form.text_field :reason,class: "form-control" %>
+    <div class = "end_location_checkbox">
+      <h6>Save new end location? <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
     </div>
+    </div>
+
   </div>
 <% if false %>
   <div class="form-row">
@@ -115,3 +128,11 @@
 </div>
 
 <% end %>
+
+<!--<script>-->
+<!--  function getLocations(rider_id){-->
+<!--    $.get('/riders/' + rider_id + '/locations', function(data) {-->
+<!--      $('.locations').html(data);-->
+<!--    });-->
+<!--  }-->
+<!--</script>-->

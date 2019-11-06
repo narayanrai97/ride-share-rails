@@ -7,5 +7,9 @@ module ApplicationHelper
   def driver_active_inactive(is_active)
     is_active ? "Yes" : "No"
   end
+  
+  # def javascript(*files)
+  # content_for(:head) { javascript_include_tag(*files) }
+  # end
 
 end

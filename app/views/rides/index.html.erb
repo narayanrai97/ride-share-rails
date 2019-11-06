@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container"><br>
 
-<h1>Rides</h1>
+<!-- <h1>Rides</h1> -->
 
 <table class="table table-striped">
   <tr class="border-bot">
@@ -8,7 +8,7 @@
     <th scope="col">Driver</th>
     <th scope="col">Pick Up Time</th>
     <th scope="col">Reason</th>
-    <th scope="col">
+    <th scope="col" class="row-height">
       <a id="status" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
       </a>
@@ -35,7 +35,7 @@
       <td><%= ride.status %></td>
       <td class="my-buttons">
         <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
-          <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+          <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
             <i class="fa fa-ban">Cancel</i>
           <% end %>
         <% end %>

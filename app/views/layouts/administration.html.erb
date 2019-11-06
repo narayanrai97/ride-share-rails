@@ -10,23 +10,24 @@
   </head>
 
   <body>
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <%= link_to 'Home', welcome_index_path, :class => 'nav-link' %>
+          <li class="nav-item <%= request.path =~ /welcome/ ? 'active' : '' %>">
+            <%= link_to 'Home', welcome_index_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item active">
-            <%= link_to 'Drivers', drivers_path, :class => 'nav-link' %>
+          <li class="nav-item <%= request.path =~ /drivers/ ? 'active' : '' %>">
+            <%= link_to 'Drivers', drivers_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item active">
-            <%= link_to 'Riders', riders_path, :class => 'nav-link' %>
+          <li class="nav-item <%= request.path =~ /riders/ ? 'active' : ''  %>">
+            <%= link_to 'Riders', riders_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item active">
-            <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link' %>
+          <li class="nav-item <%= request.path =~ /admin_ride/ ? 'active' : '' %>">
+            <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link active' %>
           </li>
           <% if current_user.organization.use_tokens %>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <%= link_to 'Tokens', tokens_path, :class => 'nav-link' %>
             </li>
           <% end %>
@@ -44,6 +45,11 @@
       </div>
     </nav>
 
+
+
+
+
+
     <% if notice %>
       <p class="alert alert-success"><%= notice %></p>
     <% end %>
@@ -52,5 +58,6 @@
     <% end %>
 
     <%= yield %>
+
   </body>
 </html>
