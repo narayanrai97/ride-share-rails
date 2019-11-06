@@ -47,7 +47,7 @@ class RidesController < ApplicationController
       end
       
       if current_rider.organization.use_tokens == false or token != nil 
-        start_location = Location.new(
+        start_location = Location.find_or_create_by(
           street: ride_params[:start_street],
           city: ride_params[:start_city],
           state: ride_params[:start_state],
@@ -59,7 +59,7 @@ class RidesController < ApplicationController
           render 'new'
         end
 
-        end_location = Location.new(
+        end_location = Location.find_or_create_by(
           street: ride_params[:end_street],
           city: ride_params[:end_city],
           state: ride_params[:end_state],
@@ -71,7 +71,7 @@ class RidesController < ApplicationController
           render 'new'
         end
 
-        @ride = Ride.new(
+        @ride = Ride.find_or_create_by(
           rider_id: current_rider.id,
           organization_id: current_rider.organization.id,
           pick_up_time: ride_params[:pick_up_time],
