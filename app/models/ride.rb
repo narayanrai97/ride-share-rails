@@ -28,7 +28,8 @@ class Ride < ApplicationRecord
       if result1.length == 0 || result1.first.data["partial_match"] == true
         errors.add(:start_location, "is invalid.")
       end
-      start_location.zip = result1.first.data["address_components"][8]["long_name"]
+      zipcode = result1.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
+      start_location.zip = zipcode.first["long_name"]
     end
 
     if end_location.present? #end locaiton validation
@@ -36,7 +37,8 @@ class Ride < ApplicationRecord
       if result2.length == 0 || result2.first.data["partial_match"] == true
         errors.add(:end_location, "is invalid.")
       end
-      end_location.zip = result2.first.data["address_components"][8]["long_name"]
+      zipcode = result2.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
+      end_location.zip = zipcode.first["long_name"]
     end
   end
 
