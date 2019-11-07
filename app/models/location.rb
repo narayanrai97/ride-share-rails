@@ -11,6 +11,7 @@ class Location < ApplicationRecord
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
   after_validation :capitalize_first_letter, :upcase_fields
+  before_create :validate_location
 
 
   def capitalize_first_letter
@@ -29,9 +30,18 @@ class Location < ApplicationRecord
     sub_address = [street, city, state].compact.join(', ')
     [sub_address, zip].compact.join(' ')
   end
-  
+
   def address_parsed
     self.to_json
   end
-  
+
+
+  def validate_location
+    if self.present?
+      result = Geocoder.search(self.full_address)
+      if result.length == 0 || result.first.data["partial_match"] == true
+        errors.add(:location, "is invalid.")
+      end
+    end
+  end
 end
