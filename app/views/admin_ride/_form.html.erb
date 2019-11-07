@@ -46,8 +46,8 @@
   <div class: "start_location">
     <%= label_tag :start_location %>
     <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_start_location", 
-        options_from_collection_for_select( Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-        :address_parsed, :full_address, { :include_blank => ' ' })  %> 
+        Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
+        :address_parsed, :full_address, { :include_blank => ' ' }  %> 
     </p>
   </div>
   
@@ -81,6 +81,13 @@
 </div>
 
 <div class="form-row">
+  
+  <div class: "start_location">
+    <%= label_tag :start_location %>
+    <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_start_location", 
+        Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
+        :address_parsed, :full_address, { :include_blank => ' ' }  %> 
+    </p>
 
     <div class="form-group offset-md-1 col-md-10">
     <%= form.label :end_street %><br>
