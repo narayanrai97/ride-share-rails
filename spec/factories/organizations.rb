@@ -5,6 +5,7 @@ FactoryBot.define do
     city {'Durham'}
     state {'NC'}
     zip {'27708'}
+    use_tokens { false }
   end
 
   factory :organization2, class: Organization do

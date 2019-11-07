@@ -44,32 +44,52 @@ class AdminRideController < ApplicationController
 
   def create
     rider = Rider.find(ride_params[:rider_id])
-    token = rider.next_valid_token
-    token = rider.valid_tokens.create if token.nil?
-
-    start_location = Location.new(street: ride_params[:start_street],
+    authorize rider
+    organization = Organization.find(current_user.organization_id)
+    if organization.use_tokens == true 
+      token = rider.next_valid_token
+      token = rider.valid_tokens.create if token.nil?
+    end
+    start_location = Location.find_or_create_by(street: ride_params[:start_street],
                                   city: ride_params[:start_city],
                                   state: ride_params[:start_state],
                                   zip: ride_params[:start_zip])
-
-    end_location = Location.new(street: ride_params[:end_street],
+    sl = start_location.save
+    if sl == nil 
+      flash[:error] = start_location.errors.full_messages.join(" ")
+      render 'new'
+    end
+    end_location = Location.find_or_create_by(street: ride_params[:end_street],
                                 city: ride_params[:end_city],
                                 state: ride_params[:end_state],
                                 zip: ride_params[:end_zip])
-
-    @ride = rider.rides.new(organization_id: current_user.organization_id,
+    el = end_location.save
+    if el == nil
+      flash[:error] = end_location.errors.full_messages.join(" ")
+      render 'new'
+    end
+    @ride = Ride.find_or_create_by(organization_id: current_user.organization_id, 
+                            rider_id:  rider.id,
                             pick_up_time: ride_params[:pick_up_time],
-                            start_location: start_location,
-                            end_location: end_location,
+                            start_location_id: start_location.id,
+                            end_location_id: end_location.id,
                             reason: ride_params[:reason])
-    @ride.status = "approved" if current_user.organization.use_tokens?
-
+    @ride.status = "approved"  
     if @ride.save
-      token.ride_id = @ride.id
-      token.save
+      if ride_params[:save_start_location]
+        LocationRelationship.create(location_id: start_location.id, organization_id: organization.id)
+      end
+      if ride_params[:save_end_location]
+        LocationRelationship.create(location_id: end_location.id, organization_id: organization.id)
+      end
+      if organization.use_tokens == true 
+        token.ride_id = @ride.id
+        token.save
+      end
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
     else
+      flash[:error] = @ride.errors.full_messages.join(" ")
       render 'new'
     end
   end
@@ -135,8 +155,9 @@ class AdminRideController < ApplicationController
   private
 
   def ride_params
-    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
-                                 :start_street, :start_city, :start_state, :start_zip,
+    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,:save_start_location, 
+                                 :save_end_location, :organization_rider_start_location,  :start_street, :start_city,
+                                 :start_state, :start_zip, :organization_rider_end_location,
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
 
