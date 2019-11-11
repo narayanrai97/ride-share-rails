@@ -42,18 +42,36 @@
 
 
 <div class="form-row">
-  
-  <div class: "start_location">
-    <%= label_tag :start_location %>
-    <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_start_location", 
-        Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-        :address_parsed, :full_address, { :include_blank => ' ' }  %> 
-    </p>
+  <div class="form-group offset-md-1 col-4">
+    <div class: "start_location">
+      <%= label_tag :start_location %>
+      <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_start_location", 
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15), 
+      :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
+    
+    </div>    
   </div>
-  
+</div>
+  <%= javascript_tag do %>
+   $('#ride_organization_rider_start_location').on('change', function() {
+      var data = JSON.parse(this.value);
+      console.log('data', data);
+      var street = data.street;
+      var city = data.city;
+      var state = data.state;
+      var zip = data.zip
+      console.log('fire', data);
+      $('#ride_start_street').val(street);
+      $('#ride_start_city').val(city);
+      $('#ride_start_state').val(state)
+       $('#ride_start_zip').val(zip);
+    });
+
+  <% end %>
+
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street %><br>
-    <%= form.text_field :start_street,class: "form-control" %>
+    <%= form.text_field :start_street, class: "form-control" %>
   </div>
 
 </div>
@@ -81,13 +99,36 @@
 </div>
 
 <div class="form-row">
-  
-  <div class: "start_location">
-    <%= label_tag :start_location %>
-    <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_start_location", 
-        Location.joins(:organization).where( organizations:{ id: current_user.organization.id}).distinct, 
-        :address_parsed, :full_address, { :include_blank => ' ' }  %> 
-    </p>
+  <div class="form-group offset-md-1 col-4">
+    <div class: "start_location">
+      <%= label_tag :end_location %>
+      <p> Will you like to use a previous start location? <%= form.collection_select "organization_rider_end_location", 
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15), 
+      :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
+    
+    </div>    
+  </div>
+</div>
+
+ <%= javascript_tag do %>
+   $('#ride_organization_rider_end_location').on('change', function() {
+      var data = JSON.parse(this.value);
+      console.log('data', data);
+      var street = data.street;
+      var city = data.city;
+      var state = data.state;
+      var zip = data.zip;
+      console.log('fire', data);
+      $('#ride_end_street').val(street);
+      $('#ride_end_city').val(city);
+      $('#ride_end_state').val(state);
+       $('#ride_end_zip').val(zip);
+    });
+
+  <% end %>
+
+
+<div class="form-row">
 
     <div class="form-group offset-md-1 col-md-10">
     <%= form.label :end_street %><br>
