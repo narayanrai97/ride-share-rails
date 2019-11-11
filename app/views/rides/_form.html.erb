@@ -36,7 +36,7 @@
   <div class = "form-group offset-md-1 col md-10">
        <div class: "start_location">
         <%= label_tag :start_location %>
-        <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location", 
+        <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "start_location", 
         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id),
          :address_parsed, :full_address, { :include_blank => ' ' } %>
     </p>
@@ -44,7 +44,7 @@
 </div>
 
 <%= javascript_tag do %>
-   $('#ride_organization_rider_start_location').on('change', function() {
+   $('#ride_start_location').on('change', function() {
       var data = JSON.parse(this.value);
       console.log('data', data);
       var street = data.street;
