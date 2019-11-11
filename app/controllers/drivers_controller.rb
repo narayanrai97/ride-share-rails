@@ -25,11 +25,11 @@ class DriversController < ApplicationController
 
   def index
     if params[:application_state]== "pending"
-      @drivers = current_user.organization.drivers.active.pending.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.pending.order(last_name: :desc)
     elsif params[:application_state]== "accepted"
-      @drivers = current_user.organization.drivers.active.accepted.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.accepted.order(last_name: :desc)
     elsif params[:application_state]== "rejected"
-      @drivers = current_user.organization.drivers.active.rejected.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.rejected.order(last_name: :desc)
     else
       @drivers = current_user.organization.drivers.order(last_name: :desc)
     end

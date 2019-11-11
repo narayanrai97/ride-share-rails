@@ -9,17 +9,17 @@
     <th scope="col">Pick Up Time</th>
     <th scope="col">Reason</th>
     <th scope="col" class="row-height">
-      <a id="status" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <%= link_to 'Approved', rides_path(status: "approved") if current_rider.rides.approved.count > 0 %>
-        <%= link_to 'Canceled', rides_path(status: "canceled") if current_rider.rides.canceled.count > 0 %>
-        <%= link_to 'Pending', rides_path(status: "pending") if current_rider.rides.pending.count > 0 %>
-        <%= link_to 'Scheduled', rides_path(status: "scheduled") if current_rider.rides.scheduled.count > 0 %>
-        <%= link_to 'Picking Up', rides_path(status: "picking-up") if current_rider.rides.picking_up.count > 0 %>
-        <%= link_to 'Dropping Off', rides_path(status: "dropping-off") if current_rider.rides.dropping_off.count > 0 %>
-        <%= link_to 'Completed', rides_path(status: "completed") if current_rider.rides.completed.count > 0 %>
+        <%= link_to 'Approved', rides_path(status: "approved") %>
+        <%= link_to 'Canceled', rides_path(status: "canceled") %>
+        <%= link_to 'Pending', rides_path(status: "pending") %>
+        <%= link_to 'Scheduled', rides_path(status: "scheduled") %>
+        <%= link_to 'Picking Up', rides_path(status: "picking-up") %>
+        <%= link_to 'Dropping Off', rides_path(status: "dropping-off") %>
+        <%= link_to 'Completed', rides_path(status: "completed") %>
       </div>
     </th>
     <th scope="col"></th>
@@ -35,7 +35,7 @@
       <td><%= ride.status %></td>
       <td class="my-buttons">
         <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
-          <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-warning", method: :put do %>
+          <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
             <i class="fa fa-ban">Cancel</i>
           <% end %>
         <% end %>
@@ -47,6 +47,6 @@
 
 <%= paginate @rides %>
 <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-<%= link_to 'New Ride', new_ride_path, class: "btn btn-info" %>
+<%= link_to 'New Ride', new_ride_path, class: "btn btn-success" %>
 
 </div>

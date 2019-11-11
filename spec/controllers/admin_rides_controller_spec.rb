@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AdminRideController, type: :controller do
   let!(:admin) { create :user }
-  let!(:select_rider) { create :rider, email: "select_rider@example.com" }
+  let!(:select_rider) { create :rider, email: "select_rider@example.com", organization_id: admin.organization_id }
   let!(:valid_tokens) { create_list :token, 5, rider_id: select_rider.id }
   let!(:pick_up_time) { Time.zone.now + 15.days }
 
