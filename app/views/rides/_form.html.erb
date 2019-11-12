@@ -36,24 +36,29 @@
   <div class = "form-group offset-md-1 col md-10">
        <div class: "start_location">
         <%= label_tag :start_location %>
-        <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "start_location", 
-        Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id),
+        <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location", 
+         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(created_at: :desc).limit(15),
          :address_parsed, :full_address, { :include_blank => ' ' } %>
-    </p>
+        </p>
+      <!--</div>-->
    </div>
 </div>
 
-<%= javascript_tag do %>
-   $('#ride_start_location').on('change', function() {
+
+  <%= javascript_tag do %>
+   $('#ride_organization_rider_start_location').on('change', function() {
       var data = JSON.parse(this.value);
-      console.log('data', data);
       var street = data.street;
       var city = data.city;
       var state = data.state;
       var zip = data.zip
-      console.log('fire', data);
-      }
-   <% end %>
+      $('#ride_start_street').val(street);
+      $('#ride_start_city').val(city);
+      $('#ride_start_state').val(state)
+      $('#ride_start_zip').val(zip);
+    });
+
+  <% end %>
 
   <div class="form-group offset-md-1 col-md-10">
     <h6><b>START ADDRESS</b></h6>
@@ -99,7 +104,7 @@
       <div class="form-group offset-md-1 col-md-10"> -->
        <div class: "start_location">
         <%= label_tag :end_location %>
-        <p> Would you like to use a previously saved location for the end address? <%= form.collection_select "organization_rider_start_location", 
+        <p> Would you like to use a previously saved location for the end address? <%= form.collection_select "end_location", 
         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id),
         :id, :full_address, { :include_blank => ' ' } %>
     </p>
