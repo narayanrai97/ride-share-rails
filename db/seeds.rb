@@ -104,16 +104,16 @@ Ride.create(organization_id: org2.id, rider_id: rider4, driver_id: driver4, pick
 
 
 
-Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider3, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider3, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider4, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
-Token.create(rider_id: rider4, created_at: Time.now, expires_at: Time.now + 30.days,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider1, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider2, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider3, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider3, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider4, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
+Token.create(rider_id: rider4, created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
 
 
 
