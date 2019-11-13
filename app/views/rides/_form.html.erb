@@ -24,25 +24,46 @@
 <% end %>
     <h6><b><%= form.label :pick_up_time, "PICK UP DATE AND TIME" %></b></h6>
     <%= form.datetime_local_field :pick_up_time, class: "form-control" %>
-    
-    <div class= "save_location"> 
-      <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
-      <h6>Save end location <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
-    </div>
-  
   </div>
 </div>
 
+<div class="form-row">
+  <div class = "form-group offset-md-1 col md-10">
+       <div class: "start_location">
+        <%= label_tag :start_location %>
+        <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "rider_start_location", 
+         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(created_at: :desc).limit(15),
+         :address_parsed, :full_address, { :include_blank => ' ' } %>
+        </p>
+      </div>
+   </div>
+</div>
+
+
+  <%= javascript_tag do %>
+   $('#ride_rider_start_location').on('change', function() {
+      var data = JSON.parse(this.value);
+      var street = data.street;
+      var city = data.city;
+      var state = data.state;
+      var zip = data.zip
+      $('#ride_start_street').val(street);
+      $('#ride_start_city').val(city);
+      $('#ride_start_state').val(state)
+      $('#ride_start_zip').val(zip);
+    });
+
+  <% end %>
+
   <div class="form-group offset-md-1 col-md-10">
     <h6><b>START ADDRESS</b></h6>
-  <!-- </div>
+   </div>
 
-  <div class="form-group offset-md-1 col-md-10"> -->
+  <div class="form-group offset-md-1 col-md-10"> 
     <%= form.label :start_street, "Street Name" %><br>
     <%= form.text_field :start_street,class: "form-control" %>
   </div>
 
-</div>
 
 <div class="form-row">
 
@@ -59,18 +80,43 @@
     <div class="form-group col-2">
       <%= form.label :start_zip, "Zip" %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
+      
+      <div class = "check_box_start_location">
+        <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+      </div>
     </div>
-
 </div>
 
 <div class="form-row">
-    <div class="form-group offset-md-1 col-md-10">
+  <div class="form-group offset-md-1 col-md-10">
       <h6><b>END ADDRESS</b></h6>
       <!-- </div>
+      
       <div class="form-group offset-md-1 col-md-10"> -->
+       <div class: "start_location">
+        <%= label_tag :end_location %>
+        <p> Would you like to use a previously saved location for the end address? <%= form.collection_select "rider_end_location", 
+        Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id),
+        :address_parsed, :full_address, { :include_blank => ' ' } %>
+    </p>
+   </div>
       <%= form.label :end_street, "Street Name" %><br>
       <%= form.text_field :end_street,class: "form-control" %>
   </div>
+   <%= javascript_tag do %>
+   $('#ride_rider_end_location').on('change', function() {
+      var data = JSON.parse(this.value);
+      var street = data.street;
+      var city = data.city;
+      var state = data.state;
+      var zip = data.zip
+      $('#ride_end_street').val(street);
+      $('#ride_end_city').val(city);
+      $('#ride_end_state').val(state)
+      $('#ride_end_zip').val(zip);
+    });
+
+  <% end %>
 
 </div>
 
@@ -89,6 +135,10 @@
     <div class="form-group col-2">
       <%= form.label :end_zip, "Zip" %><br>
       <%= form.text_field :end_zip,class: "form-control" %>
+      
+      <div class= "save_location"> 
+        <h6>Save end location <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
+      </div>
     </div>
 
 </div>
