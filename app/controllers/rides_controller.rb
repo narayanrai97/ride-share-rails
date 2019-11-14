@@ -93,6 +93,16 @@ class RidesController < ApplicationController
             LocationRelationship.create(location_id: end_location.id, rider_id: current_rider.id)
           end
           
+          if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true 
+            rider_location = location_relationships.order(update_at: :desc)
+            if (rider_location.count > 15)
+              for i in (15..rider_location.count-1) do 
+                rider_location[i].destroy
+              end
+            end
+          end
+          
+          
           if token != nil 
             token.ride_id = @ride.id
             token.save
