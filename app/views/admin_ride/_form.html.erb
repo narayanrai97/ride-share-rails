@@ -46,7 +46,7 @@
     <div class: "start_location">
       <%= label_tag :start_location %>
       <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location", 
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15), 
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
     
     </div>    
