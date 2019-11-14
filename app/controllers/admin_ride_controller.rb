@@ -94,6 +94,17 @@ class AdminRideController < ApplicationController
       if ride_params[:save_end_location]
         LocationRelationship.create(location_id: end_location.id, organization_id: organization.id)
       end
+      if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
+        org_lrs = organization.location_relationships.order(update_at: :desc)
+        if (org_lrs.count > 15)
+          for i in (15..org_lrs.count-1) do
+            org_lrs[i].destroy
+          end
+        end
+          
+      end
+      
+      if organization.use_tokens == true 
       if organization.use_tokens == true
         token.ride_id = @ride.id
         token.save
