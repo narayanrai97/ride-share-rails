@@ -1,6 +1,7 @@
 <div class="locations"></div>
 
-<div>
+<div data-turbolinks="false">
+<!-- <div> -->
 <% if @ride.id %>
 <% url = admin_ride_path(@ride) %>
 <% else %>
@@ -30,7 +31,7 @@
   </div
 </div>
 
-  
+
   <div class="form-group offset-md-1 col-4">
 
     <%= form.label :pick_up_time %><br>
@@ -45,11 +46,11 @@
   <div class="form-group offset-md-1 col-4">
     <div class: "start_location">
       <%= label_tag :start_location %>
-      <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location", 
+      <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location",
        Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
-    
-    </div>    
+
+    </div>
   </div>
 </div>
   <%= javascript_tag do %>
@@ -89,7 +90,7 @@
     <div class="form-group col-2">
       <%= form.label :start_zip %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
-       <div class= "start_location_checkbox"> 
+       <div class= "start_location_checkbox">
          <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
       </div>
     </div>
@@ -100,11 +101,11 @@
   <div class="form-group offset-md-1 col-4">
     <div class: "start_location">
       <%= label_tag :end_location %>
-      <p>  Would you like to use a previously saved location as the ending address? <%= form.collection_select "organization_rider_end_location", 
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15), 
+      <p>  Would you like to use a previously saved location as the ending address? <%= form.collection_select "organization_rider_end_location",
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
-    
-    </div>    
+
+    </div>
   </div>
 </div>
 
@@ -180,7 +181,7 @@
 </div>
 
 <% end %>
-
+</div>
 <!--<script>-->
 <!--  function getLocations(rider_id){-->
 <!--    $.get('/riders/' + rider_id + '/locations', function(data) {-->

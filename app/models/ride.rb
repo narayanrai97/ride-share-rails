@@ -27,18 +27,20 @@ class Ride < ApplicationRecord
       result1 = Geocoder.search(start_location.full_address)
       if result1.length == 0 || result1.first.data["partial_match"] == true
         errors.add(:start_location, "is invalid.")
+      else
+        zipcode = result1.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
+        start_location.zip = zipcode.first["long_name"]
       end
-      zipcode = result1.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
-      start_location.zip = zipcode.first["long_name"]
     end
 
     if end_location.present? #end locaiton validation
       result2 = Geocoder.search(end_location.full_address)
       if result2.length == 0 || result2.first.data["partial_match"] == true
         errors.add(:end_location, "is invalid.")
+      else
+        zipcode = result2.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
+        end_location.zip = zipcode.first["long_name"]
       end
-      zipcode = result2.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
-      end_location.zip = zipcode.first["long_name"]
     end
   end
 
