@@ -27,8 +27,8 @@
             <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link active' %>
           </li>
           <% if current_user.organization.use_tokens %>
-            <li class="nav-item">
-                <%= link_to 'Tokens', tokens_path, :class => 'nav-link' %>
+            <li class="nav-item <%= request.path =~ /tokens/ ? 'active' : '' %>">
+                <%= link_to 'Tokens', tokens_path, :class => 'nav-link active' %>
             </li>
           <% end %>
           <li class="nav-item">
