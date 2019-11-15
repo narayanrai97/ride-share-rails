@@ -101,20 +101,21 @@ class AdminRideController < ApplicationController
             org_lrs[i].destroy
           end
         end
-          
+
       end
-      
-      if organization.use_tokens == true 
+
       if organization.use_tokens == true
-        token.ride_id = @ride.id
-        token.save
+        if organization.use_tokens == true
+          token.ride_id = @ride.id
+          token.save
+        end
+        flash[:notice] = "Ride created for #{rider.full_name}"
+        redirect_to admin_ride_path(@ride)
+      else
+        flash.now[:alert] = @ride.errors.full_messages.join("\n")
+        @ride = Ride.new
+        render 'new'
       end
-      flash[:notice] = "Ride created for #{rider.full_name}"
-      redirect_to admin_ride_path(@ride)
-    else
-      flash.now[:alert] = @ride.errors.full_messages.join("\n")
-      @ride = Ride.new
-      render 'new'
     end
   end
 
