@@ -169,10 +169,10 @@ class AdminRideController < ApplicationController
     @ride = Ride.find(params[:id])
     authorize @ride
     if ['pending', 'approved', 'scheduled'].include? @ride.status
-      if @ride.update_attributes(status: 'canceled')
-        flash.notice = 'Ride canceled.'
-        redirect_to request.referrer || admin_ride_index_path
-      end
+      @ride.update_attributes(status: 'canceled')
+      @ride.token.update_attribute(:ride_id, nil)
+      flash.notice = 'Ride canceled.'
+      redirect_to request.referrer || admin_ride_index_path
     end
   end
 

@@ -45,16 +45,16 @@ class RidesController < ApplicationController
       if current_rider.organization.use_tokens == true
         token = current_rider.next_valid_token
       end
-      
-      if current_rider.organization.use_tokens == false or token != nil 
+
+      if current_rider.organization.use_tokens == false or token != nil
         start_location = Location.find_or_create_by(
           street: ride_params[:start_street],
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-          
+
         sl = start_location.save
-        if sl == nil 
+        if sl == nil
           flash[:error] = start_location.errors.full_messages.join(" ")
           render 'new'
         end
@@ -64,7 +64,7 @@ class RidesController < ApplicationController
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-          
+
         el = end_location.save
         if el == nil
           flash[:error] = end_location.errors.full_messages.join(" ")
@@ -79,31 +79,31 @@ class RidesController < ApplicationController
           end_location_id: end_location.id,
           reason: ride_params[:reason])
         if current_rider.organization.use_tokens?
-          @ride.status = "approved" 
+          @ride.status = "approved"
         else
           @ride.status = "pending"
         end
         if @ride.save
-          
+
           if ride_params[:save_start_location]
             LocationRelationship.create(location_id: start_location.id, rider_id: current_rider.id)
           end
-      
+
           if ride_params[:save_end_location]
             LocationRelationship.create(location_id: end_location.id, rider_id: current_rider.id)
           end
-          
-          if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true 
+
+          if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
             rider_location = location_relationships.order(update_at: :desc)
             if (rider_location.count > 15)
-              for i in (15..rider_location.count-1) do 
+              for i in (15..rider_location.count-1) do
                 rider_location[i].destroy
               end
             end
           end
-          
-          
-          if token != nil 
+
+
+          if token != nil
             token.ride_id = @ride.id
             token.save
           end
@@ -170,6 +170,7 @@ class RidesController < ApplicationController
       @ride.rider_id == current_rider.id
       if ['pending', 'approved', 'scheduled'].include? @ride.status
         @ride.update_attributes(status: 'canceled')
+        @ride.token.update_attribute(:ride_id, nil)
         flash.notice = 'Ride canceled'
         redirect_to request.referrer || rides_path
       else
