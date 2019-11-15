@@ -30,7 +30,7 @@ module Api
         # Return bad request error code and error
         else
           status 400
-          return driver.errors.message
+          return driver.errors.full_messages.join(";")
         end
       end
 
