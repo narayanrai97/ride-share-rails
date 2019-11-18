@@ -1,7 +1,11 @@
+<% content_for(:body_attributes) do %>
+   data-turbolinks="false"
+ <% end %>
+
 <div class="locations"></div>
 
-<div data-turbolinks="false">
-<!-- <div> -->
+<!-- <div data-turbolinks="false"> -->
+<div>
 <% if @ride.id %>
 <% url = admin_ride_path(@ride) %>
 <% else %>
@@ -73,7 +77,7 @@
     <%= form.text_field :start_street, class: "form-control" %>
   </div>
 
-</div>
+<!-- </div> -->
 
 <div class="form-row">
 
