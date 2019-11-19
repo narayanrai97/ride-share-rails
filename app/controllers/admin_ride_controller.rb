@@ -103,17 +103,16 @@ class AdminRideController < ApplicationController
         end
 
       end
-
       if organization.use_tokens == true
-          token.ride_id = @ride.id
-          token.save
-        flash[:notice] = "Ride created for #{rider.full_name}"
-        redirect_to admin_ride_path(@ride)
-      else
-        flash.now[:alert] = @ride.errors.full_messages.join("\n")
-        @ride = Ride.new
-        render 'new'
+        token.ride_id = @ride.id
+        token.save
       end
+      flash[:notice] = "Ride created for #{rider.full_name}"
+      redirect_to admin_ride_path(@ride)
+    else
+      flash.now[:alert] = @ride.errors.full_messages.join("\n")
+      @ride = Ride.new
+      render 'new'
     end
   end
 
