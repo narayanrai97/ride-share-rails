@@ -105,10 +105,8 @@ class AdminRideController < ApplicationController
       end
 
       if organization.use_tokens == true
-        if organization.use_tokens == true
           token.ride_id = @ride.id
           token.save
-        end
         flash[:notice] = "Ride created for #{rider.full_name}"
         redirect_to admin_ride_path(@ride)
       else
