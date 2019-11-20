@@ -105,7 +105,7 @@ class AdminRideController < ApplicationController
                      city: ride_params[:end_city],
                      state: ride_params[:end_state],
                      zip: ride_params[:end_zip] )
-     update_location_error_handler(end_location)
+    update_location_error_handler(end_location)
     rider_choose_save_location
     only_15_location_saves
     if @ride.update(
