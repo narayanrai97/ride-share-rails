@@ -58,16 +58,16 @@ class AdminRideController < ApplicationController
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
-    @start_location = Location.find_or_create_by(street: ride_params[:start_street],
+    @start_location = Location.new(street: ride_params[:start_street],
                                   city: ride_params[:start_city],
                                   state: ride_params[:start_state],
                                   zip: ride_params[:start_zip])
-    saved_start_location_error_handler
-    @end_location = Location.find_or_create_by(street: ride_params[:end_street],
+    save_location_error_handler(@start_location)
+    @end_location = Location.new(street: ride_params[:end_street],
                                 city: ride_params[:end_city],
                                 state: ride_params[:end_state],
                                 zip: ride_params[:end_zip])
-    saved_end_location_error_handler
+    save_location_error_handler(@end_location)
     @ride = Ride.new(organization_id: current_user.organization_id,
                             rider_id:  rider.id,
                             pick_up_time: ride_params[:pick_up_time],
@@ -77,7 +77,7 @@ class AdminRideController < ApplicationController
     organization.use_tokens ? @ride.status = "approved" : @ride.status = "pending"
     if @ride.save
       rider_choose_save_location
-       only_15_location_saves
+      only_15_location_saves
       if organization.use_tokens == true
         token.ride_id = @ride.id
         token.save
@@ -96,33 +96,24 @@ class AdminRideController < ApplicationController
     authorize @ride
     @start_location = @ride.start_location
     @end_location = @ride.end_location
-    start_location = { street: ride_params[:start_street],
+    start_location = Location.new( street: ride_params[:start_street],
                        city: ride_params[:start_city],
                        state: ride_params[:start_state],
-                       zip: ride_params[:start_zip] }
-    saved_start_location_error_handler
-    end_location = { street: ride_params[:end_street],
+                       zip: ride_params[:start_zip] )
+    update_location_error_handler(start_location)
+    end_location = Location.new( street: ride_params[:end_street],
                      city: ride_params[:end_city],
                      state: ride_params[:end_state],
-                     zip: ride_params[:end_zip] }
-    saved_end_location_error_handler
-    unless @start_location.update(start_location)
-      flash.now[:alert] = @start_location.errors.full_messages.join(', ')
-      render('edit') && return
-    end
-
-    unless @end_location.update(end_location)
-      flash.now[:alert] = @end_location.errors.full_messages.join(', ')
-      render('edit') && return
-    end
+                     zip: ride_params[:end_zip] )
+     update_location_error_handler(end_location)
     rider_choose_save_location
-       only_15_location_saves
+    only_15_location_saves
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason]
-    ) 
+    )
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
     else
@@ -159,24 +150,24 @@ class AdminRideController < ApplicationController
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
   
-  def saved_start_location_error_handler
-    if !@start_location.save
-      flash.now[:alert] = start_location.errors.full_messages.join("\n")
+  def save_location_error_handler(location)
+    if !location.save
+      flash.now[:alert] = location.errors.full_messages.join("\n")
       @ride = Ride.new
       render 'new'
       return
     end
   end
-    
-    def saved_end_location_error_handler
-      if !@end_location.save
-        flash.now[:alert] = end_location.errors.full_messages.join("\n")
-        @ride = Ride.new
-        render 'new'
-        return
-      end
-    end 
   
+  def update_location_error_handler(location)
+    if !location.save
+       flash.now[:alert] = start_location.errors.full_messages.join("\n")
+       @ride = Ride.find(params[:id])
+       render 'edit'
+       return
+    end
+  end
+    
   def rider_choose_save_location
     if ride_params[:save_start_location]
         LocationRelationship.create(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
