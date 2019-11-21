@@ -120,7 +120,7 @@ class AdminRideController < ApplicationController
       render 'edit'
     end
   end
-
+  
   def approve
     @ride = Ride.find(params[:id])
     authorize @ride
@@ -161,7 +161,7 @@ class AdminRideController < ApplicationController
   
   def update_location_error_handler(location)
     if !location.save
-       flash.now[:alert] = start_location.errors.full_messages.join("\n")
+       flash.now[:alert] = location.errors.full_messages.join("\n")
        @ride = Ride.find(params[:id])
        render 'edit'
        return

@@ -76,7 +76,6 @@ class RidesController < ApplicationController
         if @ride.save
         rider_choose_save_location
         only_15_location_saves
-        
           if token != nil
             token.ride_id = @ride.id
             token.save
@@ -105,30 +104,22 @@ class RidesController < ApplicationController
       unless RidePolicy.new(current_rider, @ride).update?
         raise Pundit::NotAuthorizedError
       end
-
       @start_location = @ride.start_location
       @end_location = @ride.end_location
-
-      if !@start_location.update(
+      start_location = Location.new(
         street: ride_params[:start_street],
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
-        flash.now[:alert] = @start_location.errors.full_messages.join(", ")
-
-        render 'edit' and return
-      end
-
-      if !@end_location.update(
+      update_location_error_handler(start_location)
+      end_location = Location.new(
         street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
-        flash.now[:alert] = @end_location.errors.full_messages.join(", ")
-
-        render 'edit' and return
-      end
-
+      update_location_error_handler(end_location)
+      rider_choose_save_location
+      only_15_location_saves
       if @ride.update(
         pick_up_time: ride_params[:pick_up_time],
         reason: ride_params[:reason])
@@ -162,9 +153,18 @@ class RidesController < ApplicationController
     
     def save_location_error_handler(location)
         if !location.save
-          flash[:error] = @start_location.errors.full_messages.join(" ")
+          flash[:error] = location.errors.full_messages.join(" ")
           render 'new'
         end
+    end
+    
+    def update_location_error_handler(location)
+      if !location.save
+        flash.now[:alert] = location.errors.full_messages.join("\n")
+        @ride = Ride.find(params[:id])
+        render 'edit'
+        return
+      end
     end
     
     def rider_choose_save_location
@@ -179,13 +179,13 @@ class RidesController < ApplicationController
     def only_15_location_saves
       if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
          rider_location = location_relationships.order(update_at: :desc)
-            if (rider_location.count > 15)
-              for i in (15..rider_location.count-1) do
-                rider_location[i].destroy
-              end
+          if (rider_location.count > 15)
+            for i in (15..rider_location.count-1) do
+              rider_location[i].destroy
             end
-          end 
-        end
+          end
+      end 
+    end
 
     def rider_not_authorized
       flash.notice = "You are not authorized to view this information"
