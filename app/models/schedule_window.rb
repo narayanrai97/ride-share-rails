@@ -92,8 +92,11 @@ class ScheduleWindow < ApplicationRecord
       []
     end
   end
-
+  
   def recurring_event(query_start_date, query_end_date)
+    if recurring_pattern.nil?
+      return []
+    end
     case recurring_pattern.type_of_repeating
     when 'weekly'
       recurring_weekly(query_start_date, query_end_date)

@@ -42,6 +42,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
             } 
           parsed_json = JSON.parse(response.body)
+          puts parsed_json
           expect(response).to have_http_status(404)
           
       end
@@ -56,11 +57,12 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
           }
           parsed_json = JSON.parse(response.body)
-          expect(parsed_json['schedule_window']['start_date']).to eq("2025-10-01T00:00:00.000Z")
-          expect(parsed_json['schedule_window']['end_date']).to eq("2025-12-31T00:00:00.000Z")
-          expect(parsed_json['schedule_window']['start_time']).to eq("2025-10-01T14:00:00.000Z")
-          expect(parsed_json['schedule_window']['end_time']).to eq("2025-10-01T17:00:00.000Z")
-          expect(parsed_json['schedule_window']['is_recurring']).to eq(true)
+          puts parsed_json
+          expect(parsed_json['start_date']).to eq("2025-10-01T00:00:00.000Z")
+          expect(parsed_json['end_date']).to eq("2025-12-31T00:00:00.000Z")
+          expect(parsed_json['start_time']).to eq("2025-10-01T14:00:00.000Z")
+          expect(parsed_json['end_time']).to eq("2025-10-01T17:00:00.000Z")
+          expect(parsed_json['is_recurring']).to eq(true)
           expect(response).to have_http_status(201)
       end
       
