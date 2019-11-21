@@ -122,8 +122,8 @@ Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 
 
 sw1 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc1.id , is_recurring: true)
 sw2 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc1.id , is_recurring: true)
-sw3 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc2.id , is_recurring: true)
-sw3 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc2.id , is_recurring: true)
+sw3a = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc2.id , is_recurring: true)
+sw3b = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc2.id , is_recurring: true)
 sw4 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc3.id , is_recurring: true)
 
 sw5 = ScheduleWindow.create(driver_id: driver2.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc4.id , is_recurring: true)
@@ -159,7 +159,8 @@ sw24 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.d
 
 RecurringPattern.create(schedule_window_id: sw1.id , day_of_week: "1")
 RecurringPattern.create(schedule_window_id: sw2.id , day_of_week: "2")
-RecurringPattern.create(schedule_window_id: sw3.id , day_of_week: "4")
+RecurringPattern.create(schedule_window_id: sw3a.id , day_of_week: "4")
+RecurringPattern.create(schedule_window_id: sw3b.id , day_of_week: "4")
 RecurringPattern.create(schedule_window_id: sw4.id , day_of_week: "5")
 
 RecurringPattern.create(schedule_window_id: sw5.id , day_of_week: "1")
