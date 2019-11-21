@@ -76,9 +76,7 @@ module Api
                     pattern.destroy
                 end
                 if schedule_window.is_recurring?
-                  byebug
-                    rp = RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
-                    byebug
+                    RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
                 end
                  status 201
                  schedule_window  
