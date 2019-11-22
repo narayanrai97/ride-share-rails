@@ -170,16 +170,18 @@ class AdminRideController < ApplicationController
   end
     
   def rider_choose_save_location
-    if ride_params[:save_start_location] == "save" 
+    byebug
+    if ride_params[:save_start_location] == "saved" 
         LocationRelationship.create(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
     end
-    if ride_params[:save_end_location] == "save"
+    if ride_params[:save_end_location] == "saved"
+      byebug
         LocationRelationship.create(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
     end
   end
   
   def only_15_location_saves(organization)
-    if ride_params[:save_start_location] == "save" or ride_params[:save_end_location] == "save"
+    if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
         org_lrs = organization.location_relationships.order(updated_at: :desc)
         if (org_lrs.count > 15)
           for i in (15..org_lrs.count-1) do
