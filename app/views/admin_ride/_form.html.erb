@@ -51,7 +51,7 @@
     <div class: "start_location">
       <%= label_tag :start_location %>
       <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "organization_rider_start_location",
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(updated_at: :desc).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
 
     </div>
@@ -95,7 +95,7 @@
       <%= form.label :start_zip %><br>
       <%= form.text_field :start_zip,class: "form-control" %>
        <div class= "start_location_checkbox">
-         <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+         <h6>Save start location? <%= form.check_box :save_start_location, {}, "save" or "not save" %> </h6>
       </div>
     </div>
 
@@ -106,7 +106,7 @@
     <div class: "start_location">
       <%= label_tag :end_location %>
       <p>  Would you like to use a previously saved location as the ending address? <%= form.collection_select "organization_rider_end_location",
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
+       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(updated_at: :desc).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
 
     </div>
@@ -162,7 +162,7 @@
     <%= form.label :reason %><br>
     <%= form.text_field :reason,class: "form-control" %>
     <div class = "end_location_checkbox">
-      <h6>Save new end location? <%= form.check_box :save_end_location, {}, "save", " not saved"  %> </h6>
+      <h6>Save new end location? <%= form.check_box :save_end_location, {}, "save" or "not save"  %> </h6>
     </div>
     </div>
 
@@ -186,10 +186,3 @@
 
 <% end %>
 </div>
-<!--<script>-->
-<!--  function getLocations(rider_id){-->
-<!--    $.get('/riders/' + rider_id + '/locations', function(data) {-->
-<!--      $('.locations').html(data);-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->
