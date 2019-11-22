@@ -9,7 +9,7 @@ class Ride < ApplicationRecord
 
   validates :start_location, :end_location, :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past
-  validate :valid_locations
+  # validate :valid_locations
   validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off completed canceled),
   message: "%{value} is not a valid status" }
 
@@ -20,29 +20,6 @@ class Ride < ApplicationRecord
   scope :picking_up, -> { where(status: "picking-up") }
   scope :dropping_off, -> { where(status: "dropping-off") }
   scope :completed, -> { where(status: "completed") }
-
-  # validate that start_location and end_location are valid
-  def valid_locations
-    if start_location.present? #start location validation
-      result1 = Geocoder.search(start_location.full_address)
-      if result1.length == 0 || result1.first.data["partial_match"] == true
-        errors.add(:start_location, "is invalid.")
-      else
-        zipcode = result1.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
-        start_location.zip = zipcode.first["long_name"]
-      end
-    end
-
-    if end_location.present? #end locaiton validation
-      result2 = Geocoder.search(end_location.full_address)
-      if result2.length == 0 || result2.first.data["partial_match"] == true
-        errors.add(:end_location, "is invalid.")
-      else
-        zipcode = result2.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"] }
-        end_location.zip = zipcode.first["long_name"]
-      end
-    end
-  end
 
   def start_street
     if self.start_location
