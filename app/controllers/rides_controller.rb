@@ -45,7 +45,6 @@ class RidesController < ApplicationController
       if current_rider.organization.use_tokens == true
         token = current_rider.next_valid_token
       end
-
       if current_rider.organization.use_tokens == false or token != nil
         @start_location = Location.new(
           street: ride_params[:start_street],
@@ -61,7 +60,7 @@ class RidesController < ApplicationController
           zip: ride_params[:end_zip])
         save_location_error_handler(@end_location)
         
-        @ride = Ride.find_or_create_by(
+        @ride = Ride.new(
           rider_id: current_rider.id,
           organization_id: current_rider.organization.id,
           pick_up_time: ride_params[:pick_up_time],
@@ -75,7 +74,7 @@ class RidesController < ApplicationController
         end
         if @ride.save
         rider_choose_save_location
-        only_15_location_saves
+        only_15_location_saves(location)
           if token != nil
             token.ride_id = @ride.id
             token.save
@@ -178,9 +177,9 @@ class RidesController < ApplicationController
       end
     end
     
-    def only_15_location_saves
+    def only_15_location_saves(location)
       if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
-         rider_location = location_relationships.order(update_at: :desc)
+         rider_location = location.location_relationships.distinct.order(updated_at: :desc)
           if (rider_location.count > 15)
             for i in (15..rider_location.count-1) do
               rider_location[i].destroy

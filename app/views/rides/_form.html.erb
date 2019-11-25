@@ -32,7 +32,7 @@
        <div class: "start_location">
         <%= label_tag :start_location %>
         <p> Would you like to use a previously saved location for the starting address? <%= form.collection_select "rider_start_location", 
-         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(created_at: :desc).limit(15),
+         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(updated_at: :desc).limit(15),
          :address_parsed, :full_address, { :include_blank => ' ' } %>
         </p>
       </div>
@@ -96,7 +96,7 @@
        <div class: "start_location">
         <%= label_tag :end_location %>
         <p> Would you like to use a previously saved location for the end address? <%= form.collection_select "rider_end_location", 
-        Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(created_at: :desc).limit(15),
+        Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(updated_at: :desc).limit(15),
         :address_parsed, :full_address, { :include_blank => ' ' } %>
     </p>
    </div>
