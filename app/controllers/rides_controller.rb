@@ -122,7 +122,9 @@ class RidesController < ApplicationController
       only_15_location_saves
       if @ride.update(
         pick_up_time: ride_params[:pick_up_time],
-        reason: ride_params[:reason])
+        reason: ride_params[:reason],
+        start_location: start_location,
+      end_location: end_location)
         flash.notice = "The ride information has been updated"
         redirect_to ride_path(@ride)
       else
@@ -168,16 +170,16 @@ class RidesController < ApplicationController
     end
     
     def rider_choose_save_location
-      if ride_params[:save_start_location]
+      if ride_params[:save_start_location] == "saved"
         LocationRelationship.create(location_id: @start_location.id, rider_id: current_rider.id)
       end
-      if ride_params[:save_end_location]
+      if ride_params[:save_end_location] == "saved"
         LocationRelationship.create(location_id: @end_location.id, rider_id: current_rider.id)
       end
     end
     
     def only_15_location_saves
-      if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
+      if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
          rider_location = location_relationships.order(update_at: :desc)
           if (rider_location.count > 15)
             for i in (15..rider_location.count-1) do

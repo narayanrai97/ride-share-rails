@@ -163,9 +163,7 @@ class AdminRideController < ApplicationController
   end
   
   def update_location_error_handler(location)
-    byebug
     if !location.save
-      byebug
        flash.now[:alert] = location.errors.full_messages.join("\n")
        @ride = Ride.find(params[:id])
        render 'edit'
