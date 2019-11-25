@@ -97,23 +97,25 @@ class AdminRideController < ApplicationController
     @start_location = @ride.start_location
     @end_location = @ride.end_location
     organization = Organization.find(current_user.organization_id)
-    start_location = Location.new( street: ride_params[:start_street],
+    @start_location = Location.new( street: ride_params[:start_street],
                        city: ride_params[:start_city],
                        state: ride_params[:start_state],
                        zip: ride_params[:start_zip] )
-    update_location_error_handler(start_location)
-    end_location = Location.new( street: ride_params[:end_street],
+    update_location_error_handler(@start_location)
+    @end_location = Location.new( street: ride_params[:end_street],
                      city: ride_params[:end_city],
                      state: ride_params[:end_state],
                      zip: ride_params[:end_zip] )
-    update_location_error_handler(end_location)
+    update_location_error_handler(@end_location)
     rider_choose_save_location
     only_15_location_saves(organization)
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
-      reason: ride_params[:reason]
+      reason: ride_params[:reason],
+      start_location: @start_location,
+      end_location: @end_location
     )
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
@@ -161,7 +163,9 @@ class AdminRideController < ApplicationController
   end
   
   def update_location_error_handler(location)
+    byebug
     if !location.save
+      byebug
        flash.now[:alert] = location.errors.full_messages.join("\n")
        @ride = Ride.find(params[:id])
        render 'edit'
@@ -170,12 +174,10 @@ class AdminRideController < ApplicationController
   end
     
   def rider_choose_save_location
-    byebug
     if ride_params[:save_start_location] == "saved" 
         LocationRelationship.create(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
     end
     if ride_params[:save_end_location] == "saved"
-      byebug
         LocationRelationship.create(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
     end
   end
