@@ -152,7 +152,7 @@ class AdminRideController < ApplicationController
                                  :start_state, :start_zip, :organization_rider_end_location,
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
-  
+  #TODO -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
     if !location.save
       flash.now[:alert] = location.errors.full_messages.join("\n")
