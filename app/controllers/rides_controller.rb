@@ -74,7 +74,7 @@ class RidesController < ApplicationController
         end
         if @ride.save
         rider_choose_save_location
-        only_15_location_saves(location)
+        only_15_location_saves
           if token != nil
             token.ride_id = @ride.id
             token.save
@@ -179,15 +179,15 @@ class RidesController < ApplicationController
       end
     end
     
-    def only_15_location_saves(location)
+    def only_15_location_saves
       byebug
       if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
         # byebug
-         rider_location = location.location_relationships.distinct.order(updated_at: :desc)
+         rider_location = Location.joins(:location_relationships).distinct.order(updated_at: :desc)
           if (rider_location.count > 15)
             for i in (15..rider_location.count-1) do
               rider_location[i].destroy
-              beybug
+              byebug
             end
           end
       end 
