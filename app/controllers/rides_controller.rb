@@ -153,6 +153,7 @@ class RidesController < ApplicationController
     end
     
     def save_location_error_handler(location)
+      byebug
         if !location.save
           byebug
           flash[:error] = location.errors.full_messages.join(" ")
