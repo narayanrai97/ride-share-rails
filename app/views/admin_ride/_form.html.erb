@@ -95,7 +95,7 @@
       <%= form.label :start_zip, "Zip" %>
       <%= form.text_field :start_zip,class: "form-control" %>
        <div class= "start_location_checkbox">
-         <h6>Save start location? <%= form.check_box :save_start_location, {}, "saved" or "not saved" %> </h6>
+         <h6>Save start location? <%= form.check_box :save_start_location, {}, checked_value == "1", unchecked_value == "0" %> </h6>
       </div>
     </div>
 
@@ -151,7 +151,7 @@
       <%= form.label :end_zip, "Zip" %>
       <%= form.text_field :end_zip,class: "form-control" %>
        <div class = "end_location_checkbox">
-         <h6>Save end location? <%= form.check_box :save_end_location, {}, "save", " not saved"  %></h6>
+         <h6>Save end location? <%= form.check_box :save_end_location, {}, checked_value = "1", unchecked_value = "0" %></h6>
        </div>
     </div>
 </div>

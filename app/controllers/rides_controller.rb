@@ -118,7 +118,7 @@ class RidesController < ApplicationController
         zip: ride_params[:end_zip])
       update_location_error_handler(end_location)
       rider_choose_save_location
-      only_15_location_saves
+      only_15_location_saves(location)
       if @ride.update(
         pick_up_time: ride_params[:pick_up_time],
         reason: ride_params[:reason],
@@ -154,6 +154,7 @@ class RidesController < ApplicationController
     
     def save_location_error_handler(location)
         if !location.save
+          byebug
           flash[:error] = location.errors.full_messages.join(" ")
           render 'new'
         end
@@ -178,11 +179,14 @@ class RidesController < ApplicationController
     end
     
     def only_15_location_saves(location)
+      byebug
       if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
+        # byebug
          rider_location = location.location_relationships.distinct.order(updated_at: :desc)
           if (rider_location.count > 15)
             for i in (15..rider_location.count-1) do
               rider_location[i].destroy
+              beybug
             end
           end
       end 
