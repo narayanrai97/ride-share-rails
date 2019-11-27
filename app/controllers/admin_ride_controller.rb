@@ -173,10 +173,12 @@ class AdminRideController < ApplicationController
     
   def rider_choose_save_location
     if ride_params[:save_start_location] == "saved" 
-        LocationRelationship.create(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
+      lr1 = LocationRelationship.new(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
+      lr1.save_or_touch
     end
     if ride_params[:save_end_location] == "saved"
-        LocationRelationship.create(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
+      lr2 = LocationRelationship.new(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
+      lr2.save_or_touch
     end
   end
   
