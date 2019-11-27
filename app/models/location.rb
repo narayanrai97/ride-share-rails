@@ -35,8 +35,22 @@ class Location < ApplicationRecord
   def address_parsed
     self.to_json
   end
-
-
+  
+  def save_or_touch
+    lr = Location.find_by(street: self.street, city: self.city, state: self.state, zip: self.zip)
+    if !lr.nil? 
+      lr.touch
+      return lr
+    else
+      result = self.save
+      if result 
+        return self
+      else
+        return nil
+      end
+    end
+  end
+ 
   def valid_location?
     if self.present?
       result = Geocoder.search(self.full_address)

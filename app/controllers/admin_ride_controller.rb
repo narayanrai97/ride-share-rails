@@ -2,7 +2,7 @@
 
 class AdminRideController < ApplicationController
   before_action :authenticate_user!
-#  before_action :rider_is_active, only: :create
+  #  before_action :rider_is_active, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   layout 'administration'
@@ -17,23 +17,23 @@ class AdminRideController < ApplicationController
   end
 
   def index
-    if params[:status] == "pending"
-      @rides = current_user.organization.rides.pending
-    elsif params[:status] == 'approved'
-      @rides = current_user.organization.rides.approved
-    elsif params[:status] == 'canceled'
-      @rides = current_user.organization.rides.canceled
-    elsif params[:status] == 'scheduled'
-      @rides = current_user.organization.rides.scheduled
-    elsif params[:status] == 'picking-up'
-      @rides = current_user.organization.rides.picking_up
-    elsif params[:status] == 'dropping-off'
-      @rides = current_user.organization.rides.dropping_off
-    elsif params[:status] == 'completed'
-      @rides = current_user.organization.rides.completed
-    else
-      @rides = current_user.organization.rides
-    end
+    @rides = if params[:status] == 'pending'
+               current_user.organization.rides.pending
+             elsif params[:status] == 'approved'
+               current_user.organization.rides.approved
+             elsif params[:status] == 'canceled'
+               current_user.organization.rides.canceled
+             elsif params[:status] == 'scheduled'
+               current_user.organization.rides.scheduled
+             elsif params[:status] == 'picking-up'
+               current_user.organization.rides.picking_up
+             elsif params[:status] == 'dropping-off'
+               current_user.organization.rides.dropping_off
+             elsif params[:status] == 'completed'
+               current_user.organization.rides.completed
+             else
+               current_user.organization.rides
+             end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
 
@@ -47,9 +47,9 @@ class AdminRideController < ApplicationController
       rider = Rider.find(ride_params[:rider_id])
     rescue ActiveRecord::RecordNotFound => e
       flash.now[:alert] = "The rider can't be blank."
-       @ride = Ride.new
-       render 'new'
-       return
+      @ride = Ride.new
+      render 'new'
+      return
     end
     authorize rider
     rider_is_active
@@ -59,22 +59,26 @@ class AdminRideController < ApplicationController
       token = rider.valid_tokens.create if token.nil?
     end
     @start_location = Location.new(street: ride_params[:start_street],
-                                  city: ride_params[:start_city],
-                                  state: ride_params[:start_state],
-                                  zip: ride_params[:start_zip])
-    save_location_error_handler(@start_location)
+                                   city: ride_params[:start_city],
+                                   state: ride_params[:start_state],
+                                   zip: ride_params[:start_zip])
+    @start_location = save_location_error_handler(@start_location)
+    return if @start_location.nil?
+
     @end_location = Location.new(street: ride_params[:end_street],
-                                city: ride_params[:end_city],
-                                state: ride_params[:end_state],
-                                zip: ride_params[:end_zip])
-    save_location_error_handler(@end_location)
+                                 city: ride_params[:end_city],
+                                 state: ride_params[:end_state],
+                                 zip: ride_params[:end_zip])
+    @end_location = save_location_error_handler(@end_location)
+    return if @end_location.nil?
+
     @ride = Ride.new(organization_id: current_user.organization_id,
-                            rider_id:  rider.id,
-                            pick_up_time: ride_params[:pick_up_time],
-                            start_location_id: @start_location.id,
-                            end_location_id: @end_location.id,
-                            reason: ride_params[:reason])
-    organization.use_tokens ? @ride.status = "approved" : @ride.status = "pending"
+                     rider_id: rider.id,
+                     pick_up_time: ride_params[:pick_up_time],
+                     start_location_id: @start_location.id,
+                     end_location_id: @end_location.id,
+                     reason: ride_params[:reason])
+    @ride.status = (organization.use_tokens ? 'approved' : 'pending')
     if @ride.save
       rider_choose_save_location
       only_15_location_saves(organization)
@@ -97,16 +101,20 @@ class AdminRideController < ApplicationController
     @start_location = @ride.start_location
     @end_location = @ride.end_location
     organization = Organization.find(current_user.organization_id)
-    @start_location = Location.new( street: ride_params[:start_street],
-                       city: ride_params[:start_city],
-                       state: ride_params[:start_state],
-                       zip: ride_params[:start_zip] )
-    update_location_error_handler(@start_location)
-    @end_location = Location.new( street: ride_params[:end_street],
-                     city: ride_params[:end_city],
-                     state: ride_params[:end_state],
-                     zip: ride_params[:end_zip] )
-    update_location_error_handler(@end_location)
+    @start_location = Location.new(street: ride_params[:start_street],
+                                   city: ride_params[:start_city],
+                                   state: ride_params[:start_state],
+                                   zip: ride_params[:start_zip])
+    @l_up = update_location_error_handler(@start_location)
+    return if @l_up.nil?
+
+    @end_location = Location.new(street: ride_params[:end_street],
+                                 city: ride_params[:end_city],
+                                 state: ride_params[:end_state],
+                                 zip: ride_params[:end_zip])
+    @l_up1 = update_location_error_handler(@end_location)
+    return if @l_up1.nil?
+
     rider_choose_save_location
     only_15_location_saves(organization)
     if @ride.update(
@@ -123,7 +131,7 @@ class AdminRideController < ApplicationController
       render 'edit'
     end
   end
-  
+
   def approve
     @ride = Ride.find(params[:id])
     authorize @ride
@@ -135,7 +143,7 @@ class AdminRideController < ApplicationController
   def cancel
     @ride = Ride.find(params[:id])
     authorize @ride
-    if ['pending', 'approved', 'scheduled'].include? @ride.status
+    if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
       @ride.token.update_attribute(:ride_id, nil)
       flash.notice = 'Ride canceled.'
@@ -143,53 +151,55 @@ class AdminRideController < ApplicationController
     end
   end
 
-
   private
 
   def ride_params
-    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,:save_start_location,
-                                 :save_end_location, :organization_rider_start_location,  :start_street, :start_city,
+    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
+                                 :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
-  #TODO -- possibly clean out old record, and make a plan to fix it in the future.
+
+  # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    if !location.save
+    l_new = location.save_or_touch
+    if l_new.nil?
       flash.now[:alert] = location.errors.full_messages.join("\n")
       @ride = Ride.new
       render 'new'
-      return
     end
+    return l_new
   end
-  
+
   def update_location_error_handler(location)
-    if !location.save
-       flash.now[:alert] = location.errors.full_messages.join("\n")
-       @ride = Ride.find(params[:id])
-       render 'edit'
-       return
+    l_new = location.save_or_touch
+    if l_new.nil?
+      flash.now[:alert] = location.errors.full_messages.join("\n")
+      @ride = Ride.find(params[:id])
+      render 'edit'
     end
+    return l_new
   end
-    
+
   def rider_choose_save_location
-    if ride_params[:save_start_location] == "saved" 
+    if ride_params[:save_start_location] == 'saved'
       lr1 = LocationRelationship.new(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
       lr1.save_or_touch
     end
-    if ride_params[:save_end_location] == "saved"
+    if ride_params[:save_end_location] == 'saved'
       lr2 = LocationRelationship.new(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
       lr2.save_or_touch
     end
   end
-  
+
   def only_15_location_saves(organization)
-    if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
-        org_lrs = organization.location_relationships.order(updated_at: :desc)
-        if (org_lrs.count > 15)
-          for i in (15..org_lrs.count-1) do
-            org_lrs[i].destroy
-          end
+    if (ride_params[:save_start_location] == 'saved') || (ride_params[:save_end_location] == 'saved')
+      org_lrs = organization.location_relationships.order(updated_at: :desc)
+      if org_lrs.count > 15
+        (15..org_lrs.count - 1).each do |i|
+          org_lrs[i].destroy
         end
+      end
     end
   end
 
@@ -200,8 +210,8 @@ class AdminRideController < ApplicationController
 
   def rider_is_active
     rider = Rider.find(params[:ride][:rider_id])
-    if  !rider.is_active?
-      flash.alert = "The rider is deactivated."
+    unless rider.is_active?
+      flash.alert = 'The rider is deactivated.'
       redirect_to admin_ride_index_path
     end
   end
