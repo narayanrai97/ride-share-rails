@@ -179,7 +179,7 @@ class RidesController < ApplicationController
     
     def only_15_location_saves
       if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
-         rider_location = Location.joins(:location_relationships).distinct.order(updated_at: :desc)
+         rider_location = current_rider.location_relationships.order(updated_at: :desc)
           if (rider_location.count > 15)
             for i in (15..rider_location.count-1) do
               rider_location[i].destroy
