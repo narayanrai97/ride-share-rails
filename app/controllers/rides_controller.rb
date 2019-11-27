@@ -45,38 +45,27 @@ class RidesController < ApplicationController
       if current_rider.organization.use_tokens == true
         token = current_rider.next_valid_token
       end
-
       if current_rider.organization.use_tokens == false or token != nil
-        start_location = Location.find_or_create_by(
+        @start_location = Location.new(
           street: ride_params[:start_street],
           city: ride_params[:start_city],
           state: ride_params[:start_state],
           zip: ride_params[:start_zip])
-
-        sl = start_location.save
-        if sl == nil
-          flash[:error] = start_location.errors.full_messages.join(" ")
-          render 'new'
-        end
-
-        end_location = Location.find_or_create_by(
+        save_location_error_handler(@start_location)
+        
+        @end_location = Location.new(
           street: ride_params[:end_street],
           city: ride_params[:end_city],
           state: ride_params[:end_state],
           zip: ride_params[:end_zip])
-
-        el = end_location.save
-        if el == nil
-          flash[:error] = end_location.errors.full_messages.join(" ")
-          render 'new'
-        end
-
-        @ride = Ride.find_or_create_by(
+        save_location_error_handler(@end_location)
+        
+        @ride = Ride.new(
           rider_id: current_rider.id,
           organization_id: current_rider.organization.id,
           pick_up_time: ride_params[:pick_up_time],
-          start_location_id: start_location.id,
-          end_location_id: end_location.id,
+          start_location_id: @start_location.id,
+          end_location_id: @end_location.id,
           reason: ride_params[:reason])
         if current_rider.organization.use_tokens?
           @ride.status = "approved"
@@ -84,25 +73,8 @@ class RidesController < ApplicationController
           @ride.status = "pending"
         end
         if @ride.save
-
-          if ride_params[:save_start_location]
-            LocationRelationship.create(location_id: start_location.id, rider_id: current_rider.id)
-          end
-
-          if ride_params[:save_end_location]
-            LocationRelationship.create(location_id: end_location.id, rider_id: current_rider.id)
-          end
-
-          if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
-            rider_location = location_relationships.order(update_at: :desc)
-            if (rider_location.count > 15)
-              for i in (15..rider_location.count-1) do
-                rider_location[i].destroy
-              end
-            end
-          end
-
-
+        rider_choose_save_location
+        only_15_location_saves
           if token != nil
             token.ride_id = @ride.id
             token.save
@@ -131,33 +103,27 @@ class RidesController < ApplicationController
       unless RidePolicy.new(current_rider, @ride).update?
         raise Pundit::NotAuthorizedError
       end
-
       @start_location = @ride.start_location
       @end_location = @ride.end_location
-
-      if !@start_location.update(
+      start_location = Location.new(
         street: ride_params[:start_street],
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip])
-        flash.now[:alert] = @start_location.errors.full_messages.join(", ")
-
-        render 'edit' and return
-      end
-
-      if !@end_location.update(
+      update_location_error_handler(start_location)
+      end_location = Location.new(
         street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip])
-        flash.now[:alert] = @end_location.errors.full_messages.join(", ")
-
-        render 'edit' and return
-      end
-
+      update_location_error_handler(end_location)
+      rider_choose_save_location
+      only_15_location_saves(location)
       if @ride.update(
         pick_up_time: ride_params[:pick_up_time],
-        reason: ride_params[:reason])
+        reason: ride_params[:reason],
+        start_location: start_location,
+      end_location: end_location)
         flash.notice = "The ride information has been updated"
         redirect_to ride_path(@ride)
       else
@@ -184,6 +150,42 @@ class RidesController < ApplicationController
       params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
        :save_start_location, :start_street, :start_city, :start_state, :start_zip,
        :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+    end
+    #TODO -- possibly clean out old record, and make a plan to fix it in the future.
+    def save_location_error_handler(location)
+        if !location.save
+          flash[:error] = location.errors.full_messages.join(" ")
+          render 'new'
+        end
+    end
+    
+    def update_location_error_handler(location)
+      if !location.save
+        flash.now[:alert] = location.errors.full_messages.join("\n")
+        @ride = Ride.find(params[:id])
+        render 'edit'
+        return
+      end
+    end
+    
+    def rider_choose_save_location
+      if ride_params[:save_start_location] == "saved"
+        LocationRelationship.create(location_id: @start_location.id, rider_id: current_rider.id)
+      end
+      if ride_params[:save_end_location] == "saved"
+        LocationRelationship.create(location_id: @end_location.id, rider_id: current_rider.id)
+      end
+    end
+    
+    def only_15_location_saves
+      if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
+         rider_location = current_rider.location_relationships.order(updated_at: :desc)
+          if (rider_location.count > 15)
+            for i in (15..rider_location.count-1) do
+              rider_location[i].destroy
+            end
+          end
+      end 
     end
 
     def rider_not_authorized

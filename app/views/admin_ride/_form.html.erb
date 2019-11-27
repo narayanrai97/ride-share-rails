@@ -51,7 +51,7 @@
     <div class: "start_location">
       3. <%= label_tag :start_location %>
       <p> Would you like to use previously saved location? <%= form.collection_select "organization_rider_start_location",
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
+        Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
     </div>
   </div>
@@ -95,7 +95,7 @@
       <%= form.label :start_zip, "Zip" %>
       <%= form.text_field :start_zip,class: "form-control" %>
        <div class= "start_location_checkbox">
-         <h6>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </h6>
+         <h6>Save start location? <%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> </h6>
       </div>
     </div>
 
@@ -106,7 +106,7 @@
     <div class: "start_location">
       4. <%= label_tag :end_location %>
       <p>  Would you like to use previously saved location? <%= form.collection_select "organization_rider_end_location",
-       Location.joins(:organizations).where( organizations:{ id: current_user.organization.id}).distinct.order(created_at: :desc).limit(15),
+       Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
 
     </div>
@@ -151,7 +151,7 @@
       <%= form.label :end_zip, "Zip" %>
       <%= form.text_field :end_zip,class: "form-control" %>
        <div class = "end_location_checkbox">
-         <h6>Save end location? <%= form.check_box :save_end_location, {}, "save", " not saved"  %></h6>
+         <h6>Save end location? <%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved" %></h6>
        </div>
     </div>
 </div>
@@ -181,10 +181,3 @@
 
 <% end %>
 </div>
-<!--<script>-->
-<!--  function getLocations(rider_id){-->
-<!--    $.get('/riders/' + rider_id + '/locations', function(data) {-->
-<!--      $('.locations').html(data);-->
-<!--    });-->
-<!--  }-->
-<!--</script>-->

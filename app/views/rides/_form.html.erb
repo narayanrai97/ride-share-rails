@@ -26,7 +26,7 @@
        <div class: "start_location">
         2. <%= label_tag :start_location %>
         <p> Would you like to use previously saved location? <%= form.collection_select "rider_start_location",
-         Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id).distinct.order(created_at: :desc).limit(15),
+         Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("location_relationships.rider_id=?", current_rider.id).limit(15),
          :address_parsed, :full_address, { :include_blank => ' ' } %>
         </p>
       </div>
@@ -71,7 +71,7 @@
       <%= form.text_field :start_zip,class: "form-control" %>
 
       <div class = "check_box_start_location">
-        <p>Save start location? <%= form.check_box :save_start_location, {}, "save", "not saved" %> </p>
+        <p>Save start location? <%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> </p>
       </div>
     </div>
 </div>
@@ -81,7 +81,7 @@
    <div class: "start_location">
     3. <%= label_tag :end_location %>
     <p> Would you like to use previously saved location? <%= form.collection_select "rider_end_location",
-    Location.joins(:location_relationships).where("location_relationships.rider_id = ?", current_rider.id),
+    Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("location_relationships.rider_id=?", current_rider.id).limit(15),
     :address_parsed, :full_address, { :include_blank => ' ' } %>
     </p>
    </div>
@@ -121,7 +121,7 @@
       <%= form.text_field :end_zip,class: "form-control" %>
 
       <div class= "save_location">
-        <p>Save end location <%= form.check_box :save_end_location, {}, "save", " not saved" %></p>
+        <p>Save end location <%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved" %></p>
       </div>
     </div>
 

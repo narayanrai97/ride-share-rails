@@ -77,7 +77,7 @@ class AdminRideController < ApplicationController
     organization.use_tokens ? @ride.status = "approved" : @ride.status = "pending"
     if @ride.save
       rider_choose_save_location
-      only_15_location_saves
+      only_15_location_saves(organization)
       if organization.use_tokens == true
         token.ride_id = @ride.id
         token.save
@@ -96,23 +96,26 @@ class AdminRideController < ApplicationController
     authorize @ride
     @start_location = @ride.start_location
     @end_location = @ride.end_location
-    start_location = Location.new( street: ride_params[:start_street],
+    organization = Organization.find(current_user.organization_id)
+    @start_location = Location.new( street: ride_params[:start_street],
                        city: ride_params[:start_city],
                        state: ride_params[:start_state],
                        zip: ride_params[:start_zip] )
-    update_location_error_handler(start_location)
-    end_location = Location.new( street: ride_params[:end_street],
+    update_location_error_handler(@start_location)
+    @end_location = Location.new( street: ride_params[:end_street],
                      city: ride_params[:end_city],
                      state: ride_params[:end_state],
                      zip: ride_params[:end_zip] )
-    update_location_error_handler(end_location)
+    update_location_error_handler(@end_location)
     rider_choose_save_location
-    only_15_location_saves
+    only_15_location_saves(organization)
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
-      reason: ride_params[:reason]
+      reason: ride_params[:reason],
+      start_location: @start_location,
+      end_location: @end_location
     )
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
@@ -120,7 +123,7 @@ class AdminRideController < ApplicationController
       render 'edit'
     end
   end
-
+  
   def approve
     @ride = Ride.find(params[:id])
     authorize @ride
@@ -149,7 +152,7 @@ class AdminRideController < ApplicationController
                                  :start_state, :start_zip, :organization_rider_end_location,
                                  :end_street, :end_city, :end_state, :end_zip, :reason, :status)
   end
-  
+  #TODO -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
     if !location.save
       flash.now[:alert] = location.errors.full_messages.join("\n")
@@ -161,7 +164,7 @@ class AdminRideController < ApplicationController
   
   def update_location_error_handler(location)
     if !location.save
-       flash.now[:alert] = start_location.errors.full_messages.join("\n")
+       flash.now[:alert] = location.errors.full_messages.join("\n")
        @ride = Ride.find(params[:id])
        render 'edit'
        return
@@ -169,17 +172,17 @@ class AdminRideController < ApplicationController
   end
     
   def rider_choose_save_location
-    if ride_params[:save_start_location]
+    if ride_params[:save_start_location] == "saved" 
         LocationRelationship.create(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
     end
-    if ride_params[:save_end_location]
+    if ride_params[:save_end_location] == "saved"
         LocationRelationship.create(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
     end
   end
   
-  def only_15_location_saves
-    if ride_params[:save_start_location] == true or ride_params[:save_end_location] == true
-        org_lrs = organization.location_relationships.order(update_at: :desc)
+  def only_15_location_saves(organization)
+    if ride_params[:save_start_location] == "saved" or ride_params[:save_end_location] == "saved"
+        org_lrs = organization.location_relationships.order(updated_at: :desc)
         if (org_lrs.count > 15)
           for i in (15..org_lrs.count-1) do
             org_lrs[i].destroy
