@@ -162,8 +162,7 @@ class AdminRideController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    location_validate = location.validate
-    if !location_validate 
+    if !location.validate 
       flash.now[:alert] = location.errors.full_messages.join("\n")
       @ride = Ride.new
       render "new"
@@ -185,8 +184,7 @@ class AdminRideController < ApplicationController
   end
 
   def update_location_error_handler(location)
-    location_validate = location.validate
-    if !location_validate
+    if !location.validate
       flash.now[:alert] = location.errors.full_messages.join("\n")
       @ride = Ride.find(params[:id])
       render "edit"
