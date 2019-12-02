@@ -185,6 +185,19 @@ class AdminRideController < ApplicationController
   end
 
   def update_location_error_handler(location)
+    location_validate = location.validate
+    if !location_validate
+      flash.now[:alert] = location.errors.full_messages.join("\n")
+      @ride = Ride.find(params[:id])
+      render "edit"
+      return nil 
+    end
+    if !location.valid_location?
+      flash.now[:alert] = "Location not found"
+      @ride = Ride.find(params[:id])
+      render "edit"
+      return nil 
+    end
     l_new = location.save_or_touch
     if l_new.nil?
       flash.now[:alert] = location.errors.full_messages.join("\n")
