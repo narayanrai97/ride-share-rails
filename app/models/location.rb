@@ -7,11 +7,11 @@ class Location < ApplicationRecord
   has_many :riders, -> { distinct }, through: :location_relationships
   has_many :organizations, -> {distinct}, through: :location_relationships
 
-  validates :street, :city, :state, :zip, presence: true
+  validates :street, :city, :state, :zip,  presence: true
   validates :zip, length: { is: 5 }, numericality: true
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
-  after_validation :capitalize_first_letter, :upcase_fields
+  after_validation :capitalize_first_letter, :upcase_fields, 
   # before_create :validate_location
 
 
@@ -55,6 +55,7 @@ class Location < ApplicationRecord
     if self.present?
       result = Geocoder.search(self.full_address)
       if result.length == 0 || result.first.data["partial_match"] == true
+        errors.add(:_, "Location is not found. ")
         return false
       else
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]

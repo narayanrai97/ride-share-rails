@@ -163,9 +163,7 @@ class AdminRideController < ApplicationController
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
     if !location.validate 
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.new
-      render "new"
+      message_render(location)
       return nil
     end
     if !location.valid_location?
@@ -176,18 +174,14 @@ class AdminRideController < ApplicationController
     end
     l_new = location.save_or_touch
     if l_new.nil?
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.new
-      render 'new'
+      message_render(location)
     end
     return l_new
   end
 
   def update_location_error_handler(location)
     if !location.validate
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.find(params[:id])
-      render "edit"
+      update_message_render(location)
       return nil 
     end
     if !location.valid_location?
@@ -198,9 +192,7 @@ class AdminRideController < ApplicationController
     end
     l_new = location.save_or_touch
     if l_new.nil?
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.find(params[:id])
-      render 'edit'
+    update_message_render(location)
     end
     return l_new
   end
@@ -214,6 +206,18 @@ class AdminRideController < ApplicationController
       lr2 = LocationRelationship.new(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
       lr2.save_or_touch
     end
+  end
+  
+  def message_render(location)
+    flash.now[:alert] = location.errors.full_messages.join("\n")
+    @ride = Ride.new
+    render "new"
+  end
+  
+  def update_message_render(location)
+    flash.now[:alert] = location.errors.full_messages.join("\n")
+    @ride = Ride.find(params[:id])
+    render "edit"
   end
 
   def only_15_location_saves(organization)
