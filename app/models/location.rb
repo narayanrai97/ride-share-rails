@@ -7,25 +7,26 @@ class Location < ApplicationRecord
   has_many :riders, -> { distinct }, through: :location_relationships
   has_many :organizations, -> {distinct}, through: :location_relationships
 
-  validates :street, :city, :state, :zip, presence: true
+  validates :street, :city, :state, :zip,  presence: true
   validates :zip, length: { is: 5 }, numericality: true
+  validate :location_must_be_found
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
-  after_validation :capitalize_first_letter, :upcase_fields
+  # after_validation :capitalize_first_letter, :upcase_fields
   # before_create :validate_location
 
 
-  def capitalize_first_letter
-    if self.city
-      self.city = self.city.split.map(&:capitalize).join(' ')
-    end
-  end
+  # def capitalize_first_letter
+  #   if self.city
+  #     self.city = self.city.split.map(&:capitalize).join(' ')
+  #   end
+  # end
 
-  def upcase_fields
-    if state
-      state.upcase!
-    end
-  end
+  # def upcase_fields
+  #   if state
+  #     state.upcase!
+  #   end
+  # end
 
   def full_address
     sub_address = [street, city, state].compact.join(', ')
@@ -51,11 +52,11 @@ class Location < ApplicationRecord
     end
   end
  
-  def valid_location?
-    if self.present?
+  def location_must_be_found
+    if street.present? && city.present? && state.present? && zip.present?
       result = Geocoder.search(self.full_address)
-      if result.length == 0 || result.first.data["partial_match"] == true
-        return false
+      if result.length == 0 || result.first.data["partial_match"] 
+        errors[:base] << "The location could not be found."
       else
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
         street_name = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first["short_name"]
@@ -63,7 +64,6 @@ class Location < ApplicationRecord
         @city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_3", "political"]}).first["long_name"]
         @state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
         @zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
-        return true
       end
     end
   end

@@ -45,7 +45,7 @@ class AdminRideController < ApplicationController
   def create
     begin
       rider = Rider.find(ride_params[:rider_id])
-    rescue ActiveRecord::RecordNotFound => e
+    rescue ActiveRecord::RecordNotFound
       flash.now[:alert] = "The rider can't be blank."
       @ride = Ride.new
       render 'new'
@@ -62,15 +62,29 @@ class AdminRideController < ApplicationController
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
                                    zip: ride_params[:start_zip])
-    @start_location = save_location_error_handler(@start_location)
-    return if @start_location.nil?
+    location = save_location_error_handler(@start_location)
+    if location.nil?
+      flash.now[:alert] = @start_location.errors.full_messages.join("\n")
+      @ride = Ride.new
+      render "new"
+      return
+    else
+      @start_location = location
+    end
 
     @end_location = Location.new(street: ride_params[:end_street],
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
                                  zip: ride_params[:end_zip])
-    @end_location = save_location_error_handler(@end_location)
-    return if @end_location.nil?
+    location = save_location_error_handler(@end_location)
+    if location.nil?
+      flash.now[:alert] = @end_location.errors.full_messages.join("\n")
+      @ride = Ride.new
+      render "new"
+      return 
+    else
+      @end_location = location
+    end
 
     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
@@ -105,15 +119,29 @@ class AdminRideController < ApplicationController
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
                                    zip: ride_params[:start_zip])
-    @l_up = update_location_error_handler(@start_location)
-    return if @l_up.nil?
+    location = save_location_error_handler(@start_location)
+    if location.nil?
+      flash.now[:alert] = @start_location.errors.full_messages.join("\n")
+      @ride = Ride.find(params[:id])
+      render "edit"
+      return
+    else 
+      location = @start_location
+    end
 
     @end_location = Location.new(street: ride_params[:end_street],
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
                                  zip: ride_params[:end_zip])
-    @l_up1 = update_location_error_handler(@end_location)
-    return if @l_up1.nil?
+    location = save_location_error_handler(@end_location)
+    if location.nil?
+      flash.now[:alert] = @end_location.errors.full_messages.join("\n")
+      @ride = Ride.find(params[:id])
+      render "edit"
+      return
+    else
+      location = @end_location
+    end
 
     rider_choose_save_location
     only_15_location_saves(organization)
@@ -162,22 +190,10 @@ class AdminRideController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    l_new = location.save_or_touch
-    if l_new.nil?
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.new
-      render 'new'
+    if !location.validate 
+      return nil
     end
-    return l_new
-  end
-
-  def update_location_error_handler(location)
     l_new = location.save_or_touch
-    if l_new.nil?
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.find(params[:id])
-      render 'edit'
-    end
     return l_new
   end
 
