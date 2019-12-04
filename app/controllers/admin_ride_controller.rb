@@ -207,12 +207,6 @@ class AdminRideController < ApplicationController
       lr2.save_or_touch
     end
   end
-  
-  def update_message_render(location)
-    flash.now[:alert] = location.errors.full_messages.join("\n")
-    @ride = Ride.find(params[:id])
-    render "edit"
-  end
 
   def only_15_location_saves(organization)
     if (ride_params[:save_start_location] == 'saved') || (ride_params[:save_end_location] == 'saved')

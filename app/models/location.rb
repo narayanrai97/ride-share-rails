@@ -12,21 +12,21 @@ class Location < ApplicationRecord
   validate :location_must_be_found
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj) { obj.full_address.present? && obj.street_changed? }
-  after_validation :capitalize_first_letter, :upcase_fields, 
+  # after_validation :capitalize_first_letter, :upcase_fields
   # before_create :validate_location
 
 
-  def capitalize_first_letter
-    if self.city
-      self.city = self.city.split.map(&:capitalize).join(' ')
-    end
-  end
+  # def capitalize_first_letter
+  #   if self.city
+  #     self.city = self.city.split.map(&:capitalize).join(' ')
+  #   end
+  # end
 
-  def upcase_fields
-    if state
-      state.upcase!
-    end
-  end
+  # def upcase_fields
+  #   if state
+  #     state.upcase!
+  #   end
+  # end
 
   def full_address
     sub_address = [street, city, state].compact.join(', ')
@@ -53,7 +53,7 @@ class Location < ApplicationRecord
   end
  
   def location_must_be_found
-    if street.present? && city.present? && state.present? && zip.present? 
+    if street.present? && city.present? && state.present? && zip.present 
       result = Geocoder.search(self.full_address)
       if result.length == 0 || result.first.data["partial_match"] 
         errors[:base] << "The location could not be found."
