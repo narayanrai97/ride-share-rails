@@ -70,10 +70,19 @@
     });
 
   <% end %>
+  <%# if @ride.start_location_id.nil? %>
+  <%#   if @start_location.nil? %>
+  <%#    start_street = "" %>
+  <%#   else %>
+  <%#     start_street = @start_location.street %>
+  <%#   end %>
+  <%# else %>
+  <%#   start_street = ride.start_location.street %>
+  <%# end %>
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street, "Street" %>
-    <%= form.text_field :start_street, class: "form-control" %>
+    <%= form.text_field :start_street, value: start_street, class: "form-control" %>
   </div>
 </div>
 
@@ -83,7 +92,7 @@
 
     <div class="form-group offset-md-1 col-4">
       <%= form.label :start_city, "City" %>
-      <%= form.text_field :start_city, class: "form-control" %>
+      <%= form.text_field :start_city,  class: "form-control" %>
     </div>
 
     <div class="form-group col-4">
