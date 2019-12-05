@@ -61,6 +61,7 @@ class Location < ApplicationRecord
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
         street_name = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first["short_name"]
         @street = "#{street_number} #{street_name}"
+        # byebug
         @city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_3", "political"]}).first["long_name"]
         @state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
         @zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]

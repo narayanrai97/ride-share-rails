@@ -83,10 +83,10 @@
       <%start_zip = @start_location.zip %>
     <% end %>
   <% else %>
-    <%start_street = ride.start_location.street %>
-    <%start_city = ride.start_location.city %>
-    <%start_state = ride.start_location.state %>
-    <%start_zip = ride.start_location.zip %>
+    <%start_street = @ride.start_location.street %>
+    <%start_city = @ride.start_location.city %>
+    <%start_state = @ride.start_location.state %>
+    <%start_zip = @ride.start_location.zip %>
   <% end %>
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
@@ -158,10 +158,10 @@
       <%end_zip = @end_location.zip %>
     <% end %>
   <% else %>
-    <%end_street = ride.end_location.street %>
-    <%end_city = ride.end_location.city %>
-    <%end_state = ride.end_location.state %>
-    <%end_zip = ride.end_location.zip %>
+    <%end_street = @ride.end_location.street %>
+    <%end_city = @ride.end_location.city %>
+    <%end_state = @ride.end_location.state %>
+    <%end_zip = @ride.end_location.zip %>
   <% end %>
 
 <div class="form-row">
