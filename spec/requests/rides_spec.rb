@@ -27,8 +27,9 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
   let!(:location7) {create(:location,  street:"201 W. Main st.", city: "Durham", state: "NC", zip: "27701")}
   # fake location to test when address doesnt exsits
-  let!(:location8) {create(:location,  street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111"
- )}
+  let!(:location8) { loc = FactoryBot.build(:location, street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111")
+                     loc.save(:validate => false)
+                   }
 
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride){create(:ride,rider_id: rider.id,organization_id: organization.id,
@@ -234,17 +235,13 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
 
     it "returns 404 when ride does not exsit" do
-      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location8.id
-        }
-      expect(response).to have_http_status(400)
+      get "/api/v1/rides/99999", headers: {"ACCEPT" => "application/json",  "Token" => "1234"} #ride_id 99999 doesn't exist
+      expect(response).to have_http_status(404)
     end
 
-     it "returns 400 when location latitude and longitude does not exsit" do
-      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location8.id
-        }
-      expect(response).to have_http_status(400)
+    it "returns 404 when location latitude and longitude does not exsit" do
+      get "/api/v1/locations/99999", headers: {"ACCEPT" => "application/json",  "Token" => "1234"} #location_id 99999 doesn't exist
+      expect(response).to have_http_status(404)
     end
 
     it "returns 400 when location does not exsit " do
