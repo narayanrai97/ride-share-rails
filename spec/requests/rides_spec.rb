@@ -23,7 +23,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:location3) {create(:location,  street:"1001 Shiloh Glenn Dr", city: "Morrisville", state: "NC", zip: "27560")}
   let!(:location4) {create(:location,  street:"2301 Erwin Rd", city: "Durham", state: "NC", zip: "27710")}
   let!(:location5) {create(:location,  street:"113 N Salem St", city: "Apex", state: "NC", zip: "27502")}
-  # let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
+  let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
   let!(:location7) {create(:location,  street:"201 W. Main st.", city: "Durham", state: "NC", zip: "27701")}
   # fake location to test when address doesnt exsits
   let!(:location8) {loc = FactoryBot.build(:location, street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111")
@@ -72,7 +72,6 @@ RSpec.describe Api::V1::Rides, type: :request do
   it 'will accept a ride for the driver' do
     post "/api/v1/rides/#{ride.id}/accept",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
-    puts parsed_json
     expect(response).to have_http_status(201)
     expect(parsed_json['ride']['driver_id']).to eq(driver.id)
     expect(parsed_json['ride']['status']).to eq("scheduled")
