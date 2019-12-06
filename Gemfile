@@ -44,6 +44,7 @@ gem 'kaminari'
 gem 'font-awesome-rails'
 
 gem 'pundit', '~> 2.0.1'
+gem 'flatpickr_rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

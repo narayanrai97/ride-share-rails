@@ -10,7 +10,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
   let!(:admin) { create :user }
   let!(:driver) { create :driver, organization_id: admin.organization.id }
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com', first_name: 'Jerry' }
-  let!(:location) { create :location, street: '200 Person St', city: 'Raleigh', state: 'NC', zip: 23459 }
+  let!(:location) { create :location, street: '201 W Main st', city: 'Durham', state: 'NC', zip: '27701' }
   let!(:location1) { create :location, street: "400 Main St", city: 'Durham', state: "NC", zip: "27713" }
   let!(:location_relationship) { create :location_relationship, driver_id: driver.id, location_id: location.id }
   let!(:vehicle1) { create :vehicle, driver_id: driver.id }
@@ -58,7 +58,6 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     expect(page).to have_text driver.first_name
     expect(page).to have_text driver.vehicles[0].car_make
     expect(page).to have_text location.street
-    expect(page).to have_text '400 Main St'
   end
 
   scenario 'when admin clicks review, should be able to add car' do

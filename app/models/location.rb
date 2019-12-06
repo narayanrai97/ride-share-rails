@@ -36,35 +36,34 @@ class Location < ApplicationRecord
   def address_parsed
     self.to_json
   end
-  
+
   def save_or_touch
     lr = Location.find_by(street: self.street, city: self.city, state: self.state, zip: self.zip)
-    if !lr.nil? 
+    if !lr.nil?
       lr.touch
       return lr
     else
       result = self.save
-      if result 
+      if result
         return self
       else
         return nil
       end
     end
   end
- 
+
   def location_must_be_found
     if street.present? && city.present? && state.present? && zip.present?
       result = Geocoder.search(self.full_address)
-      if result.length == 0 || result.first.data["partial_match"] 
+      if result.length == 0 || result.first.data["partial_match"]
         errors[:base] << "The location could not be found."
       else
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
         street_name = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first["short_name"]
-        @street = "#{street_number} #{street_name}"
-        # byebug
-        @city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_3", "political"]}).first["long_name"]
-        @state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
-        @zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
+        self.street = "#{street_number} #{street_name}"
+        self.city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["locality", "political"]}).first["long_name"]
+        self.state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
+        self.zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
       end
     end
   end
