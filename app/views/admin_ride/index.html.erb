@@ -2,7 +2,7 @@
 
 <!-- <h1 style="text-align: center">Rides</h1> -->
 
-<table class="table table-striped">
+<table class="table table-bordered table-hover">
   <tr>
     <th scope="col">Rider</th>
     <th scope="col">Driver</th>
@@ -27,13 +27,13 @@
 
   <% @rides.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
-      <tr>
-        <td class="no-wrap"><%= link_to ride.rider.full_name, admin_ride_path(ride) %></td>
+      <tr class='clickable-row', data-href='<%=admin_ride_path(ride)%>'>
+        <td class="no-wrap"><%= ride.rider.full_name %></td>
         <td class="no-wrap"><%= ride.driver&.full_name %></td>
         <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y %I:%M %p")  %></td>
         <td><%= ride.reason %></td>
         <td><%= ride.status %></td>
-        <td class="my-buttons">
+        <td>
           <% if ride.status == 'pending' %>
             <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-outline-success" do %>
               <i class="fa fa-pencil-square-o">Edit</i>
@@ -66,3 +66,11 @@
 <%= link_to 'New Ride', new_admin_ride_path, class: "btn btn-success" %>
 
 </div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
+</script>

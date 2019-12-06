@@ -130,8 +130,8 @@ th {
 }
 
 .table th, .table td {
-  padding: none;
-  vertical-align: none;
+  padding: 0.50rem;
+  vertical-align: inherit;
   border-top: none;
 }
 
@@ -440,4 +440,8 @@ tr th.table-heads {
 
 .form-control[readonly] {
   background-color: #FFF;
+}
+
+.table tr:hover {
+  cursor: pointer;
 }
