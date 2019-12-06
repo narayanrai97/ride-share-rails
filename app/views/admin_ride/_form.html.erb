@@ -145,7 +145,7 @@
     });
 
   <% end %>
-  <%if @ride.start_location_id.nil? %>
+  <%if @ride.end_location_id.nil? %>
     <%if @end_location.nil? %>
       <% end_street = "" %>
       <% end_city = "" %>
