@@ -83,7 +83,7 @@ class AdminRideController < ApplicationController
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
       render "new"
-      return 
+      return
     else
       @end_location = location
     end
@@ -121,7 +121,7 @@ class AdminRideController < ApplicationController
       @ride = Ride.find(params[:id])
       render "edit"
       return
-    else 
+    else
       location = @start_location
     end
 
@@ -186,7 +186,7 @@ class AdminRideController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    if !location.validate 
+    if !location.validate
       return nil
     end
     l_new = location.save_or_touch

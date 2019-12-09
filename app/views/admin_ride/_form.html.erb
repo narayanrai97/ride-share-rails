@@ -6,15 +6,15 @@
 
 <!-- <div data-turbolinks="false"> -->
 <div>
-<% if @ride.id %>
-<% url = admin_ride_path(@ride) %>
+<% if false %>
+  <% url = admin_ride_path(@ride) %>
 <% else %>
-<% url = admin_ride_index_path %>
+  <% url = admin_ride_index_path %>
 <% end %>
 <%= form_with(url: url , model: @ride, local: true) do |form| %>
 
 
-  <% if @ride.errors.any? %>
+  <% if false %>
     <div id="error_explanation">
       <h2>
         <%= pluralize(@ride.errors.count, "error") %> prohibited
