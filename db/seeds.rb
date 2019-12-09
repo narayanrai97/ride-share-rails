@@ -8,8 +8,8 @@
 
 
 
-org1 = Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
-org2 = Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709", use_tokens: true)
+org1 = Organization.create(name: "Durham Rescue Mission", street: "507 E Knox St", city: "Durham", state: "NC", zip: "27701")
+org2 = Organization.create(name: "Urban Ministires of Durham", street: "410 Liberty St", city: "Durham", state: "NC", zip: "27701", use_tokens: true)
 User.create(email: "admin@gmail.com", password: "password",organization_id: org1.id)
 User.create(email: "admin1@gmail.com", password: "password",organization_id: org2.id)
 
@@ -34,25 +34,25 @@ rider4 = Rider.create(organization_id: org2.id, first_name: "Jim", last_name: "F
 
 
 
-loc1 = Location.create(street: "507 E Knox", city: "Durham", state: "NC", zip: "27705")
-loc2 = Location.create(street: "410 Liberty Street", city: "Durham", state: "NC", zip: "27705")
-loc3 = Location.create(street: "1824 Constitution Ct", city: "Durham", state: "NC", zip: "27705")
-loc4 = Location.create(street: "2200 Anderson", city: "Durham", state: "NC", zip: "27705")
-loc5 = Location.create(street: "923 Oregon", city: "Durham", state: "NC", zip: "27709")
-loc6 = Location.create(street: "2938 Rigsbee", city: "Durham", state: "NC", zip: "27708")
-loc7 = Location.create(street: "394 Alexander", city: "Durham", state: "NC", zip: "27705")
-loc8 = Location.create(street: "1830 Pacific Ave", city: "Durham", state: "NC", zip: "27710")
-loc9 = Location.create(street: "394 Broadway Ave", city: "Durham", state: "NC", zip: "27705")
-loc10 = Location.create(street: "293 Erwin", city: "Durham", state: "NC", zip: "27705")
-loc11 = Location.create(street: "123 Road way", city: "Durham", state: "NC", zip: "27705")
-loc12 = Location.create(street: "840 Hillsborough" , city: "Durham", state: "NC", zip: "27705")
-loc13 = Location.create(street: "2200 Erwin" , city: "Durham", state: "NC", zip: "27705")
-loc14 = Location.create(street: "203 Club Ave." , city: "Durham", state: "NC", zip: "27705")
-loc15 = Location.create(street: "2938 Main Street" , city: "Durham", state: "NC", zip: "27705")
-loc16 = Location.create(street: "123 Row Way" , city: "Durham", state: "NC", zip: "27705")
-loc17 = Location.create(street: "2303 Sandy Street" , city: "Durham", state: "NC", zip: "27705")
-loc18 = Location.create(street: "30 New Drive" , city: "Durham", state: "NC", zip: "27705")
-loc19 = Location.create(street: "101 Erwin" , city: "Durham", state: "NC", zip: "27705")
+loc1 = Location.create(street: "507 E Knox St", city: "Durham", state: "NC", zip: "27701")
+loc2 = Location.create(street: "410 Liberty St", city: "Durham", state: "NC", zip: "27701")
+loc3 = Location.create(street: "4015 University Dr", city: "Durham", state: "NC", zip: "27707")
+loc4 = Location.create(street: "2200 Anderson Dr", city: "Raleigh", state: "NC", zip: "27608")
+loc5 = Location.create(street: "923 Oregon St", city: "Durham", state: "NC", zip: "27705")
+loc6 = Location.create(street: "502 Rigsbee Ave", city: "Durham", state: "NC", zip: "27701")
+loc7 = Location.create(street: "394 Alexander Ave", city: "Durham", state: "NC", zip: "27705")
+loc8 = Location.create(street: "210 Pacific Ave", city: "Durham", state: "NC", zip: "27704")
+loc9 = Location.create(street: "394 Broadway St", city: "Durham", state: "NC", zip: "27701")
+loc10 = Location.create(street: "573 Erwin Rd", city: "Durham", state: "NC", zip: "27707")
+loc11 = Location.create(street: "123 Dare Pines way", city: "Durham", state: "NC", zip: "27703")
+loc12 = Location.create(street: "840 Hillsborough St" , city: "Raleigh", state: "NC", zip: "27603")
+loc13 = Location.create(street: "2200 Erwin Rd" , city: "Durham", state: "NC", zip: "27705")
+loc14 = Location.create(street: "203 W Club Blvd" , city: "Durham", state: "NC", zip: "27704")
+loc15 = Location.create(street: "2938 W Main St" , city: "Durham", state: "NC", zip: "27705")
+loc16 = Location.create(street: "123 Plano Dr" , city: "Durham", state: "NC", zip: "27703")
+loc17 = Location.create(street: "6209 Sandy Forks Rd" , city: "Raleigh", state: "NC", zip: "27615")
+loc18 = Location.create(street: "30 Citation Dr" , city: "Durham", state: "NC", zip: "27713")
+loc19 = Location.create(street: "101 Erwin Rd" , city: "Chapel Hill", state: "NC", zip: "27514")
 
 
 
