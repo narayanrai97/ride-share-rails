@@ -68,7 +68,7 @@ class RidesController < ApplicationController
       location = save_location_error_handler(@start_location)
       if location.nil?
         flash.now[:alert] = @start_location.errors.full_messages.join("\n")
-        @ride = Ride.new
+        # @ride = Ride.new
         render "new"
         return
       else
@@ -77,7 +77,7 @@ class RidesController < ApplicationController
       location = save_location_error_handler(@end_location)
       if location.nil?
         flash.now[:alert] = @end_location.errors.full_messages.join("\n")
-        @ride = Ride.new
+        # @ride = Ride.new
         render "new"
         return
       else

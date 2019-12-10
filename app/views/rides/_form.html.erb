@@ -48,8 +48,7 @@
     });
 
   <% end %>
-  
-    <%if @ride.start_location_id.nil? %>
+  <%if @ride.start_location.nil? %>
     <%if @start_location.nil? %>
       <% start_street = "" %>
       <% start_city = "" %>
@@ -57,6 +56,7 @@
       <% start_zip = "" %>
     <%else %>
       <%start_street = @start_location.street %>
+      <%#byebug%>
       <%start_city = @start_location.city %>
       <%start_state = @start_location.state %>
       <%start_zip = @start_location.zip %>
@@ -96,24 +96,6 @@
     </div>
 </div>
 
-<%if @ride.end_location_id.nil? %>
-    <%if @end_location.nil? %>
-      <% end_street = "" %>
-      <% end_city = "" %>
-      <% end_state = "" %>
-      <% end_zip = "" %>
-    <%else %>
-      <%end_street = @end_location.street %>
-      <%end_city = @end_location.city %>
-      <%end_state = @end_location.state %>
-      <%end_zip = @end_location.zip %>
-    <% end %>
-  <% else %>
-    <%end_street = @ride.end_location.street %>
-    <%end_city = @ride.end_location.city %>
-    <%end_state = @ride.end_location.state %>
-    <%end_zip = @ride.end_location.zip %>
-  <% end %>
 
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
@@ -141,9 +123,27 @@
     });
 
   <% end %>
-
+  
 </div>
 
+<%if @ride.end_location_id.nil? %>
+    <%if @end_location.nil? %>
+      <% end_street = "" %>
+      <% end_city = "" %>
+      <% end_state = "" %>
+      <% end_zip = "" %>
+    <%else %>
+      <%end_street = @end_location.street %>
+      <%end_city = @end_location.city %>
+      <%end_state = @end_location.state %>
+      <%end_zip = @end_location.zip %>
+    <% end %>
+  <% else %>
+    <%end_street = @ride.end_location.street %>
+    <%end_city = @ride.end_location.city %>
+    <%end_state = @ride.end_location.state %>
+    <%end_zip = @ride.end_location.zip %>
+  <% end %>
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
       <%= form.label :end_city, "City" %>

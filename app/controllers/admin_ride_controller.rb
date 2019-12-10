@@ -87,12 +87,8 @@ class AdminRideController < ApplicationController
     else
       @end_location = location
     end
-<<<<<<< HEAD
-    
-=======
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
->>>>>>> master
     @ride.status = (organization.use_tokens ? 'approved' : 'pending')
     if @ride.save
       rider_choose_save_location
