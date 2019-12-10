@@ -63,8 +63,6 @@ class RidesController < ApplicationController
         rider_id: current_rider.id,
         organization_id: current_rider.organization.id,
         pick_up_time: ride_params[:pick_up_time],
-        start_location_id: @start_location.id,
-        end_location_id: @end_location.id,
         reason: ride_params[:reason]
       )
       location = save_location_error_handler(@start_location)
@@ -85,7 +83,8 @@ class RidesController < ApplicationController
       else
         @end_location = location
       end
-      
+       @ride.start_location_id = @start_location.id
+       @ride.end_location_id = @end_location.id
       @ride.status = if current_rider.organization.use_tokens?
                        'approved'
                      else
