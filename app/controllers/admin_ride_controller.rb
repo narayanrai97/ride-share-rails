@@ -66,16 +66,13 @@ class AdminRideController < ApplicationController
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
                                  zip: ride_params[:end_zip])
-    @ride = Ride.new(organization_id: current_user.organization_id,
+     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
                      pick_up_time: ride_params[:pick_up_time],
-                     start_location_id: @start_location.id,
-                     end_location_id: @end_location.id,
                      reason: ride_params[:reason])
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
-      @ride = Ride.new
       render "new"
       return
     else
@@ -85,13 +82,17 @@ class AdminRideController < ApplicationController
     location = save_location_error_handler(@end_location)
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
-      @ride = Ride.new
       render "new"
       return 
     else
       @end_location = location
     end
+<<<<<<< HEAD
     
+=======
+    @ride.start_location_id = @start_location.id
+    @ride.end_location_id = @end_location.id
+>>>>>>> master
     @ride.status = (organization.use_tokens ? 'approved' : 'pending')
     if @ride.save
       rider_choose_save_location
@@ -104,7 +105,6 @@ class AdminRideController < ApplicationController
       redirect_to admin_ride_path(@ride)
     else
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
-      @ride = Ride.new
       render 'new'
     end
   end

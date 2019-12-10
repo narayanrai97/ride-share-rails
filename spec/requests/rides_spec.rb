@@ -2,20 +2,19 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Rides, type: :request do
   #Drivers require a organization to assosiate with
-  let!(:organization) {create(:organization) }
+  let!(:organization) {create(:organization)}
   #Created a token to by pass login but had to include
   #token_created_at in the last day so it would function
   # radius is set to miles by geocode
-  let!(:driver) {create(:driver, organization_id: organization.id,
-     auth_token: "1234", radius: 5, is_active: true, token_created_at: Time.zone.now) }
+  let!(:driver) {create(:driver, organization_id: organization.id, auth_token: "1234",
+                 radius: 5, is_active: true, token_created_at: Time.zone.now)}
   let!(:driver2) {create(:driver, organization_id: organization.id,
-     auth_token: "4567",token_created_at: Time.zone.now) }
-    #This driver is to test when driver is inactived
+                  auth_token: "4567",token_created_at: Time.zone.now) }
+  #This driver is to test when driver is inactived
   let!(:driver3) {create(:driver, organization_id: organization.id,
-     auth_token: "1020", is_active: false, token_created_at: Time.zone.now)
-  }
-  let!(:rider){create(:rider)}
-  let!(:rider2){create(:rider, first_name: "ben", email: 'sample@sample.com')}
+                  auth_token: "1020", is_active: false, token_created_at: Time.zone.now)}
+  let!(:rider) {create(:rider)}
+  let!(:rider2) {create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
 
   # added a few more locations to test ride radius
@@ -27,38 +26,46 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:location6) {create(:location,  street:"945 Madison Ave", city: "New York", state: "NY", zip: "10021")}
   let!(:location7) {create(:location,  street:"201 W. Main st.", city: "Durham", state: "NC", zip: "27701")}
   # fake location to test when address doesnt exsits
-  let!(:location8) {create(:location,  street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111"
- )}
+  let!(:location8) {loc = FactoryBot.build(:location, street:"12345", city: "abndsjsk", state: "shkjslsjk", zip: "11111")
+                    loc.save(validate: false)
+                   }
 
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
-  let!(:ride){create(:ride,rider_id: rider.id,organization_id: organization.id,
-    start_location_id: location1.id, end_location_id: location1.id, status: "approved")}
-  let!(:ride1){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "scheduled",
-     start_location_id: location2.id, end_location_id: location2.id)}
-  let!(:ride2){create(:ride,rider_id: rider.id,organization_id: organization.id,
-    driver_id: driver.id,status: "picking-up",
-    start_location_id: location3.id, end_location_id: location3.id)}
-  let!(:ride3){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "scheduled",
-     start_location_id: location4.id, end_location_id: location4.id)}
-  let!(:ride4){create(:ride,rider_id: rider2.id,organization_id: organization.id,
-    driver_id: driver2.id,status: "scheduled",
-    start_location_id: location2.id, end_location_id: location2.id)}
-  let!(:ride5){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "scheduled",
-     start_location_id: location5.id, end_location_id: location5.id)}
-  let!(:ride6){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "scheduled",
-     start_location_id: location6.id, end_location_id: location1.id)}
-     # this ride test when ladditude is and longitude is nil
-  let!(:ride7){create(:ride,rider_id: rider.id,organization_id: organization.id,
-     driver_id: driver.id,status: "scheduled",
-     start_location_id: location7.id, end_location_id: location7.id)}
-  let!(:ride8){create(:ride,rider_id: rider.id,organization_id: organization.id,
-      driver_id: driver.id,status: "dropping-off",
-      start_location_id: location2.id, end_location_id: location2.id)}
+  let!(:ride) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+               start_location_id: location1.id, end_location_id: location1.id, status: "approved")}
 
+  let!(:ride1) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "scheduled",
+                start_location_id: location2.id, end_location_id: location2.id)}
+
+  let!(:ride2) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "picking-up",
+                start_location_id: location3.id, end_location_id: location3.id)}
+
+  let!(:ride3) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "scheduled",
+                start_location_id: location4.id, end_location_id: location4.id)}
+
+  let!(:ride4) {create(:ride, rider_id: rider2.id, organization_id: organization.id,
+                driver_id: driver2.id, status: "scheduled",
+                start_location_id: location2.id, end_location_id: location2.id)}
+
+  let!(:ride5) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "scheduled",
+                start_location_id: location5.id, end_location_id: location5.id)}
+
+  let!(:ride6) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "scheduled",
+                start_location_id: location6.id, end_location_id: location1.id)}
+
+  # this ride test when ladditude is and longitude is nil
+  let!(:ride7) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "scheduled",
+                start_location_id: location7.id, end_location_id: location7.id)}
+
+  let!(:ride8) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                driver_id: driver.id, status: "dropping-off",
+                start_location_id: location2.id, end_location_id: location2.id)}
 
   #Accepts a ride for the current logged in user.
   #This added the driver id to the ride and changes the status to scheduled
@@ -234,17 +241,13 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
 
     it "returns 404 when ride does not exsit" do
-      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location8.id
-        }
-      expect(response).to have_http_status(400)
+      get "/api/v1/rides/99999", headers: {"ACCEPT" => "application/json",  "Token" => "1234"} #ride_id 99999 doesn't exist
+      expect(response).to have_http_status(404)
     end
 
-     it "returns 400 when location latitude and longitude does not exsit" do
-      get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
-        location_id: location8.id
-        }
-      expect(response).to have_http_status(400)
+    it "returns 404 when location latitude and longitude does not exsit" do
+      get "/api/v1/locations/99999", headers: {"ACCEPT" => "application/json",  "Token" => "1234"} #location_id 99999 doesn't exist
+      expect(response).to have_http_status(404)
     end
 
     it "returns 400 when location does not exsit " do

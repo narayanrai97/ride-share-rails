@@ -39,7 +39,7 @@
   <div class="form-group offset-md-1 col-4">
 
     2. <%= form.label :pick_up_time %>
-    <%= form.datetime_local_field :pick_up_time,class: "form-control" %>
+    <%= form.text_field :pick_up_time, id: 'ride_pick_up_time' %>
   </div>
 
 </div>
@@ -70,10 +70,28 @@
     });
 
   <% end %>
+  <%if @ride.start_location_id.nil? %>
+    <%if @start_location.nil? %>
+      <% start_street = "" %>
+      <% start_city = "" %>
+      <% start_state = "" %>
+      <% start_zip = "" %>
+    <%else %>
+      <%start_street = @start_location.street %>
+      <%start_city = @start_location.city %>
+      <%start_state = @start_location.state %>
+      <%start_zip = @start_location.zip %>
+    <% end %>
+  <% else %>
+    <%start_street = @ride.start_location.street %>
+    <%start_city = @ride.start_location.city %>
+    <%start_state = @ride.start_location.state %>
+    <%start_zip = @ride.start_location.zip %>
+  <% end %>
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street, "Street" %>
-    <%= form.text_field :start_street, class: "form-control" %>
+    <%= form.text_field :start_street, value: start_street, class: "form-control" %>
   </div>
 </div>
 
@@ -83,17 +101,17 @@
 
     <div class="form-group offset-md-1 col-4">
       <%= form.label :start_city, "City" %>
-      <%= form.text_field :start_city, class: "form-control" %>
+      <%= form.text_field :start_city, value: start_city,  class: "form-control" %>
     </div>
 
     <div class="form-group col-4">
       <%= form.label :start_state, "State" %>
-      <%= form.text_field :start_state, class: "form-control" %>
+      <%= form.text_field :start_state, value: start_state, class: "form-control" %>
     </div>
 
     <div class="form-group col-2">
       <%= form.label :start_zip, "Zip" %>
-      <%= form.text_field :start_zip,class: "form-control" %>
+      <%= form.text_field :start_zip, value: start_city, class: "form-control" %>
        <div class= "start_location_checkbox">
          <h6>Save start location? <%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> </h6>
       </div>
@@ -127,29 +145,46 @@
     });
 
   <% end %>
-
+  <%if @ride.end_location_id.nil? %>
+    <%if @end_location.nil? %>
+      <% end_street = "" %>
+      <% end_city = "" %>
+      <% end_state = "" %>
+      <% end_zip = "" %>
+    <%else %>
+      <%end_street = @end_location.street %>
+      <%end_city = @end_location.city %>
+      <%end_state = @end_location.state %>
+      <%end_zip = @end_location.zip %>
+    <% end %>
+  <% else %>
+    <%end_street = @ride.end_location.street %>
+    <%end_city = @ride.end_location.city %>
+    <%end_state = @ride.end_location.state %>
+    <%end_zip = @ride.end_location.zip %>
+  <% end %>
 
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :end_street, "Street" %>
-    <%= form.text_field :end_street,class: "form-control" %>
+    <%= form.text_field :end_street, value: end_street, class: "form-control" %>
   </div>
 </div>
 
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
       <%= form.label :end_city, "City" %>
-      <%= form.text_field :end_city,class: "form-control" %>
+      <%= form.text_field :end_city, value: end_city, class: "form-control" %>
     </div>
 
     <div class="form-group col-4">
       <%= form.label :end_state, "State" %>
-      <%= form.text_field :end_state,class: "form-control" %>
+      <%= form.text_field :end_state,  value: end_state, class: "form-control" %>
     </div>
 
     <div class="form-group col-2">
       <%= form.label :end_zip, "Zip" %>
-      <%= form.text_field :end_zip,class: "form-control" %>
+      <%= form.text_field :end_zip, value: end_zip, class: "form-control" %>
        <div class = "end_location_checkbox">
          <h6>Save end location? <%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved" %></h6>
        </div>
@@ -181,3 +216,17 @@
 
 <% end %>
 </div>
+
+<script type="text/javascript">
+  const el = document.getElementById('ride_pick_up_time');
+  flatpickr(el, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+</script>

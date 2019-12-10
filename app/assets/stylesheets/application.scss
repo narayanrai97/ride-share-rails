@@ -10,8 +10,10 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
-
+ *= require flatpickr
+ *= require flatpickr/material_blue
  */
+
  $theme-colors: (
   "primary" : #17a2b8,
   "green" : #1EAA70,
@@ -434,4 +436,8 @@ th .dropdown-menu a {
 
 tr th.table-heads {
   padding-top: 20px;
+}
+
+.form-control[readonly] {
+  background-color: #FFF;
 }

@@ -7,12 +7,12 @@ RSpec.describe Api::V1::Locations, type: :request do
   #Created a token to by pass login but had to include
   #token_created_at in the last day so it would function
   let!(:driver) { FactoryBot.create(:driver, organization_id: organization.id,
-     auth_token: "1234",token_created_at: Time.zone.now) }
+                  auth_token: "1234", token_created_at: Time.zone.now)}
   let(:driver2) { FactoryBot.create(:driver, organization_id: organization.id,
-     auth_token: "5678",token_created_at: Time.zone.now) }
-     #To test locations I needed to create some locations and also some relationships
+                  auth_token: "5678", token_created_at: Time.zone.now)}
+  #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
-  let!(:location2){FactoryBot.create(:location, street: "1202 Dublin driver")}
+  let!(:location2){FactoryBot.create(:location, street: "1202 W Dublin St", city: "Chandler", state: "Az", zip: "85224")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id)}
   let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id)}
   let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id)}
@@ -23,13 +23,14 @@ RSpec.describe Api::V1::Locations, type: :request do
   it 'will create a location related to logged in user' do
 
     post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
-      params: {location:{street:"200 Front Street",
-      city:"Burlington",
-      state:"NC",
-      zip: "27215"}}
+      params: { location:
+                { street:"200 W Front St",
+                  city:"Burlington",
+                  state:"NC",
+                  zip: "27215"}}
       expect(response).to have_http_status(201)
       parsed_json = JSON.parse(response.body)
-      expect(parsed_json['location']['street']).to eq('200 Front Street')
+      expect(parsed_json['location']['street']).to eq('200 W Front St')
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27215")
@@ -65,19 +66,19 @@ RSpec.describe Api::V1::Locations, type: :request do
 
   #Give the api a location id and get back information for it
   #Needs to verify user owns location
-  it 'will return a location based on id passed ' do
+  it 'will return a location based on id passed' do
 
     get "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
 
       parsed_json = JSON.parse(response.body)
       expect(parsed_json['location']['street']).to eq('800 Park Offices Dr')
-      expect(parsed_json['location']['city']).to eq('Durham')
+      expect(parsed_json['location']['city']).to eq('Morrisville')
       expect(parsed_json['location']['state']).to eq('NC')
-      expect(parsed_json['location']['zip']).to eq( "27709")
+      expect(parsed_json['location']['zip']).to eq( "27560")
       expect(response).to have_http_status(200)
   end
 
-  it ' Updating a location with bad values should return an error message.' do
+  it 'Updates a location with bad values should return an error message.' do
     put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
       params: {location:{street:"2210 Front Street",
       city:"Burlington",
@@ -90,12 +91,12 @@ RSpec.describe Api::V1::Locations, type: :request do
       # puts parsed_json
   end
 
-     it 'returns a new address when a location is shared by two drivers but update by one driver' do
-    put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
-      params: {location:{street:"1052 Canell Street",
-      city:"Durham",
-      state:"NC",
-      zip: "27225"}}
+  it 'returns a new address when a location is shared by two drivers but update by one driver' do
+      put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: { location: { street:"1052 Canal St",
+                            city:"Durham",
+                            state:"NC",
+                            zip: "27701"}}
       expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
