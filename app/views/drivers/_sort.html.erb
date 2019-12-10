@@ -25,7 +25,7 @@
         <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
           <td><%= driver.first_name %></td>
           <td><%= driver.last_name %></td>
-          <td><%= driver.phone %></td>
+          <td><%= number_to_phone(driver.phone) %></td>
           <td><%= driver.email %></td>
           <td><%= driver.application_state %></td>
         </tr>
