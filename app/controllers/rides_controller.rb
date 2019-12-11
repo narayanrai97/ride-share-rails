@@ -16,7 +16,6 @@ class RidesController < ApplicationController
     unless RidePolicy.new(current_rider, @ride).show?
       raise Pundit::NotAuthorizedError
     end
-
     @start_location = Location.find(@ride.start_location_id)
     @end_location = Location.find(@ride.end_location_id)
   end
@@ -53,27 +52,39 @@ class RidesController < ApplicationController
         city: ride_params[:start_city],
         state: ride_params[:start_state],
         zip: ride_params[:start_zip]
-      )
-      @start_location = save_location_error_handler(@start_location)
-      return if @start_location.nil?
-
+       )
       @end_location = Location.new(
         street: ride_params[:end_street],
         city: ride_params[:end_city],
         state: ride_params[:end_state],
         zip: ride_params[:end_zip]
-      )
-      @end_location = save_location_error_handler(@end_location)
-      return if @end_location.nil?
-
+       )
       @ride = Ride.new(
         rider_id: current_rider.id,
         organization_id: current_rider.organization.id,
         pick_up_time: ride_params[:pick_up_time],
-        start_location_id: @start_location.id,
-        end_location_id: @end_location.id,
         reason: ride_params[:reason]
       )
+      location = save_location_error_handler(@start_location)
+      if location.nil?
+        flash.now[:alert] = @start_location.errors.full_messages.join("\n")
+        # @ride = Ride.new
+        render "new"
+        return
+      else
+        @start_location = location
+      end
+      location = save_location_error_handler(@end_location)
+      if location.nil?
+        flash.now[:alert] = @end_location.errors.full_messages.join("\n")
+        # @ride = Ride.new
+        render "new"
+        return
+      else
+        @end_location = location
+      end
+       @ride.start_location_id = @start_location.id
+       @ride.end_location_id = @end_location.id
       @ride.status = if current_rider.organization.use_tokens?
                        'approved'
                      else
@@ -170,23 +181,22 @@ class RidesController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    l_new = location.save_or_touch
-    if l_new.nil?
-      flash[:error] = location.errors.full_messages.join(' ')
-      render 'new'
+    if !location.validate 
+      return nil
     end
+    l_new = location.save_or_touch
     return l_new
   end
 
-  def update_location_error_handler(location)
-    l_new = !location.save_or_touch
-    if l_new.nil?
-      flash.now[:alert] = location.errors.full_messages.join("\n")
-      @ride = Ride.find(params[:id])
-      render 'edit'
-    end
-    return l_new
-  end
+  # def update_location_error_handler(location)
+  #   l_new = !location.save_or_touch
+  #   if l_new.nil?
+  #     flash.now[:alert] = location.errors.full_messages.join("\n")
+  #     @ride = Ride.find(params[:id])
+  #     render 'edit'
+  #   end
+  #   return l_new
+  # end
 
   def rider_choose_save_location
     if ride_params[:save_start_location] == 'saved'
