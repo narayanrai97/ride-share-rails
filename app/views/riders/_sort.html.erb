@@ -1,42 +1,36 @@
 <div class="container"><br>
+  <table class="table table-bordered table-hover">
+    <tr style="line-height: 28px;">
+      <th scope="col">First name</th>
+      <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to riders_path, class: "links" do %>
+                                                         <%= fa_icon "sort-up" %>
+                                                       <% end %>
+                                                       <%= link_to sort_down_path, class: "links" do %>
+                                                         <%= fa_icon "sort-down"%>
+                                                       <% end %></span></th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+    </tr>
 
-<!-- <h1 style="text-align:center">Riders</h1> -->
+    <% @riders.each do |rider| %>
+        <tr class="clickable-row", data-href='<%= rider_path(rider) %>'>
+          <td><%= rider.first_name %></td>
+          <td><%= rider.last_name %></td>
+          <td><%= number_to_phone(rider.phone) %></td>
+          <td><%= rider.email %></td>
+        </tr>
+    <% end %>
+  </table>
 
-<table class="table table-striped">
-  <tr style="line-height: 28px;">
-    <th scope="col">First name</th>
-    <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to riders_path, class: "links" do %>
-                                                       <%= fa_icon "sort-up" %>
-                                                     <% end %>
-                                                     <%= link_to sort_down_path, class: "links" do %>
-                                                       <%= fa_icon "sort-down"%>
-                                                     <% end %></span></th>
-    <th scope="col">Phone</th>
-    <th scope="col">Email</th>
-    <th scope="col"></th>
-    <th scope="col"></th>
-  </tr>
+  <%= paginate @riders %>
+  <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
+  <%= link_to 'New Rider', new_rider_path, class: "btn btn-success" %>
+</div>
 
-  <% @riders.each do |rider| %>
-      <tr>
-        <td><%= rider.first_name %></td>
-        <td><%= rider.last_name %></td>
-        <td><%= rider.phone %></td>
-        <td><%= rider.email %></td>
-        <td>
-          <%= link_to edit_rider_path(rider), class: "btn btn-sm btn-outline-success" do %>
-            <i class="fa fa-pencil-square-o">Edit</i>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to rider_path(rider), class: "btn btn-sm btn-outline-info" do %>
-            <i class="fa fa-eye">Show</i>
-          <% end %>
-        </td>
-      </tr>
-  <% end %>
-</table>
-
-<%= paginate @riders %>
-<%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-<%= link_to 'New Rider', new_rider_path, class: "btn btn-success" %>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
+</script>

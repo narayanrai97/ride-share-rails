@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table table-bordered">
   <tr style="line-height: 4px; background: yellow;">
     <th scope="col" class="table-heads">Pick Up Time</th>
     <th scope="col" class="table-heads">Driver</th>
@@ -18,7 +18,6 @@
       </div>
     </th>
     <th scope="col"></th>
-    <th scope="col"></th>
   </tr>
   <% if @rider.rides.blank? %>
     <tr>
@@ -37,8 +36,7 @@
           <td class="no-wrap"><%= ride.driver&.full_name %></td>
           <td><%= ride.reason %></td>
           <td><%= ride.status %></td>
-          <td></td>
-          <td class="my-buttons">
+          <td>
             <% if ride.status == 'pending' %>
               <%= link_to edit_admin_ride_path(ride), class: "btn btn-sm btn-outline-success" do %>
                 <i class="fa fa-pencil-square-o">Edit</i>

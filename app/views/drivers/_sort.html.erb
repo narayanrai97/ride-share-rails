@@ -2,7 +2,7 @@
 
   <!-- <h1 style="text-align: center">Drivers</h1> -->
 
-  <table class="table table-striped">
+  <table class="table table-bordered table-hover">
     <tr>
       <th scope="col">First name</th>
       <th scope="col">Last name</th>
@@ -18,28 +18,16 @@
           <%= link_to 'Rejected', drivers_path(application_state: "rejected") if current_user.organization.drivers.rejected.count > 0%>
         </div>
       </th>
-      <th scope="col"></th>
-      <th scope="col"></th>
     </tr>
 
     <% @drivers.each do |driver| %>
       <% if driver.organization_id == current_user.organization_id%>
-        <tr>
+        <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
           <td><%= driver.first_name %></td>
           <td><%= driver.last_name %></td>
-          <td><%= driver.phone %></td>
+          <td><%= number_to_phone(driver.phone) %></td>
           <td><%= driver.email %></td>
           <td><%= driver.application_state %></td>
-          <td>
-            <%= link_to edit_driver_path(driver), class: "btn btn-sm btn-outline-success" do %>
-              <i class="fa fa-pencil-square-o">Edit</i>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to driver_path(driver), class: "btn btn-sm btn-outline-info" do %>
-              <i class="fa fa-check-square">Review</i>
-            <% end %>
-          </td>
         </tr>
       <% end %>
     <% end %>
@@ -49,3 +37,11 @@
   <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
   <%= link_to 'New Driver', new_driver_path, class: "btn btn-success" %>
 </div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
+</script>

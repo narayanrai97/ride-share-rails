@@ -35,7 +35,7 @@ RSpec.feature 'Riders', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text admin.email
     click_link 'Riders'
-    click_link 'Show'
+    page.find(:css, ".clickable-row").click()
     expect(page).to have_text 'Rider Information'
     expect(page).to have_text rider.first_name
     display_phone = rider.phone[0..2] + '-' + rider.phone[3..5] + '-' + rider.phone[6..9]
