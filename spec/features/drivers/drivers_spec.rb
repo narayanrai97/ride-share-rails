@@ -53,7 +53,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome user@example.com!'
     click_link 'Drivers'
-    click_link 'Review'
+    page.find(:css, ".clickable-row").click()
     expect(page).to have_text 'Driver Information'
     expect(page).to have_text driver.first_name
     expect(page).to have_text driver.vehicles[0].car_make
@@ -67,7 +67,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome user@example.com!'
     click_link 'Drivers'
-    click_link 'Review'
+    page.find(:css, ".clickable-row").click()
     expect(page).to have_text 'Cars'
     click_link 'Add Car'
     expect(page).to have_text 'New Vehicle of'
@@ -97,8 +97,8 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome user@example.com!'
     click_link 'Drivers'
-    click_link 'Review'
-    click_link 'Edit Driver'
+    page.find(:css, ".clickable-row").click()
+    click_link 'Edit'
     expect(page).to have_text 'Update Driver'
   end
 
@@ -109,6 +109,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     signin('user@example.com', 'password')
     expect(page).to have_text 'Welcome user@example.com!'
     click_link 'Drivers'
+    page.find(:css, ".clickable-row").click()
     click_link 'Edit'
     expect(page).to have_text 'Update Driver'
   end
