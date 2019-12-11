@@ -68,7 +68,7 @@ class Location < ApplicationRecord
         self.city = (result.first.data["address_components"].select do |address_hash| 
           ((address_hash["types"] == ["locality", "political"]) || 
           (address_hash["types"] == ["neighborhood", "political"])) 
-          end).first["long_name"]
+          end).first["long_name"] 
         self.state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
         self.zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
       end
