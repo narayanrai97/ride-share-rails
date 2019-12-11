@@ -61,7 +61,14 @@ class Location < ApplicationRecord
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
         street_name = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first["short_name"]
         self.street = "#{street_number} #{street_name}"
-        self.city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["locality", "political"] || ["nieghborhood", "political"]}).first["long_name"]
+        suite_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["subpremise"]}).first
+        if !suite_number.nil?
+          self.street = self.street + " #" + suite_number["long_name"]
+        end
+        self.city = (result.first.data["address_components"].select do |address_hash| 
+          ((address_hash["types"] == ["locality", "political"]) || 
+          (address_hash["types"] == ["neighborhood", "political"])) 
+          end).first["long_name"]
         self.state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
         self.zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
       end
