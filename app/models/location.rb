@@ -55,7 +55,7 @@ class Location < ApplicationRecord
   def location_must_be_found
     if street.present? && city.present? && state.present? && zip.present?
       result = Geocoder.search(self.full_address)
-      if !(result.length == 0 || result.first.data["partial_match"]).nil?
+      if result.length == 0 || !result.first.data["partial_match"].nil?
         errors[:base] << "The location could not be found."
       else
         street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
