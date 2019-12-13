@@ -8,12 +8,9 @@
             <strong class="text-white">Update Rider</strong>
         </h5>
         <%= render 'form' %>
-        <%= render 'bulk_form' %>
-        <div class="row">
-          <div  class="form-group offset-md-1 col-md-10">
-            <%= link_to 'Back', riders_path, class: "btn btn-primary" %>
-          </div>
-        </div>
-
+        <% if current_user.organization.use_tokens? %>
+          <%= render 'bulk_form' %>
+        <% end %><br/>
     </div>
+
 </div>
