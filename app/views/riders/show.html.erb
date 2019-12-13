@@ -12,7 +12,11 @@
         <% end %>
       <% end %>
     </h3>
-    <%= render 'rider_info' %>
+    <% if current_user.organization.use_tokens? %>
+      <%= render 'rider_info_with_tokens' %>
+    <% else %>
+      <%= render 'rider_info' %>
+    <% end %>
   </div>
 
   <div class="card3">
