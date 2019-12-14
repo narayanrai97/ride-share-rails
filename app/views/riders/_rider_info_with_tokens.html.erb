@@ -1,13 +1,13 @@
 <div class="ml-5">
   <div class="row">
     <div class="col-md border-top border-bottom">
-      <strong>First name:</strong>
-      <%= @rider.first_name %>
+      <strong>Name:</strong>
+      <%= @rider.full_name %>
     </div>
 
     <div class="col-md border-top border-bottom">
-      <strong>Last name:</strong>
-      <%= @rider.last_name %>
+      <strong>Email:</strong>
+      <%= @rider.email %>
     </div>
   </div>
   <div class="row">
@@ -16,8 +16,11 @@
       <%= number_to_phone(@rider.phone) %>
     </div>
     <div class="col-md border-top border-bottom">
-        <strong>Email:</strong>
-        <%= @rider.email %>
+      <strong>Valid tokens:</strong>
+      <%= @rider.valid_tokens_count %>
+      <%= link_to edit_rider_path(@rider), class: "btn btn-sm btn-outline-success", id: "my-button" do %>
+        <i class="fa fa-tasks"> Manage</i>
+      <% end %>
     </div>
   </div>
   <div class="row">
