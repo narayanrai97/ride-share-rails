@@ -78,7 +78,6 @@ class AdminRideController < ApplicationController
     else
       @start_location = location
     end
-
     location = save_location_error_handler(@end_location)
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
@@ -89,7 +88,9 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    @ride.status = (organization.use_tokens ? 'approved' : 'pending')
+    byebug
+    @ride.status = 'approved'
+    byebug
     if @ride.save
       rider_choose_save_location
       only_15_location_saves(organization)
