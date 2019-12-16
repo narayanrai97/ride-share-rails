@@ -88,9 +88,7 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    byebug
     @ride.status = 'approved'
-    byebug
     if @ride.save
       rider_choose_save_location
       only_15_location_saves(organization)
