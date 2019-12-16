@@ -32,13 +32,13 @@ module Api
         end_time = params[:end]
 
         if start_time != nil and end_time != nil
-          rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
+          rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time).order(:pick_up_time)
           if rides.length == 0
             status 404
             return ""
           end
         else
-          rides = Ride.where(organization_id: driver.organization_id)
+          rides = Ride.where(organization_id: driver.organization_id).order(:pick_up_time)
           if rides.length == 0
             status 404
             return ""
@@ -49,14 +49,14 @@ module Api
         # status = Array["pending", "scheduled"]
 
         if status != nil
-          rides = rides.where(status: status)
+          rides = rides.where(status: status).order(:pick_up_time)
           if rides.length == 0
             status 404
             return ""
           end
         end
         if params[:driver_specific] == true
-          rides = rides.where(driver_id: driver.id)
+          rides = rides.where(driver_id: driver.id).order(:pick_up_time)
           if rides.length == 0
             status 404
             return ""
