@@ -13,32 +13,30 @@ module Api
       desc "Return all rides"
       params do
         optional :start, type: DateTime, desc: "Start date for rides"
-        optional :end, type: String, desc: "End date for rides"
-        optional :status, type: Array[String], desc: "String of status wanted"
+        optional :end, type: DateTime, desc: "End date for rides"
+        optional :status, type: Array[String], except_values: ['pending'], desc: "String of status wanted"
         optional :driver_specific, type: Boolean, desc: "Boolean if rides are driver specific"
         #Missing functionality for radius feature currently
         optional :radius, type: Boolean, desc: "Boolean if rides are within radius"
         optional :location_id, type: Integer, desc: "location to use for radius"
       end
       get "rides", root: :rides do
-
-        driver = current_driver
-         if driver.is_active == false
+         if current_driver.is_active == false
            status 401
            return "Not Authorized"
         end
 
+        status = ["scheduled", "picking-up", "dropping-off", "completed", "canceled"]
+        approved_rides = Ride.where(organization_id: current_driver.organization_id, status: "approved")
+        drivers_rides = Ride.where(organization_id: current_driver.organization_id, status: status, driver_id: current_driver.id)
+        rides = approved_rides.or(drivers_rides).order(:pick_up_time)
+        # rides = @rides
+
         start_time = params[:start]
         end_time = params[:end]
 
-        if start_time != nil and end_time != nil
-          rides = Ride.where(organization_id: driver.organization_id).where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
-          if rides.length == 0
-            status 404
-            return ""
-          end
-        else
-          rides = Ride.where(organization_id: driver.organization_id)
+        if start_time.present? and end_time.present?
+          rides = rides.where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
           if rides.length == 0
             status 404
             return ""
@@ -47,16 +45,22 @@ module Api
 
         status = params[:status]
         # status = Array["pending", "scheduled"]
+        if status.present?
+          if status == ["approved"]
+            rides = rides.where(organization_id: current_driver.organization_id, status: status).order(:pick_up_time)
+          else
+            rides = rides.where(status: status, driver_id: current_driver.id).order(:pick_up_time)
+          end
 
-        if status != nil
-          rides = rides.where(status: status)
           if rides.length == 0
             status 404
             return ""
           end
         end
+
+
         if params[:driver_specific] == true
-          rides = rides.where(driver_id: driver.id)
+          rides = rides.where(driver_id: current_driver.id).order(:pick_up_time)
           if rides.length == 0
             status 404
             return ""
@@ -76,7 +80,7 @@ module Api
           end
           if location != nil
             if location.latitude != nil && location.longitude != nil
-              rides_near = rides.select {|ride| ride.is_near?([location.latitude, location.longitude],driver.radius ) }
+              rides_near = rides.select {|ride| ride.is_near?([location.latitude, location.longitude], current_driver.radius ) }
               if rides_near.length > 0
                 status 200
                 return rides_near
@@ -93,6 +97,7 @@ module Api
             return "bad requested"
           end
         end
+
         status 200
         return rides
       end
