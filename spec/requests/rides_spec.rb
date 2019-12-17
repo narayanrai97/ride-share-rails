@@ -201,7 +201,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     #Returns a 404 error when there is no status
     it 'will return a 404 error when status is nil' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: nil}
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: []}
       #should only have scheduled result, only should return one object
       expect(response).to have_http_status(404)
     end
