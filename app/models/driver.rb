@@ -11,15 +11,18 @@ class Driver < ApplicationRecord
   has_many :vehicles ,dependent: :destroy
   has_many :locations, -> { distinct }, through: :location_relationships
 
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   scope :active, -> { where(is_active: true) }
   scope :pending, -> { where(application_state: "pending") }
   scope :accepted, -> { where(application_state: "accepted") }
   scope :rejected, -> { where(application_state: "rejected") }
+  before_save :lets_cap, only: [:new, :create]
 
-
+  def lets_cap
+     self.first_name = self.first_name.capitalize
+     self.last_name = self.last_name.capitalize
+  end
   def full_name
     "#{first_name} #{last_name}"
   end
