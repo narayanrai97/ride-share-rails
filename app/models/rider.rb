@@ -10,8 +10,14 @@ class Rider < ApplicationRecord
 
   validates :first_name, :last_name, :phone, :organization, presence: true
   validates :phone, length: { is: 10 }, numericality: true
-
   scope :active, -> { where(is_active: true) }
+  before_save :lets_cap, only: [:new, :create]
+
+
+  def lets_cap
+    self.first_name = self.first_name.capitalize
+    self.last_name =  self.last_name.capitalize
+  end
 
   def full_name
     first_name + " " + last_name

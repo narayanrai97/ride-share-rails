@@ -36,7 +36,8 @@ class RidersController < ApplicationController
   end
 
   def index
-    @riders = current_user.organization.riders.order(last_name: :desc)
+    @riders = current_user.organization.riders.order(:first_name, :last_name)
+    # byebug
     @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(10)
   end
 
@@ -56,7 +57,7 @@ class RidersController < ApplicationController
       render 'new'
     end
   end
-  
+
   # def locations
   #   @rider = Rider.find params[:id]
   #   render layout: false

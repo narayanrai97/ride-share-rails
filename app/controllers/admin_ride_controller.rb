@@ -32,7 +32,7 @@ class AdminRideController < ApplicationController
              elsif params[:status] == 'completed'
                current_user.organization.rides.completed
              else
-               current_user.organization.rides
+               current_user.organization.rides.sort_by{|ride| ride.pick_up_time}
              end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
