@@ -31,7 +31,7 @@ class DriversController < ApplicationController
     elsif params[:application_state]== "rejected"
       @drivers = current_user.organization.drivers.rejected.order(last_name: :desc)
     else
-      @drivers = current_user.organization.drivers.order(last_name: :desc)
+      @drivers = current_user.organization.drivers.order(:last_name, :first_name)
     end
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
   end
