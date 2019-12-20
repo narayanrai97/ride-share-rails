@@ -12,7 +12,7 @@ class AdminRideController < ApplicationController
   end
 
   def show
-    @ride = Ride.find(params[:id])
+    @ride = Rider.find(params[:id])
     authorize @ride
   end
 
@@ -35,6 +35,12 @@ class AdminRideController < ApplicationController
                current_user.organization.rides
              end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
+    # byebug
+    # ride_join = Ride.joins(:rider).where(rider_id: rider.id)
+
+    @q =Ride.joins(:rider).ransack(params[:q])
+    # byebug select("riders.first_name", "rides.organization_id", "rides.drivers")
+    @search = @q.result
   end
 
   def edit
@@ -180,7 +186,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
                                  :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
