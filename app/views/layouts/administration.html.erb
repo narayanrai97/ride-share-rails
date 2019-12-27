@@ -46,11 +46,7 @@
           <% end %>
         </div>
       </div>
-    </nav>
-
-
-
-
+    </nav><br/>
 
 
     <% if notice %>
@@ -60,7 +56,9 @@
       <p class="alert alert-danger"><%= alert %></p>
     <% end %>
 
-    <%= yield %>
+    <%= yield %><br/>
+
+    <%= render 'layouts/footer' %>
 
   </body>
 </html>
