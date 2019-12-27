@@ -28,6 +28,7 @@
    background-color: orange;
  }
 
+
 body {
   width: 100%;
   position: absolute;
@@ -41,6 +42,27 @@ body {
   width: 100%;
   position: absolute;
   height: 100%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.content {
+  padding: 20px;
+  min-height: 100%;
+  margin: 0 auto -1px;
+}
+
+.flash-messages {
+  padding-top: 4px;
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+.new-btn {
+  width: 100%;
 }
 
 .login-menu {
