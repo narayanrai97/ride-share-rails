@@ -47,8 +47,10 @@
 </table>
 
 <%= paginate @rides %>
-<%= link_to 'Back', :back, class: "btn btn-primary" %>
-<%= link_to 'New Ride', new_ride_path, class: "btn btn-success" %>
+<!-- < link_to 'Back', :back, class: "btn btn-primary" %> -->
+<%= link_to new_ride_path, class: "btn btn-success new-btn" do %>
+  <i class="fa fa-plus"> New Ride</i>
+<% end %>
 
 </div>
 
