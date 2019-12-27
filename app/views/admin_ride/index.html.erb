@@ -61,10 +61,10 @@
     <% end %>
   </table>
 
-  <%= paginate @rides %>
   <%= link_to new_admin_ride_path, class: "btn btn-success new-btn" do %>
     <i class="fa fa-plus"> New Ride</i>
-  <% end %>
+  <% end %><br/><br/>
+  <%= paginate @rides %>
 
 </div>
 

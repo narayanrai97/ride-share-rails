@@ -1,57 +1,54 @@
 <div class="container"><br>
   <p align="right">Logged in as <%= current_rider.full_name %></p>
 
-<!-- <h1>Rides</h1> -->
-
-<table class="table table-bordered table-hover">
-  <tr class="border-bot">
-    <th scope="col">Pick Up Time</th>
-    <th scope="col">Start Location</th>
-    <th scope="col">Driver</th>
-    <th scope="col">Reason</th>
-    <th scope="col" class="row-height">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Status
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <%= link_to 'Approved', rides_path(status: "approved") %>
-        <%= link_to 'Canceled', rides_path(status: "canceled") %>
-        <%= link_to 'Pending', rides_path(status: "pending") %>
-        <%= link_to 'Scheduled', rides_path(status: "scheduled") %>
-        <%= link_to 'Picking Up', rides_path(status: "picking-up") %>
-        <%= link_to 'Dropping Off', rides_path(status: "dropping-off") %>
-        <%= link_to 'Completed', rides_path(status: "completed") %>
-      </div>
-    </th>
-    <th scope="col"></th>
-  </tr>
-
-  <% @rides.each do |ride| %>
-    <% if ride.rider == current_rider%>
-    <tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
-      <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " @ " + "%I:%M %p") %></td>
-      <td class="no-wrap"><%= ride.start_location&.full_address %></td>
-      <td class="no-wrap"><%= ride.driver&.full_name %></td>
-      <td><%= ride.reason %></td>
-      <td><%= ride.status %></td>
-      <td>
-        <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
-          <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
-            <i class="fa fa-ban">Cancel</i>
-          <% end %>
-        <% end %>
-      </td>
+  <table class="table table-bordered table-hover">
+    <tr class="border-bot">
+      <th scope="col">Pick Up Time</th>
+      <th scope="col">Start Location</th>
+      <th scope="col">Driver</th>
+      <th scope="col">Reason</th>
+      <th scope="col" class="row-height">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Status
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to 'Approved', rides_path(status: "approved") %>
+          <%= link_to 'Canceled', rides_path(status: "canceled") %>
+          <%= link_to 'Pending', rides_path(status: "pending") %>
+          <%= link_to 'Scheduled', rides_path(status: "scheduled") %>
+          <%= link_to 'Picking Up', rides_path(status: "picking-up") %>
+          <%= link_to 'Dropping Off', rides_path(status: "dropping-off") %>
+          <%= link_to 'Completed', rides_path(status: "completed") %>
+        </div>
+      </th>
+      <th scope="col"></th>
     </tr>
+
+    <% @rides.each do |ride| %>
+      <% if ride.rider == current_rider%>
+      <tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
+        <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " @ " + "%I:%M %p") %></td>
+        <td class="no-wrap"><%= ride.start_location&.full_address %></td>
+        <td class="no-wrap"><%= ride.driver&.full_name %></td>
+        <td><%= ride.reason %></td>
+        <td><%= ride.status %></td>
+        <td>
+          <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
+            <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
+              <i class="fa fa-ban">Cancel</i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
     <% end %>
-  <% end %>
-</table>
+  </table>
 
-<%= paginate @rides %>
-<!-- < link_to 'Back', :back, class: "btn btn-primary" %> -->
-<%= link_to new_ride_path, class: "btn btn-success new-btn" do %>
-  <i class="fa fa-plus"> New Ride</i>
-<% end %>
 
+  <%= link_to new_ride_path, class: "btn btn-success new-btn" do %>
+    <i class="fa fa-plus"> New Ride</i>
+  <% end %><br/><br/>
+  <%= paginate @rides %>
 </div>
 
 <script type="text/javascript">

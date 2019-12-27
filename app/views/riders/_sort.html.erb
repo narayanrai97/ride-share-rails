@@ -22,10 +22,11 @@
     <% end %>
   </table>
 
-  <%= paginate @riders %>
   <%= link_to new_rider_path, class: "btn btn-success new-btn" do %>
     <i class="fa fa-plus"> New Rider</i>
-  <% end %>
+  <% end %><br/><br/>
+  <%= paginate @riders %>
+
 </div>
 
 <script type="text/javascript">
