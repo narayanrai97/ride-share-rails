@@ -141,7 +141,13 @@
   <!-- Footer Links -->
 
   <!-- Copyright -->
-  <div class="footer-copyright text-center text-black-50 py-3">Copyright © 2019 Code the Dream . All Rights Reserved
+  <div class="footer-copyright text-center text-black-50 py-3">
+    <!-- Copyright © 2019 Code the Dream . All Rights Reserved -->
+    &copy; <%= copyright_notice_year_range(2014) %> <%= link_to "Code the Dream", "https://www.codethedream.org/", class: "copyright"%> · All Rights Reserved<br/>
+    <!-- <p> -->
+      <%= link_to "Privacy Policy", "#!", class: "pp-tac" %> ·
+      <%= link_to "Terms and Conditions", "#!", class: "pp-tac" %>
+    <!-- </p> -->
   </div>
 
 </footer>

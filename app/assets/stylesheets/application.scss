@@ -112,7 +112,7 @@ html, body {
 
 .bg-light {
   background-color: #ff8262 !important;
-  line-height: 2.5 !important;
+  line-height: 3.0 !important;
 }
 
 .sessions a {
@@ -488,4 +488,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .white-icon {
   color: white;
+}
+
+.copyright {
+  color: inherit;
+}
+
+.pp-tac {
+  font-size: 10px;
+  color: inherit;
 }
