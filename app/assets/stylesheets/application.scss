@@ -112,7 +112,7 @@ html, body {
 
 .bg-light {
   background-color: #ff8262 !important;
-  line-height: 3.0 !important;
+  line-height: 2.5 !important;
 }
 
 .sessions a {
@@ -468,4 +468,24 @@ tr th.table-heads {
 
 .footer-copyright {
   background-color: rgba(0,0,0,0.2);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+.teal.accent-3 {
+    background-color: #1de9b6 !important;
+}
+
+.dark-grey-text {
+    color: #4f4f4f !important;
+}
+
+.font-small {
+    font-size: .9rem;
+}
+
+.white-icon {
+  color: white;
 }
