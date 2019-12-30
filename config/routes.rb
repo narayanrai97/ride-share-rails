@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'pages/privacy_policy'
+  get 'pages/terms_and_conditions'
   resources :drivers do
     resources :vehicles, shallow: true
     put :accept
@@ -55,6 +57,8 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
+  get '/privacy_policy' => 'pages#privacy_policy'
+  get '/terms_and_conditions' => 'pages#terms_and_conditions'
 
   resources :rides do
     member do

@@ -62,10 +62,9 @@
       <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
 
         <!-- Content -->
-        <h6 class="text-uppercase font-weight-bold"><a href="https://www.codethedream.org/" style="color:inherit">Code the Dream</a></h6>
+        <h6 class="text-uppercase font-weight-bold"><a href="https://www.codethedream.org/" style="color:inherit">Community Rideshare Network</a></h6>
         <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-        <p>Code the Dream recognizes young people from minority and immigrant backgrounds have
-          great ideas and will play a huge part in our 21st century economy.</p>
+        <p>It is an innovative ride sharing app to help organizations manage coordination of volunteer drivers for people unable to drive themselves. It’s like free Uber, for those who need it most.</p>
 
       </div>
       <!-- Grid column -->
@@ -74,21 +73,20 @@
       <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
         <!-- Links -->
-        <h6 class="text-uppercase font-weight-bold">Services</h6>
+        <% if current_user %>
+          <h6 class="text-uppercase font-weight-bold">Admins</h6>
+        <% elsif current_rider %>
+          <h6 class="text-uppercase font-weight-bold">Riders</h6>
+        <% end %>
         <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/portfolio/">Portfolio</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/services/">Need an App?</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/volunteer-opportunities/">Volunteer Opportunities</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/contact-us/">Contact Us</a>
-        </p>
-
+        <% if current_user %>
+          <p><%= link_to "Add Drivers", new_driver_path, class: "dark-grey-text" %></p>
+          <p><%= link_to "Add Riders", new_rider_path, class: "dark-grey-text" %></p>
+          <p><%= link_to "Request a Ride?", new_admin_ride_path, class: "dark-grey-text" %></p>
+        <% elsif current_rider %>
+          <p><%= link_to "Need a Ride?", new_ride_path, class: "dark-grey-text" %></p>
+          <p><%= link_to "Sign out", destroy_rider_session_path, method: :delete, class: "dark-grey-text"%></p>
+        <% end %>
       </div>
       <!-- Grid column -->
 
@@ -98,18 +96,11 @@
         <!-- Links -->
         <h6 class="text-uppercase font-weight-bold">Useful links</h6>
         <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-        <p>
-          <a class="dark-grey-text" href="/">My Account</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/category/news/">In the Media</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/blog/">Blog</a>
-        </p>
-        <p>
-          <a class="dark-grey-text" href="https://www.codethedream.org/donate/">Donate</a>
-        </p>
+        <p><%= link_to "Blog", "#", class: "dark-grey-text" %></p>
+        <p><%= link_to "Support", new_rider_path, class: "dark-grey-text" %></p>
+        <% if current_user %>
+          <p><%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "dark-grey-text" %></p>
+        <% end %>
 
       </div>
       <!-- Grid column -->
@@ -128,8 +119,6 @@
           <i class="fa fa-envelope mr-3"></i><a href="mailto:info@codethedream.org" style="color:inherit">info@codethedream.org</a></p>
         <p>
           <i class="fa fa-phone mr-3"></i> <a href="tel:+ 01 919 886 6075" style="color:inherit">+ 01 919 886 6075</a></p>
-        <p>
-          <i class="fa fa-print mr-3"></i> <a href="tel:+ 01 919 886 6075" style="color:inherit">+ 01 919 886 6075</a></p>
 
       </div>
       <!-- Grid column -->
@@ -145,8 +134,8 @@
     <!-- Copyright © 2019 Code the Dream . All Rights Reserved -->
     &copy; <%= copyright_notice_year_range(2014) %> <%= link_to "Code the Dream", "https://www.codethedream.org/", class: "copyright"%> · All Rights Reserved<br/>
     <!-- <p> -->
-      <%= link_to "Privacy Policy", "#!", class: "pp-tac" %> ·
-      <%= link_to "Terms and Conditions", "#!", class: "pp-tac" %>
+      <%= link_to "Privacy Policy", privacy_policy_path, class: "pp-tac" %> ·
+      <%= link_to "Terms and Conditions", terms_and_conditions_path, class: "pp-tac" %>
     <!-- </p> -->
   </div>
 
