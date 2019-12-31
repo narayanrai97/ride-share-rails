@@ -10,6 +10,7 @@
   </head>
 
   <body>
+
     <div class="flash-messages">
       <% if notice %>
         <p class="alert alert-success"><%= notice %></p>
@@ -21,6 +22,9 @@
 
     <div class="content">
       <%= yield %>
+    </div>
+    <div class="footer">
+      <%= render 'layouts/footer' %>
     </div>
 
   </body>
