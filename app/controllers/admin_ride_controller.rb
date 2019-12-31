@@ -38,9 +38,9 @@ class AdminRideController < ApplicationController
     # byebug
     # ride_join = Ride.joins(:rider).where(rider_id: rider.id)
 
-    @q =Ride.joins(:rider).ransack(params[:q])
+    @quary =Ride.joins(:rider).ransack(params[:q])
     # byebug select("riders.first_name", "rides.organization_id", "rides.drivers")
-    @search = @q.result
+    @search = @quary.result
   end
 
   def edit

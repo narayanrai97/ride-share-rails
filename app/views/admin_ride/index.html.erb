@@ -4,10 +4,10 @@
 
 <table class="table table-bordered table-hover">
   <tr>
-    <th scope="col"><%= sort_link @q, :rider_first_name, "Rider", default_order: :desc %></th>
-    <th scope="col"><%= sort_link @q, :driver, default_order: :desc %></th>
-    <th scope="col"><%= sort_link @q, :pick_up_time, default_order: :desc %></th>
-    <th scope="col"><%= sort_link @q, :reason, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :rider_first_name, "Rider", default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :driver, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :pick_up_time, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :reason, default_order: :desc %></th>
     <th scope="col" class="row-height">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
