@@ -164,10 +164,10 @@ RSpec.describe Api::V1::Rides, type: :request do
       expect(response).to have_http_status(404)
     end
 
-     it 'will return a 404 error when organization is nil!' do
+    it 'will return a 404 error when organization is nil!' do
       Ride.destroy_all
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{
-        organization_id: nil
+        organization_id: nil, status: ["approved", "scheduled", "picking-up", "dropping-off", "completed", "canceled"]
       }
       expect(response).to have_http_status(404)
     end
@@ -201,7 +201,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     #Returns a 404 error when there is no status
     it 'will return a 404 error when status is nil' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: nil}
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: []}
       #should only have scheduled result, only should return one object
       expect(response).to have_http_status(404)
     end
@@ -228,9 +228,10 @@ RSpec.describe Api::V1::Rides, type: :request do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
         location_id: location.id
       }
+# byebug
       parsed_json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(parsed_json['rides'].count).to eq(5)
+      expect(parsed_json['rides'].count).to eq(4)
     end
 
     it "returns 404 when location does not exsit" do
