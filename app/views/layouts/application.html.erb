@@ -10,6 +10,9 @@
   </head>
 
   <body>
+    <div class="header">
+      <%= render 'layouts/header' %>
+    </div>
 
     <div class="flash-messages">
       <% if notice %>
@@ -23,6 +26,7 @@
     <div class="content">
       <%= yield %>
     </div>
+
     <div class="footer">
       <%= render 'layouts/footer' %>
     </div>
