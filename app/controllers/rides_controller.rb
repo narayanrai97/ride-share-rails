@@ -39,6 +39,8 @@ class RidesController < ApplicationController
                current_rider.rides
              end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
+    @quary = Ride.ransack(params[:id])
+    @search = @quary.result
   end
 
   def create
@@ -181,7 +183,7 @@ class RidesController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    if !location.validate 
+    if !location.validate
       return nil
     end
     l_new = location.save_or_touch
