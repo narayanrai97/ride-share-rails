@@ -181,7 +181,7 @@ class RidesController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
-    if !location.validate 
+    if !location.validate
       return nil
     end
     l_new = location.save_or_touch
