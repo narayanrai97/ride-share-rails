@@ -4,10 +4,10 @@
 
 <table class="table table-bordered table-hover">
   <tr>
-    <th scope="col">Rider</th>
-    <th scope="col">Driver</th>
-    <th scope="col">Pick Up Time</th>
-    <th scope="col">Reason</th>
+    <th scope="col"><%= sort_link @quary, :rider_first_name, "Rider", default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :driver, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :pick_up_time, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :reason, default_order: :desc %></th>
     <th scope="col" class="row-height">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
@@ -25,7 +25,7 @@
     <th scope="col"></th>
   </tr>
 
-  <% @rides.each do |ride| %>
+  <% @search.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
       <tr class='clickable-row', data-href='<%=admin_ride_path(ride)%>'>
         <td class="no-wrap"><%= ride.rider.full_name %></td>
