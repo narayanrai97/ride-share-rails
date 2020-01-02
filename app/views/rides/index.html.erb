@@ -1,42 +1,43 @@
 <div class="container"><br>
   <p align="right">Logged in as <%= current_rider.full_name %></p>
 
-  <table class="table table-bordered table-hover">
-    <tr class="border-bot">
-      <th scope="col">Pick Up Time</th>
-      <th scope="col">Start Location</th>
-      <th scope="col">Driver</th>
-      <th scope="col">Reason</th>
-      <th scope="col" class="row-height">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Status
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to 'Approved', rides_path(status: "approved") %>
-          <%= link_to 'Canceled', rides_path(status: "canceled") %>
-          <%= link_to 'Pending', rides_path(status: "pending") %>
-          <%= link_to 'Scheduled', rides_path(status: "scheduled") %>
-          <%= link_to 'Picking Up', rides_path(status: "picking-up") %>
-          <%= link_to 'Dropping Off', rides_path(status: "dropping-off") %>
-          <%= link_to 'Completed', rides_path(status: "completed") %>
-        </div>
-      </th>
-      <th scope="col"></th>
-    </tr>
+<!-- <h1>Rides</h1> -->
 
-    <% @rides.each do |ride| %>
-      <% if ride.rider == current_rider%>
-      <tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
-        <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " @ " + "%I:%M %p") %></td>
-        <td class="no-wrap"><%= ride.start_location&.full_address %></td>
-        <td class="no-wrap"><%= ride.driver&.full_name %></td>
-        <td><%= ride.reason %></td>
-        <td><%= ride.status %></td>
-        <td>
-          <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
-            <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
-              <i class="fa fa-ban">Cancel</i>
-            <% end %>
+<table class="table table-bordered table-hover">
+  <tr class="border-bot">
+    <th scope="col"><%= sort_link @quary, :pick_up_time, default_order: :desc %></th>
+    <th scope="col">Start Location</th>
+    <th scope="col"><%= sort_link @quary, :driver, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @quary, :reason, default_order: :desc %></th>
+    <th scope="col" class="row-height">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Status
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <%= link_to 'Approved', rides_path(status: "approved") %>
+        <%= link_to 'Canceled', rides_path(status: "canceled") %>
+        <%= link_to 'Pending', rides_path(status: "pending") %>
+        <%= link_to 'Scheduled', rides_path(status: "scheduled") %>
+        <%= link_to 'Picking Up', rides_path(status: "picking-up") %>
+        <%= link_to 'Dropping Off', rides_path(status: "dropping-off") %>
+        <%= link_to 'Completed', rides_path(status: "completed") %>
+      </div>
+    </th>
+    <th scope="col"></th>
+  </tr>
+
+  <% @search.each do |ride| %>
+    <% if ride.rider == current_rider%>
+    <tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
+      <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " @ " + "%I:%M %p") %></td>
+      <td class="no-wrap"><%= ride.start_location&.full_address %></td>
+      <td class="no-wrap"><%= ride.driver&.full_name %></td>
+      <td><%= ride.reason %></td>
+      <td><%= ride.status %></td>
+      <td>
+        <% if ['pending', 'approved', 'scheduled'].include? ride.status %>
+          <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
+            <i class="fa fa-ban">Cancel</i>
           <% end %>
         </td>
       </tr>
