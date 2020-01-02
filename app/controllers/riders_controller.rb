@@ -107,7 +107,7 @@ class RidersController < ApplicationController
 
   private
     def rider_params
-      params.require(:rider).permit(:first_name, :last_name, :phone, :email, :password, :password_confirmation)
+      params.require(:rider).permit(:first_name, :last_name, :phone, :email, :notes, :password, :password_confirmation)
     end
 
     def user_not_authorized
