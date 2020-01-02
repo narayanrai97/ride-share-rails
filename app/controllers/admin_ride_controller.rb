@@ -12,7 +12,7 @@ class AdminRideController < ApplicationController
   end
 
   def show
-    @ride = Rider.find(params[:id])
+    @ride = Ride.find(params[:id])
     authorize @ride
   end
 
