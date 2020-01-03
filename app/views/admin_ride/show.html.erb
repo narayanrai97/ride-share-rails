@@ -38,6 +38,18 @@
     <%= @ride.status %>
   </p>
 
+  <p>
+    <strong>Round trip?</strong>
+    <%= @ride.round_trip %>
+  </p>
+
+  <p>
+    <% if @ride.round_trip? %>
+      <strong>Expected Wait time:</strong>
+      <%= @ride.expected_wait_time %> minutes
+    <% end %>
+  </p>
+
   <%= link_to 'Back', admin_ride_index_path, class: "btn btn-outline-primary" %>
   <%= link_to 'Edit', edit_admin_ride_path(@ride), class: "btn btn-outline-success" %>
 </div>
