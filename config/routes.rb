@@ -11,8 +11,6 @@ devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"
 
   devise_scope :driver do
     get 'ascending_sort' => 'drivers#ascending_sort'
-
-      # get 'password_reset' => 'driver#password_reset'
   end
 
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
