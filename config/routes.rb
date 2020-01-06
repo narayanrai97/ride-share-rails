@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
   resources :drivers do
     resources :vehicles, shallow: true
     put :accept
@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   devise_scope :driver do
     get 'ascending_sort' => 'drivers#ascending_sort'
+
+      # get 'password_reset' => 'driver#password_reset'
   end
 
   devise_for :users, skip: [:registrations],path: 'users', controllers: {sessions: "users/sessions"}
@@ -25,7 +27,6 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, controllers: {registrations: "organizations/registrations"}
-  devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
   resources :riders do

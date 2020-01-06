@@ -124,6 +124,11 @@ class DriversController < ApplicationController
     redirect_to request.referrer || drivers_path
   end
 
+  def reset_password
+      @driver = Driver.find(params[:id])
+      render "devise/password/edit"
+  end
+
   private
   def driver_params
     params.require(:driver).permit(:first_name, :last_name, :phone, :email, :address, :car_make, :car_model, :car_color)
