@@ -33,6 +33,12 @@
       <%= driver_active_inactive(@rider.is_active) %>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md border-top border-bottom">
+      <strong>Notes:</strong>
+      <%= @rider.notes %>
+    </div>
+  </div>
   <div class="driver-show-page-buttons">
     <%= link_to 'Edit', edit_rider_path(@rider), class:"btn btn-sm btn-outline-info"%>
   </div>

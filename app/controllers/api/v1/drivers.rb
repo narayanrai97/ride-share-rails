@@ -38,7 +38,7 @@ module Api
         requires :id, type: String, desc: "ID of driver"
       end
 
-      post 'drivers/reset' do
+      post 'drivers/password_reset' do
         @driver = Driver.find(params[:id])
         @driver.send_reset_password_instructions
         return ""

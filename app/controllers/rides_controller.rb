@@ -39,6 +39,8 @@ class RidesController < ApplicationController
                current_rider.rides
              end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
+    @quary = Ride.joins(:start_location).ransack(params[:q])
+    @search = @quary.result
   end
 
   def create
