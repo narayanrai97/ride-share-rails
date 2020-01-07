@@ -65,7 +65,9 @@ class RidesController < ApplicationController
         rider_id: current_rider.id,
         organization_id: current_rider.organization.id,
         pick_up_time: ride_params[:pick_up_time],
-        reason: ride_params[:reason]
+        reason: ride_params[:reason],
+        round_trip: ride_params[:round_trip],
+        expected_wait_time: ride_params[:expected_wait_time]
       )
       location = save_location_error_handler(@start_location)
       if location.nil?
@@ -149,6 +151,8 @@ class RidesController < ApplicationController
     if @ride.update(
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
+      round_trip: ride_params[:round_trip],
+      expected_wait_time: ride_params[:expected_wait_time],
       start_location: start_location,
       end_location: end_location
     )
@@ -178,7 +182,8 @@ class RidesController < ApplicationController
   def ride_params
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
                                  :save_start_location, :start_street, :start_city, :start_state, :start_zip,
-                                 :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+                                 :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status,
+                                 :round_trip, :expected_wait_time)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
