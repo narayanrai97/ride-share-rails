@@ -28,6 +28,7 @@
    background-color: orange;
  }
 
+
 body {
   background-color: PapayaWhip;
   background-image: url("lightblue_car.jpg");
@@ -35,6 +36,26 @@ body {
   width: 100%;
   position: absolute;
   height: 100%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.content {
+  min-height: 100%;
+  margin: 0 auto 150px;
+}
+
+.flash-messages {
+  padding-top: 4px;
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+.new-btn {
+  width: 100%;
 }
 
 .login-menu {
@@ -84,7 +105,7 @@ body {
 
 .bg-light {
   background-color: #ff8262 !important;
-  height: 47px;
+  line-height: 3.0 !important;
 }
 
 .sessions a {
@@ -94,6 +115,10 @@ body {
 .jumbotron {
   margin: 25px;
   background-color: lightgray;
+}
+
+.navbar {
+  padding: 0px 95px 0px 95px;
 }
 
 .navbar-collapse ul li {
@@ -150,7 +175,7 @@ th {
 
 .card3 {
   background-color: #ffffff;
-  // border: solid #17a2b8 3px;
+  // border: solid #17a2b8 2px;
   border-radius: 8px;
   margin-top: 5px;
   margin-bottom: 20px;
@@ -159,8 +184,7 @@ th {
 .card4 {
   position: relative;
   height: 240px;
-  background-color: white;
-  border: solid lightgray 1px;
+  background-color: #eceff1;
   border-radius: 6px;
   margin-right: 45px;
 }
@@ -237,7 +261,7 @@ td.no-wrap {
 p.car-info {
   text-align: center;
   font-size: 20px;
-  border-bottom: solid lightgray 1px;
+  border-bottom: solid #17a2b8 1px;
   padding: 10px;
 }
 
@@ -410,11 +434,6 @@ h1.welcome {
   padding-bottom: 1px;
 }
 
-a.nav-link {
-  padding-bottom: 15px;
-}
-
-
 tr th.row-height {
   line-height: 4px;
 }
@@ -438,4 +457,46 @@ tr th.table-heads {
 
 a.sort_link {
   color: white !important;
+}
+
+.blue-grey.lighten-5 {
+    background-color: #eceff1 !important;
+}
+
+.footer-copyright {
+  background-color: rgba(0,0,0,0.2);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+.teal.accent-3 {
+    background-color: #1de9b6 !important;
+}
+
+.dark-grey-text {
+    color: #4f4f4f !important;
+}
+
+.font-small {
+    font-size: .9rem;
+}
+
+.white-icon {
+  color: white;
+}
+
+.copyright {
+  color: inherit;
+}
+
+.pp-tac {
+  font-size: 10px;
+  color: inherit;
+}
+
+#privacy {
+  background-color: white !important;
+  padding: 20px 100px 100px 100px;
 }

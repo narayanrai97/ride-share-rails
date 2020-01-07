@@ -39,17 +39,18 @@
           <%= link_to cancel_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
             <i class="fa fa-ban">Cancel</i>
           <% end %>
-        <% end %>
-      </td>
-    </tr>
+        </td>
+      </tr>
+      <% end %>
     <% end %>
   <% end %>
 </table>
 
-<%= paginate @rides %>
-<%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-<%= link_to 'New Ride', new_ride_path, class: "btn btn-success" %>
 
+  <%= link_to new_ride_path, class: "btn btn-success new-btn" do %>
+    <i class="fa fa-plus"> New Ride</i>
+  <% end %><br/><br/>
+  <%= paginate @rides %>
 </div>
 
 <script type="text/javascript">

@@ -33,9 +33,11 @@
     <% end %>
   </table>
 
+  <%= link_to new_driver_path, class: "btn btn-success new-btn" do %>
+    <i class="fa fa-plus"> New Driver</i>
+  <% end %><br/><br/>
   <%= paginate @drivers %>
-  <%= link_to 'Back', welcome_index_path, class: "btn btn-primary" %>
-  <%= link_to 'New Driver', new_driver_path, class: "btn btn-success" %>
+
 </div>
 
 <script type="text/javascript">
