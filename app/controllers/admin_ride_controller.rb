@@ -175,7 +175,9 @@ class AdminRideController < ApplicationController
     authorize @ride
     if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
+      if !@ride.token.nil?
       @ride.token.update_attribute(:ride_id, nil)
+      end
       flash.notice = 'Ride canceled.'
       redirect_to request.referrer || admin_ride_index_path
     end
