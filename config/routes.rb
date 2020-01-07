@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
   resources :drivers do
     resources :vehicles, shallow: true
     put :accept
@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, controllers: {registrations: "organizations/registrations"}
-  devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
   resources :riders do
