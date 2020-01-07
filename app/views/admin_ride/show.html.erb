@@ -11,7 +11,6 @@
     <%= @ride.driver&.full_name %>
   </p>
 
-
   <p>
     <strong>Pick Up Time:</strong>
     <%= @ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>
@@ -46,7 +45,11 @@
   <p>
     <% if @ride.round_trip? %>
       <strong>Expected Wait time:</strong>
-      <%= @ride.expected_wait_time %> minutes
+      <% if ["30", "45"].include? @ride.expected_wait_time %>
+        <%= @ride.expected_wait_time %> minutes
+      <% else %>
+        <%= pluralize(@ride.expected_wait_time.to_f/60, 'hour') %>
+      <% end %>
     <% end %>
   </p>
 

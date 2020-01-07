@@ -150,6 +150,8 @@ class AdminRideController < ApplicationController
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
+      round_trip: ride_params[:round_trip],
+      expected_wait_time: ride_params[:expected_wait_time],
       start_location: @start_location,
       end_location: @end_location
     )
