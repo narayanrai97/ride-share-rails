@@ -168,7 +168,7 @@ class RidesController < ApplicationController
     @ride.rider_id == current_rider.id
     if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
-      @ride.token.update_attribute(:ride_id, nil)
+        @ride.token.update_attribute(:ride_id, nil) if !@ride.token.nil?
       flash.notice = 'Ride canceled'
       redirect_to request.referrer || rides_path
     else
