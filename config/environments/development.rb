@@ -69,7 +69,7 @@ Rails.application.configure do
     authentication:       "plain",
     enable_starttls_auto: true,
     user_name:            Rails.application.credentials[:GMAIL_USERNAME],
-    password:             Rails.application.credentials[:GMAIL_PASSWORD],
+    password:             Rails.application.credentials[:GMAIL_PASSWORD]
   }
 
 end
