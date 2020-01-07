@@ -70,8 +70,6 @@ Rails.application.configure do
     enable_starttls_auto: true,
     user_name:            Rails.application.credentials[:GMAIL_USERNAME],
     password:             Rails.application.credentials[:GMAIL_PASSWORD],
-    enable_stattls_auto: true,
-
   }
 
 end
