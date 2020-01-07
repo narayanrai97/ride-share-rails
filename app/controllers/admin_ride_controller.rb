@@ -168,15 +168,11 @@ class AdminRideController < ApplicationController
 
   def cancel
     @ride = Ride.find(params[:id])
-    organization = Organization.find(current_user.organization_id)
     authorize @ride
     if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
-
-      # @ride.token.update_attributes(:ride_id, nil)
-      if organization.use_tokens == true
-        token.ride_id = @ride.id
-        token.save
+      if !@ride.token.nil?
+      @ride.token.update_attribute(:ride_id, nil)
       end
       flash.notice = 'Ride canceled.'
       redirect_to request.referrer || admin_ride_index_path
@@ -189,7 +185,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
                                  :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :quary)
+                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
