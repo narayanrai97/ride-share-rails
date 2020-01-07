@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'pages/privacy_policy'
+  get 'pages/terms_and_conditions'
+  devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
   resources :drivers do
     resources :vehicles, shallow: true
     put :accept
@@ -25,7 +28,6 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, controllers: {registrations: "organizations/registrations"}
-  devise_for :drivers
   devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
   resources :riders do
@@ -55,6 +57,8 @@ Rails.application.routes.draw do
   get 'welcome/welcome'
   get 'welcome/rider'
 
+  get '/privacy_policy' => 'pages#privacy_policy'
+  get '/terms_and_conditions' => 'pages#terms_and_conditions'
 
   resources :rides do
     member do
