@@ -4,10 +4,10 @@
 
 <table class="table table-bordered table-hover">
   <tr>
-    <th scope="col"><%= sort_link @quary, :rider_first_name, "Rider", default_order: :desc %></th>
-    <th scope="col"><%= sort_link @quary, :driver, default_order: :desc %></th>
-    <th scope="col"><%= sort_link @quary, :pick_up_time, default_order: :desc %></th>
-    <th scope="col"><%= sort_link @quary, :reason, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @query, :rider_first_name, "Rider", default_order: :desc %></th>
+    <th scope="col"><%= sort_link @query, :driver, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @query, :pick_up_time, default_order: :desc %></th>
+    <th scope="col"><%= sort_link @query, :reason, default_order: :desc %></th>
     <th scope="col" class="row-height">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Status
@@ -24,7 +24,6 @@
     </th>
     <th scope="col"></th>
   </tr>
-
   <% @search.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
       <tr class='clickable-row', data-href='<%=admin_ride_path(ride)%>'>
@@ -53,7 +52,8 @@
 
               <%= link_to cancel_admin_ride_path(ride), class: "btn btn-sm btn-outline-warning", method: :put do %>
                 <i class="fa fa-ban">Cancel</i>
-              <% end %>
+
+            <% end %>
             <% end %>
           </td>
         </tr>
@@ -64,7 +64,7 @@
   <%= link_to new_admin_ride_path, class: "btn btn-success new-btn" do %>
     <i class="fa fa-plus"> New Ride</i>
   <% end %><br/><br/>
-  <%= paginate @rides %>
+  <%= paginate @search %>
 
 </div>
 
