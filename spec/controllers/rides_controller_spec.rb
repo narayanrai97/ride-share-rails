@@ -23,7 +23,8 @@ RSpec.describe RidesController, type: :controller do
                                                           end_state: "NC",
                                                           end_zip: "27705",
                                                           reason: "Doctor visit",
-                                                          status: "requested"
+                                                          status: "approved",
+                                                          round_trip: false
                                                         }
                                                   }
                             }

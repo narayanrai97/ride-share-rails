@@ -227,7 +227,7 @@ module Api
       end
       post "rides/:ride_id/complete" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active? && ride.status == "dropping-off" && ride.driver_id == current_driver.id
+        if current_driver.is_active? && ride.status == "return-dropping-off" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "completed")
           status 201
           render ride
