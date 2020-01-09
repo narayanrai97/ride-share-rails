@@ -1,5 +1,4 @@
 class Ride < ApplicationRecord
-
   belongs_to :organization
   belongs_to :driver, optional: true
   belongs_to :rider
@@ -14,13 +13,7 @@ class Ride < ApplicationRecord
   message: "%{value} is not a valid status" }
   validates :expected_wait_time, presence: true, if: :round_trip?
 
-  scope :approved, -> { where(status: "approved") }
-  scope :canceled, -> { where(status: "canceled") }
-  scope :pending, -> { where(status: "pending") }
-  scope :scheduled, -> { where(status: "scheduled") }
-  scope :picking_up, -> { where(status: "picking-up") }
-  scope :dropping_off, -> { where(status: "dropping-off") }
-  scope :completed, -> { where(status: "completed") }
+  scope :status, -> (status) { where status: status }
 
   def start_street
     if self.start_location

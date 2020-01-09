@@ -15,11 +15,14 @@
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <%= link_to 'Pending', admin_ride_index_path(status: "pending") %>
         <%= link_to 'Approved', admin_ride_index_path(status: "approved") %>
-        <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") %>
         <%= link_to 'Scheduled', admin_ride_index_path(status: "scheduled") %>
         <%= link_to 'Picking Up', admin_ride_index_path(status: "picking-up") %>
         <%= link_to 'Dropping Off', admin_ride_index_path(status: "dropping-off") %>
+        <%= link_to 'Waiting', admin_ride_index_path(status: "waiting") %>
+        <%= link_to 'Return Picking Up', admin_ride_index_path(status: "return-picking-up") %>
+        <%= link_to 'Return Dropping Off', admin_ride_index_path(status: "return-dropping-off") %>
         <%= link_to 'Completed', admin_ride_index_path(status: "completed") %>
+        <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") %>
       </div>
     </th>
     <th scope="col"></th>

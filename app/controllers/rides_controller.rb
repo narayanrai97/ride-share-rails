@@ -21,23 +21,8 @@ class RidesController < ApplicationController
   end
 
   def index
-    @rides = if params[:status] == 'pending'
-               current_rider.rides.pending
-             elsif params[:status] == 'approved'
-               current_rider.rides.approved
-             elsif params[:status] == 'canceled'
-               current_rider.rides.canceled
-             elsif params[:status] == 'scheduled'
-               current_rider.rides.scheduled
-             elsif params[:status] == 'picking-up'
-               current_rider.rides.picking_up
-             elsif params[:status] == 'dropping-off'
-               current_rider.rides.dropping_off
-             elsif params[:status] == 'completed'
-               current_rider.rides.completed
-             else
-               current_rider.rides
-             end
+    @rides = Ride.where(rider: current_rider)
+    @rides = Ride.status(params[:status]).where(rider: current_rider) if params[:status].present?
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
     @quary = Ride.joins(:start_location).ransack(params[:q])
     @search = @quary.result
