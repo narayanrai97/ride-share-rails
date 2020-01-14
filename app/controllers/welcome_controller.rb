@@ -16,8 +16,8 @@ class WelcomeController < ApplicationController
   end
 
   def index
-    if (!current_user)
-      redirect_to welcome_welcome_path
+    if (current_user)
+      redirect_to admin_ride_index_path
     end
   end
 
