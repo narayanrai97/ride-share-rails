@@ -4,8 +4,8 @@
 
   <table class="table table-bordered table-hover">
     <tr>
-      <th scope="col">First name</th>
-      <th scope="col">Last name</th>
+      <th scope="col"> <%= sort_link @sort, :first_name, default_order: :desc %></th>
+      <th scope="col"> <%= sort_link @sort, :last_name, default_order: :desc %></th>
       <th scope="col">Phone</th>
       <th scope="col">Email</th>
       <th scope="col" class="row-height">
@@ -20,7 +20,7 @@
       </th>
     </tr>
 
-    <% @drivers.each do |driver| %>
+    <% @search.each do |driver| %>
       <% if driver.organization_id == current_user.organization_id%>
         <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
           <td><%= driver.first_name %></td>

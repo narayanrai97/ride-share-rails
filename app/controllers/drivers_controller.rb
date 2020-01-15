@@ -33,9 +33,11 @@ class DriversController < ApplicationController
     else
       @drivers = current_user.organization.drivers.order(:last_name, :first_name)
     end
-    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
-    @sort = Driver.ransack(params[:q])
+    # byebug
+    @sort = @drivers.ransack(params[:q])
+    byebug
     @search = @sort.result
+    @sort = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
   end
 
   def ascending_sort
