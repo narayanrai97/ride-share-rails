@@ -35,7 +35,7 @@ class DriversController < ApplicationController
     end
     @sort = @drivers.ransack(params[:q])
     @search = @sort.result
-    @search = Kaminari.paginate_array(@drivers).page(params[:page]).per(10)
+    @search = Kaminari.paginate_array(@search).page(params[:page]).per(10)
   end
 
   def ascending_sort

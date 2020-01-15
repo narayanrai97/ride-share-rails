@@ -6,8 +6,8 @@
     <tr>
       <th scope="col"> <%= sort_link @sort, :first_name, default_order: :desc %></th>
       <th scope="col"> <%= sort_link @sort, :last_name, default_order: :desc %></th>
-      <th scope="col">Phone</th>
-      <th scope="col">Email</th>
+      <th scope="col"><%= sort_link @sort, :phone, default_order: :desc %></th>
+      <th scope="col"><%= sort_link @sort, :email, default_order: :desc %></th>
       <th scope="col" class="row-height">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Application status
