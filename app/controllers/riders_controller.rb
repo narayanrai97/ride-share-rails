@@ -37,7 +37,6 @@ class RidersController < ApplicationController
 
   def index
     @riders = current_user.organization.riders.order(:first_name, :last_name)
-    # byebug
     @sort = @riders.ransack(params[:q])
     @search = @sort.result
     @search = Kaminari.paginate_array(@search).page(params[:page]).per(10)
