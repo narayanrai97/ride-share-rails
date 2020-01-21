@@ -22,6 +22,7 @@ gem 'gmaps4rails'
 gem 'rspec-rails'
 gem 'factory_bot_rails'
 gem 'devise'
+gem "paperclip", "~> 6.0.0"
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
