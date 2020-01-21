@@ -11,8 +11,8 @@ class Driver < ApplicationRecord
   has_many :vehicles ,dependent: :destroy
   has_many :locations, -> { distinct }, through: :location_relationships
 
-   has_attached_file :image, style: {small: "150*150#"}
-   validates_attachment_content_type :image, content_type: /\Aimage\/.*\z/
+   has_attached_file :image, styles: { medium: "300x300>", thumb: "150x150>" }
+   validates_attachment_content_type :image, content_type:  ["image/jpg", "image/jpeg", "image/png"]
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
