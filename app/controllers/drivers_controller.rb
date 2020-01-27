@@ -1,5 +1,5 @@
 class DriversController < ApplicationController
-  Driver_Per_Page_amount = 10
+  DRIVER_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -35,12 +35,12 @@ class DriversController < ApplicationController
     end
     @sort = @drivers.ransack(params[:q])
     @search = @sort.result
-    @search = Kaminari.paginate_array(@search).page(params[:page]).per(Driver_Per_Page_amount)
+    @search = Kaminari.paginate_array(@search).page(params[:page]).per(DRIVER_PER_PAGE_AMOUNT)
   end
 
   def ascending_sort
     @drivers = current_user.organization.drivers.order(:last_name)
-    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(Driver_Per_Page_amount)
+    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(DRIVER_PER_PAGE_AMOUNT)
   end
 
   def create
