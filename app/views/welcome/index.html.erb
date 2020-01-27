@@ -1,1 +1,21 @@
 <h1 class="welcome">Welcome <span><%= current_user.email%></span>!</h1>
+
+<h4> <strong> Rides That are Pending </strong></h4>
+<table class="table table-bordered table-hover">
+  <tr class="border-bot">
+    <th scope="col">rider </th>
+    <th scope="col">Driver </th>
+    <th scope="col">pick_up_time </th>
+    <th scope="col">status </th>
+  </tr>
+
+<% @ride.each do |ride| %>
+<tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
+  <td class="no-wrap"><%= ride.rider&.full_name %> </td>
+  <td class="no-wrap"><%= ride.driver&.full_name %> </td>
+  <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
+  <td class="no-wrap"><%= ride.status %> </td>
+  </tr>
+<% end %>
+
+</table>

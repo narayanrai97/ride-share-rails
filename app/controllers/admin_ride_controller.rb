@@ -35,7 +35,6 @@ class AdminRideController < ApplicationController
                current_user.organization.rides.sort_by{|ride| ride.pick_up_time}
              end
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
-
     @quary = Ride.joins(:rider).ransack(params[:q])
     @search = @quary.result
   end

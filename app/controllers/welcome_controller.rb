@@ -16,6 +16,9 @@ class WelcomeController < ApplicationController
   end
 
   def index
+    @ride = Ride.joins(:rider)
+    # byebug
+    @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(4)
     if (!current_user)
       redirect_to welcome_welcome_path
     end
