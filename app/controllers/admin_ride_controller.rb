@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminRideController < ApplicationController
-  Rides_Per_Page_Amount = 10
+  RIDES_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   #  before_action :rider_is_active, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -38,7 +38,7 @@ class AdminRideController < ApplicationController
              end
     @query = @rides.joins(:rider).ransack(params[:q])
     @search = @query.result
-    @search = Kaminari.paginate_array(@search).page(params[:page]).per(Rides_Per_Page_Amount)
+    @search = Kaminari.paginate_array(@search).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def edit
