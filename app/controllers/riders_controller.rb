@@ -1,5 +1,5 @@
 class RidersController < ApplicationController
-  Riders_per_page_amount = 10
+  RIDES_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   before_action :remove_password_params_if_blank, only: [:update]
 
@@ -32,19 +32,19 @@ class RidersController < ApplicationController
     else
       @rides = @rider.rides
     end
-    @rider_rides = Kaminari.paginate_array(@rides).page(params[:page]).per(Riders_per_page_amount)
+    @rider_rides = Kaminari.paginate_array(@rides).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def index
     @riders = current_user.organization.riders.order(:first_name, :last_name)
     @sort = @riders.ransack(params[:q])
     @search = @sort.result
-    @search = Kaminari.paginate_array(@search).page(params[:page]).per(Riders_per_page_amount)
+    @search = Kaminari.paginate_array(@search).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def sort_down
     @riders = current_user.organization.riders.order(:last_name)
-    @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(Riders_per_page_amount)
+    @riders = Kaminari.paginate_array(@riders).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def create
