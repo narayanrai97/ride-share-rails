@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-  devise_for :views
-  get 'pages/privacy_policy'
-  get 'pages/terms_and_conditions'
 
   devise_for :drivers, skip: :registrations, path: 'drivers', controllers: {sessions: "drivers/sessions"}
 
