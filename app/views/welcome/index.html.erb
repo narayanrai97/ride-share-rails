@@ -1,12 +1,11 @@
 <h1 class="welcome">Welcome <span><%= current_user.email%></span>!</h1>
-
+<div class="container"><br>
 <h4> <strong> Rides That are Pending </strong></h4>
 <table class="table table-bordered table-hover">
   <tr class="border-bot">
     <th scope="col">rider </th>
     <th scope="col">Driver </th>
     <th scope="col">pick_up_time </th>
-    <th scope="col">status </th>
   </tr>
 
 <% @ride.each do |ride| %>
@@ -14,8 +13,37 @@
   <td class="no-wrap"><%= ride.rider&.full_name %> </td>
   <td class="no-wrap"><%= ride.driver&.full_name %> </td>
   <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
-  <td class="no-wrap"><%= ride.status %> </td>
   </tr>
+
 <% end %>
 
 </table>
+<%= paginate(@ride) %>
+</div>
+
+<div class="container"><br>
+<table class="table table-bordered table-hover">
+  <h4> <strong> Drivers That are Pending </strong></h4>
+  <tr>
+    <th scope="col">First name</th>
+    <th scope="col">Last name</th>
+    <th scope="col">Phone</th>
+    <th scope="col">Email</th>
+
+      </div>
+    </th>
+  </tr>
+
+  <% @drivers.each do |driver| %>
+    <% if driver.organization_id == current_user.organization_id%>
+      <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
+        <td><%= driver.first_name %></td>
+        <td><%= driver.last_name %></td>
+        <td><%= number_to_phone(driver.phone) %></td>
+        <td><%= driver.email %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+ <%= paginate(@drivers) %>
+</div>
