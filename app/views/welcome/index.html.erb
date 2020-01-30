@@ -17,8 +17,11 @@
 
 <% end %>
 </table>
-Rides completed this year = <%= @completed_rides %> | Rides completed Today: <% @rides_completed_today %>
-<%= paginate(@ride) %>
+<div class='complete_rides'>
+   Rides completed this year = <%= @rides_completed_this_year %><br />
+   Rides completed Today: <%= @rides_completed_today %>
+</div>
+ <%= paginate(@ride) %>
 </div>
 
 <div class="container"><br>

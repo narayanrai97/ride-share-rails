@@ -1,4 +1,4 @@
-module Api
+ module Api
   module V1
     class Rides < Grape::API
       include Api::V1::Defaults
@@ -142,8 +142,8 @@ module Api
       end
       post "rides/:ride_id/complete" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active? && ride.status == "dropping-off" && ride.driver_id == current_driver.id
-          ride.update(driver_id: current_driver.id, status: "completed")
+        if current_driver.is_active?  && ride.driver_id == current_driver.id
+          ride.update(driver_id: current_driver.id, status: "completed", completed_at: Date.today)
           status 201
           render ride
         else
