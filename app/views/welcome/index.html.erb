@@ -9,15 +9,15 @@
   </tr>
 
 <% @ride.each do |ride| %>
-<tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
+<tr class="clickable-row" data-href='<%= admin_ride_path(ride) %>'>
   <td class="no-wrap"><%= ride.rider&.full_name %> </td>
   <td class="no-wrap"><%= ride.driver&.full_name %> </td>
   <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
   </tr>
 
 <% end %>
-
 </table>
+Rides completed this year = <%= @completed_rides %> | Rides completed Today: <% @rides_completed_today %>
 <%= paginate(@ride) %>
 </div>
 
@@ -47,3 +47,11 @@
 </table>
  <%= paginate(@drivers) %>
 </div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+      $(".clickable-row").click(function() {
+          window.location = $(this).data("href");
+      });
+  });
+</script>

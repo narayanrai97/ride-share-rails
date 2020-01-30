@@ -18,10 +18,12 @@ class WelcomeController < ApplicationController
   def index
     @ride = Ride.where(organization_id: current_user.organization.id).pending
     # byebug
-    @ride = Kaminari.paginate_array(@ride).page(params[:par]).per(5)
+    @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(5)
     @drivers = Driver.where(organization_id: current_user.organization.id).pending
-    # byebug
-    @drivers = Kaminari.paginate_array(@drivers).page(params[:fan]).per(5)
+    @completed_rides = Ride.completed.count
+    @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(5)
+    @today = DateTime.now
+    @rides_completed_today = Ride.where(:updated_at => @today).completed.count
     if (!current_user)
       redirect_to welcome_welcome_path
     end
