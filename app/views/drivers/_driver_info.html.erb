@@ -9,8 +9,10 @@
       <strong>Last Name:</strong>
       <%= @driver.last_name %>
     </div>
+    <div class="row">
     <div class="col-md border-top border-bottom" >
-      <%= image_tag @driver.image %>
+      <%= image_tag @driver.thumbnail  if @driver.image.attached? %>
+    </div>
     </div>
   </div>
   <div class="row">
