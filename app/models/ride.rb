@@ -21,6 +21,7 @@ class Ride < ApplicationRecord
   scope :dropping_off, -> { where(status: "dropping-off") }
   scope :completed, -> { where(status: "completed") }
 
+  
   def start_street
     if self.start_location
       self.start_location.street

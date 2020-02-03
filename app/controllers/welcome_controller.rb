@@ -19,7 +19,7 @@ class WelcomeController < ApplicationController
     @ride = Ride.where(organization_id: current_user.organization.id).pending
     @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(5)
     @drivers = Driver.where(organization_id: current_user.organization.id).pending
-    @rides_completed_this_year = Ride.where(organization_id: current_user.organization.id).completed.count
+    @rides_completed_this_year = year_count
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(5)
     @rides_completed_today = Ride.where(organization_id: current_user.organization.id, status: "completed", completed_at: Date.today).count
     if (!current_user)
@@ -28,6 +28,12 @@ class WelcomeController < ApplicationController
   end
 
   private
+
+  def year_count
+    start_day = Date.today.beginning_of_year
+    end_day =  Date.today.end_of_year
+    Ride.where("completed_at >= ? AND organization_id = ? AND completed_at <= ? ", start_day, current_user.organization.id, end_day).count
+  end
 
   def resolve_layout
     case action_name

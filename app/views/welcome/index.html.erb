@@ -6,6 +6,7 @@
     <th scope="col">rider </th>
     <th scope="col">Driver </th>
     <th scope="col">pick_up_time </th>
+    <th scope="col">Action</th>
   </tr>
 
 <% @ride.each do |ride| %>
@@ -13,25 +14,36 @@
   <td class="no-wrap"><%= ride.rider&.full_name %> </td>
   <td class="no-wrap"><%= ride.driver&.full_name %> </td>
   <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
+  <td><%= link_to "Approve", approve_admin_ride_path(ride) %>, <%= link_to "Cancel", cancel_admin_ride_path(ride) %>  </td>
   </tr>
 
 <% end %>
 </table>
-<div class='complete_rides'>
-   Rides completed this year = <%= @rides_completed_this_year %><br />
-   Rides completed Today: <%= @rides_completed_today %>
+<%= paginate(@ride) %>
 </div>
- <%= paginate(@ride) %>
+
+<div class="container">
+  <table class="table table-bordered table-hover">
+    <tr>
+      <th scope="col">Rides completed this year</th>
+      <td><%= @rides_completed_this_year %></td>
+      </tr>
+      <tr>
+      <th scope="col">Rides completed Today</th>
+      <td><%= @rides_completed_this_year %></td>
+      </tr>
+  </table>
 </div>
+
 
 <div class="container"><br>
 <table class="table table-bordered table-hover">
   <h4> <strong> Drivers That are Pending </strong></h4>
-  <tr>
-    <th scope="col">First name</th>
-    <th scope="col">Last name</th>
+    <th scope="col">First Name</th>
+    <th scope="col">Last Name</th>
     <th scope="col">Phone</th>
     <th scope="col">Email</th>
+
 
       </div>
     </th>
@@ -44,6 +56,7 @@
         <td><%= driver.last_name %></td>
         <td><%= number_to_phone(driver.phone) %></td>
         <td><%= driver.email %></td>
+
       </tr>
     <% end %>
   <% end %>
