@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class AdminRideController < ApplicationController
+  RIDES_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   #  before_action :rider_is_active, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -15,6 +16,7 @@ class AdminRideController < ApplicationController
     @ride = Ride.find(params[:id])
     authorize @ride
   end
+
 
   def index
     @rides = if params[:status] == 'pending'
@@ -32,11 +34,11 @@ class AdminRideController < ApplicationController
              elsif params[:status] == 'completed'
                current_user.organization.rides.completed
              else
-               current_user.organization.rides.sort_by{|ride| ride.pick_up_time}
+               current_user.organization.rides
              end
-    @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
-    @quary = Ride.joins(:rider).ransack(params[:q])
-    @search = @quary.result
+    @query = @rides.joins(:rider).ransack(params[:q])
+    @search = @query.result
+    @search = Kaminari.paginate_array(@search).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def edit
