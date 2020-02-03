@@ -15,7 +15,8 @@
   <td class="no-wrap"><%= ride.driver&.full_name %> </td>
   <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
   <% if ride.status == 'pending' %>
-  <td><%= link_to "Approve", approve_admin_ride_path(ride) %>, <%= link_to "Cancel", cancel_admin_ride_path(ride) %>  </td>
+  <td><%= link_to "Approve", approve_admin_ride_path(ride), method: :put  %> |
+    <%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put  %>  </td>
   </tr>
 <% end %>
 <% end %>
