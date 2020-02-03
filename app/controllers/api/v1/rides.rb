@@ -142,7 +142,7 @@
       end
       post "rides/:ride_id/complete" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active?  && ride.driver_id == current_driver.id
+        if current_driver.is_active?  && ride.status == "dropping-off" && ride.driver_id == current_driver.id
           ride.update(driver_id: current_driver.id, status: "completed", completed_at: Date.today)
           status 201
           render ride
