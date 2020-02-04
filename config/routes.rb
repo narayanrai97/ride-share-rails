@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get 'pages/privacy_policy'
   get 'pages/terms_and_conditions'
-  devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
+  # devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
   resources :drivers do
     resources :vehicles, shallow: true
     put :accept

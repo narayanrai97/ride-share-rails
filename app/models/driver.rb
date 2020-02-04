@@ -3,6 +3,7 @@ class Driver < ApplicationRecord
   validates :last_name, presence: true
   validates :phone, length: { is: 10 }, numericality: true
   validates :email, presence: true
+  validate :image_type
 
   belongs_to :organization
   has_many :location_relationships
@@ -11,6 +12,11 @@ class Driver < ApplicationRecord
   has_many :vehicles ,dependent: :destroy
   has_many :locations, -> { distinct }, through: :location_relationships
 
+   has_one_attached :image
+   # validates :image, attached: true, content_type: 'image/png',
+   #                                   dimension: { width: 200, height: 200 }
+   # validates_attachment_content_type :image, content_type:  ["image/jpg", "image/jpeg", "image/png"]
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   scope :active, -> { where(is_active: true) }
@@ -18,6 +24,19 @@ class Driver < ApplicationRecord
   scope :accepted, -> { where(application_state: "accepted") }
   scope :rejected, -> { where(application_state: "rejected") }
   before_save :lets_cap, only: [:new, :create]
+
+  def thumbnail
+    return self.image.variant(resize: '300x300>').processed
+  end
+
+  def image_type
+    if image.attached? == false
+      errors.add(:image, "Your profile picture is missing")
+    end
+      if !image.content_type.in?(%('image/jpeg' image/png))
+        errors.add(:image, "needs to be JPEG or PNG")
+    end
+  end
 
   def lets_cap
      self.first_name = self.first_name.capitalize
