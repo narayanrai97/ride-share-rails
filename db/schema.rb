@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_213805) do
     t.boolean "background_check", default: false, null: false
     t.string "image_file_name"
     t.string "image_content_type"
-    t.bigint "image_file_size"
+    t.integer "image_file_size"
     t.datetime "image_updated_at"
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
@@ -97,6 +97,15 @@ ActiveRecord::Schema.define(version: 2020_01_30_213805) do
     t.boolean "use_tokens", default: false
   end
 
+  create_table "photoables", force: :cascade do |t|
+    t.string "name"
+    t.string "imageable_type"
+    t.bigint "imageable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["imageable_type", "imageable_id"], name: "index_photoables_on_imageable_type_and_imageable_id"
+  end
+
   create_table "recurring_patterns", force: :cascade do |t|
     t.bigint "schedule_window_id"
     t.integer "separation_count"
@@ -123,6 +132,10 @@ ActiveRecord::Schema.define(version: 2020_01_30_213805) do
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: true, null: false
     t.string "notes"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["organization_id"], name: "index_riders_on_organization_id"
   end
 
@@ -164,7 +177,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_213805) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.bigint "location_id"
-    t.boolean "is_recurring", default: false, null: false
+    t.boolean "is_recurring", default: false
     t.index ["driver_id"], name: "index_schedule_windows_on_driver_id"
     t.index ["location_id"], name: "index_schedule_windows_on_location_id"
   end
@@ -206,6 +219,10 @@ ActiveRecord::Schema.define(version: 2020_01_30_213805) do
     t.date "insurance_stop"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
     t.index ["driver_id"], name: "index_vehicles_on_driver_id"
   end
 
