@@ -30,9 +30,7 @@ class Driver < ApplicationRecord
   end
 
   def image_type
-    if image.attached? == false
-      errors.add(:image, "Your profile picture is missing")
-    elsif !image.content_type.in?(%('image/jpeg' image/png))
+    if (image.attached? && !image.content_type.in?(['image/jpg','image/png']))
       errors.add(:image, "needs to be JPEG or PNG")
     end
   end
