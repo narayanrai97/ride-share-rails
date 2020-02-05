@@ -133,6 +133,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "round_trip", default: false, null: false
+    t.string "expected_wait_time"
     t.date "completed_at"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
