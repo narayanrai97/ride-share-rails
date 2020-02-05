@@ -142,8 +142,8 @@ module Api
       end
       post "rides/:ride_id/complete" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active? && ride.status == "dropping-off" && ride.driver_id == current_driver.id
-          ride.update(driver_id: current_driver.id, status: "completed")
+        if current_driver.is_active? && ride.driver_id == current_driver.id
+          ride.update(status: "completed")
           status 201
           render ride
         else
@@ -165,6 +165,10 @@ module Api
           ride.update(driver_id: nil, status: "approved")
           status 201
           render ride
+        elsif current_driver.is_active? && ride.driver_id == current_driver.id
+          ride.update(status: "canceled")
+          status 201
+          render ride
         else
           status 401
           render "Not Authorized"
@@ -178,8 +182,8 @@ module Api
       end
       post "rides/:ride_id/picking-up" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active? && ride.status == "scheduled" && ride.driver_id == current_driver.id
-          ride.update(driver_id: current_driver.id, status: "picking-up")
+        if current_driver.is_active? && ride.driver_id == current_driver.id
+          ride.update(status: "picking-up")
           status 201
           render ride
         else
@@ -195,8 +199,8 @@ module Api
       end
       post "rides/:ride_id/dropping-off" do
         ride = Ride.find(permitted_params[:ride_id])
-        if current_driver.is_active? && ride.status == "picking-up" && ride.driver_id == current_driver.id
-          ride.update(driver_id: current_driver.id, status: "dropping-off")
+        if current_driver.is_active? && ride.driver_id == current_driver.id
+          ride.update(status: "dropping-off")
           status 201
           render ride
         else
