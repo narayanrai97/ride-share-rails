@@ -66,7 +66,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
 
         #Needs Index [0] because returns 2 vehicles
         expect(parsed_json['vehicle'][0]['car_make']).to eq('Nissan')
-        expect(parsed_json['vehicle'][0]['car_year']).to eq(2017)
+        expect(parsed_json['vehicle'][0]['car_year']).to eq(2010)
         expect(parsed_json['vehicle'][0]['car_color']).to eq('Silver')
         expect(parsed_json['vehicle'][0]['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
