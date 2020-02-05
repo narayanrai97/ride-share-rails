@@ -57,20 +57,55 @@ class Location < ApplicationRecord
       result = Geocoder.search(self.full_address)
       if result.length == 0 || !result.first.data["partial_match"].nil?
         errors[:base] << "The location could not be found."
-      else
-        street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first["long_name"]
-        street_name = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first["short_name"]
-        self.street = "#{street_number} #{street_name}"
+      else # when partial_match is nil
+        # Street number
+        street_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["street_number"]}).first
+        if !street_number.nil?
+          street_num = street_number["long_name"]
+        else
+          errors[:base] << "The street number could not be found."
+        end
+        # Street name
+        route = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["route"]}).first
+        if !route.nil?
+          street_name = route["short_name"]
+        else
+          errors[:base] << "The street name could not be found."
+        end
+        self.street = "#{street_num} #{street_name}" unless street_num.nil? && street_name.nil?
+
+        # Suite number
         suite_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["subpremise"]}).first
         if !suite_number.nil?
           self.street = self.street + " #" + suite_number["long_name"]
+        else
+          errors[:base] << "The suite number could not be found."
         end
-        self.city = (result.first.data["address_components"].select do |address_hash| 
-          ((address_hash["types"] == ["locality", "political"]) || 
-          (address_hash["types"] == ["neighborhood", "political"])) 
-          end).first["long_name"] 
-        self.state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first["short_name"]
-        self.zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first["long_name"]
+
+        # City
+        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["locality", "political"])}.first
+        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["neighborhood", "political"])}.first if city.nil?
+        if !city.nil?
+          self.city = city["long_name"]
+        else
+          errors[:base] << "The city could not be found."
+        end
+
+        # State
+        state = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["administrative_area_level_1", "political"]}).first
+        if !state.nil?
+          self.state = state["short_name"]
+        else
+          errors[:base] << "The state could not be found."
+        end
+
+        # Zip
+        zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first
+        if !zip.nil?
+          self.zip = zip["long_name"]
+        else
+          errors[:base] << "The zip code could not be found."
+        end
       end
     end
   end
