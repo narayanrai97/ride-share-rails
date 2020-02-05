@@ -78,13 +78,11 @@ class Location < ApplicationRecord
         suite_number = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["subpremise"]}).first
         if !suite_number.nil?
           self.street = self.street + " #" + suite_number["long_name"]
-        else
-          errors[:base] << "The suite number could not be found."
         end
 
         # City
-        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["locality", "political"])}.first
-        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["neighborhood", "political"])}.first if city.nil?
+        city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["locality", "political"]}).first
+        city = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["neighborhood", "political"]}).first if city.nil?
         if !city.nil?
           self.city = city["long_name"]
         else

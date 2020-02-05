@@ -167,12 +167,27 @@
 
 </div>
 
-  <div class="form-row">
-    <div class="form-group  col-md-10 offset-md-1">
-      4. <%= form.label :reason %>
-      <%= form.text_field :reason, class: "form-control" %>
-    </div>
+<div class="form-row">
+  <div class="form-group  col-md-10 offset-md-1">
+    4. <%= form.label :reason %>
+    <%= form.text_field :reason, class: "form-control" %>
   </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group  col-md-10 offset-md-1">
+  5. <%= form.label :round_trip %>
+     <%= form.select :round_trip, options_for_select(["false","true"], :selected => form.object.round_trip), class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-row">
+  <div id="show_dep" style="display: none" class="form-group  col-md-10 offset-md-1">
+    6. <%= form.label :expected_wait_time %>
+       <%= form.select :expected_wait_time, options_for_select([["30 mins", "30"],["45 mins", "45"], ["1.0 hour", "60"], ["1.5 hours", "90"],["2.0 hours", "120"], ["2.5 hours", "150"], ["3.0 hours", "180"]], "#{@ride.expected_wait_time}"), class: "form-control" %>
+  </div>
+</div>
+
 <div class="form-row">
   <div class="form-group col-md-1 offset-md-1">
     <%= link_to 'Back', :back, class: "btn btn-outline-primary" %>
@@ -195,5 +210,16 @@
     defaultHour:     23,
     defaultMinute:   59,
     minuteIncrement: 1
+  });
+
+  // conditional expected_wait_time
+  jQuery(function () {
+      $("#ride_round_trip").change(function () {
+          if ($(this).val() == "false") {
+              $("#show_dep").hide();
+          } else {
+              $("#show_dep").show();
+          }
+      });
   });
 </script>
