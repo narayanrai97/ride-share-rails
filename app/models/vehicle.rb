@@ -1,12 +1,25 @@
 class Vehicle < ApplicationRecord
   belongs_to :driver
+  has_one_attached :image
 
   validates :car_make, :car_model, :car_color, :car_year, :car_plate, :seat_belt_num,
             :insurance_provider, :insurance_start, :insurance_stop, presence: true
   validates :car_year, numericality: { only_integer: true }
   validates :car_plate, uniqueness: true
   validate  :insurance_stop_cannot_be_in_the_past
+  validate :image_type
 
+  def thumbnail
+    return self.image.variant(resize: '300x300>').processed
+  end
+
+  def image_type
+    if image.attached? == false
+      errors.add(:image, "Your vehicle picture is missing")
+    elsif !image.content_type.in?(%('image/jpeg' image/png))
+      errors.add(:image, "needs to be JPEG or PNG")
+    end
+  end
 
   def insurance_stop_cannot_be_in_the_past
     if insurance_stop.present? && insurance_stop < Date.today
