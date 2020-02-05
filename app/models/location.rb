@@ -83,10 +83,8 @@ class Location < ApplicationRecord
         end
 
         # City
-        city = (result.first.data["address_components"].select do |address_hash|
-          ((address_hash["types"] == ["locality", "political"]) ||
-          (address_hash["types"] == ["neighborhood", "political"]))
-          end).first
+        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["locality", "political"])}.first
+        city = (result.first.data["address_components"].select { |address_hash|(address_hash["types"] == ["neighborhood", "political"])}.first if city.nil?
         if !city.nil?
           self.city = city["long_name"]
         else
