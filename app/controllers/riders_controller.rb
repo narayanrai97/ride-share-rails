@@ -14,25 +14,12 @@ class RidersController < ApplicationController
   def show
     @rider = Rider.find(params[:id])
     authorize @rider
+
     @locations = @rider.locations
-    if params[:status] == "pending"
-      @rides = @rider.rides.pending
-    elsif params[:status] == 'approved'
-      @rides = @rider.rides.approved
-    elsif params[:status] == 'canceled'
-      @rides = @rider.rides.canceled
-    elsif params[:status] == 'scheduled'
-      @rides = @rider.rides.scheduled
-    elsif params[:status] == 'picking-up'
-      @rides = @rider.rides.picking_up
-    elsif params[:status] == 'dropping-off'
-      @rides = @rider.rides.dropping_off
-    elsif params[:status] == 'completed'
-      @rides = @rider.rides.completed
-    else
-      @rides = @rider.rides
-    end
-    @rider_rides = Kaminari.paginate_array(@rides).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
+    @rides = Ride.where(rider: @rider)
+    @rides = Ride.status(params[:status]).where(rider: @rider) if params[:status].present?
+
+    @rider_rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
 
   def index

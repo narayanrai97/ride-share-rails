@@ -92,7 +92,7 @@ class ScheduleWindow < ApplicationRecord
       []
     end
   end
-  
+
   def recurring_event(query_start_date, query_end_date)
     if recurring_pattern.nil?
       return []
@@ -124,7 +124,9 @@ class ScheduleWindow < ApplicationRecord
         startTime: current.strftime('%Y-%m-%d') + " " + start_time.strftime('%H:%M'),
         endTime: current.strftime('%Y-%m-%d') + " " + end_time.strftime('%H:%M'),
         isRecurring: true,
-        location: location
+        location: location,
+        startDate: start_date,
+        endDate: end_date
       })
       current = current + (7 * (recurring_pattern.separation_count + 1)).days
     end

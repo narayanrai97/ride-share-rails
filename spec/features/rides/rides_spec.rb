@@ -18,7 +18,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
     signin('user@example.com', 'password')
-    expect(page).to have_text admin.email
+    expect(page).to have_link 'Rides'
   end
 
   scenario 'attempt to login as admin with incorrect password' do
@@ -36,7 +36,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     fill_in 'Email', with: admin.email
     fill_in 'Password', with: 'password'
     click_on 'Log in'
-    expect(page).to have_text admin.email
+    expect(page).to have_link 'Rides'
     click_link 'Rides'
     expect(page).to have_text ride.reason
     expect(page).to have_text ride.status

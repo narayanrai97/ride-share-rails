@@ -37,6 +37,23 @@
     <%= @ride.status %>
   </p>
 
+  <p>
+    <strong>Round trip?</strong>
+    <%= @ride.round_trip %>
+  </p>
+
+  <p>
+    <% if @ride.round_trip? %>
+      <strong>Expected Wait time:</strong>
+      <% if ["30", "45"].include? @ride.expected_wait_time %>
+        <%= @ride.expected_wait_time %> minutes
+      <% else %>
+        <%= pluralize(@ride.expected_wait_time.to_f/60, 'hour') %>
+      <% end %>
+    <% end %>
+  </p>
+
+
   <%= link_to 'Back', rides_path, class: "btn btn-outline-primary" %>
   <%= link_to 'Edit', edit_ride_path(@ride), class: "btn btn-outline-success" %>
 </div>
