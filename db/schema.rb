@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2020_01_30_201210) do
-=======
-ActiveRecord::Schema.define(version: 2020_02_04_190020) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 2020_02_06_184602) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,10 +54,6 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.datetime "token_created_at"
     t.string "application_state", default: "pending"
     t.boolean "background_check", default: false, null: false
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
   end
@@ -99,15 +91,6 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.string "state"
     t.string "zip"
     t.boolean "use_tokens", default: false
-  end
-
-  create_table "photoables", force: :cascade do |t|
-    t.string "name"
-    t.string "imageable_type"
-    t.bigint "imageable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["imageable_type", "imageable_id"], name: "index_photoables_on_imageable_type_and_imageable_id"
   end
 
   create_table "recurring_patterns", force: :cascade do |t|
