@@ -423,10 +423,10 @@ h1.welcome {
 
 #welcome {
   text-align: center;
-  padding: 30px;
+  padding: 55px;
   margin-top: 50px;
-  height: 170px;
-  border: solid 3px #254855;
+  height: 240px;
+  border: double 6px #475C67;
 }
 
 #my-button {
@@ -464,7 +464,8 @@ a.sort_link {
 }
 
 .footer-copyright {
-  background-color: rgba(0,0,0,0.2);
+  // background-color: rgba(0,0,0,0.2);
+  background-color:  #eceff1 !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -493,7 +494,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .pp-tac {
   font-size: 10px;
-  color: inherit;
+  // color: inherit;
 }
 
 #privacy {
