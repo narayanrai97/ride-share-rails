@@ -101,15 +101,6 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.boolean "use_tokens", default: false
   end
 
-  create_table "photoables", force: :cascade do |t|
-    t.string "name"
-    t.string "imageable_type"
-    t.bigint "imageable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["imageable_type", "imageable_id"], name: "index_photoables_on_imageable_type_and_imageable_id"
-  end
-
   create_table "recurring_patterns", force: :cascade do |t|
     t.bigint "schedule_window_id"
     t.integer "separation_count"
@@ -136,10 +127,6 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: true, null: false
     t.string "notes"
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
     t.index ["organization_id"], name: "index_riders_on_organization_id"
   end
 
@@ -154,6 +141,8 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "round_trip", default: false, null: false
+    t.string "expected_wait_time"
     t.date "completed_at"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
@@ -223,10 +212,6 @@ ActiveRecord::Schema.define(version: 2020_02_04_190020) do
     t.date "insurance_stop"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
     t.index ["driver_id"], name: "index_vehicles_on_driver_id"
   end
 

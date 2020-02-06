@@ -21,23 +21,8 @@ class RidesController < ApplicationController
   end
 
   def index
-    @rides = if params[:status] == 'pending'
-               current_rider.rides.pending
-             elsif params[:status] == 'approved'
-               current_rider.rides.approved
-             elsif params[:status] == 'canceled'
-               current_rider.rides.canceled
-             elsif params[:status] == 'scheduled'
-               current_rider.rides.scheduled
-             elsif params[:status] == 'picking-up'
-               current_rider.rides.picking_up
-             elsif params[:status] == 'dropping-off'
-               current_rider.rides.dropping_off
-             elsif params[:status] == 'completed'
-               current_rider.rides.completed
-             else
-               current_rider.rides
-             end
+    @rides = Ride.where(rider: current_rider)
+    @rides = Ride.status(params[:status]).where(rider: current_rider) if params[:status].present?
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
     @quary = Ride.joins(:start_location).ransack(params[:q])
     @search = @quary.result
@@ -65,7 +50,9 @@ class RidesController < ApplicationController
         rider_id: current_rider.id,
         organization_id: current_rider.organization.id,
         pick_up_time: ride_params[:pick_up_time],
-        reason: ride_params[:reason]
+        reason: ride_params[:reason],
+        round_trip: ride_params[:round_trip],
+        expected_wait_time: ride_params[:expected_wait_time]
       )
       location = save_location_error_handler(@start_location)
       if location.nil?
@@ -149,6 +136,8 @@ class RidesController < ApplicationController
     if @ride.update(
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
+      round_trip: ride_params[:round_trip],
+      expected_wait_time: ride_params[:expected_wait_time],
       start_location: start_location,
       end_location: end_location
     )
@@ -164,7 +153,7 @@ class RidesController < ApplicationController
     @ride.rider_id == current_rider.id
     if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
-      @ride.token.update_attribute(:ride_id, nil)
+        @ride.token.update_attribute(:ride_id, nil) if !@ride.token.nil?
       flash.notice = 'Ride canceled'
       redirect_to request.referrer || rides_path
     else
@@ -178,7 +167,8 @@ class RidesController < ApplicationController
   def ride_params
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time,
                                  :save_start_location, :start_street, :start_city, :start_state, :start_zip,
-                                 :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status)
+                                 :save_end_location, :end_street, :end_city, :end_state, :end_zip, :reason, :status,
+                                 :round_trip, :expected_wait_time)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

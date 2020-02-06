@@ -10,8 +10,8 @@ class WelcomeController < ApplicationController
   end
 
   def rider
-    if (!current_rider)
-      redirect_to welcome_welcome_path
+    if (current_rider)
+      redirect_to rides_path
     end
   end
 

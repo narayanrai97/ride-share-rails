@@ -1,5 +1,4 @@
 class Ride < ApplicationRecord
-
   belongs_to :organization
   belongs_to :driver, optional: true
   belongs_to :rider
@@ -10,16 +9,11 @@ class Ride < ApplicationRecord
   validates :start_location, :end_location, :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past
   # validate :valid_locations
-  validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off completed canceled),
+  validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off waiting return-picking-up return-dropping-off completed canceled),
   message: "%{value} is not a valid status" }
+  validates :expected_wait_time, presence: true, if: :round_trip?
 
-  scope :approved, -> { where(status: "approved") }
-  scope :canceled, -> { where(status: "canceled") }
-  scope :pending, -> { where(status: "pending") }
-  scope :scheduled, -> { where(status: "scheduled") }
-  scope :picking_up, -> { where(status: "picking-up") }
-  scope :dropping_off, -> { where(status: "dropping-off") }
-  scope :completed, -> { where(status: "completed") }
+  scope :status, -> (status) { where status: status }
 
   
   def start_street

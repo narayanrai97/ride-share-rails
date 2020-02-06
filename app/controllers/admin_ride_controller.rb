@@ -19,26 +19,12 @@ class AdminRideController < ApplicationController
 
 
   def index
-    @rides = if params[:status] == 'pending'
-               current_user.organization.rides.pending
-             elsif params[:status] == 'approved'
-               current_user.organization.rides.approved
-             elsif params[:status] == 'canceled'
-               current_user.organization.rides.canceled
-             elsif params[:status] == 'scheduled'
-               current_user.organization.rides.scheduled
-             elsif params[:status] == 'picking-up'
-               current_user.organization.rides.picking_up
-             elsif params[:status] == 'dropping-off'
-               current_user.organization.rides.dropping_off
-             elsif params[:status] == 'completed'
-               current_user.organization.rides.completed
-             else
-               current_user.organization.rides
-             end
-    @query = @rides.joins(:rider).ransack(params[:q])
-    @search = @query.result
-    @search = Kaminari.paginate_array(@search).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
+    @rides = Ride.where(organization: current_user.organization)
+    @rides = Ride.status(params[:status]).where(organization: current_user.organization) if params[:status].present?
+    @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
+
+    @quary = Ride.joins(:rider).ransack(params[:q])
+    @search = @quary.result
   end
 
   def edit
@@ -73,7 +59,9 @@ class AdminRideController < ApplicationController
      @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
                      pick_up_time: ride_params[:pick_up_time],
-                     reason: ride_params[:reason])
+                     reason: ride_params[:reason],
+                     round_trip: ride_params[:round_trip],
+                     expected_wait_time: ride_params[:expected_wait_time])
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
@@ -149,6 +137,8 @@ class AdminRideController < ApplicationController
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
+      round_trip: ride_params[:round_trip],
+      expected_wait_time: ride_params[:expected_wait_time],
       start_location: @start_location,
       end_location: @end_location
     )
@@ -186,7 +176,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
                                  :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q)
+                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :expected_wait_time)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
