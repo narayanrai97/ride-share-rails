@@ -16,7 +16,8 @@ class WelcomeController < ApplicationController
   end
 
   def index
-    @ride = Ride.where(organization_id: current_user.organization.id).pending
+    # byebug
+    @ride = Ride.where(organization_id: current_user.organization.id).status("pending")
     @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(5)
     @drivers = Driver.where(organization_id: current_user.organization.id).pending
     @rides_completed_this_year = current_year_ride_count
