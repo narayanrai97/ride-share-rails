@@ -1,18 +1,13 @@
 <div class="container"><br>
   <table class="table table-bordered table-hover">
     <tr style="line-height: 28px;">
-      <th scope="col">First name</th>
-      <th scope="col" class="rowBox">Last name <span id="flex-box"><%= link_to riders_path, class: "links" do %>
-                                                         <%= fa_icon "sort-up" %>
-                                                       <% end %>
-                                                       <%= link_to sort_down_path, class: "links" do %>
-                                                         <%= fa_icon "sort-down"%>
-                                                       <% end %></span></th>
-      <th scope="col">Phone</th>
-      <th scope="col">Email</th>
+      <th scope="col"><%= sort_link @sort, :first_name, default_order: :desc %></th>
+      <th scope="col" class="rowBox"> <%= sort_link @sort, :last_name, default_order: :desc %> </th>
+      <th scope="col"><%= sort_link @sort, :phone, default_order: :desc %></th>
+      <th scope="col"><%= sort_link @sort, :email, default_order: :desc %></th>
     </tr>
 
-    <% @riders.each do |rider| %>
+    <% @search.each do |rider| %>
         <tr class="clickable-row", data-href='<%= rider_path(rider) %>'>
           <td><%= rider.first_name %></td>
           <td><%= rider.last_name %></td>
@@ -25,7 +20,7 @@
   <%= link_to new_rider_path, class: "btn btn-success new-btn" do %>
     <i class="fa fa-plus"> New Rider</i>
   <% end %><br/><br/>
-  <%= paginate @riders %>
+  <%= paginate @search %>
 
 </div>
 
