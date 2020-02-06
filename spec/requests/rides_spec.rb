@@ -105,7 +105,13 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   end
 
-  it 'will cancel a ride for a driver' do
+  it 'will put the ride to CANCELED status when canceled a ride with no scheduled status' do
+    post "/api/v1/rides/#{ride2.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    parsed_json = JSON.parse(response.body)
+    expect(parsed_json['ride']['status']).to eq("canceled")
+  end
+
+  it 'will put the ride back to APPROVED status when canceled a ride with scheduled status' do
     post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("approved")
