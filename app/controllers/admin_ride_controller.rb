@@ -17,14 +17,12 @@ class AdminRideController < ApplicationController
     authorize @ride
   end
 
-
   def index
     @rides = Ride.where(organization: current_user.organization)
     @rides = Ride.status(params[:status]).where(organization: current_user.organization) if params[:status].present?
-    @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
 
-    @quary = Ride.joins(:rider).ransack(params[:q])
-    @search = @quary.result
+    @query = @rides.joins(:rider).ransack(params[:q])
+    @search = Kaminari.paginate_array(@query.result).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
 
   def edit
