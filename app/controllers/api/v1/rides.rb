@@ -233,7 +233,6 @@
         ride = Ride.find(permitted_params[:ride_id])
         if current_driver.is_active? && ["dropping-off", "return-dropping-off"].include?(ride.status) && ride.driver_id == current_driver.id
           ride.update_attributes(status: "completed", completed_at: Time.now)
-          byebug
           status 201
           render ride
         else
