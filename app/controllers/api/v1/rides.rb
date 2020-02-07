@@ -232,7 +232,7 @@
       post "rides/:ride_id/complete" do
         ride = Ride.find(permitted_params[:ride_id])
         if current_driver.is_active? && ["dropping-off", "return-dropping-off"].include?(ride.status) && ride.driver_id == current_driver.id
-          ride.update(:status, "completed", completed_at: Date.today)
+          ride.update_attributes(status: "completed", completed_at: Time.now)
           byebug
           status 201
           render ride
