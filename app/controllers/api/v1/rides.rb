@@ -177,7 +177,7 @@
       post "rides/:ride_id/waiting" do
         ride = Ride.find(permitted_params[:ride_id])
         if current_driver.is_active? && ride.status == "dropping-off" && ride.driver_id == current_driver.id
-          ride.update_attribute(:status, "waiting", status: "completed", completed_at: Date.today)
+          ride.update_attribute(:status, "waiting")
           status 201
           render ride
         else
