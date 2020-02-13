@@ -53,7 +53,7 @@ class Admin::DriversController < ApplicationController
     if @driver.save
       flash.notice = "Driver created."
       byebug
-      redirect_to @driver
+      redirect_to admin_driver(@driver)
     else
       flash[:error] = @driver.errors.full_messages
       render 'new'
@@ -71,7 +71,7 @@ class Admin::DriversController < ApplicationController
 
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated."
-      redirect_to @driver
+      redirect_to admin_driver(@driver)
     else
       render 'edit'
     end
@@ -92,7 +92,7 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:application_state, "rejected")
     flash.alert = "The driver application has been rejected."
-    redirect_to @driver
+    redirect_to admin_driver(@driver)
   end
 
   #change background_check to true
@@ -101,7 +101,7 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:background_check, true)
     flash.notice = "The driver passed."
-    redirect_to @driver
+    redirect_to admin_driver(@driver)
   end
 
   #change background_check to false
@@ -110,7 +110,7 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:background_check, false)
     flash.alert = "The driver failed."
-    redirect_to @driver
+    redirect_to admin_driver(@driver)
   end
 
   def activation

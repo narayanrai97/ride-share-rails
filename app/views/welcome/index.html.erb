@@ -53,7 +53,7 @@
 
   <% @drivers.each do |driver| %>
     <% if driver.organization_id == current_user.organization_id%>
-      <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
+      <tr class="clickable-row", data-href='<%= admin_driver_path(driver) %>'>
         <td><%= driver.first_name %></td>
         <td><%= driver.last_name %></td>
         <td><%= number_to_phone(driver.phone) %></td>

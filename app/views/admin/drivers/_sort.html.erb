@@ -13,16 +13,16 @@
             Application status
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <%= link_to 'Pending', drivers_path(application_state: "pending") if current_user.organization.drivers.pending.count > 0 %>
-          <%= link_to 'Accepted', drivers_path(application_state: "accepted") if current_user.organization.drivers.accepted.count > 0%>
-          <%= link_to 'Rejected', drivers_path(application_state: "rejected") if current_user.organization.drivers.rejected.count > 0%>
+          <%= link_to 'Pending', admin_drivers_path(application_state: "pending") if current_user.organization.drivers.pending.count > 0 %>
+          <%= link_to 'Accepted', admin_drivers_path(application_state: "accepted") if current_user.organization.drivers.accepted.count > 0%>
+          <%= link_to 'Rejected', admin_drivers_path(application_state: "rejected") if current_user.organization.drivers.rejected.count > 0%>
         </div>
       </th>
     </tr>
 
     <% @search.each do |driver| %>
       <% if driver.organization_id == current_user.organization_id%>
-        <tr class="clickable-row", data-href='<%= driver_path(driver) %>'>
+        <tr class="clickable-row", data-href='<%= admin_driver_path(driver) %>'>
           <td><%= driver.first_name %></td>
           <td><%= driver.last_name %></td>
           <td><%= number_to_phone(driver.phone) %></td>
@@ -33,7 +33,7 @@
     <% end %>
   </table>
 
-  <%= link_to new_driver_path, class: "btn btn-success new-btn" do %>
+  <%= link_to new_admin_driver_path, class: "btn btn-success new-btn" do %>
     <i class="fa fa-plus"> New Driver</i>
   <% end %><br/><br/>
   <%= paginate @search %>
