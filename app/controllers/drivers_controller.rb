@@ -1,4 +1,4 @@
-class DriversController < ApplicationController
+class Admin::DriversController < ApplicationController
   DRIVER_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -52,6 +52,7 @@ class DriversController < ApplicationController
 
     if @driver.save
       flash.notice = "Driver created."
+      byebug
       redirect_to @driver
     else
       flash[:error] = @driver.errors.full_messages

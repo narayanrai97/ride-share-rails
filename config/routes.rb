@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
 
+  devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
 
-  devise_for :drivers, skip: :registrations, path: 'drivers', controllers: {sessions: "drivers/sessions"}
-
-  resources :drivers do
-    resources :vehicles, shallow: true
-    put :accept
-    put :reject
-    put :pass
-    put :fail
-    put :activation
+  namespace :admin do
+    resources :drivers do
+      resources :vehicles, shallow: true
+      put :accept
+      put :reject
+      put :pass
+      put :fail
+      put :activation
+    end
   end
 
   devise_scope :driver do
