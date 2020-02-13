@@ -52,8 +52,7 @@ class Admin::DriversController < ApplicationController
 
     if @driver.save
       flash.notice = "Driver created."
-      byebug
-      redirect_to admin_driver(@driver)
+      redirect_to admin_driver_path(@driver)
     else
       flash[:error] = @driver.errors.full_messages
       render 'new'
