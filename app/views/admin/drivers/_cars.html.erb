@@ -17,8 +17,8 @@
               <strong>Effective</strong> <%= vehicle.insurance_start.strftime("%m-%d-%Y")%> <strong>to</strong>
               <%= vehicle.insurance_stop.strftime("%m-%d-%Y")%>
               <div class="car-buttons">
-                <%= link_to "Edit", edit_vehicle_path(vehicle), class: "btn btn-sm btn-outline-primary" %>
-                <%= link_to "Delete", vehicle_path(vehicle), method: :delete, data: { confirm: "Are you sure?"}, class: "btn btn-sm btn-outline-danger"%>
+                <%= link_to "Edit", edit_admin_vehicle_path(vehicle), class: "btn btn-sm btn-outline-primary" %>
+                <%= link_to "Delete", admin_vehicle_path(vehicle), method: :delete, data: { confirm: "Are you sure?"}, class: "btn btn-sm btn-outline-danger"%>
               </div>
             </div>
           </div>
@@ -28,6 +28,6 @@
     <% end %>
   </div>
   <div class="ml-5 mt-2 driver-show-page-buttons">
-    <%=link_to "Add Car",new_admin_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-outline-info"%>
+    <%=link_to "Add Car", new_admin_driver_vehicle_path(params[:id]),class: "btn btn-sm btn-outline-info"%>
   </div>
 </section>

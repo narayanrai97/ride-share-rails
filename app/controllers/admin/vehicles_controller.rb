@@ -1,4 +1,4 @@
-class VehiclesController < ApplicationController
+class Admin::VehiclesController < ApplicationController
 
   before_action :authenticate_user!
 
@@ -16,15 +16,15 @@ class VehiclesController < ApplicationController
 
       if @vehicle.save
         flash.notice = "The vehicle information has been created"
-        redirect_to driver_path(params[:driver_id])
+        redirect_to admin_driver_path(params[:driver_id])
       else
         flash.alert = @vehicle.errors.full_messages.join(' ')
-        redirect_to driver_path(params[:driver_id])
+        redirect_to admin_driver_path(params[:driver_id])
       end
 
     else
       flash.alert = "You cannot create vehicles outside your organization"
-      redirect_to drivers_path
+      redirect_to admin_driver_path
     end
 
   end
@@ -46,7 +46,7 @@ class VehiclesController < ApplicationController
 
         if @vehicle.update(vehicle_params)
           flash.notice = "The vehicle information has been updated"
-          redirect_to driver_path(@vehicle.driver_id)
+          redirect_to admin_driver_path(@vehicle.driver_id)
         else
           flash.alert = @vehicle.errors.full_messages.join(' ')
           render "edit"
@@ -54,20 +54,19 @@ class VehiclesController < ApplicationController
 
       else
         flash.alert = "You cannot update vehicles outside your organization"
-        redirect_to drivers_path
+        redirect_to admin_drivers_path
       end
 
   end
 
   def destroy
     @vehicle = Vehicle.find(params[:id])
-
     if current_user.organization_id == @vehicle.driver.organization_id
       @vehicle.destroy
-      redirect_to driver_path(@vehicle.driver_id)
+      redirect_to admin_driver_path(@vehicle.driver_id)
     else
       flash.alert = "You cannot delete vehicles outside your organization"
-      redirect_to drivers_path
+      redirect_to admin_drivers_path
     end
   end
 

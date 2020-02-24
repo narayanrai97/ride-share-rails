@@ -7,7 +7,7 @@
           <i class="fa fa-power-off"> Deactivate</i>
         <% end %>
       <% else %>
-        <%= link_to driver_activation_path(@driver), class: "btn btn-sm btn-success", id: "driver-activation", method: :put, data: { confirm: 'Are you sure?' } do %>
+        <%= link_to admin_driver_activation_path(@driver), class: "btn btn-sm btn-success", id: "driver-activation", method: :put, data: { confirm: 'Are you sure?' } do %>
           <i class="fa fa-power-off"> Reactivate</i>
         <% end %>
       <% end %>

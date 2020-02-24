@@ -68,7 +68,7 @@ class Admin::DriversController < ApplicationController
     @driver = Driver.find(params[:id])
     authorize @driver
 
-    if @driver.update(driver_params)
+    if @driver.update(driver_params) 
       flash.notice = "The driver information has been updated."
       redirect_to admin_driver_path(@driver)
     else
