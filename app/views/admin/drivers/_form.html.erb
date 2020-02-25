@@ -1,4 +1,4 @@
-<%= form_with(model: @driver, local: true, html: { multipart: true }) do |form| %>
+<%= form_with(model: @driver, :url => admin_driver_path, local: true, html: { multipart: true }) do |form| %>
 
 
   <% if @driver.errors.any? %>

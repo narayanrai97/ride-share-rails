@@ -1,4 +1,4 @@
-class DriversController < ApplicationController
+class Admin::DriversController < ApplicationController
   DRIVER_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -52,7 +52,7 @@ class DriversController < ApplicationController
 
     if @driver.save
       flash.notice = "Driver created."
-      redirect_to @driver
+      redirect_to admin_driver_path(@driver)
     else
       flash[:error] = @driver.errors.full_messages
       render 'new'
@@ -70,7 +70,7 @@ class DriversController < ApplicationController
 
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated."
-      redirect_to @driver
+      redirect_to admin_driver_path(@driver)
     else
       render 'edit'
     end
@@ -82,7 +82,7 @@ class DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:application_state, "accepted")
     flash.notice = "The driver application has been accepted."
-    redirect_to request.referrer || @driver
+    redirect_to request.referrer || admin_driver_path(@driver)
    end
 
   #Method to Reject application
@@ -91,7 +91,7 @@ class DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:application_state, "rejected")
     flash.alert = "The driver application has been rejected."
-    redirect_to @driver
+    redirect_to admin_driver_path(@driver)
   end
 
   #change background_check to true
@@ -100,7 +100,7 @@ class DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:background_check, true)
     flash.notice = "The driver passed."
-    redirect_to @driver
+    redirect_to admin_driver_path(@driver)
   end
 
   #change background_check to false
@@ -109,7 +109,7 @@ class DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:background_check, false)
     flash.alert = "The driver failed."
-    redirect_to @driver
+    redirect_to admin_driver_path(@driver)
   end
 
   def activation
@@ -123,7 +123,7 @@ class DriversController < ApplicationController
     else #was_active == false
       flash.notice = "Driver reactivated."
     end
-    redirect_to request.referrer || drivers_path
+    redirect_to request.referrer || admin_drivers_path
   end
 
   private
@@ -133,7 +133,7 @@ class DriversController < ApplicationController
 
   def user_not_authorized
     flash.notice = "You are not authorized to view this information"
-    redirect_to drivers_path
+    redirect_to admin_drivers_path
   end
 
 end

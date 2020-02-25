@@ -1,4 +1,9 @@
-<%= form_with(model: [@driver,@vehicle]) do  |form| %>
+<% if controller.action_name == 'new' %>
+  <%url = admin_driver_vehicles_path(driver_id: @driver) %>
+<% else %>
+  <%url = admin_vehicle_path(id: @vehicle) %>
+<% end %>
+<%= form_with(model: [@driver,@vehicle], url: url)  do  |form| %>
 
   <% if @vehicle.errors.any? %>
     <div id="error_explanation">
@@ -13,7 +18,7 @@
       </ul>
     </div>
   <% end %>
-  
+
   <div class ='row'>
     <div class="form-group offset-md-1 col-md-5 ">
       <%= form.label :image %><br>

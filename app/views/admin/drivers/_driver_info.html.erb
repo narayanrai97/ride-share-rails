@@ -46,9 +46,9 @@
       <% if true %>
         <mark><%= pass_fail(@driver.background_check) %></mark>
         <% if !@driver.background_check? %>
-          <%= link_to "Pass", driver_pass_path(@driver), method: :put, data: { confirm: "Did the driver pass the background check?" }, class: "btn btn-sm btn-outline-success" %>
+          <%= link_to "Pass", admin_driver_pass_path(@driver), method: :put, data: { confirm: "Did the driver pass the background check?" }, class: "btn btn-sm btn-outline-success" %>
         <% else %>
-          <%= link_to "Fail", driver_fail_path(@driver), method: :put, data: { confirm: "Did the driver fail the background check?" }, class: "btn btn-sm btn-outline-danger" %>
+          <%= link_to "Fail", admin_driver_fail_path(@driver), method: :put, data: { confirm: "Did the driver fail the background check?" }, class: "btn btn-sm btn-outline-danger" %>
         <% end %>
       </div>
       <div class="col-md border-top border-bottom">
@@ -58,17 +58,17 @@
 
         <%if @driver.application_state != "accepted"%>
 
-          <%= link_to "Accept",driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-success" %>
+          <%= link_to "Accept",admin_driver_accept_path(@driver),method: :put, data: { confirm: 'Are you sure you want to approve the application?' }, class: "btn btn-sm btn-outline-success" %>
         <% end %>
 
         <% if @driver.application_state != "rejected"%>
-          <%= link_to "Reject",driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning" %>
+          <%= link_to "Reject",admin_driver_reject_path(@driver),method: :put, data: { confirm: 'Are you sure you want to reject the application?' }, class: "btn btn-sm btn-outline-warning" %>
         <% end %>
       <% end %>
 
     </div>
   </div>
   <div class="driver-show-page-buttons">
-    <%= link_to 'Edit', edit_driver_path(@driver), class:"btn btn-sm btn-outline-info"%>
+    <%= link_to 'Edit', edit_admin_driver_path(@driver), class:"btn btn-sm btn-outline-info"%>
   </div>
 </div>
