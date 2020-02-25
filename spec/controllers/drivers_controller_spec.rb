@@ -72,7 +72,7 @@ RSpec.describe Admin::DriversController, type: :controller do
       }
       expect(driver_outside_organization.first_name).to_not eq('Sam')
       expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(admin_driver_path)
+      expect(test_response).to redirect_to(admin_drivers_path)
       expect(flash[:notice]).to match(/not authorized/)
   end
 
@@ -100,7 +100,7 @@ RSpec.describe Admin::DriversController, type: :controller do
       expect(test_response.response_code).to eq(302)
       expect(test_response.body).to match(/You are being/)
       expect(flash[:notice]).to match(/not authorized/)
-      expect(test_response).to redirect_to(drivers_path)
+      expect(test_response).to redirect_to(admin_drivers_path)
   end
 
   it 'rejects application' do

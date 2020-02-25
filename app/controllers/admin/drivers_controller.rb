@@ -133,7 +133,7 @@ class Admin::DriversController < ApplicationController
 
   def user_not_authorized
     flash.notice = "You are not authorized to view this information"
-    redirect_to admin_driver_path
+    redirect_to admin_drivers_path
   end
 
 end
