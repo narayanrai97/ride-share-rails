@@ -124,7 +124,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver.application_state).to_not eq("rejected")
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(drivers_path)
+    expect(test_response).to redirect_to(admin_drivers_path)
   end
 
   it 'passes driver background check' do
