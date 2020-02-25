@@ -136,7 +136,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver.background_check).to eq(true)
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/passed/)
-    expect(test_response).to redirect_to(driver)
+    expect(test_response).to redirect_to(admin_driver_path(driver))
   end
 
   it 'fails driver background check' do
@@ -149,7 +149,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver.background_check).to eq(false)
     expect(test_response.response_code).to eq(302)
     expect(flash[:alert]).to match(/The driver failed./)
-    expect(test_response).to redirect_to(driver)
+    expect(test_response).to redirect_to(admin_driver_path(driver))
   end
 
   it 'prevents unauthorized users from marking a driver background passed' do
@@ -161,7 +161,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver_outside_organization.background_check).to eq(false)
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(drivers_path)
+    expect(test_response).to redirect_to(admin_drivers_path)
   end
 
   it 'prevents unauthorized users from marking a driver background failed' do
@@ -174,7 +174,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver_outside_organization.background_check).to eq(true)
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(drivers_path)
+    expect(test_response).to redirect_to(admin_drivers_path)
   end
 
   it 'deactivates driver' do
@@ -186,7 +186,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver.is_active).to be(false)
     expect(test_response.response_code).to eq(302)
     expect(flash[:alert]).to match("Driver deactivated.")
-    expect(test_response).to redirect_to(drivers_path)
+    expect(test_response).to redirect_to(admin_drivers_path)
 
     test_response_2 = put :activation, params: {
       driver_id: driver.id
@@ -196,7 +196,7 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver.is_active).to be(true)
     expect(test_response_2.response_code).to eq(302)
     expect(flash[:notice]).to match("Driver reactivated.")
-    expect(test_response_2).to redirect_to(drivers_path)
+    expect(test_response_2).to redirect_to(admin_drivers_path)
   end
 
   it 'prevents unauthorized users from deactivating a driver outside org' do
@@ -208,6 +208,6 @@ RSpec.describe Admin::DriversController, type: :controller do
     expect(driver_outside_organization.is_active).to be(true)
     expect(test_response.response_code).to eq(302)
     expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(drivers_path)
+    expect(test_response).to redirect_to(admin_drivers_path)
   end
 end

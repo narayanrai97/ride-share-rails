@@ -123,7 +123,7 @@ class Admin::DriversController < ApplicationController
     else #was_active == false
       flash.notice = "Driver reactivated."
     end
-    redirect_to request.referrer || drivers_path
+    redirect_to request.referrer || admin_drivers_path
   end
 
   private
