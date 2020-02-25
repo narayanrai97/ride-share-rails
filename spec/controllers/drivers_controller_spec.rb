@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DriversController, type: :controller do
+RSpec.describe Admin::DriversController, type: :controller do
   let!(:user) { create :user }
   let!(:driver) { create :driver, organization_id: user.organization.id }
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
@@ -44,7 +44,7 @@ RSpec.describe DriversController, type: :controller do
 
       expect(flash[:notice]).to match("Driver created.")
       expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(Driver.last)
+      expect(test_response).to redirect_to(admin_driver_path(Driver.last))
     end.to change(Driver, :count)
   end
 
@@ -59,20 +59,20 @@ RSpec.describe DriversController, type: :controller do
     driver.reload
     expect(driver.first_name).to eq('Lucy')
     expect(test_response.response_code).to eq(302)
-    expect(test_response).to redirect_to(driver)
+    expect(test_response).to redirect_to(admin_driver_path)
   end
 
   it 'fails to update a driver in a different organization than active user' do
+
       test_response = put :update, params: {
         id: driver_outside_organization.id,
         driver: {
           first_name: 'Sam'
         }
       }
-
       expect(driver_outside_organization.first_name).to_not eq('Sam')
       expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(drivers_path)
+      expect(test_response).to redirect_to(admin_driver_path)
       expect(flash[:notice]).to match(/not authorized/)
   end
 
@@ -85,7 +85,7 @@ RSpec.describe DriversController, type: :controller do
       expect(driver.application_state).to eq("accepted")
       expect(test_response.response_code).to eq(302)
       expect(flash[:notice]).to match(/accepted/)
-      expect(test_response).to redirect_to(driver)
+      expect(test_response).to redirect_to(admin_driver_path(driver))
   end
 
   it 'does not accept application for driver outside organization' do

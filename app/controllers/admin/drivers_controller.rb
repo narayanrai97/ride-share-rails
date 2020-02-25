@@ -68,7 +68,7 @@ class Admin::DriversController < ApplicationController
     @driver = Driver.find(params[:id])
     authorize @driver
 
-    if @driver.update(driver_params) 
+    if @driver.update(driver_params)
       flash.notice = "The driver information has been updated."
       redirect_to admin_driver_path(@driver)
     else
@@ -82,7 +82,7 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:application_state, "accepted")
     flash.notice = "The driver application has been accepted."
-    redirect_to request.referrer || @driver
+    redirect_to request.referrer || admin_driver_path(@driver)
    end
 
   #Method to Reject application
@@ -133,7 +133,7 @@ class Admin::DriversController < ApplicationController
 
   def user_not_authorized
     flash.notice = "You are not authorized to view this information"
-    redirect_to drivers_path
+    redirect_to admin_driver_path
   end
 
 end
