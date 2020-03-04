@@ -128,6 +128,11 @@
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
 
     </div>
+
+  </div>
+  <div class="form-group offset-md-1 col-4">
+    <%= form.label :pick_up_time %>
+    <%= form.text_field :pick_up_time, id: 'ride_pick_up_time' %>
   </div>
 </div>
 
@@ -210,7 +215,7 @@
 <div class="form-row">
   <div class="form-group  col-md-10 offset-md-1">
   6. <%= form.label :round_trip %>
-     <%= form.select :round_trip, options_for_select(["false","true"], :selected => form.object.round_trip), class: "form-control" %>
+     <%= check_box_tag :round_trip, value = true, checked = true , class: "form-control" %>
   </div>
 </div>
 
