@@ -14,6 +14,11 @@ class AdminRideController < ApplicationController
 
   def show
     @ride = Ride.find(params[:id])
+    if @ride.return
+      @second_ride = Ride.find(@ride.return)
+    else
+      @ride
+    end
     authorize @ride
   end
 
