@@ -101,12 +101,12 @@ class AdminRideController < ApplicationController
       render 'new'
     else
       if params[:round_trip]
-        # @second_ride.outbound = @ride.id
+        @second_ride.outbound = @ride.id
         if !@second_ride.save
           flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
           render 'new'
         end
-        # @ride.update( return: @second_ride.id)
+        @ride.update( return: @second_ride.id)
       end
       rider_choose_save_location
       only_15_location_saves(organization)
