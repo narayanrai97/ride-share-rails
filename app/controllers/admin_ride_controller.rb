@@ -63,18 +63,20 @@ class AdminRideController < ApplicationController
                      rider_id: rider.id,
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
-                     round_trip: false
+                     round_trip: ride_params[:round_trip],
+                     expected_wait_time: ride_params[:expected_wait_time]
                      )
 
-    if true?(params[:ride][:round_trip])
+    if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                       rider_id: rider.id,
                       pick_up_time: ride_params[:pick_up_time],
                       reason: ride_params[:reason],
-                      round_trip: true,
-                      expected_wait_time: ride_params[:expected_wait_time]
+                      round_trip: @ride.round_trip,
+                      expected_wait_time: @ride.expected_wait_time
                       )
     end
+    byebug
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
@@ -99,6 +101,7 @@ class AdminRideController < ApplicationController
       @second_ride.end_location_id = @start_location.id
       @second_ride.status = 'approved'
     end
+    byebug
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -117,6 +120,7 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
+      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
     end
