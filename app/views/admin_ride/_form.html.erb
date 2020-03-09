@@ -130,10 +130,6 @@
     </div>
 
   </div>
-  <div class="form-group offset-md-1 col-4">
-    <%= form.label :pick_up_time %>
-    <%= form.text_field :pick_up_time, id: 'ride_pick_up_time' %>
-  </div>
 </div>
 
  <%= javascript_tag do %>
@@ -215,7 +211,15 @@
 <div class="form-row">
   <div class="form-group  col-md-10 offset-md-1">
   6. <%= form.label :round_trip %>
-     <%= check_box_tag :round_trip, value = true, checked = true , class: "form-control" %>
+     <%= form.check_box :round_trip, {}, true, false %>
+  </div>
+</div>
+
+
+<div class="form-group offset-md-1 col-4">
+  <div id="return_time" style="display: none" class="form-group  col-md-10 offset-md-1">
+    <%= form.label :Return_pick_up_time %>
+    <%= form.text_field :pick_up_time, id: 'ride_return_pick_up_time' %>
   </div>
 </div>
 
@@ -251,13 +255,32 @@
     minuteIncrement: 1
   });
 
+  const ele = document.getElementById('ride_return_pick_up_time');
+  flatpickr(ele, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+
+
+
+
+
+
   // conditional expected_wait_time
   jQuery(function () {
       $("#ride_round_trip").change(function () {
           if ($(this).val() == "false") {
               $("#show_dep").hide();
+              $("#return_time").hide();
           } else {
               $("#show_dep").show();
+              $("#return_time").show();
           }
       });
   });

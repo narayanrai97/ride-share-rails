@@ -44,15 +44,15 @@
     <strong>Round trip?</strong>
     <%= @ride.round_trip %>
   </p>
-
   <% if @ride.return %>
   <p>
-    <strong> Return trip pick up time</strong>
+    <strong> Return trip pick up time:</strong>
     <%= @second_ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>
   </p>
   <% end %>
 
   <p>
+
     <% if @ride.round_trip? %>
       <strong>Expected Wait time:</strong>
       <% if ["30", "45"].include? @ride.expected_wait_time %>

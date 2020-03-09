@@ -64,16 +64,15 @@ class AdminRideController < ApplicationController
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
                      round_trip: false
-
                      )
 
-    if params[:round_trip]
+    if true?(params[:ride][:round_trip])
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                       rider_id: rider.id,
                       pick_up_time: ride_params[:pick_up_time],
                       reason: ride_params[:reason],
-                      round_trip: false
-
+                      round_trip: true,
+                      expected_wait_time: ride_params[:expected_wait_time]
                       )
     end
     location = save_location_error_handler(@start_location)
@@ -95,17 +94,16 @@ class AdminRideController < ApplicationController
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
-    if params[:round_trip]
+    if true?(params[:ride][:round_trip])
       @second_ride.start_location_id = @end_location.id
       @second_ride.end_location_id = @start_location.id
       @second_ride.status = 'approved'
     end
-
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
     else
-      if params[:round_trip]
+      if true?(params[:ride][:round_trip])
         @second_ride.outbound = @ride.id
         if !@second_ride.save
           flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
@@ -236,6 +234,10 @@ class AdminRideController < ApplicationController
         end
       end
     end
+  end
+
+  def true?(round_trip)
+    round_trip.downcase == 'true'
   end
 
   def user_not_authorized
