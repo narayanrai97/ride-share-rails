@@ -70,7 +70,7 @@ class AdminRideController < ApplicationController
     if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                       rider_id: rider.id,
-                      pick_up_time: ride_params[:pick_up_time],
+                      pick_up_time: ride_params[:return_pick_up_time],
                       reason: ride_params[:reason],
                       round_trip: @ride.round_trip,
                       expected_wait_time: @ride.expected_wait_time
@@ -101,7 +101,7 @@ class AdminRideController < ApplicationController
       @second_ride.end_location_id = @start_location.id
       @second_ride.status = 'approved'
     end
-    byebug
+
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -206,7 +206,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
                                  :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :expected_wait_time)
+                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :return_pick_up_time, :expected_wait_time)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
