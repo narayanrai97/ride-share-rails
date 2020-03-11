@@ -76,7 +76,6 @@ class AdminRideController < ApplicationController
                       expected_wait_time: @ride.expected_wait_time
                       )
     end
-    byebug
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
@@ -109,7 +108,6 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
-      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
     end
@@ -120,6 +118,7 @@ class AdminRideController < ApplicationController
     authorize @ride
     @start_location = @ride.start_location
     @end_location = @ride.end_location
+    byebug
     organization = Organization.find(current_user.organization_id)
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
@@ -151,12 +150,13 @@ class AdminRideController < ApplicationController
 
     rider_choose_save_location
     only_15_location_saves(organization)
+    byebug
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
-      round_trip: ride_params[:round_trip],
+      round_trip: @ride.round_trip,
       expected_wait_time: ride_params[:expected_wait_time],
       start_location: @start_location,
       end_location: @end_location
