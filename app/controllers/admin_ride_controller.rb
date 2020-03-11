@@ -96,24 +96,13 @@ class AdminRideController < ApplicationController
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
-    if true?(params[:ride][:round_trip])
-      @second_ride.start_location_id = @end_location.id
-      @second_ride.end_location_id = @start_location.id
-      @second_ride.status = 'approved'
-    end
+    round_trip_second_trip_location
 
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
     else
-      if true?(params[:ride][:round_trip])
-        @second_ride.outbound = @ride.id
-        if !@second_ride.save
-          flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
-          render 'new'
-        end
-        @ride.update( return: @second_ride.id)
-      end
+      round_trip_save
       rider_choose_save_location
       only_15_location_saves(organization)
       if organization.use_tokens == true
@@ -226,6 +215,25 @@ class AdminRideController < ApplicationController
     if ride_params[:save_end_location] == 'saved'
       lr2 = LocationRelationship.new(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
       lr2.save_or_touch
+    end
+  end
+
+  def round_trip_second_trip_location
+    if true?(params[:ride][:round_trip])
+      @second_ride.start_location_id = @end_location.id
+      @second_ride.end_location_id = @start_location.id
+      @second_ride.status = 'approved'
+    end
+  end
+
+  def round_trip_save
+    if true?(params[:ride][:round_trip])
+      @second_ride.outbound = @ride.id
+      if !@second_ride.save
+        flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
+        render 'new'
+      end
+      @ride.update( return: @second_ride.id)
     end
   end
 
