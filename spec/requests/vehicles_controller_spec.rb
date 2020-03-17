@@ -24,21 +24,23 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         car_color: "Silver",
         car_plate: "VZW1212",
         insurance_provider: "Geico",
-        insurance_start: "2019/3/11",
-        insurance_stop: "2020/3/11",
+        insurance_start: Date.today,
+        insurance_stop: Date.today,
         seat_belt_num: 5}
         }
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-        #puts parsed_json
+        puts parsed_json
+        puts response.body
+        byebug
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
-        expect(parsed_json['vehicle']['insurance_start']).to eq('2019-03-11')
-        expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
+        expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
+        expect(parsed_json['vehicle']['insurance_stop']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
 
@@ -108,8 +110,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           car_color: "Silver",
           car_plate: "VZW1212",
           insurance_provider: "Geico",
-          insurance_start: "2019/3/11",
-          insurance_stop: "2020/3/11",
+          insurance_start: Date.today,
+          insurance_stop: Date.today,
           seat_belt_num: 5}
         }
         expect(response).to have_http_status(201)
@@ -120,8 +122,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
-        expect(parsed_json['vehicle']['insurance_start']).to eq('2019-03-11')
-        expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
+        expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
+        expect(parsed_json['vehicle']['insurance_stop']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
 
