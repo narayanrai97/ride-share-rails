@@ -44,7 +44,7 @@
     <strong>Round trip?</strong>
     <%= @ride.round_trip %>
   </p>
-  <% if @ride.return %>
+  <% if @ride.round_trip %>
   <p>
     <strong> Return trip pick up time:</strong>
     <%= @second_ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>

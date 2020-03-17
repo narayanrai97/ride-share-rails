@@ -15,7 +15,7 @@ class Ride < ApplicationRecord
 
   scope :status, -> (status) { where status: status }
 
-  
+
   def start_street
     if self.start_location
       self.start_location.street

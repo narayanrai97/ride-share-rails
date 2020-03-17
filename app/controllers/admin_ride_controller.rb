@@ -96,7 +96,6 @@ class AdminRideController < ApplicationController
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
     round_trip_second_trip_location
-
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -118,7 +117,6 @@ class AdminRideController < ApplicationController
     authorize @ride
     @start_location = @ride.start_location
     @end_location = @ride.end_location
-    byebug
     organization = Organization.find(current_user.organization_id)
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
@@ -133,7 +131,6 @@ class AdminRideController < ApplicationController
     else
       location = @start_location
     end
-
     @end_location = Location.new(street: ride_params[:end_street],
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
@@ -150,17 +147,28 @@ class AdminRideController < ApplicationController
 
     rider_choose_save_location
     only_15_location_saves(organization)
-    byebug
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
-      round_trip: @ride.round_trip,
+      round_trip: ride_params[:round_trip],
       expected_wait_time: ride_params[:expected_wait_time],
       start_location: @start_location,
       end_location: @end_location
     )
+    if @ride.round_trip
+      @second_ride = Ride.find_or_create_by(organization_id: current_user.organization_id,
+                      rider_id: @ride.rider_id,
+                      pick_up_time: ride_params[:return_pick_up_time],
+                      reason: @ride.reason,
+                      round_trip: @ride.round_trip,
+                      expected_wait_time: @ride.expected_wait_time
+                      )
+    end
+    round_trip_second_trip_location
+    round_trip_save
+    rider_choose_save_location
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
     else
@@ -219,7 +227,7 @@ class AdminRideController < ApplicationController
   end
 
   def round_trip_second_trip_location
-    if true?(params[:ride][:round_trip])
+    if @ride.round_trip
       @second_ride.start_location_id = @end_location.id
       @second_ride.end_location_id = @start_location.id
       @second_ride.status = 'approved'
@@ -227,7 +235,7 @@ class AdminRideController < ApplicationController
   end
 
   def round_trip_save
-    if true?(params[:ride][:round_trip])
+    if @ride.round_trip
       @second_ride.outbound = @ride.id
       if !@second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
