@@ -30,9 +30,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         }
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-        puts parsed_json
-        puts response.body
-        byebug
+    
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
