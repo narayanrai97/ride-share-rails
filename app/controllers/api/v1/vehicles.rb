@@ -4,7 +4,7 @@ module Api
       include Api::V1::Defaults
 
       helpers SessionHelpers
-      
+
 
 
       before do
@@ -34,19 +34,26 @@ module Api
           vehicle = Vehicle.new
           vehicle.attributes = params[:vehicle]
           vehicle.driver_id = current_driver.id
-
-            if vehicle.save
+            byebug
+            if !vehicle.save
+              status 400
+              vehicle.errors.messages
+            else
+              byebug
               if(driver.application_state != "pending" || !driver.application_state !="accepted")
                 driver.application_state ="pending"
                 driver.save
               end
-              if vehicle.save
+              if !vehicle.save
+                status 400
+                vehicle.errors.messages
+              else
+                byebug
                 status 201
+                byebug
               render vehicle
-              else 
-               status 400
-               vehicle.errors.messages
               end
+              render vehicle
             end
 
         end
