@@ -30,7 +30,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         }
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-    
+
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
@@ -40,6 +40,22 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['insurance_stop']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
+    end
+
+    it 'Will return a 400 error when insurance stop dates is in the past' do
+
+      post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+       params: {vehicle: {car_make: "Chevorlet",
+        car_model: "Impala",
+        car_year: 1996,
+        car_color: "Silver",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: "02/01/1996",
+        insurance_stop: "03/01/1999",
+        seat_belt_num: 5}
+        }
+        expect(response).to have_http_status(400)
     end
 
      it 'will return error 400 if fields are missing or not correct. Will not save' do

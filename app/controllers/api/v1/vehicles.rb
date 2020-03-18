@@ -34,12 +34,10 @@ module Api
           vehicle = Vehicle.new
           vehicle.attributes = params[:vehicle]
           vehicle.driver_id = current_driver.id
-            byebug
             if !vehicle.save
               status 400
               vehicle.errors.messages
             else
-              byebug
               if(driver.application_state != "pending" || !driver.application_state !="accepted")
                 driver.application_state ="pending"
                 driver.save
@@ -48,9 +46,7 @@ module Api
                 status 400
                 vehicle.errors.messages
               else
-                byebug
                 status 201
-                byebug
               render vehicle
               end
               render vehicle
