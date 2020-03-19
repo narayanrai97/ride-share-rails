@@ -72,7 +72,7 @@ class AdminRideController < ApplicationController
                       rider_id: rider.id,
                       pick_up_time: ride_params[:return_pick_up_time],
                       reason: ride_params[:reason],
-                      round_trip: @ride.round_trip,
+                      round_trip: false,
                       expected_wait_time: @ride.expected_wait_time
                       )
     end
