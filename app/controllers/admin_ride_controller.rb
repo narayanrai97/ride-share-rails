@@ -164,12 +164,13 @@ class AdminRideController < ApplicationController
                       rider_id: @ride.rider_id,
                       pick_up_time: ride_params[:return_pick_up_time],
                       reason: @ride.reason,
-                      round_trip: @ride.round_trip,
+                      round_trip: false,
                       expected_wait_time: @ride.expected_wait_time,
                       start_location: @start_location,
                       end_location: @end_location
                       )
     end
+    byebug
     round_trip_second_trip_location
     round_trip_save
     rider_choose_save_location
