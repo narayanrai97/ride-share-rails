@@ -99,6 +99,7 @@ class AdminRideController < ApplicationController
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
+      return
     else
       round_trip_save
       rider_choose_save_location
@@ -109,6 +110,7 @@ class AdminRideController < ApplicationController
       end
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
+      return
     end
   end
 
@@ -163,16 +165,21 @@ class AdminRideController < ApplicationController
                       pick_up_time: ride_params[:return_pick_up_time],
                       reason: @ride.reason,
                       round_trip: @ride.round_trip,
-                      expected_wait_time: @ride.expected_wait_time
+                      expected_wait_time: @ride.expected_wait_time,
+                      start_location: @start_location,
+                      end_location: @end_location
                       )
     end
     round_trip_second_trip_location
     round_trip_save
     rider_choose_save_location
+    byebug
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
+      return
     else
       render 'edit'
+      return
     end
   end
 
@@ -240,6 +247,7 @@ class AdminRideController < ApplicationController
       if !@second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
         render 'new'
+        return
       end
       @ride.update( return: @second_ride.id)
     end
