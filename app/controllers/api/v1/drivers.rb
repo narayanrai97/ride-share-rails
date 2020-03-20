@@ -40,13 +40,13 @@ module Api
 
       post 'drivers/password_reset' do
         @driver = Driver.find_by_email(params[:email])
-        if !@driver.nil?
+        if @driver.nil?
+          status 404
+          return 'Email not found'
+        else
           @driver.send_reset_password_instructions
           status 201
           return ""
-        else
-          status 404
-          return 'Email not found'
         end
 
       end
