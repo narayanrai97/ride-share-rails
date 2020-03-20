@@ -24,7 +24,10 @@ class Driver < ApplicationRecord
   scope :accepted, -> { where(application_state: "accepted") }
   scope :rejected, -> { where(application_state: "rejected") }
   before_save :lets_cap, only: [:new, :create]
+  before_save :downcase_email
 
+
+private 
   def thumbnail
     return self.image.variant(resize: '300x300>').processed
   end
@@ -33,6 +36,11 @@ class Driver < ApplicationRecord
     if (image.attached? && !image.content_type.in?(['image/jpg','image/png']))
       errors.add(:image, "needs to be JPEG or PNG")
     end
+  end
+
+  # Converts email to all lower-case.
+  def downcase_email
+    email.downcase!
   end
 
   def lets_cap
