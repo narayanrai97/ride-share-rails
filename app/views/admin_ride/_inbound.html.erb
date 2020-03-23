@@ -44,25 +44,13 @@
     <strong>Round trip?</strong>
     <%= @ride.round_trip %>
   </p>
-  
+
   <% if @ride.round_trip %>
   <p>
     <strong> Return trip pick up time:</strong>
     <%= @second_ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>
   </p>
   <% end %>
-
-  <p>
-
-    <% if @ride.round_trip? %>
-      <strong>Expected Wait time:</strong>
-      <% if ["30", "45"].include? @ride.expected_wait_time %>
-        <%= @ride.expected_wait_time %> minutes
-      <% else %>
-        <%= pluralize(@ride.expected_wait_time.to_f/60, 'hour') %>
-      <% end %>
-    <% end %>
-  </p>
 
   <%= link_to 'Back', admin_ride_index_path, class: "btn btn-outline-primary" %>
   <%= link_to 'Edit', edit_admin_ride_path(@ride), class: "btn btn-outline-success" %>

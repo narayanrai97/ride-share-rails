@@ -64,7 +64,6 @@ class AdminRideController < ApplicationController
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
                      round_trip: ride_params[:round_trip],
-                     expected_wait_time: ride_params[:expected_wait_time]
                      )
 
     if @ride.round_trip
@@ -73,9 +72,9 @@ class AdminRideController < ApplicationController
                       pick_up_time: ride_params[:return_pick_up_time],
                       reason: ride_params[:reason],
                       round_trip: false,
-                      expected_wait_time: @ride.expected_wait_time
                       )
     end
+
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
@@ -108,6 +107,7 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
+      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
@@ -155,7 +155,6 @@ class AdminRideController < ApplicationController
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
       round_trip: ride_params[:round_trip],
-      expected_wait_time: ride_params[:expected_wait_time],
       start_location: @start_location,
       end_location: @end_location
     )
@@ -165,7 +164,6 @@ class AdminRideController < ApplicationController
                       pick_up_time: ride_params[:return_pick_up_time],
                       reason: @ride.reason,
                       round_trip: false,
-                      expected_wait_time: @ride.expected_wait_time,
                       start_location: @start_location,
                       end_location: @end_location
                       )
@@ -209,7 +207,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
                                  :save_end_location, :organization_rider_start_location, :start_street, :start_city,
                                  :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :return_pick_up_time, :expected_wait_time)
+                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :return_pick_up_time)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

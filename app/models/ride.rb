@@ -11,7 +11,7 @@ class Ride < ApplicationRecord
   # validate :valid_locations
   validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off waiting return-picking-up return-dropping-off completed canceled),
   message: "%{value} is not a valid status" }
-  validates :expected_wait_time, presence: true, if: :round_trip?
+  # validates :expected_wait_time, presence: true, if: :round_trip?
 
   scope :status, -> (status) { where status: status }
 
