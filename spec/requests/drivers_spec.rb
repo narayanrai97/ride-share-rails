@@ -21,9 +21,16 @@ RSpec.describe Api::V1::Drivers, type: :request do
     end
 
     it 'Test password reset' do
-    post '/api/v1/driver', headers: {"ACCEPT" => "application/json" },
-    params: { email: "sample@sample.com", password: "password" }
-       expect(response).to have_http_status(401)
+    post '/api/v1/drivers/password_reset', headers: {"ACCEPT" => "application/json" },
+    params: { email: driver.email}
+       expect(response).to have_http_status(201)
+       puts response.body
+    end
+
+    it 'Return a 404 when password reset email is not found' do
+    post '/api/v1/drivers/password_reset', headers: {"ACCEPT" => "application/json" },
+    params: { email: "jumping@gmail.com"}
+       expect(response).to have_http_status(404)
        puts response.body
     end
 

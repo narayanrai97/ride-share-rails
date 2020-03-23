@@ -42,7 +42,7 @@ module Api
         @driver = Driver.find_by_email(params[:email])
         if @driver.nil?
           status 404
-          return 'Email not found'
+          return "Email not found"
         else
           @driver.send_reset_password_instructions
           status 201
