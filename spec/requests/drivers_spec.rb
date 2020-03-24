@@ -2,6 +2,18 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Drivers, type: :request do
 
+  it 'Test password reset' do
+  post '/api/v1/drivers/password_reset',
+  params: { email: driver.email}
+     expect(response).to have_http_status(201)
+  end
+
+  it 'Return a 404 when password reset email is not found' do
+  post '/api/v1/drivers/password_reset',
+  params: { email: "jumping@gmail.com"}
+     expect(response).to have_http_status(404)
+  end
+
     def logintoken
         post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
        parsed_json = JSON.parse(response.body)
