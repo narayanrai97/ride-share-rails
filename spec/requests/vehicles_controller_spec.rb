@@ -24,8 +24,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         car_color: "Silver",
         car_plate: "VZW1212",
         insurance_provider: "Geico",
-        insurance_start: "2019/3/11",
-        insurance_stop: "2020/3/11",
+        insurance_start: Date.today,
+        insurance_stop: Date.today,
         seat_belt_num: 5}
         }
         expect(response).to have_http_status(201)
@@ -37,9 +37,25 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
-        expect(parsed_json['vehicle']['insurance_start']).to eq('2019-03-11')
-        expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
+        expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
+        expect(parsed_json['vehicle']['insurance_stop']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
+    end
+
+    it 'Will Return a 404 when insurance_stop date is in the past' do
+      post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+       params: {vehicle: {car_make: "Chevorlet",
+        car_model: "Impala",
+        car_year: 2010,
+        car_color: "Silver",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: "01/01/2000",
+        insurance_stop: "03/07/2008",
+        seat_belt_num: 5}
+        }
+        expect(response).to have_http_status(400)
+        parsed_json = JSON.parse(response.body)
     end
 
      it 'will return error 400 if fields are missing or not correct. Will not save' do
@@ -76,6 +92,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
 
     end
 
+
     it 'return 404 error code if its not current driver' do
       Vehicle.destroy_all
       get '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
@@ -108,8 +125,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           car_color: "Silver",
           car_plate: "VZW1212",
           insurance_provider: "Geico",
-          insurance_start: "2019/3/11",
-          insurance_stop: "2020/3/11",
+          insurance_start: Date.today,
+          insurance_stop: Date.today,
           seat_belt_num: 5}
         }
         expect(response).to have_http_status(201)
@@ -120,8 +137,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
-        expect(parsed_json['vehicle']['insurance_start']).to eq('2019-03-11')
-        expect(parsed_json['vehicle']['insurance_stop']).to eq('2020-03-11')
+        expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
+        expect(parsed_json['vehicle']['insurance_stop']).to eq(Date.today.strftime)
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
 
