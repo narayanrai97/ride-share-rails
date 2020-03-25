@@ -37,6 +37,7 @@ module Api
         if vehicle.save
           status 201
           render vehicle
+          return
         else
           status 400
           vehicle.errors.messages
