@@ -1,0 +1,58 @@
+<div class="container admin-ride">
+  <h4 style="text-align: center">Ride Details</h4>
+ <p>
+
+   <%= @ride.id %>
+   </p>
+  <p>
+    <strong>Rider:</strong>
+    <%= @ride.rider.full_name %>
+  </p>
+
+  <p>
+    <strong>Driver:</strong>
+    <%= @ride.driver&.full_name %>
+  </p>
+
+  <p>
+    <strong>Pick Up Time:</strong>
+    <%= @ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>
+  </p>
+
+  <p>
+    <strong>Start Address:</strong>
+    <%= @ride.start_location.full_address %>
+  </p>
+
+  <p>
+    <strong>End Address:</strong>
+    <%= @ride.end_location.full_address %>
+  </p>
+
+
+  <p>
+    <strong>Reason:</strong>
+    <%= @ride.reason %>
+  </p>
+
+  <p>
+    <strong>Status:</strong>
+    <%= @ride.status %>
+  </p>
+
+  <p>
+    <strong>Round trip?</strong>
+    <%= @ride.round_trip %>
+  </p>
+
+  <% if @ride.round_trip %>
+  <p>
+    <strong> Return trip pick up time:</strong>
+    <%= @second_ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>
+  </p>
+  <% end %>
+
+  <%= link_to 'Back', admin_ride_index_path, class: "btn btn-outline-primary" %>
+  <%= link_to 'Edit', edit_admin_ride_path(@ride), class: "btn btn-outline-success" %>
+
+</div>

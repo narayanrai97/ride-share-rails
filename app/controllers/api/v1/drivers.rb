@@ -35,13 +35,19 @@ module Api
       end
 
       params do
-        requires :id, type: String, desc: "ID of driver"
+        requires :email, type: String, desc: "Driver email"
       end
 
       post 'drivers/password_reset' do
-        @driver = Driver.find(params[:id])
-        @driver.send_reset_password_instructions
-        return ""
+        @driver = Driver.find_by_email(params[:email])
+        if @driver.nil?
+          status 404
+          return "Email not found"
+        else
+          @driver.send_reset_password_instructions
+          status 201
+          return ""
+        end
 
       end
 
