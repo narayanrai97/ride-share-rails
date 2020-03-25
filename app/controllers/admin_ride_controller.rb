@@ -43,7 +43,10 @@ class AdminRideController < ApplicationController
       return
     end
     authorize rider
-    rider_is_active
+    keep_proccessing = rider_is_active
+    if !keep_proccessing
+      return
+    end
     organization = Organization.find(current_user.organization_id)
     if organization.use_tokens == true
       token = rider.next_valid_token
@@ -264,6 +267,8 @@ class AdminRideController < ApplicationController
     unless rider.is_active?
       flash.alert = 'The rider is deactivated.'
       redirect_to admin_ride_index_path
+      return false
     end
+    return true
   end
 end

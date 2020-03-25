@@ -31,28 +31,17 @@ module Api
       post "vehicles" do
         driver = current_driver
 
-          vehicle = Vehicle.new
-          vehicle.attributes = params[:vehicle]
-          vehicle.driver_id = current_driver.id
-            if !vehicle.save
-              status 400
-              vehicle.errors.messages
-            else
-              if(driver.application_state != "pending" || !driver.application_state !="accepted")
-                driver.application_state ="pending"
-                driver.save
-              end
-              if !vehicle.save
-                status 400
-                vehicle.errors.messages
-              else
-                status 201
-              render vehicle
-              end
-              render vehicle
-            end
-
+        vehicle = Vehicle.new
+        vehicle.attributes = params[:vehicle]
+        vehicle.driver_id = current_driver.id
+        if vehicle.save
+          status 201
+          render vehicle
+        else
+          status 400
+          vehicle.errors.messages
         end
+      end
 
 
         desc "Return a vehicle with a given id"

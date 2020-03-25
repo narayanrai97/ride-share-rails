@@ -42,6 +42,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['seat_belt_num']).to eq(5)
     end
 
+<<<<<<< HEAD
     it 'Will return a 400 error when insurance stop dates is in the past' do
 
       post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
@@ -56,6 +57,22 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         seat_belt_num: 5}
         }
         expect(response).to have_http_status(400)
+=======
+    it 'Will Return a 404 when insurance_stop date is in the past' do
+      post '/api/v1/vehicles', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+       params: {vehicle: {car_make: "Chevorlet",
+        car_model: "Impala",
+        car_year: 2010,
+        car_color: "Silver",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: "01/01/2000",
+        insurance_stop: "03/07/2008",
+        seat_belt_num: 5}
+        }
+        expect(response).to have_http_status(400)
+        parsed_json = JSON.parse(response.body)
+>>>>>>> master
     end
 
      it 'will return error 400 if fields are missing or not correct. Will not save' do
@@ -91,6 +108,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle'][0]['seat_belt_num']).to eq(4)
 
     end
+
 
     it 'return 404 error code if its not current driver' do
       Vehicle.destroy_all
