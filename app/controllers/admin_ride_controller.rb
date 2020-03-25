@@ -254,10 +254,6 @@ class AdminRideController < ApplicationController
     end
   end
 
-  def true?(round_trip)
-    round_trip.downcase == 'true'
-  end
-
   def user_not_authorized
     flash.notice = 'You are not authorized to view this information'
     redirect_to admin_ride_index_url
