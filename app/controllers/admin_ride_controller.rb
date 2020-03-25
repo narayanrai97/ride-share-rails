@@ -98,14 +98,15 @@ class AdminRideController < ApplicationController
       render 'new'
       return
     else
-      round_trip_save
+      if !round_trip_save
+        return
+      end
       rider_choose_save_location
       only_15_location_saves(organization)
       if organization.use_tokens == true
         token.ride_id = @ride.id
         token.save
       end
-      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
@@ -242,10 +243,11 @@ class AdminRideController < ApplicationController
       if !@second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
         render 'new'
-        return
+        return false
       end
       @ride.update( return: @second_ride.id)
     end
+    return true
   end
 
   def only_15_location_saves(organization)
