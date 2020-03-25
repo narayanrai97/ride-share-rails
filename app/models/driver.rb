@@ -27,7 +27,7 @@ class Driver < ApplicationRecord
   before_save :downcase_email
 
 
-private 
+
   def thumbnail
     return self.image.variant(resize: '300x300>').processed
   end

@@ -2,18 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Drivers, type: :request do
 
-  it 'Test password reset' do
-  post '/api/v1/drivers/password_reset',
-  params: { email: driver.email}
-     expect(response).to have_http_status(201)
-  end
-
-  it 'Return a 404 when password reset email is not found' do
-  post '/api/v1/drivers/password_reset',
-  params: { email: "jumping@gmail.com"}
-     expect(response).to have_http_status(404)
-  end
-
     def logintoken
         post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
        parsed_json = JSON.parse(response.body)
@@ -27,23 +15,22 @@ RSpec.describe Api::V1::Drivers, type: :request do
     let!(:location) { FactoryBot.create(:location) }
     let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
 
-    it 'driver login in' do
-    post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
-       expect(response).to have_http_status(201)
-    end
-
     it 'Test password reset' do
-    post '/api/v1/drivers/password_reset', headers: {"ACCEPT" => "application/json" },
+    post '/api/v1/drivers/password_reset',
     params: { email: driver.email}
        expect(response).to have_http_status(201)
-       puts response.body
     end
 
     it 'Return a 404 when password reset email is not found' do
-    post '/api/v1/drivers/password_reset', headers: {"ACCEPT" => "application/json" },
+    post '/api/v1/drivers/password_reset',
     params: { email: "jumping@gmail.com"}
        expect(response).to have_http_status(404)
-       puts response.body
+    end
+
+    it 'driver login in' do
+    post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
+       expect(response).to have_http_status(201)
+       puts response
     end
 
     it "enrolls a driver" do
