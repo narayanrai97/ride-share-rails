@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_145134) do
+ActiveRecord::Schema.define(version: 2020_03_25_165319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2020_03_24_145134) do
     t.datetime "updated_at", null: false
     t.float "latitude"
     t.float "longitude"
+    t.string "notes"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -133,12 +134,9 @@ ActiveRecord::Schema.define(version: 2020_03_24_145134) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "completed_at"
     t.boolean "round_trip", default: false, null: false
     t.string "expected_wait_time"
-    t.date "completed_at"
-    t.boolean "same_driver", default: false
-    t.integer "outbound"
-    t.integer "return"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
     t.index ["organization_id"], name: "index_rides_on_organization_id"
