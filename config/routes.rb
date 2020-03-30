@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :drivers do
+      resources :schedule_windows, shallow: true
       resources :vehicles, shallow: true
       put :accept
       put :reject

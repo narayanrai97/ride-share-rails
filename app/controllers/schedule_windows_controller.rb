@@ -1,2 +1,0 @@
-class ScheduleWindowsController < ApplicationController
-end
