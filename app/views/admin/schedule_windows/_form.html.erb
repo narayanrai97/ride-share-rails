@@ -1,0 +1,130 @@
+<% if controller.action_name == 'new' %>
+  <% url = admin_driver_schedule_windows_path(driver_id: @driver) %>
+<% else %>
+  <% url = admin_schedule_window_path(id: @schedule_window) %>
+<% end %>
+
+<%= form_with(model: [ @driver, @schedule_window], url: url) do |form| %>
+
+<% if @schedule_window.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+      <%= pluralize(@schedule_window.errors.count, "error") %> prohibited
+      this article from being saved:
+    </h2>
+    <ul>
+      <% @schedule_window.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="form-group offset-md-1 col-md-5 ">
+    <%= form.label :start_date %>
+    <%= form.text_field :start_date, id: 'start_date_picker', class: "form-control" %>
+  </div >
+
+  <div class="form-group col-md-5">
+    <%= form.label :end_date %>
+    <%= form.text_field :end_date, id: 'end_date_picker', class: "form-control" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group offset-md-1 col-md-5">
+    <%= form.label :start_time %>
+    <%= form.text_field :start_time, id: 'start_time_picker', class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-5">
+    <%= form.label :end_time %>
+    <%= form.text_field :end_time, id: 'end_time_picker', class: "form-control" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-group offset-md-1 col-md-5">
+    <%= form.label :is_recurring %>
+    <%= form.select :is_recurring, options_for_select(["false","true"], :selected => form.object.is_recurring), class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-5">
+    <%= form.label :location_id %>
+    <%= form.text_field :location_id,class: "form-control" %>
+  </div>
+</div>
+
+<div class="row">
+  <% if yield(:button_text) == "Create" %>
+    <div class="form-group offset-md-1 col-md-9">
+      <%= link_to "Back", :back, class: "btn btn-outline-primary" %>
+    </div>
+
+    <div  class="form-group col-md-2">
+      <%= form.submit yield(:button_text), class: "btn btn-outline-success" %>
+    </div>
+  <% else %>
+    <div class="form-group offset-md-1 col-md-9">
+      <%= link_to "Back", :back, class: "btn btn-outline-primary" %>
+    </div>
+
+    <div  class="form-group col-md-2">
+      <%= form.submit yield(:button_text), class: "btn btn-outline-success" %>
+    </div>
+  <% end %>
+</div>
+
+<% end %>
+
+<script type="text/javascript">
+  // calender for start_date_picker
+  const start_date_el = document.getElementById('start_date_picker');
+  flatpickr(start_date_el, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+
+  const end_date_el = document.getElementById('end_date_picker');
+  flatpickr(end_date_el, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+
+  const start_time_el = document.getElementById('start_time_picker');
+  flatpickr(start_time_el, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+
+  const end_time_el = document.getElementById('end_time_picker');
+  flatpickr(end_time_el, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "F j, Y at h:i K",
+    dateFormat:      "Y-m-d H:i",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1
+  });
+</script>

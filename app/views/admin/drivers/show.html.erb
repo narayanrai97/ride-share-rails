@@ -21,7 +21,11 @@
   </div>
 
   <div class="card3">
-    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar"> Agenda</i></h3>
+    <h3 class="bg-primary rounded pl-2 headings"><i class="fa fa-calendar"> Agenda</i>
+      <%= link_to new_admin_driver_schedule_window_path(@driver), style: "color: inherit;" do %>
+        <i class="fa fa-plus">Add</i>
+      <% end %>
+    </h3>
     <%= render 'agenda' %>
   </div>
 
