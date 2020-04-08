@@ -5,7 +5,7 @@ ruby '2.5.3'
 
 
 
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.4'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
