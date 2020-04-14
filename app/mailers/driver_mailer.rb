@@ -1,13 +1,9 @@
 class DriverMailer < ApplicationMailer
+  default from: "noreply@ctd-crsn.org"
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.driver_mailer.signup_confirmation.subject
-  #
-  def signup_confirmation
-    @greeting = "Hi"
+  def signup_confirmation(driver)
+    @driver = driver
 
-    mail to: "to@example.org"
+    mail to: driver.email, subject: "Sign up confirmation"
   end
 end

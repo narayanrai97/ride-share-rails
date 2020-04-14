@@ -1,5 +1,19 @@
-<h1>Driver#signup_confirmation</h1>
+<p>
+  Hi <%= @driver.first_name %>,
+</p>
 
 <p>
-  <%= @greeting %>, find me in app/views/driver_mailer/signup_confirmation.html.erb
+  You have been signed up as a new driver for CRSN.
+</p>
+
+<p style="font-variant: normal;">
+  YOUR PASSWORD: <%= @driver.password %>
+</p><br/>
+
+<p>
+  Thank you for volunteering with us!
+</p>
+
+<p>
+  - CRSN
 </p>
