@@ -51,7 +51,8 @@ class Admin::DriversController < ApplicationController
     @driver.organization_id = current_user.organization_id
 
     if @driver.save
-      flash.notice = "Driver created."
+      DriverMailer.signup_confirmation(@driver).deliver
+      flash.notice = "Sign up confirmation email sent to the driver."
       redirect_to admin_driver_path(@driver)
     else
       flash[:error] = @driver.errors.full_messages

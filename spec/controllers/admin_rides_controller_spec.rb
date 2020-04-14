@@ -30,7 +30,7 @@ RSpec.describe AdminRideController, type: :controller do
                                                           end_zip: "27705",
                                                           reason: "Doctor visit",
                                                           status: "approved",
-                                                          round_trip: true,
+                                                          round_trip: false,
                                                           expected_wait_time: 45
                                                         }
                                                   }
