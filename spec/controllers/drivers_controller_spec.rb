@@ -42,7 +42,7 @@ RSpec.describe Admin::DriversController, type: :controller do
         }
       }
 
-      expect(flash[:notice]).to match("Driver created.")
+      expect(flash[:notice]).to match("Sign up confirmation email sent to the driver.")
       expect(test_response.response_code).to eq(302)
       expect(test_response).to redirect_to(admin_driver_path(Driver.last))
     end.to change(Driver, :count)
