@@ -1,9 +1,6 @@
 <div class="container admin-ride">
   <h4 style="text-align: center">Ride Details</h4>
- <p>
 
-   <%= @ride.id %>
-   </p>
   <p>
     <strong>Rider:</strong>
     <%= @ride.rider.full_name %>
@@ -45,7 +42,7 @@
     <%= @ride.round_trip %>
   </p>
 
-  <% if @ride.round_trip %>
+  <% if @ride.return %>
   <p>
     <strong> Return trip pick up time:</strong>
     <%= @second_ride.pick_up_time.strftime("%b %d, %Y %I:%M %p") %>

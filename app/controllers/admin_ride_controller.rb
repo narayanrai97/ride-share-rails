@@ -30,6 +30,9 @@ class AdminRideController < ApplicationController
 
   def edit
     @ride = Ride.find(params[:id])
+    if @ride.outbound
+      @ride = Ride.find(@ride.outbound)
+    end
     authorize @ride
   end
 
@@ -100,7 +103,6 @@ class AdminRideController < ApplicationController
       return
     else
       return unless round_trip_save
-
       rider_choose_save_location
       only_15_location_saves(organization)
       if organization.use_tokens == true
@@ -156,6 +158,7 @@ class AdminRideController < ApplicationController
       start_location: @start_location,
       end_location: @end_location
     )
+    round_trip_false
       if @ride.round_trip
         @second_ride = Ride.find_or_create_by(organization_id: current_user.organization_id,
                                               rider_id: @ride.rider_id,
@@ -167,7 +170,6 @@ class AdminRideController < ApplicationController
       end
       round_trip_second_trip_location
       return unless round_trip_save
-
       rider_choose_save_location
       flash.notice = 'The ride information has been updated.'
       redirect_to admin_ride_path(@ride)
@@ -245,6 +247,14 @@ class AdminRideController < ApplicationController
     end
     true
   end
+
+  def round_trip_false
+    if !@ride.round_trip and @ride.return
+       Ride.find(@ride.return).destroy
+      @ride.update(return: nil)
+    end
+  end
+
 
   def only_15_location_saves(organization)
     if (ride_params[:save_start_location] == 'saved') || (ride_params[:save_end_location] == 'saved')
