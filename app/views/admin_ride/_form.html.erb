@@ -209,18 +209,23 @@
 
 
 <div class="form-row">
-  <div class="form-group  col-md-10 offset-md-1">
-  6. <%= form.label :round_trip %>
-     <%= form.check_box :round_trip, checked_value: true, unchecked_value: false %>
+  <div class="form-group  col-md-10 offset-md-1" >
+  6. <%= form.label :round_trip  %>
+     <%= form.check_box :round_trip  %>
   </div>
 </div>
 
-<div class="form-group offset-md-1 col-4">
-  <div id="return_time" style="display: none" class="form-group  col-md-10 offset-md-1">
+<div class="form-group offset-md-1 col-4" id = "return_pick_up_time" style="display: none" >
+  <div id="return_pick_up_time" class="form-group col-md-10 offset-md-1">
     <%= form.label :return_pick_up_time %>
+    <% if @ride.return %>
+    <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}",  id: 'ride_return_pick_up_time' %>
+    <% else %>
     <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
+    <% end %>
   </div>
 </div>
+
 
 
 <div class="form-row">
@@ -261,19 +266,24 @@
     minuteIncrement: 1
   });
 
-
-
-
-
-
-  // conditional round trip
-  jQuery(function () {
-      $("#ride_round_trip").change(function () {
-          if ($(this).val() == "false") {
-              $("#return_time").hide();
-          } else {
-              $("#return_time").show();
-          }
-      });
+  $(document).ready(function () {
+    var value = $('#ride_round_trip')[0].checked
+    if (value) {
+      $("#return_pick_up_time").show()
+    }
+    $('#ride_round_trip').on('change', function() {
+        if(this.checked)
+        {
+          $("#return_pick_up_time").show()
+        }
+        else
+        {
+          $("#return_pick_up_time").hide()
+        }
+    });
   });
+
+
+
+
 </script>
