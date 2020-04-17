@@ -19,6 +19,14 @@ module Api
         @_current_driver ||= authenticate_token
       end
 
+      def validate_current_driver!
+        if current_driver && current_driver.is_active == true && current_driver.background_check == true && current_driver.application_state == "accepted"
+          return true
+        else
+          return false
+        end
+      end
+
 
       def create_token(email, password)
         resource = Driver.find_for_database_authentication(:email => email)
