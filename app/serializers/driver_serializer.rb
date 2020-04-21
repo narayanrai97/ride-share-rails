@@ -1,7 +1,7 @@
 class DriverSerializer < ActiveModel::Serializer
   ActiveModelSerializers.config.adapter = :json
-  attributes :organization_id, :id, :first_name, :last_name, :phone,
-             :email, :radius, :is_active, :application_state
+  attributes :id, :email, :first_name, :last_name, :organization_id, :phone,
+             :email, :radius, :is_active, :application_state, :admin_sign_up
   has_many :vehicles
 
   def locations

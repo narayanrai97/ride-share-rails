@@ -18,6 +18,7 @@ module Api
           requires :phone, type: String
           requires :organization_id, type: Integer
           requires :is_active, type: Boolean
+          requires :admin_sign_up, type: Boolean, default: "false"
           optional :radius, type: Integer
         end
       end
