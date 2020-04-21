@@ -7,7 +7,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   #token_created_at in the last day so it would function
   # radius is set to miles by geocode
   let!(:driver) {create(:driver, organization_id: organization.id, auth_token: "1234",
-                 radius: 5, is_active: true, token_created_at: Time.zone.now)}
+                 radius: 5, is_active: true, token_created_at: Time.zone.now, background_check: true, application_state: "accepted")}
   let!(:driver2) {create(:driver, organization_id: organization.id,
                   auth_token: "4567",token_created_at: Time.zone.now) }
   #This driver is to test when driver is inactived
@@ -103,12 +103,6 @@ RSpec.describe Api::V1::Rides, type: :request do
     post "/api/v1/rides/#{ride4.id}/complete",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     expect(response).to have_http_status(401)
 
-  end
-
-  it 'will put the ride to CANCELED status when canceled a ride with no scheduled status' do
-    post "/api/v1/rides/#{ride2.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    parsed_json = JSON.parse(response.body)
-    expect(parsed_json['ride']['status']).to eq("canceled")
   end
 
   it 'will put the ride back to APPROVED status when canceled a ride with scheduled status' do
