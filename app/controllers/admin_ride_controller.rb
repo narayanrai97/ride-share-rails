@@ -262,7 +262,7 @@ class AdminRideController < ApplicationController
 
   def return_pick_up_time_not_in_past
     if @second_ride.pick_up_time < @ride.pick_up_time + 30.minutes
-      flash.now[:alert] = "Return pick up time can not be in the past"
+      flash.now[:alert] = "Return time must be at least 30 minutes after departure time"
       if @ride.id
         render "edit"
         return false
