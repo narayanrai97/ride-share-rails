@@ -12,9 +12,8 @@ class Ride < ApplicationRecord
   validates :status, inclusion: { in: %w(pending approved scheduled picking-up dropping-off waiting return-picking-up return-dropping-off completed canceled),
   message: "%{value} is not a valid status" }
   # validates :expected_wait_time, presence: true, if: :round_trip?
-
+  after_validation :set_distance, on: [ :create, :update ]
   scope :status, -> (status) { where status: status }
-
 
   def start_street
     if self.start_location
@@ -106,6 +105,15 @@ class Ride < ApplicationRecord
      return false
     end
       return true
+  end
+
+  def distance
+    geodistance = Geodistance.new(self.start_location, self.end_location)
+    geodistance.calculate_distance # calculate_distance method called from Geodistance helper method
+  end
+
+  def set_distance
+    self.pick_up_to_drop_off_distance = self.distance
   end
 
 end
