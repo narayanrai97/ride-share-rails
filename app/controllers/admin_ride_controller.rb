@@ -76,7 +76,9 @@ class AdminRideController < ApplicationController
                               reason: ride_params[:reason],
                               round_trip: false)
     end
-
+    if !return_pick_up_time_not_in_past
+      return
+    end
     location = save_location_error_handler(@start_location)
     if location.nil?
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
@@ -168,6 +170,9 @@ class AdminRideController < ApplicationController
                                               start_location: @start_location,
                                               end_location: @end_location)
       end
+      if !return_pick_up_time_not_in_past
+        return
+      end
       round_trip_second_trip_location
       return unless round_trip_save
       rider_choose_save_location
@@ -252,6 +257,21 @@ class AdminRideController < ApplicationController
     if !@ride.round_trip and @ride.return
        Ride.find(@ride.return).destroy
       @ride.update(return: nil)
+    end
+  end
+
+  def return_pick_up_time_not_in_past
+    if @second_ride.pick_up_time < @ride.pick_up_time + 30.minutes
+      flash.now[:alert] = "Return time must be at least 30 minutes after departure time"
+      if @ride.id
+        render "edit"
+        return false
+      else
+        render "new"
+        return false
+      end
+    else
+      return true
     end
   end
 
