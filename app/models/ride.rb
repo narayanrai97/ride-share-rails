@@ -1,3 +1,5 @@
+require 'geodistance'
+
 class Ride < ApplicationRecord
   belongs_to :organization
   belongs_to :driver, optional: true
@@ -108,7 +110,11 @@ class Ride < ApplicationRecord
   end
 
   def distance
-    geodistance = Geodistance.new(self.start_location, self.end_location)
+    if self.start_location!= nil && self.end_location!= nil
+      geodistance = Geodistance.new(self.start_location, self.end_location)
+    else
+      return nil
+    end
     geodistance.calculate_distance # calculate_distance method called from Geodistance helper method
   end
 
