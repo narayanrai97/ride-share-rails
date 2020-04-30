@@ -183,7 +183,6 @@ class AdminRideController < ApplicationController
       return unless round_trip_save
     end
     rider_choose_save_location
-    byebug
     flash.notice = 'The ride information has been updated.'
     redirect_to admin_ride_path(@ride)
   end
