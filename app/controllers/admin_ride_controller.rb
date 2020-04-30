@@ -98,7 +98,7 @@ class AdminRideController < ApplicationController
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
-    round_trip_second_trip_location
+    round_trip_save
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -160,8 +160,15 @@ class AdminRideController < ApplicationController
       start_location: @start_location,
       end_location: @end_location
     )
+    else
+      render "edit"
+      return
+    end
     round_trip_false
-      if @ride.round_trip
+    if @ride.round_trip
+      if @ride.return
+        @second_ride = Ride.find(@ride.return)
+      else
         @second_ride = Ride.find_or_create_by(organization_id: current_user.organization_id,
                                               rider_id: @ride.rider_id,
                                               pick_up_time: ride_params[:return_pick_up_time],
@@ -173,16 +180,12 @@ class AdminRideController < ApplicationController
       if !return_pick_up_time_not_in_past
         return
       end
-      round_trip_second_trip_location
       return unless round_trip_save
-      rider_choose_save_location
-      flash.notice = 'The ride information has been updated.'
-      redirect_to admin_ride_path(@ride)
-      return
-    else
-      render 'edit'
-      return
     end
+    rider_choose_save_location
+    byebug
+    flash.notice = 'The ride information has been updated.'
+    redirect_to admin_ride_path(@ride)
   end
 
   def approve
@@ -232,17 +235,12 @@ class AdminRideController < ApplicationController
     end
   end
 
-  def round_trip_second_trip_location
-    if @ride.round_trip
-      @second_ride.start_location_id = @end_location.id
-      @second_ride.end_location_id = @start_location.id
-      @second_ride.status = 'approved'
-    end
-  end
-
   def round_trip_save
     if @ride.round_trip
       @second_ride.outbound = @ride.id
+      @second_ride.start_location_id = @end_location.id
+      @second_ride.end_location_id = @start_location.id
+      @second_ride.status = 'approved'
       unless @second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
         render 'new'
@@ -261,20 +259,22 @@ class AdminRideController < ApplicationController
   end
 
   def return_pick_up_time_not_in_past
-    if @second_ride.pick_up_time < @ride.pick_up_time + 30.minutes
-      flash.now[:alert] = "Return time must be at least 30 minutes after departure time"
-      if @ride.id
-        render "edit"
-        return false
+    if @ride.round_trip
+      if @second_ride.pick_up_time < @ride.pick_up_time + 30.minutes
+        flash.now[:alert] = "Return time must be at least 30 minutes after departure time"
+        if @ride.id
+          render "edit"
+          return false
+        else
+          render "new"
+          return false
+        end
       else
-        render "new"
-        return false
+        return true
       end
-    else
-      return true
     end
+    return true
   end
-
 
   def only_15_location_saves(organization)
     if (ride_params[:save_start_location] == 'saved') || (ride_params[:save_end_location] == 'saved')
