@@ -3,6 +3,7 @@ class Driver < ApplicationRecord
   validates :last_name, presence: true
   validates :phone, length: { is: 10 }, numericality: true
   validates :email, presence: true
+  validates :password, format: {with: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,25}$/, multiline: true, message: 'must be at least 8 characters long and include 1 uppercase, 1 number, and 1 special character.'}
   validate :image_type
 
   belongs_to :organization
