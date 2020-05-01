@@ -21,7 +21,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Rides'
   end
 
@@ -38,7 +38,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
     fill_in 'Email', with: admin.email
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Pa$$word20'
     click_on 'Log in'
     expect(page).to have_link "Drivers"
     click_link 'Drivers'
@@ -50,7 +50,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Drivers'
     click_link 'Drivers'
     page.find(:css, ".clickable-row").click()
@@ -64,7 +64,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Drivers'
     click_link 'Drivers'
     page.find(:css, ".clickable-row").click()
@@ -94,7 +94,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Drivers'
     click_link 'Drivers'
     page.find(:css, ".clickable-row").click()
@@ -106,7 +106,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Drivers'
     click_link 'Drivers'
     page.find(:css, ".clickable-row").click()

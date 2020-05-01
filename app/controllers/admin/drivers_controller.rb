@@ -46,8 +46,9 @@ class Admin::DriversController < ApplicationController
   def create
     @driver = Driver.new(driver_params)
     generated_password = Devise.friendly_token.first(8)
-    @driver.password = generated_password
-    @driver.password_confirmation = generated_password
+    password_processor(generated_password)
+    @driver.password = @password
+    @driver.password_confirmation = @password
     @driver.organization_id = current_user.organization_id
 
     if @driver.save
@@ -135,6 +136,15 @@ class Admin::DriversController < ApplicationController
   def user_not_authorized
     flash.notice = "You are not authorized to view this information"
     redirect_to admin_drivers_path
+  end
+
+  def password_processor(generated_password)
+    splitted_password = generated_password.split('')
+    splitted_password[0] = "e"
+    splitted_password[1] = "Z"
+    splitted_password[-2] = "$"
+    splitted_password[-1] = 8
+    @password = splitted_password.join
   end
 
 end

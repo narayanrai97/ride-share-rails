@@ -4,7 +4,7 @@ FactoryBot.define do
     last_name {"Ride"}
     phone {"919-323-8888"}
     email {"rider2@example.com"}
-    password {"password"}
+    password {"Pa$$word20"}
     association :organization
   end
  end

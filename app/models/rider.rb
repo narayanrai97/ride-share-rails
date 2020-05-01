@@ -10,7 +10,7 @@ class Rider < ApplicationRecord
 
   validates :first_name, :last_name, :phone, :organization, presence: true
   validates :phone, length: { is: 10 }, numericality: true
-  validates :password, format: {with: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,25}$/, multiline: true, message: 'must be at least 8 characters long and include 1 uppercase, 1 number, and 1 special character.'}
+  validate :password_complexity
   scope :active, -> { where(is_active: true) }
   before_save :lets_cap, only: [:new, :create]
 
@@ -37,6 +37,12 @@ class Rider < ApplicationRecord
 
   def valid_tokens_count
     self.valid_tokens.size
+  end
+
+  def password_complexity
+    if password.present? and not password.match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,25}$/)
+      errors.add :password, "must be at least 8 characters long and include 1 uppercase, 1 number, and 1 special character."
+    end
   end
 
 end
