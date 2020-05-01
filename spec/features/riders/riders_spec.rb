@@ -20,7 +20,7 @@ RSpec.feature 'Riders', type: :feature, js: true do
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
     fill_in 'Email', with: admin.email
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Pa$$word20'
     click_on 'Log in'
     expect(page).to have_link 'Riders'
     click_link 'Riders'
@@ -32,7 +32,7 @@ RSpec.feature 'Riders', type: :feature, js: true do
     visit root_path
     click_link 'Login as Admin'
     expect(page).to have_text 'Log in'
-    signin('user@example.com', 'password')
+    signin('user@example.com', 'Pa$$word20')
     expect(page).to have_link 'Riders'
     click_link 'Riders'
     page.find(:css, ".clickable-row").click()

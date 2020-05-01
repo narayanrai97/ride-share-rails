@@ -19,8 +19,8 @@ RSpec.describe RidersController, type: :controller do
           last_name: 'Doe',
           phone: '1234567890',
           email: 'wasemail@this.com',
-          password: 'password',
-          password_confirmation: 'password'
+          password: 'Pa$$word20',
+          password_confirmation: 'Pa$$word20'
         }
       }
 
