@@ -119,7 +119,7 @@ class Ride < ApplicationRecord
   end
 
   def set_distance
-    self.pick_up_to_drop_off_distance = self.distance
+    self.pickup_to_dropoff_distance = self.distance
   end
 
 end
