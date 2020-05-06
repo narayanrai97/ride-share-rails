@@ -33,7 +33,7 @@ module Api
         driver = current_driver
         location_ids = LocationRelationship.where(driver_id: driver.id).select("location_id")
         locations = Location.where(id: location_ids)
-        if locations != nil 
+        if locations != nil
           status 200
         else
           status 404
@@ -50,6 +50,10 @@ module Api
           requires :city, type:String
           requires :state, type: String
           requires :zip, type: String
+          requires :notes, type: String
+        end
+        requires :location_relationship, type: Hash do
+          optional :default, type: Boolean, default: false
         end
       end
       post "locations" do
@@ -57,7 +61,7 @@ module Api
         location = Location.new
         location.attributes= (params[:location])
         if location.save
-          LocationRelationship.create(location_id: location.id, driver_id: driver.id)
+          LocationRelationship.create(location_id: location.id, driver_id: driver.id, default: params[:location_relationship])
           status 201
           location
         else
@@ -65,7 +69,7 @@ module Api
           location.errors.messages
         end
       end
-      
+
  #Update a location for a driver
       desc "put a location from a driver"
         params do
@@ -75,19 +79,20 @@ module Api
             optional :city, type:String
             optional :state, type: String
             optional :zip, type: String
+            optional :notes, type: String
           end
       end
-  
-    
+
+
       put "locations/:id" do
         #Find location to change
         old_location = Location.find(params[:id])
         if old_location == nil
-          status 404 
+          status 404
           return ""
         end
         driver = current_driver
-        if !driver_owns_location(driver, old_location) 
+        if !driver_owns_location(driver, old_location)
           status 401
           return ""
         end
@@ -103,7 +108,7 @@ module Api
         else
           #update old location
           update_success = old_location.update(params[:location])
-          if update_success 
+          if update_success
             old_location.reload
             render_value=old_location
             status 200
@@ -114,7 +119,7 @@ module Api
           render_value
         end
       end
-      
+
       desc "Delete an association between a driver and a location"
       params do
         requires :id, type: String, desc: "ID of location"
@@ -142,7 +147,7 @@ module Api
   end
 end
 
-private 
+private
      def driver_owns_location(driver, location)
      location_ids = LocationRelationship.where(driver_id: driver.id).pluck("location_id")
      location_ids.include?(location.id)

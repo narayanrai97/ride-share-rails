@@ -179,34 +179,34 @@ RecurringPattern.create(schedule_window_id: sw15.id , day_of_week: "0")
 RecurringPattern.create(schedule_window_id: sw16.id , day_of_week: "0")
 
 
-LocationRelationship.create(location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc2.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc3.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc4.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc2.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc3.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc4.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 
-LocationRelationship.create(location_id: loc5.id , driver_id: nil, rider_id: rider1, organization_id: nil)
-LocationRelationship.create(location_id: loc6.id , driver_id: nil, rider_id: rider2, organization_id: nil)
-LocationRelationship.create(location_id: loc7.id , driver_id: nil, rider_id: rider3, organization_id: nil)
-LocationRelationship.create(location_id: loc8.id , driver_id: nil, rider_id: rider4, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc5.id , driver_id: nil, rider_id: rider1, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc6.id , driver_id: nil, rider_id: rider2, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc7.id , driver_id: nil, rider_id: rider3, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc8.id , driver_id: nil, rider_id: rider4, organization_id: nil)
 
-LocationRelationship.create(location_id: loc9.id , driver_id: nil, rider_id: nil, organization_id: org1.id)
-LocationRelationship.create(location_id: loc10.id , driver_id: nil, rider_id: nil, organization_id: org2.id)
+LocationRelationship.create(default: false, location_id: loc9.id , driver_id: nil, rider_id: nil, organization_id: org1.id)
+LocationRelationship.create(default: false, location_id: loc10.id , driver_id: nil, rider_id: nil, organization_id: org2.id)
 
-LocationRelationship.create(location_id: loc11.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: true, location_id: loc11.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 
-LocationRelationship.create(location_id: loc12.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc13.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc14.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc15.id , driver_id: nil, rider_id: nil, organization_id: nil)
-
-
+LocationRelationship.create(default: false, location_id: loc12.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc13.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc14.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc15.id , driver_id: nil, rider_id: nil, organization_id: nil)
 
 
-LocationRelationship.create(location_id: loc16.id , driver_id: driver2.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc17.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc18.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc19.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc10.id , driver_id: driver4.id , rider_id: nil, organization_id: nil)
+
+
+LocationRelationship.create(default: false, location_id: loc16.id , driver_id: driver2.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc17.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc18.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: true, location_id: loc19.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc10.id , driver_id: driver4.id , rider_id: nil, organization_id: nil)
 
 
 

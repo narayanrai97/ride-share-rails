@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   #Make devise model accept other params than
   #email password and password_confirmation
-  
+  serialization_scope :current_driver
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   include Pundit
