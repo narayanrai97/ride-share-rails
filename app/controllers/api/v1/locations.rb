@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class Locations < Grape::API
@@ -8,15 +10,14 @@ module Api
         error!('Unauthorized', 401) unless require_login!
       end
 
-
-      #Lets driver look up resources that do no belong to them
-      desc "Return a location with a given ID"
+      # Lets driver look up resources that do no belong to them
+      desc 'Return a location with a given ID'
       params do
-        requires :id, type: String, desc: "ID of the location"
+        requires :id, type: String, desc: 'ID of the location'
       end
-      get "locations/:id", root: :location do
+      get 'locations/:id', root: :location do
         location = Location.find(permitted_params[:id])
-        if location != nil
+        if !location.nil?
           status 200
         else
           status 404
@@ -24,16 +25,15 @@ module Api
         render location
       end
 
-
-      #Returns all locations of the current driver
-      desc "Return all locations for a given driver"
+      # Returns all locations of the current driver
+      desc 'Return all locations for a given driver'
       params do
       end
-      get "locations" do
+      get 'locations' do
         driver = current_driver
-        location_ids = LocationRelationship.where(driver_id: driver.id).select("location_id")
+        location_ids = LocationRelationship.where(driver_id: driver.id).select('location_id')
         locations = Location.where(id: location_ids)
-        if locations != nil
+        if !locations.nil?
           status 200
         else
           status 404
@@ -41,13 +41,13 @@ module Api
         render locations
       end
 
-      #Create a location for the current driver
-      #Needs address information to create
-      desc "Create a new location from a driver"
+      # Create a location for the current driver
+      # Needs address information to create
+      desc 'Create a new location from a driver'
       params do
         requires :location, type: Hash do
-          requires :street , type:String
-          requires :city, type:String
+          requires :street, type: String
+          requires :city, type: String
           requires :state, type: String
           requires :zip, type: String
           optional :notes, type: String
@@ -56,100 +56,107 @@ module Api
           optional :default, type: Boolean, default: false
         end
       end
-      post "locations" do
+      post 'locations' do
         location = Location.new
-        location.attributes= (params[:location])
-        if location.save
-          if current_driver.location_relationships.where(default: true).count >=1 && params[:default_location][:default] == true
-            status 400
-            return "Sorry, a driver can have only one default location."
-          else
-            LocationRelationship.create(location_id: location.id, driver_id: current_driver.id, default: params[:default_location][:default])
-            status 201
-            location
+        location.attributes = params[:location]
+        location.location_must_be_found
+        location = location.save_or_touch
+        if location
+          location_relationship = current_driver.location_relationships.where(location_id: location.id).first
+          location_relationship ||= current_driver.location_relationships.new(location_id: location.id)
+
+          default_location = current_driver.location_relationships.where(default: true).first
+          if default_location && default_location != location_relationship && params[:default_location][:default]
+            default_location.default = false
+            default_location.save
           end
+          location_relationship.default = params[:default_location][:default]
+          location_relationship.save
+          status 201
+          location
         else
           status 400
           location.errors.messages
         end
       end
 
- #Update a location for a driver
-   desc "put a location from a driver"
-     params do
-       requires :id, type: Integer, desc: "ID of location"
-       optional :location, type: Hash do
-         optional :street , type:String
-         optional :city, type:String
-         optional :state, type: String
-         optional :zip, type: String
-         optional :notes, type: String
-       end
-       optional :default_location, type: Hash do
-         optional :default, type: Boolean, default: false
-       end
-   end
-   put "locations/:id" do
-     #Find location to change
-     old_location = Location.find(params[:id])
-     if old_location == nil
-       status 404
-       return ""
-     end
-     driver = current_driver
-     if !driver_owns_location(driver, old_location)
-       status 401
-       return ""
-     end
-     if LocationRelationship.where(location: permitted_params[:id]).count > 1
-       new_location = Location.new(params[:location])
-       save_success = new_location.save
-       if !save_success
-         status 400
-         return new_location.errors.messages
-       end
-       location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
-       location_relationship.update(default: params[:default_location][:default], location: new_location)
-     else
-       #update old location
-       if params[:location].present?
-         update_success = old_location.update(params[:location])
-       else
-         update_success = true
-       end
-       if update_success
-         location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
-         default_location_relationship = current_driver.location_relationships.where(default: true).first
-
-         if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location][:default]
-           default_location_relationship.update(default: false)
-         end
-         location_relationship2.update(default: params[:default_location][:default])
-
-         old_location.reload
-         render_value=old_location
-         status 200
-       else
-         render_value = old_location.errors.messages
-         status 400
-       end
-       render_value
-     end
-
-      desc "Delete an association between a driver and a location"
+      # Update a location for a driver
+      desc 'put a location from a driver'
       params do
-        requires :id, type: String, desc: "ID of location"
+        requires :id, type: Integer, desc: 'ID of location'
+        optional :location, type: Hash do
+          optional :street, type: String
+          optional :city, type: String
+          optional :state, type: String
+          optional :zip, type: String
+          optional :notes, type: String
+        end
+        optional :default_location, type: Hash do
+          optional :default, type: Boolean, default: false
+        end
+      end
+      put 'locations/:id' do
+        # Find location to change
+        old_location = Location.find(params[:id])
+        if old_location.nil?
+          status 404
+          return ''
+        end
+        driver = current_driver
+        unless driver_owns_location(driver, old_location)
+          status 401
+          return ''
+        end
+        if LocationRelationship.where(location: permitted_params[:id]).count > 1
+          new_location = Location.new(params[:location])
+          save_success = new_location.save
+          unless save_success
+            status 400
+            return new_location.errors.messages
+          end
+          location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
+          location_relationship.update(default: params[:default_location][:default], location: new_location)
+        else
+          # update old location
+          update_success = if params[:location].present?
+                             old_location.update(params[:location])
+                           else
+                             true
+                           end
+          if update_success
+            location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
+            default_location_relationship = current_driver.location_relationships.where(default: true).first
+
+            if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location][:default]
+              default_location_relationship.update(default: false)
+            end
+            location_relationship2.update(default: params[:default_location][:default])
+
+            old_location.reload
+            render_value = old_location
+            status 200
+          else
+            render_value = old_location.errors.messages
+            status 400
+          end
+          render_value
+          end
+      end
+
+      desc 'Delete an association between a driver and a location'
+      params do
+        requires :id, type: String, desc: 'ID of location'
       end
       delete 'locations/:id' do
         driver = current_driver
         old_location = Location.find(params[:id])
         if old_location.nil?
-         status 404
-         return ""
+          status 404
+          return ''
         end
         if driver_owns_location(driver, old_location)
           LocationRelationship.find_by(location_id: permitted_params[:id],
-             driver_id: driver.id).destroy
+                                       driver_id: driver.id).destroy
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             old_location.destroy
             status 200
@@ -157,14 +164,14 @@ module Api
         else
           status 401
         end
-        return ""
+        return ''
       end
     end
   end
 end
 
 private
-     def driver_owns_location(driver, location)
-     location_ids = LocationRelationship.where(driver_id: driver.id).pluck("location_id")
-     location_ids.include?(location.id)
-     end
+def driver_owns_location(driver, location)
+  location_ids = LocationRelationship.where(driver_id: driver.id).pluck(:location_id)
+  location_ids.include?(location.id)
+end
