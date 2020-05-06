@@ -75,54 +75,66 @@ module Api
       end
 
  #Update a location for a driver
-      desc "put a location from a driver"
-        params do
-          requires :id, type: Integer, desc: "ID of location"
-          requires :location, type: Hash do
-            optional :street , type:String
-            optional :city, type:String
-            optional :state, type: String
-            optional :zip, type: String
-            optional :notes, type: String
-          end
-      end
+   desc "put a location from a driver"
+     params do
+       requires :id, type: Integer, desc: "ID of location"
+       optional :location, type: Hash do
+         optional :street , type:String
+         optional :city, type:String
+         optional :state, type: String
+         optional :zip, type: String
+         optional :notes, type: String
+       end
+       optional :default_location, type: Hash do
+         optional :default, type: Boolean, default: false
+       end
+   end
+   put "locations/:id" do
+     #Find location to change
+     old_location = Location.find(params[:id])
+     if old_location == nil
+       status 404
+       return ""
+     end
+     driver = current_driver
+     if !driver_owns_location(driver, old_location)
+       status 401
+       return ""
+     end
+     if LocationRelationship.where(location: permitted_params[:id]).count > 1
+       new_location = Location.new(params[:location])
+       save_success = new_location.save
+       if !save_success
+         status 400
+         return new_location.errors.messages
+       end
+       location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
+       location_relationship.update(default: params[:default_location][:default], location: new_location)
+     else
+       #update old location
+       if params[:location].present?
+         update_success = old_location.update(params[:location])
+       else
+         update_success = true
+       end
+       if update_success
+         location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
+         default_location_relationship = current_driver.location_relationships.where(default: true).first
 
+         if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location][:default]
+           default_location_relationship.update(default: false)
+         end
+         location_relationship2.update(default: params[:default_location][:default])
 
-      put "locations/:id" do
-        #Find location to change
-        old_location = Location.find(params[:id])
-        if old_location == nil
-          status 404
-          return ""
-        end
-        driver = current_driver
-        if !driver_owns_location(driver, old_location)
-          status 401
-          return ""
-        end
-        if LocationRelationship.where(location: permitted_params[:id]).count > 1
-          new_location = Location.new(params[:location])
-          save_success = new_location.save
-          if !save_success
-            status 400
-            return new_location.errors.messages
-          end
-          location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
-          location_relationship.location = new_location
-        else
-          #update old location
-          update_success = old_location.update(params[:location])
-          if update_success
-            old_location.reload
-            render_value=old_location
-            status 200
-          else
-            render_value = old_location.errors.messages
-            status 400
-          end
-          render_value
-        end
-      end
+         old_location.reload
+         render_value=old_location
+         status 200
+       else
+         render_value = old_location.errors.messages
+         status 400
+       end
+       render_value
+     end
 
       desc "Delete an association between a driver and a location"
       params do
