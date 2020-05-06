@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_02_022908) do
+ActiveRecord::Schema.define(version: 2020_05_05_235750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_05_02_022908) do
     t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "default", null: false
     t.index ["driver_id"], name: "index_location_relationships_on_driver_id"
     t.index ["location_id"], name: "index_location_relationships_on_location_id"
     t.index ["organization_id"], name: "index_location_relationships_on_organization_id"

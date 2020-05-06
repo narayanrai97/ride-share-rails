@@ -12,7 +12,7 @@ RSpec.feature 'Drivers', type: :feature, js: true do
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com', first_name: 'Jerry' }
   let!(:location) { create :location, street: '201 W Main st', city: 'Durham', state: 'NC', zip: '27701' }
   let!(:location1) { create :location, street: "400 Main St", city: 'Durham', state: "NC", zip: "27713" }
-  let!(:location_relationship) { create :location_relationship, driver_id: driver.id, location_id: location.id }
+  let!(:location_relationship) { create :location_relationship, driver_id: driver.id, location_id: location.id, default: true }
   let!(:vehicle1) { create :vehicle, driver_id: driver.id }
   let!(:schedule_window) { create :schedule_window, driver_id: driver.id, location_id: location.id }
   let!(:schedule_window1) { create :schedule_window, driver_id: driver.id, location_id: location1.id }

@@ -13,7 +13,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     let!(:driver2) { FactoryBot.create(:driver, first_name: "Phil", organization_id: organization.id,
     auth_token: "5678", token_created_at: Time.zone.now) }
     let!(:location) { FactoryBot.create(:location) }
-    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
+    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true) }
 
     it 'Test password reset' do
     post '/api/v1/drivers/password_reset',
