@@ -13,9 +13,9 @@ RSpec.describe Api::V1::Locations, type: :request do
   #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
   let!(:location2){FactoryBot.create(:location, street: "1202 W Dublin St", city: "Chandler", state: "Az", zip: "85224")}
-  let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id)}
-  let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id)}
-  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id)}
+  let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true)}
+  let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id, default: false)}
+  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id, default: true)}
 
 
 
@@ -27,7 +27,10 @@ RSpec.describe Api::V1::Locations, type: :request do
                 { street:"200 W Front St",
                   city:"Burlington",
                   state:"NC",
-                  zip: "27215"}}
+                  zip: "27215"},
+                default_location: {
+                  default: true
+                  }}
       expect(response).to have_http_status(201)
       parsed_json = JSON.parse(response.body)
       expect(parsed_json['location']['street']).to eq('200 W Front St')
@@ -92,11 +95,19 @@ RSpec.describe Api::V1::Locations, type: :request do
   end
 
   it 'returns a new address when a location is shared by two drivers but update by one driver' do
+    location_relationship = LocationRelationship.where(location: location2.id).first
+    # location_relationship.update(default: params[:default_location][:default], location: new_location)
       put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: { street:"1052 Canal St",
                             city:"Durham",
                             state:"NC",
-                            zip: "27701"}}
+                            zip: "27701"
+                          },
+        location_relationship: {
+          default: true,
+          location: location.id
+        }}
+
       expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
