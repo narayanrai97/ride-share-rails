@@ -50,20 +50,24 @@ module Api
           requires :city, type:String
           requires :state, type: String
           requires :zip, type: String
-          requires :notes, type: String
+          optional :notes, type: String
         end
-        requires :location_relationship, type: Hash do
+        requires :default_location, type: Hash do
           optional :default, type: Boolean, default: false
         end
       end
       post "locations" do
-        driver = current_driver
         location = Location.new
         location.attributes= (params[:location])
         if location.save
-          LocationRelationship.create(location_id: location.id, driver_id: driver.id, default: params[:location_relationship])
-          status 201
-          location
+          if current_driver.location_relationships.where(default: true).count >=1 && params[:default_location][:default] == true
+            status 400
+            return "Sorry, a driver can have only one default location."
+          else
+            LocationRelationship.create(location_id: location.id, driver_id: current_driver.id, default: params[:default_location][:default])
+            status 201
+            location
+          end
         else
           status 400
           location.errors.messages

@@ -115,7 +115,7 @@ class Ride < ApplicationRecord
     else
       return nil
     end
-    geodistance.calculate_distance # calculate_distance method called from Geodistance helper method
+    geodistance.calculate_distance.round(1) # calculate_distance method called from Geodistance helper method
   end
 
   def set_distance

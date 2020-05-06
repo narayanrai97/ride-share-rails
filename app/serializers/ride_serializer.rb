@@ -9,7 +9,7 @@ class RideSerializer < ActiveModel::Serializer
     if default_location_relationship != nil
       driver_default_location = Location.find(default_location_relationship.location_id)
       geodistance = Geodistance.new(driver_default_location, object.start_location)
-      return geodistance.calculate_distance
+      return geodistance.calculate_distance.round(1)
     else
       return nil
     end
