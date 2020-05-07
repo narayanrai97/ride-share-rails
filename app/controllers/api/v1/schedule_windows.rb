@@ -62,28 +62,81 @@ module Api
         requires :end_time, type: String, desc: "End date and time of availability "
         requires :is_recurring, type: Boolean, desc: "Boolean if availability is recurring or not"
         requires :location_id, type: String, desc: "ID of location"
+        optional :force, type: Boolean, desc: "Replace overlapping avaliablity"
       end
       post "availabilities" do
         attributes = {start_date: params[:start_date], end_date: params[:end_date],
-        start_time: params[:start_time],end_time: params[:end_time], location_id: params[:location_id],
+        start_time: params[:start_time], end_time: params[:end_time], location_id: params[:location_id],
         is_recurring: params[:is_recurring]}
 
-            schedule_window = current_driver.schedule_windows.new(attributes)
-            save_return = schedule_window.save
-           if (save_return)
-                 pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
-                if pattern != nil
-                    pattern.destroy
+        force = params[:force]
+        # schedule_window = current_driver.schedule_windows.new(attributes)
+        schedule_window = current_driver.schedule_windows.new(attributes)
+        byebug
+        # schedule_window = ScheduleWindow.new(attributes)
+        # schedule_window.driver_id = current_driver.id
+        if attributes[:is_recurring] = false
+          duplicate_check = current_driver.events(schedule_window.start_time, schedule_window.end_time)
+          if duplicate_check.length > 0
+            if !force
+              is_overlapping
+              render json: "This overlaps a existing schedule"
+              return
+            else
+              duplicate_check.each do |event|
+                old_schedule = ScheduleWindow.find_by(id: event.id)
+                if old_schedule
+                  if old_schedule.recurring_pattern
+                    old_schedule.recurring_pattern.destroy
+                  end
+                  old_schedule.destroy
                 end
-                if schedule_window.is_recurring?
-                    RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+              end
+            end
+          end
+        else
+          byebug
+          to_check = schedule_window.recurring_weekly(attributes[:start_date], attributes[:end_date])
+          to_check.each do |event|
+            duplicate_check = current_driver.events(event.start_time, event.end_time)
+            if duplicate_check.length > 0
+              byebug
+              if !force
+                is_overlapping
+                render json: "This overlaps a existing schedule"
+                return
+              else
+                duplicate_check.each do |event|
+                  old_schedule = ScheduleWindow.find_by(id: event.id)
+                  if old_schedule
+                    if old_schedule.recurring_pattern
+                      old_schedule.recurring_pattern.destroy
+                    end
+                    old_schedule.destroy
+                  end
                 end
-                 status 201
-                 schedule_window
-           else
-                 status 404
-                 schedule_window.errors.messages
-           end
+              end
+            end
+          end
+        end
+
+
+        save_return = schedule_window.save
+        if (save_return)
+
+              #  pattern = RecurringPattern.find_by(schedule_window_id: schedule_window.id)
+              # if pattern != nil
+              #     pattern.destroy
+              # end
+              if schedule_window.is_recurring?
+                  RecurringPattern.create(schedule_window_id: schedule_window.id, day_of_week: schedule_window.start_time.wday)
+              end
+               status 201
+               schedule_window
+         else
+               status 404
+               schedule_window.errors.messages
+         end
       end
 
 
@@ -136,6 +189,12 @@ module Api
           status 200
         end
       end
+
+      def is_overlapping
+        status 205
+        return
+      end
+
     end
   end
 end
