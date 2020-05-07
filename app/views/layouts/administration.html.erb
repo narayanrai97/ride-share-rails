@@ -20,20 +20,20 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item <%= request.path =~ /welcome/ ? 'active' : '' %>">
-            <%= link_to 'Home', welcome_index_path, :class => 'nav-link active' %>
+          <li class="nav-item">
+            <%= link_to image_tag('crsn.png', size: '45x45'), welcome_index_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item <%= request.path =~ /drivers/ ? 'active' : '' %>">
+          <li class="nav-item">
             <%= link_to 'Drivers', admin_drivers_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item <%= request.path =~ /riders/ ? 'active' : ''  %>">
+          <li class="nav-item">
             <%= link_to 'Riders', riders_path, :class => 'nav-link active' %>
           </li>
-          <li class="nav-item <%= request.path =~ /admin_ride/ ? 'active' : '' %>">
+          <li class="nav-item">
            <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link active' %>
          </li>
           <% if current_user.organization.use_tokens %>
-            <li class="nav-item <%= request.path =~ /tokens/ ? 'active' : '' %>">
+            <li class="nav-item">
                 <%= link_to 'Tokens', tokens_path, :class => 'nav-link active' %>
             </li>
           <% end %>

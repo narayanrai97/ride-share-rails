@@ -16,8 +16,8 @@
           <!-- <li class="nav-item < request.path =~ /welcome/ ? 'active' : '' %>">
             < link_to 'Home', welcome_rider_path, :class => 'nav-link active' %>
           </li> -->
-          <li class="nav-item <%= request.path =~ /rides/ ? 'active' : '' %>">
-              <%= link_to 'Rides', rides_path, :class => 'nav-link active' %>
+          <li class="nav-item">
+              <%= link_to image_tag('crsn.png', size: '45x45'), rides_path, :class => 'nav-link active' %>
           </li>
           <li class="nav-item">
               <%= link_to 'Change Password', edit_rider_registration_path, :class => 'nav-link' %>
