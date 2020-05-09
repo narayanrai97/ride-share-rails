@@ -42,12 +42,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
             }
           parsed_json = JSON.parse(response.body)
-<<<<<<< HEAD
           expect(response).to have_http_status(400)
-=======
-          expect(response).to have_http_status(404)
->>>>>>> master
-
       end
 
      it "Creates availabilities with recurring true" do
@@ -112,10 +107,6 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           is_recurring: true,
           location_id: location.id
       }
-<<<<<<< HEAD
-        # puts "at line 112 response body is: " + response.body
-=======
->>>>>>> master
         parsed_json = JSON.parse(response.body)
         expect(parsed_json['schedule_window']["start_date"]).to eq("2025-09-01T00:00:00.000Z")
         expect(parsed_json['schedule_window']["end_date"]).to eq("2025-10-21T00:00:00.000Z")
