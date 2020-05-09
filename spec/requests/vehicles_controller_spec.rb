@@ -29,6 +29,8 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         seat_belt_num: 5}
         }
         expect(response).to have_http_status(201)
+        puts "line 32 " + response.body
+        puts "response status #{response.status}"
         parsed_json = JSON.parse(response.body)
 
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
