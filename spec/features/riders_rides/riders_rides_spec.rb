@@ -16,7 +16,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     click_link 'Login as Rider'
     expect(page).to have_text 'Log in'
     fill_in 'Email', with: rider.email
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Pa$$word20'
     click_on 'Log in'
     expect(page).to have_text rider.first_name
   end
@@ -36,7 +36,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     click_link 'Login as Rider'
     expect(page).to have_text 'Log in'
     fill_in 'Email', with: rider.email
-    fill_in 'Password', with: 'password'
+    fill_in 'Password', with: 'Pa$$word20'
     click_on 'Log in'
     expect(page).to have_text rider.first_name
     click_link 'Rides'

@@ -5,6 +5,7 @@ class Driver < ApplicationRecord
   validates :last_name, presence: true
   validates :phone, length: { is: 10 }, numericality: true
   validates :email, presence: true
+  validate :password_complexity
   validate :image_type
 
   belongs_to :organization
@@ -83,5 +84,9 @@ class Driver < ApplicationRecord
     list.sort_by { |i| i[:start_time] }.reverse
   end
 
-  def ride_cancel_alert; end
+  def password_complexity
+    if password.present? and not password.match(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,25}$/)
+      errors.add :password, "must be at least 8 characters long and include 1 uppercase, 1 number, and 1 special character."
+    end
+  end
 end

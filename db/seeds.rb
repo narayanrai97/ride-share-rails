@@ -10,15 +10,15 @@
 
 org1 = Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
 org2 = Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709", use_tokens: true)
-User.create(email: "admin@gmail.com", password: "password",organization_id: org1.id)
-User.create(email: "admin1@gmail.com", password: "password",organization_id: org2.id)
+User.create(email: "admin@gmail.com", password: "Pa$$word20",organization_id: org1.id)
+User.create(email: "admin1@gmail.com", password: "Pa$$word20",organization_id: org2.id)
 
 
 
-driver1 = Driver.create(organization_id: org1.id, first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "password", password_confirmation: "password")
-driver2 = Driver.create(organization_id: org1.id, first_name: "John", last_name: "Smith", phone: "4362484055", email: "j.smith@gmail.com", password: "password", password_confirmation: "password")
-driver3 = Driver.create(organization_id: org1.id, first_name: "Katie", last_name: "Jones", phone: "9298694850", email: "katie@duke.edu", password: "password", password_confirmation: "password")
-driver4 = Driver.create(organization_id: org2.id, first_name: "Sarah", last_name: "Kim", phone: "4029348508", email: "Sarah.Kim@yahoo.com", password: "password", password_confirmation: "password")
+driver1 = Driver.create(organization_id: org1.id, first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+driver2 = Driver.create(organization_id: org1.id, first_name: "John", last_name: "Smith", phone: "4362484055", email: "j.smith@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+driver3 = Driver.create(organization_id: org1.id, first_name: "Katie", last_name: "Jones", phone: "9298694850", email: "katie@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+driver4 = Driver.create(organization_id: org2.id, first_name: "Sarah", last_name: "Kim", phone: "4029348508", email: "Sarah.Kim@yahoo.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 
 vehicle1 = Vehicle.create(driver_id: driver1.id , car_make: "Toyota", car_model: "Tacoma", car_color: "Silver", car_year: "2010", car_plate: "ZQW0PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-02-19", insurance_stop: "2022-02-19" )
 vehicle2 = Vehicle.create(driver_id: driver2.id ,car_make: "Toyota", car_model: "Camry", car_color: "Blue", car_year: "2010", car_plate: "ZQW1PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-01-19", insurance_stop: "2022-01-19")
@@ -27,10 +27,10 @@ vehicle4 = Vehicle.create(driver_id: driver4.id , car_make: "Nissan", car_model:
 
 
 
-rider1 = Rider.create(organization_id: org1.id, first_name: "Katelyn", last_name: "Splint" , phone: "9293842930", email: "ks@duke.edu", password: "password", password_confirmation: "password")
-rider2 = Rider.create(organization_id: org1.id, first_name: "James", last_name: "Cage" , phone: "3292842339",  email: "cage@gmail.com", password: "password", password_confirmation: "password")
-rider3 = Rider.create(organization_id: org1.id, first_name: "Mary", last_name: "Young" , phone: "5293454293",  email: "myoung@yahoo.com", password: "password", password_confirmation: "password")
-rider4 = Rider.create(organization_id: org2.id, first_name: "Jim", last_name: "Free" , phone: "9223842200",  email: "free_j@gmail.com", password: "password", password_confirmation: "password")
+rider1 = Rider.create(organization_id: org1.id, first_name: "Katelyn", last_name: "Splint" , phone: "9293842930", email: "ks@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+rider2 = Rider.create(organization_id: org1.id, first_name: "James", last_name: "Cage" , phone: "3292842339",  email: "cage@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+rider3 = Rider.create(organization_id: org1.id, first_name: "Mary", last_name: "Young" , phone: "5293454293",  email: "myoung@yahoo.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+rider4 = Rider.create(organization_id: org2.id, first_name: "Jim", last_name: "Free" , phone: "9223842200",  email: "free_j@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 
 
 
@@ -179,34 +179,34 @@ RecurringPattern.create(schedule_window_id: sw15.id , day_of_week: "0")
 RecurringPattern.create(schedule_window_id: sw16.id , day_of_week: "0")
 
 
-LocationRelationship.create(location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc2.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc3.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc4.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc2.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc3.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc4.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 
-LocationRelationship.create(location_id: loc5.id , driver_id: nil, rider_id: rider1, organization_id: nil)
-LocationRelationship.create(location_id: loc6.id , driver_id: nil, rider_id: rider2, organization_id: nil)
-LocationRelationship.create(location_id: loc7.id , driver_id: nil, rider_id: rider3, organization_id: nil)
-LocationRelationship.create(location_id: loc8.id , driver_id: nil, rider_id: rider4, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc5.id , driver_id: nil, rider_id: rider1, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc6.id , driver_id: nil, rider_id: rider2, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc7.id , driver_id: nil, rider_id: rider3, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc8.id , driver_id: nil, rider_id: rider4, organization_id: nil)
 
-LocationRelationship.create(location_id: loc9.id , driver_id: nil, rider_id: nil, organization_id: org1.id)
-LocationRelationship.create(location_id: loc10.id , driver_id: nil, rider_id: nil, organization_id: org2.id)
+LocationRelationship.create(default: false, location_id: loc9.id , driver_id: nil, rider_id: nil, organization_id: org1.id)
+LocationRelationship.create(default: false, location_id: loc10.id , driver_id: nil, rider_id: nil, organization_id: org2.id)
 
-LocationRelationship.create(location_id: loc11.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: true, location_id: loc11.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 
-LocationRelationship.create(location_id: loc12.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc13.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc14.id , driver_id: nil, rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc15.id , driver_id: nil, rider_id: nil, organization_id: nil)
-
-
+LocationRelationship.create(default: false, location_id: loc12.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc13.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc14.id , driver_id: nil, rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc15.id , driver_id: nil, rider_id: nil, organization_id: nil)
 
 
-LocationRelationship.create(location_id: loc16.id , driver_id: driver2.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc17.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc18.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc19.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
-LocationRelationship.create(location_id: loc10.id , driver_id: driver4.id , rider_id: nil, organization_id: nil)
+
+
+LocationRelationship.create(default: false, location_id: loc16.id , driver_id: driver2.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc17.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc18.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: true, location_id: loc19.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
+LocationRelationship.create(default: false, location_id: loc10.id , driver_id: driver4.id , rider_id: nil, organization_id: nil)
 
 
 

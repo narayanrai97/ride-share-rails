@@ -18,6 +18,7 @@ module Api
           requires :phone, type: String
           requires :organization_id, type: Integer
           requires :is_active, type: Boolean
+          requires :admin_sign_up, type: Boolean, default: "false"
           optional :radius, type: Integer
         end
       end
@@ -115,6 +116,33 @@ module Api
           else
             status 400
             return ''
+          end
+        end
+      end
+
+      desc 'Prompt a driver to change password on first login if admin_sign_up is true'
+      params do
+        requires :driver, type: Hash do
+          requires :password, type: String
+          requires :password_confirmation, type: String
+        end
+      end
+      put 'drivers/password_change' do
+        password = params[:driver][:password]
+        password_confirmation = params[:driver][:password_confirmation]
+        if current_driver.admin_sign_up?
+          if password == password_confirmation
+            current_driver.update_attributes(password: password, password_confirmation: password_confirmation, admin_sign_up: false) # Toggle admin_sign_up to false state on password change
+            if current_driver.save
+              status 201
+              return ""
+            else
+              status 400
+              return current_driver.errors.messages
+            end
+          else
+            status 404
+            return "Password confirmation doesn't match password"
           end
         end
       end

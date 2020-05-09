@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_165319) do
+ActiveRecord::Schema.define(version: 2020_05_05_235750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_165319) do
     t.datetime "token_created_at"
     t.string "application_state", default: "pending"
     t.boolean "background_check", default: false, null: false
+    t.boolean "admin_sign_up", default: true
     t.index ["auth_token", "token_created_at"], name: "index_drivers_on_auth_token_and_token_created_at"
     t.index ["organization_id"], name: "index_drivers_on_organization_id"
   end
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_165319) do
     t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "default", null: false
     t.index ["driver_id"], name: "index_location_relationships_on_driver_id"
     t.index ["location_id"], name: "index_location_relationships_on_location_id"
     t.index ["organization_id"], name: "index_location_relationships_on_organization_id"
@@ -140,6 +142,8 @@ ActiveRecord::Schema.define(version: 2020_03_25_165319) do
     t.integer "outbound"
     t.integer "return"
     t.boolean "same_driver", default: false
+    t.float "pickup_to_dropoff_distance"
+    t.datetime "pickup_to_dropoff_time"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
     t.index ["organization_id"], name: "index_rides_on_organization_id"

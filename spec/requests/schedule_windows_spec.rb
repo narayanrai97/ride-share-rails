@@ -4,7 +4,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
     def logintoken
        post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: {
           email: recurring_pattern.schedule_window.driver.email,
-       password: "password" }
+       password: "Pa$$word20" }
        parsed_json = JSON.parse(response.body)
        parsed_json['json']['auth_token']
     end
@@ -24,7 +24,6 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             is_recurring: false,
             location_id: location.id
             }
-          # puts "at line 27 response body is: " + response.body
           parsed_json = JSON.parse(response.body)
           expect(parsed_json['schedule_window']['start_time']).to eq("2025-09-01T14:00:00.000Z")
           expect(parsed_json['schedule_window']['end_time']).to eq("2025-09-01T16:00:00.000Z")
@@ -43,7 +42,11 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
             }
           parsed_json = JSON.parse(response.body)
+<<<<<<< HEAD
           expect(response).to have_http_status(400)
+=======
+          expect(response).to have_http_status(404)
+>>>>>>> master
 
       end
 
@@ -109,7 +112,10 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           is_recurring: true,
           location_id: location.id
       }
+<<<<<<< HEAD
         # puts "at line 112 response body is: " + response.body
+=======
+>>>>>>> master
         parsed_json = JSON.parse(response.body)
         expect(parsed_json['schedule_window']["start_date"]).to eq("2025-09-01T00:00:00.000Z")
         expect(parsed_json['schedule_window']["end_date"]).to eq("2025-10-21T00:00:00.000Z")

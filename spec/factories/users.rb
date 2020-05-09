@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user do
     email { "user@example.com" }
-    password { "password" }
+    password { "Pa$$word20" }
 
     association :organization
   end

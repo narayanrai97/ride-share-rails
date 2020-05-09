@@ -32,40 +32,40 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-               start_location_id: location1.id, end_location_id: location1.id, status: "approved")}
+               start_location_id: location1.id, end_location_id: location2.id, status: "approved")}
 
   let!(:ride1) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "scheduled",
-                start_location_id: location2.id, end_location_id: location2.id)}
+                start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride2) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "picking-up",
-                start_location_id: location3.id, end_location_id: location3.id)}
+                start_location_id: location3.id, end_location_id: location4.id)}
 
   let!(:ride3) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "scheduled",
-                start_location_id: location4.id, end_location_id: location4.id)}
+                start_location_id: location4.id, end_location_id: location5.id)}
 
   let!(:ride4) {create(:ride, rider_id: rider2.id, organization_id: organization.id,
                 driver_id: driver2.id, status: "scheduled",
-                start_location_id: location2.id, end_location_id: location2.id)}
+                start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride5) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "scheduled",
-                start_location_id: location5.id, end_location_id: location5.id)}
+                start_location_id: location5.id, end_location_id: location6.id)}
 
   let!(:ride6) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "scheduled",
-                start_location_id: location6.id, end_location_id: location1.id)}
+                start_location_id: location6.id, end_location_id: location7.id)}
 
   # this ride test when ladditude is and longitude is nil
   let!(:ride7) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "scheduled",
-                start_location_id: location7.id, end_location_id: location7.id)}
+                start_location_id: location7.id, end_location_id: location6.id)}
 
   let!(:ride8) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "dropping-off",
-                start_location_id: location2.id, end_location_id: location2.id)}
+                start_location_id: location2.id, end_location_id: location3.id)}
 
   #Accepts a ride for the current logged in user.
   #This added the driver id to the ride and changes the status to scheduled
@@ -136,7 +136,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     expect(parsed_json['ride']['driver_id']).to eq(driver.id)
     expect(parsed_json['ride']['organization_id']).to eq(organization.id)
     expect(parsed_json['ride']['start_location']['id']).to eq(location2.id)
-    expect(parsed_json['ride']['end_location']['id']).to eq(location2.id)
+    expect(parsed_json['ride']['end_location']['id']).to eq(location3.id)
   end
 
   it 'will return a 401 error when ride does not belong to driver ' do
@@ -192,7 +192,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     #Returns rides based on status matching scheduled and driver accepted
     it 'will return all rides with status scheduled' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, status: ["scheduled"]}
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{status: ["scheduled"]}
       # puts "at line 196 " + response.body
       # puts "response.status is #{response.status}"
       parsed_json = JSON.parse(response.body)
@@ -230,10 +230,9 @@ RSpec.describe Api::V1::Rides, type: :request do
       get "/api/v1/rides", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params: {
         location_id: location.id
       }
-# byebug
       parsed_json = JSON.parse(response.body)
       expect(response).to have_http_status(200)
-      expect(parsed_json['rides'].count).to eq(4)
+      expect(parsed_json['rides'].count).to eq(3)
     end
 
     it "returns 404 when location does not exsit" do

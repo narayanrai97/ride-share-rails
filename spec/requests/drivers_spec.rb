@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::Drivers, type: :request do
 
     def logintoken
-        post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
+        post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "Pa$$word20" }
        parsed_json = JSON.parse(response.body)
        parsed_json['json']['auth_token']
     end
@@ -13,7 +13,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     let!(:driver2) { FactoryBot.create(:driver, first_name: "Phil", organization_id: organization.id,
     auth_token: "5678", token_created_at: Time.zone.now) }
     let!(:location) { FactoryBot.create(:location) }
-    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id) }
+    let!(:location_relationships) { LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true) }
 
     it 'Test password reset' do
     post '/api/v1/drivers/password_reset',
@@ -28,14 +28,14 @@ RSpec.describe Api::V1::Drivers, type: :request do
     end
 
     it 'driver login in' do
-    post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "password" }
+    post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "Pa$$word20" }
        expect(response).to have_http_status(201)
        puts response
     end
 
     it "enrolls a driver" do
        post '/api/v1/drivers', headers: {"ACCEPT" => "application/json"},
-       params: {driver: { email: "sample@sample.com", password: "password",
+       params: {driver: { email: "sample@sample.com", password: "Pa$$word20",
        first_name: "Bob", last_name: "Steve",
        phone: "3361234567", organization_id: organization.id,
        radius: 50, is_active: true
@@ -54,7 +54,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     # should recieve error code 400 when fields are missing
     it "will render error code when fields are missing" do
        post '/api/v1/drivers', headers: {"ACCEPT" => "application/json"},
-       params: {driver: { email: "sample@sample.com", password: "password",
+       params: {driver: { email: "sample@sample.com", password: "Pa$$word20",
        first_name: "Frank",
         organization_id: organization.id,
        radius: 50, is_active: true
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken },
        params:  {driver:
        { email: "sample@sample.com",
-       password: "password",
+       password: "Pa$$word20",
        first_name: "Tom",
        last_name: "Martin",
        phone: "6152239090",
@@ -88,7 +88,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
     it 'returns a 400 error message when fields are not valid ' do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken },
        params:  {driver:
-       { email: "sample@sample.com", password: "password",
+       { email: "sample@sample.com", password: "Pa$$word20",
        first_name: "Tom", last_name: "Jumper",
        phone: "Rails", organization_id: organization.id,
        radius: 50, is_active: true
