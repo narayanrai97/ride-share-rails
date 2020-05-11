@@ -115,7 +115,7 @@ module Api
             return new_location.errors.messages
           end
           location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
-          location_relationship.update(default: params[:default_location][:default], location: new_location)
+          location_relationship.update(default: params[:location_relationship][:default], location: new_location)
         else
           # update old location
           update_success = if params[:location].present?

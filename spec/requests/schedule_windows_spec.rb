@@ -42,8 +42,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             location_id: location.id
             }
           parsed_json = JSON.parse(response.body)
-          expect(response).to have_http_status(404)
-
+          expect(response).to have_http_status(400)
       end
 
      it "Creates availabilities with recurring true" do
@@ -128,7 +127,7 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           location_id: location.id
       }
         parsed_json = JSON.parse(response.body)
-        expect(response).to have_http_status(404)
+        expect(response).to have_http_status(400)
         end
 
     it "Delete" do

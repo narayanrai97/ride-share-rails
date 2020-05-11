@@ -36,8 +36,7 @@ module Api
         vehicle.driver_id = current_driver.id
         if vehicle.save
           status 201
-          render vehicle
-          return
+          return vehicle
         else
           status 400
           vehicle.errors.messages
