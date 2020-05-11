@@ -207,9 +207,12 @@ def find_duplicates(force, start_time, end_time, id)
   duplicate_check_1 = current_driver.overlapping_events(start_time, end_time)
   duplicate_check = []
   if id != 0 # doing an update, some of these duplicates might not count
-    duplicate_check.each do
-      d
+    duplicate_check.each do |d|
       duplicate_check << d if d.eventId != id
+      # we don't count an event as an overlap if we are doing an update of
+      # an existing ScheduleWindow and the id of the event matches the
+      # id of the schedule window we are updating.  In other words,
+      # it doesn't count if a schedule window overlaps with itself. 
     end
   else
     duplicate_check = duplicate_check_1
