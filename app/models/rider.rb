@@ -1,6 +1,6 @@
 class Rider < ApplicationRecord
   devise :database_authenticatable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, password_length: 8..128
 
   belongs_to :organization
   has_many :location_relationships
