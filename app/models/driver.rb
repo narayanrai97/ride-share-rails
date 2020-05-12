@@ -21,7 +21,7 @@ class Driver < ApplicationRecord
   # validates_attachment_content_type :image, content_type:  ["image/jpg", "image/jpeg", "image/png"]
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, password_length: 8..128
   scope :active, -> { where(is_active: true) }
   scope :pending, -> { where(application_state: 'pending') }
   scope :accepted, -> { where(application_state: 'accepted') }
