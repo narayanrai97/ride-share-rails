@@ -89,4 +89,11 @@ class Driver < ApplicationRecord
       errors.add :password, "must be at least 8 characters long and include 1 uppercase, 1 number, and 1 special character."
     end
   end
+
+  def default_location
+    default_location_relationship = self.location_relationships.find_by_default(true)
+    if default_location_relationship
+      Location.find(default_location_relationship.location_id)
+    end
+  end
 end
