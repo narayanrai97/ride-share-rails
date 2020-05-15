@@ -146,6 +146,17 @@ module Api
           end
         end
       end
+
+      desc "Return driver's current default location"
+      get 'drivers/default_location' do
+        if current_driver.location_relationships.find_by_default(true)
+          status 200
+          return current_driver.default_location
+        else
+          status 400
+          return ''
+        end
+      end
     end
   end
 end
