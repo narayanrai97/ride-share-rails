@@ -119,10 +119,12 @@ class ScheduleWindow < ApplicationRecord
               end
     results = []
     while current <= query_end_date && current <= end_date
+      current_start = (current.strftime('%Y-%m-%d') + ' ' + start_time.strftime('%H:%M:%S')).to_datetime
+      current_end = current_start + (end_time.to_datetime.to_i - start_time.to_datetime.to_i).seconds
       results.unshift({
                         eventId: id,
-                        startTime: current.strftime('%Y-%m-%d') + ' ' + start_time.strftime('%H:%M'),
-                        endTime: current.strftime('%Y-%m-%d') + ' ' + end_time.strftime('%H:%M'),
+                        startTime: current_start.strftime('%Y-%m-%d %H:%M'),
+                        endTime: current_end.strftime('%Y-%m-%d %H:%M'),
                         isRecurring: true,
                         location: location,
                         startDate: start_date,
@@ -146,7 +148,7 @@ class ScheduleWindow < ApplicationRecord
   end
 
   def nonrecurring_overlapping_event(query_start_date, query_end_date)
-    if !(query_start_date > end_time || query_end_date < start_time)
+    if !(query_start_date >= end_time || query_end_date <= start_time)
       [{
         eventId: id,
         startTime: start_time,
@@ -171,13 +173,7 @@ class ScheduleWindow < ApplicationRecord
   end
 
   def recurring_overlapping_weekly(query_start_date, query_end_date, recurring)
-    # this is messy arithmetic, but suits the purpose to add/subtract dates
-    # What makes it ugly is that the to_i gives unpredictable results unless
-    # it is coerced to be a DateTime.  This is the problem with Ruby weak
-    # typing.
-    start_of_overlap = Time.at(query_start_date.to_datetime.to_i -
-      (end_time.to_datetime.to_i - start_time.to_datetime.to_i)).to_datetime
-    current_start_date = start_of_overlap < start_date ? start_date : start_of_overlap
+    current_start_date = query_start_date < start_date ? start_date : query_start_date
     dow = recurring.day_of_week
     start_dow = current_start_date.to_datetime.wday
 
@@ -187,16 +183,20 @@ class ScheduleWindow < ApplicationRecord
                 current_start_date.to_datetime + (7 - (start_dow - dow)).days
               end
     results = []
-    while current <= query_end_date && current <= end_date
-      results.unshift({
-                        eventId: id,
-                        startTime: current.strftime('%Y-%m-%d') + ' ' + start_time.strftime('%H:%M'),
-                        endTime: current.strftime('%Y-%m-%d') + ' ' + end_time.strftime('%H:%M'),
-                        isRecurring: true,
-                        location: location,
-                        startDate: start_date,
-                        endDate: end_date
-                      })
+    while current < query_end_date && current <= end_date
+      current_start = (current.strftime('%Y-%m-%d') + ' ' + start_time.strftime('%H:%M:%S')).to_datetime
+      current_end = current_start + (end_time.to_datetime.to_i - start_time.to_datetime.to_i).seconds
+      if current_end > query_start_date && current_start < query_end_date
+        results.unshift({
+                          eventId: id,
+                          startTime: current_start.strftime('%Y-%m-%d %H:%M'),
+                          endTime: current_end.strftime('%Y-%m-%d %H:%M'),
+                          isRecurring: true,
+                          location: location,
+                          startDate: start_date,
+                          endDate: end_date
+                        })
+      end
       current += (7 * (recurring.separation_count + 1)).days
     end
     results
