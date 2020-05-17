@@ -157,26 +157,26 @@ sw24 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.d
 
 
 
-RecurringPattern.create(schedule_window_id: sw1.id , day_of_week: "1")
-RecurringPattern.create(schedule_window_id: sw2.id , day_of_week: "2")
-RecurringPattern.create(schedule_window_id: sw3a.id , day_of_week: "4")
-RecurringPattern.create(schedule_window_id: sw3b.id , day_of_week: "4")
-RecurringPattern.create(schedule_window_id: sw4.id , day_of_week: "5")
+RecurringPattern.create(schedule_window_id: sw1.id , day_of_week: sw1.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw2.id , day_of_week: sw2.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw3a.id , day_of_week: sw3a.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw3b.id , day_of_week: sw3b.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw4.id , day_of_week: sw4.start_time.wday)
 
-RecurringPattern.create(schedule_window_id: sw5.id , day_of_week: "1")
-RecurringPattern.create(schedule_window_id: sw6.id , day_of_week: "1")
-RecurringPattern.create(schedule_window_id: sw7.id , day_of_week: "5")
-RecurringPattern.create(schedule_window_id: sw8.id , day_of_week: "6")
+RecurringPattern.create(schedule_window_id: sw5.id , day_of_week: sw5.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw6.id , day_of_week: sw6.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw7.id , day_of_week: sw7.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw8.id , day_of_week: sw8.start_time.wday)
 
-RecurringPattern.create(schedule_window_id: sw9.id , day_of_week: "1")
-RecurringPattern.create(schedule_window_id: sw10.id , day_of_week: "2")
-RecurringPattern.create(schedule_window_id: sw11.id , day_of_week: "3")
-RecurringPattern.create(schedule_window_id: sw12.id , day_of_week: "3")
+RecurringPattern.create(schedule_window_id: sw9.id , day_of_week: sw9.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw10.id , day_of_week: sw10.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw11.id , day_of_week: sw11.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw12.id , day_of_week: sw12.start_time.wday)
 
-RecurringPattern.create(schedule_window_id: sw13.id , day_of_week: "6")
-RecurringPattern.create(schedule_window_id: sw14.id , day_of_week: "6")
-RecurringPattern.create(schedule_window_id: sw15.id , day_of_week: "0")
-RecurringPattern.create(schedule_window_id: sw16.id , day_of_week: "0")
+RecurringPattern.create(schedule_window_id: sw13.id , day_of_week: sw13.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw14.id , day_of_week: sw14.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw15.id , day_of_week: sw15.start_time.wday)
+RecurringPattern.create(schedule_window_id: sw16.id , day_of_week: sw16.start_time.wday)
 
 
 LocationRelationship.create(default: false, location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
