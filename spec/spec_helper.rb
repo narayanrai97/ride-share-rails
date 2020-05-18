@@ -13,6 +13,23 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'capybara'
+require 'webdrivers/geckodriver'
+Webdrivers.cache_time = 860_400
+
+Capybara.register_driver :firefox_headless do |app|
+  options = ::Selenium::WebDriver::Firefox::Options.new
+  options.args << '--headless'
+
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+end
+
+Capybara.javascript_driver = :firefox_headless
+# From https://github.com/mattheworiordan/capybara-screenshot/issues/84#issuecomment-41219326
+# Capybara::Screenshot.register_driver(:firefox_headless) do |driver, path|
+#   driver.browser.save_screenshot(path)
+# end
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
