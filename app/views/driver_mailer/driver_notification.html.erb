@@ -1,0 +1,45 @@
+<p>
+  Hi <%= @driver.first_name %>,
+</p>
+
+<p>
+  Thank you for volunteering with <%= @org.name %> ride sharing.
+</p>
+
+<% if @tomorrow_rides.any? %>
+  <p> Tomorrow you are scheduled to give the following rides:</p>
+  <% @tomorrow_rides.each do |ride| %>
+    <p>
+      Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %><br>
+      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up location: <%= ride.start_location.full_address %><br>
+      Destination location: <%= ride.end_location.full_address %><br>
+    </p>
+  <% end %>
+<% end %>
+
+<% if @week_rides.any? %>
+  <p> During the next week you are scheduled to give the following rides:</p>
+  <% @week_rides.each do |ride| %>
+    <p>
+      Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %><br>
+      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up location: <%= ride.start_location.full_address %><br>
+      Destination location: <%= ride.end_location.full_address %><br>
+    </p>
+  <% end %>
+<% end %>
+
+<% if @avail_rides.any? %>
+  <p>
+    The following rides have been requested but don't have drivers yet.  Would you
+    be willing to sign up for one of these rides?
+  </p>
+  <% @avail_rides.each do |ride| %>
+    <p>
+      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up location: <%= ride.start_location.full_address %><br>
+      Destination location: <%= ride.end_location.full_address %><br>
+    </p>
+  <% end %>
+<% end %>
