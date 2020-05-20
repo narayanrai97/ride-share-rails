@@ -1,7 +1,10 @@
 require "rails_helper"
 
 RSpec.describe DriverMailer, type: :mailer do
-  let!(:driver) { Driver.create(first_name: "John", last_name: "Doe", email: "john.doe@gmail.com", password: "Pa$$word20")
+  let!(:organization) { Organization.create(name: "my charity",
+    use_tokens: false, street: "123 Pine St", city: "Durham", state: "NC", zip: "27709")}
+  let!(:driver) { Driver.create(first_name: "John", last_name: "Doe", email: "john.doe@gmail.com",
+    password: "Pa$$word20", organization_id: organization.id)
   }
   describe "signup_confirmation" do
     let(:mail) { DriverMailer.signup_confirmation(driver) }
