@@ -81,7 +81,7 @@ module Api
           to_check.each do |event|
             unless find_duplicates(force, event[:startTime], event[:endTime], 0)
               # returns false if no further processing should occur
-              return 'This overlaps an existing schedule.'
+              return { error: 'This overlaps an existing schedule.'}
             end
           end
         end
@@ -163,7 +163,7 @@ module Api
         end
         to_check.each do |event|
           unless find_duplicates(force, event[:startTime], event[:endTime], schedule_window.id)
-            return 'This overlaps an existing schedule.'
+            return { error: 'This overlaps an existing schedule.' }
           end
         end
         update_return = schedule_window.save
@@ -212,7 +212,7 @@ def find_duplicates(force, start_time, end_time, id)
       # we don't count an event as an overlap if we are doing an update of
       # an existing ScheduleWindow and the id of the event matches the
       # id of the schedule window we are updating.  In other words,
-      # it doesn't count if a schedule window overlaps with itself. 
+      # it doesn't count if a schedule window overlaps with itself.
     end
   else
     duplicate_check = duplicate_check_1

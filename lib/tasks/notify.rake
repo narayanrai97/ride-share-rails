@@ -61,6 +61,7 @@ namespace :crsn do
   task :sendmail => :environment do
     send_email(DateTime.now.wday == 6)
   end
+  desc "Testing task: send friday email regardless of day"
   task :sendmail_test => :environment do
     send_email(true)
   end
