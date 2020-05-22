@@ -1,6 +1,6 @@
 class RideSerializer < ActiveModel::Serializer
   ActiveModelSerializers.config.adapter = :json
-  attributes :id, :organization_id, :rider_id, :driver_id, :pick_up_time, :start_location, :end_location,  :reason, :status, :completed_at, :round_trip, :expected_wait_time,
+  attributes :id, :organization_id, :driver_id, :pick_up_time, :rider, :start_location, :end_location,  :reason, :status, :completed_at, :round_trip, :expected_wait_time,
   :pickup_to_dropoff_distance, :pickup_to_dropoff_time, :default_to_pickup_distance
 
   def default_to_pickup_distance
@@ -13,6 +13,16 @@ class RideSerializer < ActiveModel::Serializer
     else
       return nil
     end
+  end
+
+  def rider
+    rider = Rider.find(object.rider_id)
+    {
+      first_name: rider.first_name,
+      last_name: rider.last_name,
+      phone: rider.phone,
+      note: rider.notes
+    }
   end
 
 end
