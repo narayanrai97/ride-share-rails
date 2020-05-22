@@ -81,7 +81,7 @@ module Api
           to_check.each do |event|
             unless find_duplicates(force, event[:startTime], event[:endTime], 0)
               # returns false if no further processing should occur
-              return { error: 'This overlaps an existing schedule.'}
+              return { error: 'This overlaps an existing schedule.', error_code: 101}
             end
           end
         end
@@ -94,7 +94,7 @@ module Api
           schedule_window
         else
           status 400
-          schedule_window.errors.messages
+          { error: schedule_window.errors.full_messages.to_sentence }
         end
       end
 
@@ -149,7 +149,7 @@ module Api
         end
         unless schedule_window.validate
           status 400
-          schedule_window.errors.messages
+          { error: schedule_window.errors.full_messages.to_sentence }
           return
         end
         if !params[:is_recurring]
@@ -163,7 +163,7 @@ module Api
         end
         to_check.each do |event|
           unless find_duplicates(force, event[:startTime], event[:endTime], schedule_window.id)
-            return { error: 'This overlaps an existing schedule.' }
+            return { error: 'This overlaps an existing schedule.', error_code: 101 }
           end
         end
         update_return = schedule_window.save
@@ -176,8 +176,8 @@ module Api
           status 202
           schedule_window
         else
-          status 401
-          schedule_window.errors.messages
+          status 400
+          { error: schedule_window.errors.full_messages.to_sentence }
         end
       end
 
