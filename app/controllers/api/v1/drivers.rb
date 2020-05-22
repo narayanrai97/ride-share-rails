@@ -53,7 +53,7 @@ module Api
         end
       end
 
-      desc 'Return a driver with a given id'
+      desc 'Return the current driver'
       params do
         # requires :id, type: String, desc: "ID of driver"
       end
@@ -73,7 +73,7 @@ module Api
         return { "driver": driver, "location": locations }
       end
 
-      desc 'Update a driver with a given id'
+      desc 'Update current driver'
       params do
         requires :driver, type: Hash do
           optional :email, type: String
@@ -102,7 +102,7 @@ module Api
         end
       end
 
-      desc 'Delete a driver with a given id'
+      desc 'Delete current driver'
       params do
       end
       delete 'drivers' do

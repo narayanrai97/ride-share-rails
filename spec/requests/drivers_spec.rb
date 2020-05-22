@@ -102,7 +102,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
 
     it "returns a 400 when driver does not have a token" do
        get "/api/v1/drivers", headers: { "ACCEPT" => "application/json"}
-       expect(response).to have_http_status(400)
+       expect(response).to have_http_status(401)
     end
 
     it 'logout driver and destorys token' do
