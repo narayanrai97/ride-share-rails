@@ -3,7 +3,7 @@
 
 <!-- <h1>Rides</h1> -->
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover contains-times">
   <tr class="border-bot">
     <th scope="col"><%= sort_link @quary, :pick_up_time, default_order: :desc %></th>
     <th scope="col">Start Location</th>
@@ -32,7 +32,7 @@
   <% @search.each do |ride| %>
     <% if ride.rider == current_rider%>
     <tr class="clickable-row" data-href='<%= ride_path(ride) %>'>
-      <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " @ " + "%I:%M %p") %></td>
+      <td class="no-wrap local-time"><%= ride.pick_up_time %></td>
       <td class="no-wrap"><%= ride.start_location&.full_address %></td>
       <td class="no-wrap"><%= ride.driver&.full_name %></td>
       <td><%= ride.reason %></td>
@@ -61,5 +61,13 @@
       $(".clickable-row").click(function() {
           window.location = $(this).data("href");
       });
+      const table = document.querySelector('.contains-times');
+      const timeCells = table.querySelectorAll('* .local-time');
+      for (let i = 0;i < timeCells.length; i += 1) {
+        let timeEntry = timeCells[i].innerHTML.split(" UTC")[0];
+        timeEntry = new moment.utc(timeEntry).local();
+        timeCells[i].innerHTML=timeEntry.format("LLL");
+      }
+
   });
 </script>

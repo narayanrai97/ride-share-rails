@@ -11,7 +11,7 @@
   <% @tomorrow_rides.each do |ride| %>
     <p>
       Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %><br>
-      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %><br>
       Pick up location: <%= ride.start_location.full_address %><br>
       Destination location: <%= ride.end_location.full_address %><br>
     </p>
@@ -23,7 +23,7 @@
   <% @week_rides.each do |ride| %>
     <p>
       Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %><br>
-      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %><br>
       Pick up location: <%= ride.start_location.full_address %><br>
       Destination location: <%= ride.end_location.full_address %><br>
     </p>
@@ -37,7 +37,7 @@
   </p>
   <% @avail_rides.each do |ride| %>
     <p>
-      Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %><br>
+      Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %><br>
       Pick up location: <%= ride.start_location.full_address %><br>
       Destination location: <%= ride.end_location.full_address %><br>
     </p>
