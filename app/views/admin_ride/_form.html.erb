@@ -242,16 +242,33 @@
 
 <script type="text/javascript">
   // calender for pick_up_time
+  const formatDateOut = (date, format) => {
+    let d1 = "";
+    if (format === "LOCAL") {
+      d1 = moment(date).format("LLLL") // what we show the user
+    } else {
+      d1 = moment.utc(date).format("YYYY-MM-DD hh:mm A") // what we return
+    }
+    return d1;
+  };
+  const parseDateIn = (dateString, format) => {
+    dateString = dateString.split(" UTC")[0];
+    let timezonedDate = new moment.utc(dateString);
+    d = timezonedDate.local().toDate();
+    return d;
+  };
   const el = document.getElementById('ride_pick_up_time');
   flatpickr(el, {
     enableTime:      true,
     altInput:        true,
     minDate:         "today",
-    altFormat:       "F j, Y at h:i K",
-    dateFormat:      "Y-m-d H:i",
+    altFormat:       "LOCAL",
+    dateFormat:      "UTC",
     defaultHour:     23,
     defaultMinute:   59,
-    minuteIncrement: 1
+    minuteIncrement: 1,
+    parseDate: parseDateIn,
+    formatDate: formatDateOut
   });
 
   const ele = document.getElementById('ride_return_pick_up_time');
@@ -259,11 +276,13 @@
     enableTime:      true,
     altInput:        true,
     minDate:         "today",
-    altFormat:       "F j, Y at h:i K",
-    dateFormat:      "Y-m-d H:i",
+    altFormat:       "LOCAL",
+    dateFormat:      "UTC",
     defaultHour:     23,
     defaultMinute:   59,
-    minuteIncrement: 1
+    minuteIncrement: 1,
+    parseDate: parseDateIn,
+    formatDate: formatDateOut
   });
 
   $(document).ready(function () {
@@ -282,8 +301,4 @@
         }
     });
   });
-
-
-
-
 </script>

@@ -18,3 +18,4 @@
 //= require popper
 //= require bootstrap
 //= require flatpickr
+//= require moment
