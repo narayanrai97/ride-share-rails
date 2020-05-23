@@ -7,7 +7,7 @@ Tomorrow you are scheduled to give the following rides:
 
 <% @tomorrow_rides.each do |ride| %>
 Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %>
-Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %>
+Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %>
 Pick up location: <%= ride.start_location.full_address %>
 Destination location: <%= ride.end_location.full_address %>
 
@@ -18,7 +18,7 @@ During the next week you are scheduled to give the following rides:
 
 <% @week_rides.each do |ride| %>
 Rider: <%= "#{ride.rider.full_name} phone: #{ride.rider.phone}" %>
-Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %>
+Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %>
 Pick up location: <%= ride.start_location.full_address %>
 Destination location: <%= ride.end_location.full_address %>
 
@@ -29,7 +29,7 @@ The following rides have been requested but don't have drivers yet.  Would you
 be willing to sign up for one of these rides?
 
 <% @avail_rides.each do |ride| %>
-Pick up time: <%= ride.pick_up_time.strftime("%A, %B %d, %l:%M %p") %>
+Pick up time: <%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %>
 Pick up location: <%= ride.start_location.full_address %>
 Destination location: <%= ride.end_location.full_address %>
 

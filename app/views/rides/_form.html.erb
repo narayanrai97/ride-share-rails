@@ -175,16 +175,20 @@
 </div>
 
 <div class="form-row">
-  <div class="form-group  col-md-10 offset-md-1">
-  5. <%= form.label :round_trip %>
-     <%= form.select :round_trip, options_for_select(["false","true"], :selected => form.object.round_trip), class: "form-control" %>
+  <div class="form-group  col-md-10 offset-md-1" >
+  6. <%= form.label :round_trip  %>
+     <%= form.check_box :round_trip  %>
   </div>
 </div>
 
-<div class="form-row">
-  <div id="show_dep" style="display: none" class="form-group  col-md-10 offset-md-1">
-    6. <%= form.label :expected_wait_time %>
-       <%= form.select :expected_wait_time, options_for_select([["30 mins", "30"],["45 mins", "45"], ["1.0 hour", "60"], ["1.5 hours", "90"],["2.0 hours", "120"], ["2.5 hours", "150"], ["3.0 hours", "180"]], "#{@ride.expected_wait_time}"), class: "form-control" %>
+<<div class="form-group offset-md-1 col-4" id = "return_pick_up_time" style="display: none" >
+  <div id="return_pick_up_time" class="form-group col-md-10 offset-md-1">
+    <%= form.label :return_pick_up_time %>
+    <% if @ride.return %>
+    <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}",  id: 'ride_return_pick_up_time' %>
+    <% else %>
+    <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
+    <% end %>
   </div>
 </div>
 
@@ -200,26 +204,64 @@
 <% end %>
 
 <script type="text/javascript">
+  // calender for pick_up_time
+  const formatDateOut = (date, format) => {
+    let d1 = "";
+    if (format === "LOCAL") {
+      d1 = moment(date).format("LLLL") // what we show the user
+    } else {
+      d1 = moment.utc(date).format("YYYY-MM-DD hh:mm A") // what we return
+    }
+    return d1;
+  };
+  const parseDateIn = (dateString, format) => {
+    dateString = dateString.split(" UTC")[0];
+    let timezonedDate = new moment.utc(dateString);
+    d = timezonedDate.local().toDate();
+    return d;
+  };
   const el = document.getElementById('ride_pick_up_time');
   flatpickr(el, {
     enableTime:      true,
     altInput:        true,
     minDate:         "today",
-    altFormat:       "F j, Y at h:i K",
-    dateFormat:      "Y-m-d H:i",
+    altFormat:       "LOCAL",
+    dateFormat:      "UTC",
     defaultHour:     23,
     defaultMinute:   59,
-    minuteIncrement: 1
+    minuteIncrement: 1,
+    parseDate: parseDateIn,
+    formatDate: formatDateOut
   });
 
-  // conditional expected_wait_time
-  jQuery(function () {
-      $("#ride_round_trip").change(function () {
-          if ($(this).val() == "false") {
-              $("#show_dep").hide();
-          } else {
-              $("#show_dep").show();
-          }
-      });
+  const ele = document.getElementById('ride_return_pick_up_time');
+  flatpickr(ele, {
+    enableTime:      true,
+    altInput:        true,
+    minDate:         "today",
+    altFormat:       "LOCAL",
+    dateFormat:      "UTC",
+    defaultHour:     23,
+    defaultMinute:   59,
+    minuteIncrement: 1,
+    parseDate: parseDateIn,
+    formatDate: formatDateOut
+  });
+
+  $(document).ready(function () {
+    var value = $('#ride_round_trip')[0].checked
+    if (value) {
+      $("#return_pick_up_time").show()
+    }
+    $('#ride_round_trip').on('change', function() {
+        if(this.checked)
+        {
+          $("#return_pick_up_time").show()
+        }
+        else
+        {
+          $("#return_pick_up_time").hide()
+        }
+    });
   });
 </script>

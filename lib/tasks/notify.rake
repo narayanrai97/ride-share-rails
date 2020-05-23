@@ -59,7 +59,7 @@ end
 namespace :crsn do
   desc "Send email to drivers about upcoming rides"
   task :sendmail => :environment do
-    send_email(DateTime.now.wday == 6)
+    send_email(DateTime.now.wday == 5)
   end
   desc "Testing task: send friday email regardless of day"
   task :sendmail_test => :environment do
