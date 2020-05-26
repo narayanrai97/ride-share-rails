@@ -21,6 +21,7 @@ module Api
           status 200
         else
           status 404
+          return {}
         end
         render location
       end
@@ -36,7 +37,8 @@ module Api
         if !locations.nil?
           status 200
         else
-          status 404
+          status 400
+          return {}
         end
         render locations
       end
@@ -73,10 +75,10 @@ module Api
           location_relationship.default = params[:default_location][:default]
           location_relationship.save
           status 201
-          location
+          return location
         else
           status 400
-          location.errors.messages
+          return {error: location.errors.full_messages.to_sentence }
         end
       end
 
