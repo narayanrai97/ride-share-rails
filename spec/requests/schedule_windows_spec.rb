@@ -71,11 +71,11 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
           parsed_json = JSON.parse(response.body)
           # check that start times are correct
           startTime = parsed_json['json'].map{|k| k["startTime"] }
-          expect(startTime).to eq(["2025-09-06 14:00", "2025-09-13 14:00", "2025-09-20 14:00"])
+          expect(startTime).to eq(["2025-09-06T14:00:00.000+00:00", "2025-09-13T14:00:00.000+00:00", "2025-09-20T14:00:00.000+00:00"])
 
           #check that end times are correct
           endTime = parsed_json['json'].map{|k| k['endTime'] }
-          expect(endTime).to eq(["2025-09-06 16:00", "2025-09-13 16:00", "2025-09-20 16:00"])
+          expect(endTime).to eq(["2025-09-06T16:00:00.000+00:00", "2025-09-13T16:00:00.000+00:00", "2025-09-20T16:00:00.000+00:00"])
           expect(response).to have_http_status(200)
       end
 
@@ -87,11 +87,11 @@ RSpec.describe "Api::V1::Schedule_Windows", type: :request do
             parsed_json = JSON.parse(response.body)
             # check that start times are correct
              startTime = parsed_json['json'].map{|k| k["startTime"] }
-             expect(startTime).to eq(["2025-09-20 14:00", "2025-09-13 14:00", "2025-09-06 14:00"])
+             expect(startTime).to eq(["2025-09-20T14:00:00.000+00:00", "2025-09-13T14:00:00.000+00:00", "2025-09-06T14:00:00.000+00:00"])
 
             #check that end times are correct
             endTime = parsed_json['json'].map{|k| k['endTime'] }
-            expect(endTime).to eq(["2025-09-20 16:00", "2025-09-13 16:00", "2025-09-06 16:00"])
+            expect(endTime).to eq(["2025-09-20T16:00:00.000+00:00", "2025-09-13T16:00:00.000+00:00", "2025-09-06T16:00:00.000+00:00"])
             expect(response).to have_http_status(200)
 
     end
