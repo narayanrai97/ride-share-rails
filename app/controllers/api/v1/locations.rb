@@ -21,6 +21,7 @@ module Api
           status 200
         else
           status 404
+          return {}
         end
         render location
       end
@@ -37,6 +38,7 @@ module Api
           status 200
         else
           status 404
+          return {}
         end
         render locations
       end
@@ -73,10 +75,10 @@ module Api
           location_relationship.default = params[:default_location][:default]
           location_relationship.save
           status 201
-          location
+          return location
         else
           status 400
-          location.errors.messages
+          return {error: location.errors.full_messages.to_sentence }
         end
       end
 
@@ -100,19 +102,19 @@ module Api
         old_location = Location.find(params[:id])
         if old_location.nil?
           status 404
-          return ''
+          return {}
         end
         driver = current_driver
         unless driver_owns_location(driver, old_location)
           status 401
-          return ''
+          return {}
         end
         if LocationRelationship.where(location: permitted_params[:id]).count > 1
           new_location = Location.new(params[:location])
           save_success = new_location.save
           unless save_success
             status 400
-            return new_location.errors.messages
+            return {errors: new_location.errors.full_messages.to_sentence }
           end
           location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
           location_relationship.update(default: params[:location_relationship][:default], location: new_location)
@@ -136,7 +138,7 @@ module Api
             render_value = old_location
             status 200
           else
-            render_value = old_location.errors.messages
+            render_value = {error: old_location.errors.full_messages.to_sentence }
             status 400
           end
           render_value
@@ -152,7 +154,7 @@ module Api
         old_location = Location.find(params[:id])
         if old_location.nil?
           status 404
-          return ''
+          return {}
         end
         if driver_owns_location(driver, old_location)
           LocationRelationship.find_by(location_id: permitted_params[:id],
@@ -164,7 +166,7 @@ module Api
         else
           status 401
         end
-        return ''
+        return {}
       end
     end
   end
