@@ -33,7 +33,7 @@
           rides = rides.where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
           if rides.length == 0
             status 404
-            return ""
+            return {}
           end
         end
 
@@ -48,7 +48,7 @@
 
           if rides.length == 0
             status 404
-            return ""
+            return {}
           end
         end
 
@@ -57,7 +57,7 @@
           rides = rides.where(driver_id: current_driver.id).order(:pick_up_time)
           if rides.length == 0
             status 404
-            return ""
+            return {}
           end
         end
 
@@ -80,18 +80,17 @@
                 return rides_near
               else
                 status 404
-                return ""
+                return {}
               end
             else
               status 400
-              return "bad requests"
+              return { error: "bad requests" }
             end
           else
             status 400
-            return "bad requested"
+            return { error: "bad requested" }
           end
         end
-
         status 200
         return rides
       end
@@ -108,7 +107,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return { error: "Not Authorized" }
         end
       end
 
@@ -125,7 +124,7 @@
           render ride
         else
           status 401
-          return "Not Authorized"
+          return { error: "Not Authorized" }
         end
       end
 
@@ -143,7 +142,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return { error: "Not Authorized" }
         end
       end
 
@@ -160,7 +159,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return { error: "Not Authorized" }
         end
       end
 
@@ -177,7 +176,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return { error: "Not Authorized" }
         end
       end
 
@@ -194,7 +193,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return  { error: "Not Authorized" }
         end
       end
 
@@ -211,7 +210,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return  { error: "Not Authorized" }
         end
       end
 
@@ -228,7 +227,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return  { error: "Not Authorized" }
         end
       end
 
@@ -247,7 +246,7 @@
           render ride
         else
           status 401
-          render "Not Authorized"
+          return  { error: "Not Authorized" }
         end
       end
     end
