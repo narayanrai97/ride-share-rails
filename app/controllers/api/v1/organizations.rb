@@ -15,8 +15,8 @@ module Api
         organizations = Organization.all
          if organizations.all.empty?
           status 404
-          return ""
-         else 
+          return {}
+         else
            status 201
            render organizations
          end
