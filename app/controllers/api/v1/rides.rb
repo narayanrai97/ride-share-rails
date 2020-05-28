@@ -101,7 +101,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       get "rides/:ride_id", root: :ride do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if (ride.driver_id == nil && ride.status == "approved") || ride.driver_id == current_driver.id
           status 201
           render ride
@@ -117,7 +122,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/accept" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.driver_id.nil? && ride.status == "approved"
           ride.update(driver_id: current_driver.id, status: "scheduled")
           status 201
@@ -135,7 +145,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/picking-up" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "picking-up")
           status 201
@@ -152,7 +167,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/dropping-off" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "picking-up" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "dropping-off")
           status 201
@@ -169,7 +189,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/waiting" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "dropping-off" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "waiting")
           status 201
@@ -186,7 +211,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/return-picking-up" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "waiting" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "return-picking-up")
           status 201
@@ -203,7 +233,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/return-dropping-off" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "return-picking-up" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "return-dropping-off")
           status 201
@@ -220,7 +255,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/complete" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ["dropping-off", "return-dropping-off"].include?(ride.status) && ride.driver_id == current_driver.id
           ride.update_attributes(status: "completed", completed_at: Time.now)
           status 201
@@ -239,7 +279,12 @@
         requires :ride_id, type: String, desc: "ID of the ride"
       end
       post "rides/:ride_id/cancel" do
-        ride = Ride.find(permitted_params[:ride_id])
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return
+        end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id # && ride.pick_up_time >= Date.today + 1.week
           ride.update(driver_id: nil, status: "approved")
           status 201
