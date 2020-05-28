@@ -9,7 +9,7 @@ module Api
           riders = Rider.all
           if riders.all.empty?
             status 404
-            return ""
+            return {}
           else
             status 201
             render json: riders
@@ -33,7 +33,7 @@ module Api
            render json: {"rider": rider, "locations": locations}
           else
            status 404
-           return ""
+           return {}
           end
         end
       end
