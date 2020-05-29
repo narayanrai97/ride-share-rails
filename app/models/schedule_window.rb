@@ -123,12 +123,12 @@ class ScheduleWindow < ApplicationRecord
       current_end = current_start + (end_time.to_datetime.to_i - start_time.to_datetime.to_i).seconds
       results.unshift({
                         eventId: id,
-                        startTime: current_start.strftime('%Y-%m-%d %H:%M'),
-                        endTime: current_end.strftime('%Y-%m-%d %H:%M'),
+                        startTime: current_start,
+                        endTime: current_end,
                         isRecurring: true,
                         location: location,
-                        startDate: start_date,
-                        endDate: end_date
+                        startDate: start_date.to_datetime,
+                        endDate: end_date.to_datetime
                       })
       current += (7 * (recurring.separation_count + 1)).days
     end
@@ -189,12 +189,12 @@ class ScheduleWindow < ApplicationRecord
       if current_end > query_start_date && current_start < query_end_date
         results.unshift({
                           eventId: id,
-                          startTime: current_start.strftime('%Y-%m-%d %H:%M'),
-                          endTime: current_end.strftime('%Y-%m-%d %H:%M'),
+                          startTime: current_start,
+                          endTime: current_end,
                           isRecurring: true,
                           location: location,
-                          startDate: start_date,
-                          endDate: end_date
+                          startDate: start_date.to_datetime,
+                          endDate: end_date.to_datetime
                         })
       end
       current += (7 * (recurring.separation_count + 1)).days
