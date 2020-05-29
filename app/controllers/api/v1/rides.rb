@@ -105,7 +105,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if (ride.driver_id == nil && ride.status == "approved") || ride.driver_id == current_driver.id
           status 201
@@ -126,7 +126,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.driver_id.nil? && ride.status == "approved"
           ride.update(driver_id: current_driver.id, status: "scheduled")
@@ -149,7 +149,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "picking-up")
@@ -171,7 +171,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "picking-up" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "dropping-off")
@@ -193,7 +193,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "dropping-off" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "waiting")
@@ -215,7 +215,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "waiting" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "return-picking-up")
@@ -237,7 +237,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "return-picking-up" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "return-dropping-off")
@@ -259,7 +259,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+        return {}
         end
         if ["dropping-off", "return-dropping-off"].include?(ride.status) && ride.driver_id == current_driver.id
           ride.update_attributes(status: "completed", completed_at: Time.now)
@@ -283,7 +283,7 @@
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
           status 404
-          return
+          return {}
         end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id # && ride.pick_up_time >= Date.today + 1.week
           ride.update(driver_id: nil, status: "approved")
