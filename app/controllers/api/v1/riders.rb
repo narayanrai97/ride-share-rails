@@ -9,7 +9,7 @@ module Api
           riders = Rider.all
           if riders.all.empty?
             status 404
-            return ""
+            return {}
           else
             status 201
             render json: riders
@@ -22,7 +22,12 @@ module Api
           requires :id, type: String, desc: "ID of the rider"
         end
         get "riders/:id", root: :rider do
-          rider = Rider.find(permitted_params[:id])
+          begin
+            rider = Rider.find(permitted_params[:id])
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
           location_ids = LocationRelationship.where(driver_id: permitted_params[:id])
           locations = []
           location_ids.each do |id|
@@ -33,7 +38,7 @@ module Api
            render json: {"rider": rider, "locations": locations}
           else
            status 404
-           return ""
+           return {}
           end
         end
       end
