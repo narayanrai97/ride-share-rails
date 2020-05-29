@@ -26,7 +26,7 @@ module Api
             rider = Rider.find(permitted_params[:id])
           rescue ActiveRecord::RecordNotFound
             status 404
-            return
+            return {}
           end
           location_ids = LocationRelationship.where(driver_id: permitted_params[:id])
           locations = []
