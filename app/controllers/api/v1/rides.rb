@@ -84,11 +84,11 @@
               end
             else
               status 400
-              return { error: "bad requests" }
+              return { error: "bad request" }
             end
           else
             status 400
-            return { error: "bad requested" }
+            return { error: "bad request" }
           end
         end
         status 200

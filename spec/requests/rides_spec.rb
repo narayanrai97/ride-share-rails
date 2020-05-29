@@ -79,7 +79,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   #Accepts a ride for the current logged user
   it 'will return a 404 error when ride does not belong to driver ' do
     post "/api/v1/rides/#{6565}/accept",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-    # expect(response).to have_http_status(404)
+    expect(response).to have_http_status(404)
 
   end
 
