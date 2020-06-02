@@ -38,7 +38,7 @@ RSpec.describe Admin::DriversController, type: :controller do
           phone: '1234567891',
           email: 'wasemail@this.com',
           password: 'Pa$$word20',
-          password_confirmation: 'password'
+          password_confirmation: 'Pa$$word20'
         }
       }
 

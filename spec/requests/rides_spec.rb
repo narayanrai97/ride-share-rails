@@ -192,7 +192,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     #Returns rides based on status matching scheduled and driver accepted
     it 'will return all rides with status scheduled' do
-      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{status: "scheduled"}
+      get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{status: ["scheduled"]}
       parsed_json = JSON.parse(response.body)
       #should only have scheduled result, only should return one object
       expect(parsed_json['rides'][0]['status']).to eq("scheduled")

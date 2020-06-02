@@ -7,6 +7,8 @@ module Api
 
       helpers SessionHelpers
 
+
+
       # Method to Create a Driver using api calls
       desc 'Create a Driver'
       params do
@@ -31,7 +33,7 @@ module Api
         # Return bad request error code and error
         else
           status 400
-          return driver.errors.full_messages.join(";")
+          return {error: driver.errors.full_messages.to_sentence.join(";") }
         end
       end
 
@@ -43,24 +45,23 @@ module Api
         @driver = Driver.find_by_email(params[:email])
         if @driver.nil?
           status 404
-          return "Email not found"
+          return {}
         else
           @driver.send_reset_password_instructions
           status 201
-          return ""
+          return {}
         end
-
       end
 
-      desc 'Return a driver with a given id'
+      desc 'Return the current driver'
       params do
         # requires :id, type: String, desc: "ID of driver"
       end
       get 'drivers', root: :driver do
         driver = current_driver
         if driver.nil?
-          status 400
-          return ''
+          status 401
+          return {}
         else
           location_ids = LocationRelationship.where(driver_id: current_driver.id)
           locations = []
@@ -72,7 +73,7 @@ module Api
         return { "driver": driver, "location": locations }
       end
 
-      desc 'Update a driver with a given id'
+      desc 'Update current driver'
       params do
         requires :driver, type: Hash do
           optional :email, type: String
@@ -87,8 +88,8 @@ module Api
       put 'drivers' do
         driver = current_driver
         if driver.nil?
-          status 400
-          return ''
+          status 401
+          return {}
         else
           driver.attributes = params[:driver]
           if driver.save
@@ -96,27 +97,23 @@ module Api
             return driver
           else
             status 400
-            return driver.errors.messages
+            return { error: driver.errors.full_messages.to_sentence }
           end
         end
       end
 
-      desc 'Delete a driver with a given id'
+      desc 'Delete current driver'
       params do
       end
       delete 'drivers' do
         driver = current_driver
         if driver.nil?
-          status 400
-          return ''
+          status 401
+          return {}
         else
-          if !driver.destroy.nil?
-            status 200
-            return { success: true }
-          else
-            status 400
-            return ''
-          end
+          driver.destroy
+          status 200
+          return {}
         end
       end
 
@@ -128,6 +125,10 @@ module Api
         end
       end
       put 'drivers/password_change' do
+        if !current_driver
+          status 401
+          return {}
+        end
         password = params[:driver][:password]
         password_confirmation = params[:driver][:password_confirmation]
         if current_driver.admin_sign_up?
@@ -135,15 +136,30 @@ module Api
             current_driver.update_attributes(password: password, password_confirmation: password_confirmation, admin_sign_up: false) # Toggle admin_sign_up to false state on password change
             if current_driver.save
               status 201
-              return ""
+              return {}
             else
               status 400
-              return current_driver.errors.messages
+              return { error: current_driver.errors.full_messages.to_sentence }
             end
           else
-            status 404
-            return "Password confirmation doesn't match password"
+            status 400
+            return { error: "Password confirmation doesn't match password" }
           end
+        end
+      end
+
+      desc "Return driver's current default location"
+      get 'drivers/default_location' do
+        if !current_driver
+          status 401
+          return {}
+        end
+        if current_driver.location_relationships.find_by_default(true)
+          status 200
+          return current_driver.default_location
+        else
+          status 404
+          return {}
         end
       end
     end

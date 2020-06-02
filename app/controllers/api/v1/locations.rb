@@ -16,12 +16,13 @@ module Api
         requires :id, type: String, desc: 'ID of the location'
       end
       get 'locations/:id', root: :location do
-        location = Location.find(permitted_params[:id])
-        if !location.nil?
-          status 200
-        else
+        begin
+          location = Location.find(permitted_params[:id])
+        rescue ActiveRecord::RecordNotFound
           status 404
+          return {}
         end
+        status 200
         render location
       end
 
@@ -30,13 +31,13 @@ module Api
       params do
       end
       get 'locations' do
-        driver = current_driver
-        location_ids = LocationRelationship.where(driver_id: driver.id).select('location_id')
+        location_ids = LocationRelationship.where(driver_id: current_driver.id).select('location_id')
         locations = Location.where(id: location_ids)
         if !locations.nil?
           status 200
         else
           status 404
+          return {}
         end
         render locations
       end
@@ -59,9 +60,14 @@ module Api
       post 'locations' do
         location = Location.new
         location.attributes = params[:location]
-        location.location_must_be_found
+        location.location_must_be_found #Geocoder location search
+        if location.errors.any?
+          status 400
+          return {error: location.errors.full_messages.to_sentence }
+        end
+        save_location = location
         location = location.save_or_touch
-        if location
+        if !location.nil?
           location_relationship = current_driver.location_relationships.where(location_id: location.id).first
           location_relationship ||= current_driver.location_relationships.new(location_id: location.id)
 
@@ -73,10 +79,10 @@ module Api
           location_relationship.default = params[:default_location][:default]
           location_relationship.save
           status 201
-          location
+          return location
         else
           status 400
-          location.errors.messages
+          return {error: save_location.errors.full_messages.to_sentence }
         end
       end
 
@@ -97,25 +103,37 @@ module Api
       end
       put 'locations/:id' do
         # Find location to change
-        old_location = Location.find(params[:id])
-        if old_location.nil?
+        begin
+          old_location = Location.find(permitted_params[:id])
+        rescue ActiveRecord::RecordNotFound
           status 404
-          return ''
+          return {}
         end
-        driver = current_driver
-        unless driver_owns_location(driver, old_location)
+
+        unless driver_owns_location(current_driver, old_location)
           status 401
-          return ''
+          return {}
         end
         if LocationRelationship.where(location: permitted_params[:id]).count > 1
-          new_location = Location.new(params[:location])
-          save_success = new_location.save
-          unless save_success
+          new_location = Location.new(params[:location]) # We don't want to change the location address if someone else is using it already
+          new_location.location_must_be_found
+          if new_location.errors.any? # If Geolocation didn't find it
             status 400
-            return new_location.errors.messages
+            return {error: new_location.errors.full_messages.to_sentence }
           end
-          location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: driver.id).first
-          location_relationship.update(default: params[:default_location][:default], location: new_location)
+          save_success = new_location.save_or_touch
+          unless save_success  # If save_or_touch fails
+            status 400
+            return {errors: new_location.errors.full_messages.to_sentence }
+          end
+          location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: current_driver.id).first
+          if params[:default_location]
+            location_relationship.update(default: params[:default_location][:default], location: save_success) #updating l_r with his/her own location
+          else
+            location_relationship.update(location: save_success) #updating l_r with his/her own location
+          end
+          status 200
+          return save_success
         else
           # update old location
           update_success = if params[:location].present?
@@ -125,22 +143,23 @@ module Api
                            end
           if update_success
             location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
-            default_location_relationship = current_driver.location_relationships.where(default: true).first
+            if params[:default_location]
+              default_location_relationship = current_driver.location_relationships.where(default: true).first
 
-            if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location][:default]
-              default_location_relationship.update(default: false)
+              if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location] && params[:default_location][:default]
+                default_location_relationship.update(default: false)
+              end
+              location_relationship2.update(default: params[:default_location][:default])
             end
-            location_relationship2.update(default: params[:default_location][:default])
-
             old_location.reload
             render_value = old_location
             status 200
           else
-            render_value = old_location.errors.messages
+            render_value = {error: old_location.errors.full_messages.to_sentence }
             status 400
           end
           render_value
-          end
+        end
       end
 
       desc 'Delete an association between a driver and a location'
@@ -148,23 +167,24 @@ module Api
         requires :id, type: String, desc: 'ID of location'
       end
       delete 'locations/:id' do
-        driver = current_driver
-        old_location = Location.find(params[:id])
-        if old_location.nil?
+        begin
+          old_location = Location.find(permitted_params[:id])
+        rescue ActiveRecord::RecordNotFound
           status 404
-          return ''
+          return {}
         end
-        if driver_owns_location(driver, old_location)
+
+        if driver_owns_location(current_driver, old_location)
           LocationRelationship.find_by(location_id: permitted_params[:id],
-                                       driver_id: driver.id).destroy
+                                       driver_id: current_driver.id).destroy
           if LocationRelationship.where(location: permitted_params[:id]).count == 0
             old_location.destroy
-            status 200
           end
+          status 200
         else
           status 401
         end
-        return ''
+        return {}
       end
     end
   end

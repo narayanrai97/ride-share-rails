@@ -63,5 +63,13 @@
       $(".clickable-row").click(function() {
           window.location = $(this).data("href");
       });
+      const table = document.querySelector('.contains-times');
+      const timeCells = table.querySelectorAll('* .local-time');
+      for (let i = 0;i < timeCells.length; i += 1) {
+        let timeEntry = timeCells[i].innerHTML.split(" UTC")[0];
+        timeEntry = new moment.utc(timeEntry).local();
+        timeCells[i].innerHTML=timeEntry.format("LLL");
+      }
+
   });
 </script>

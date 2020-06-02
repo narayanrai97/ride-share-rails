@@ -48,7 +48,8 @@ gem 'kaminari'
 gem 'font-awesome-rails'
 
 gem 'pundit', '~> 2.0.1'
-gem 'flatpickr_rails'
+gem 'flatpickr'
+gem 'momentjs-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,7 +71,7 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  gem 'webdrivers', '~> 3.0'
+  gem 'webdrivers', '~> 4.0'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
 end

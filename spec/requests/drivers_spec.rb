@@ -38,9 +38,8 @@ RSpec.describe Api::V1::Drivers, type: :request do
        params: {driver: { email: "sample@sample.com", password: "Pa$$word20",
        first_name: "Bob", last_name: "Steve",
        phone: "3361234567", organization_id: organization.id,
-       radius: 50, is_active: true
+       radius: 50, is_active: true, admin_sign_up: true
        }}
-
        expect(response).to have_http_status(201)
        parsed_json = JSON.parse(response.body)
        expect(parsed_json['driver']['email']).to eq('sample@sample.com')
@@ -103,7 +102,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
 
     it "returns a 400 when driver does not have a token" do
        get "/api/v1/drivers", headers: { "ACCEPT" => "application/json"}
-       expect(response).to have_http_status(400)
+       expect(response).to have_http_status(401)
     end
 
     it 'logout driver and destorys token' do

@@ -1,7 +1,7 @@
 <h1 class="welcome">Welcome <span><%= current_user.email%></span>!</h1>
 <div class="container"><br>
 <h4> <strong> Rides That are Pending </strong></h4>
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover contains-times">
   <tr class="border-bot">
     <th scope="col">rider </th>
     <th scope="col">Driver </th>
@@ -13,7 +13,7 @@
 <tr class="clickable-row" data-href='<%= admin_ride_path(ride) %>'>
   <td class="no-wrap"><%= ride.rider&.full_name %> </td>
   <td class="no-wrap"><%= ride.driver&.full_name %> </td>
-  <td class="no-wrap"><%= ride.pick_up_time.strftime("%b %d, %Y" + " " + "%I:%M %p") %></td>
+  <td class="no-wrap local-time"><%= ride.pick_up_time %></td>
   <% if ride.status == 'pending' %>
   <td><%= link_to "Approve", approve_admin_ride_path(ride), method: :put  %> |
     <%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put  %>  </td>
@@ -71,5 +71,12 @@
       $(".clickable-row").click(function() {
           window.location = $(this).data("href");
       });
+      const table = document.querySelector('.contains-times');
+      const timeCells = table.querySelectorAll('* .local-time');
+      for (let i = 0;i < timeCells.length; i += 1) {
+        let timeEntry = timeCells[i].innerHTML.split(" UTC")[0];
+        timeEntry = new moment.utc(timeEntry).local();
+        timeCells[i].innerHTML=timeEntry.format("LLL");
+      }
   });
 </script>
