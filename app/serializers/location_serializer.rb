@@ -1,6 +1,8 @@
 class LocationSerializer < ActiveModel::Serializer
   ActiveModelSerializers.config.adapter = :json
-  attributes :id, :street, :city, :state, :zip, :notes
+  attributes :id, :street, :city, :state, :zip, :notes, :default_location
 
-  has_many :location_relationships
+  def default_location
+    LocationRelationship.find_by(location_id: object.id, driver_id: scope.current_driver).default
+  end
 end
