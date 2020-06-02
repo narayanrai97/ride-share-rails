@@ -39,7 +39,7 @@ module Api
           return vehicle
         else
           status 400
-          vehicle.errors.messages
+          return { error: vehicle.errors.full_messages.to_sentence }
         end
       end
 
@@ -49,15 +49,20 @@ module Api
            requires :id, type: Integer, desc: "ID of vehicle"
         end
         get "vehicle", root: :vehicle do
+          begin
             vehicle = current_driver.vehicles.find(params[:id])
-            if vehicle != nil
-            status 200
-            return vehicle
-            else
-            #Return Not authorized, not formatted
-            status 401
-            render "Not Authorized"
-            end
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
+          if vehicle != nil
+          status 200
+          return vehicle
+          else
+          #Return Not authorized, not formatted
+          status 401
+          return { error: "Not Authorized" }
+          end
         end
 
 
@@ -71,7 +76,7 @@ module Api
             render current_driver.vehicles
           else
             status 404
-            return ""
+            return {}
           end
         end
 
@@ -92,14 +97,19 @@ module Api
           end
         end
         put "vehicles" do
-          vehicle = current_driver.vehicles.find(params[:vehicle][:id])
+          begin
+            vehicle = current_driver.vehicles.find(params[:vehicle][:id])
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
           vehicle.attributes = (params[:vehicle])
           if vehicle.save
             status 201
             render vehicle
           else
-            status 404
-            render vehicle.errors
+            status 400
+            return { error: vehicle.errors.full_messages.to_sentence }
           end
         end
 
@@ -110,13 +120,18 @@ module Api
 
         end
         delete "vehicles" do
+          begin
             vehicle = current_driver.vehicles.find(params[:id])
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
             if vehicle.destroy
               status 200
               return { sucess:true }
             else
             status 400
-            render "could not delete vehicle"
+            return { error: "could not delete vehicle" }
             end
         end
     end
