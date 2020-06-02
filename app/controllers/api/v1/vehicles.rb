@@ -39,7 +39,7 @@ module Api
           return vehicle
         else
           status 400
-          vehicle.errors.messages
+          return { error: vehicle.errors.full_messages.to_sentence }
         end
       end
 
@@ -56,7 +56,7 @@ module Api
             else
             #Return Not authorized, not formatted
             status 401
-            render "Not Authorized"
+            return { error: "Not Authorized" }
             end
         end
 
@@ -71,7 +71,7 @@ module Api
             render current_driver.vehicles
           else
             status 404
-            return ""
+            return {}
           end
         end
 
@@ -99,7 +99,7 @@ module Api
             render vehicle
           else
             status 404
-            render vehicle.errors
+            return { error: vehicle.errors.full_messages.to_sentence }
           end
         end
 
@@ -116,7 +116,7 @@ module Api
               return { sucess:true }
             else
             status 400
-            render "could not delete vehicle"
+            return { error: "could not delete vehicle" }
             end
         end
     end
