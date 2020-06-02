@@ -108,7 +108,7 @@ module Api
             status 201
             render vehicle
           else
-            status 404
+            status 400
             return { error: vehicle.errors.full_messages.to_sentence }
           end
         end
