@@ -37,7 +37,7 @@ RSpec.describe Api::V1::Locations, type: :request do
       expect(parsed_json['location']['city']).to eq("Burlington")
       expect(parsed_json['location']['state']).to eq('NC')
       expect(parsed_json['location']['zip']).to eq( "27215")
-      expect(parsed_json['location']['location_relationships'][0]['driver_id']).to eq( driver.id)
+      expect(parsed_json['location']['default_location']).to eq(true)
   end
 
   # test should return a error message. Zip code must be numbers
