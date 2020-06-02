@@ -49,15 +49,20 @@ module Api
            requires :id, type: Integer, desc: "ID of vehicle"
         end
         get "vehicle", root: :vehicle do
+          begin
             vehicle = current_driver.vehicles.find(params[:id])
-            if vehicle != nil
-            status 200
-            return vehicle
-            else
-            #Return Not authorized, not formatted
-            status 401
-            return { error: "Not Authorized" }
-            end
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
+          if vehicle != nil
+          status 200
+          return vehicle
+          else
+          #Return Not authorized, not formatted
+          status 401
+          return { error: "Not Authorized" }
+          end
         end
 
 
@@ -92,7 +97,12 @@ module Api
           end
         end
         put "vehicles" do
-          vehicle = current_driver.vehicles.find(params[:vehicle][:id])
+          begin
+            vehicle = current_driver.vehicles.find(params[:vehicle][:id])
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
           vehicle.attributes = (params[:vehicle])
           if vehicle.save
             status 201
@@ -110,7 +120,12 @@ module Api
 
         end
         delete "vehicles" do
+          begin
             vehicle = current_driver.vehicles.find(params[:id])
+          rescue ActiveRecord::RecordNotFound
+            status 404
+            return {}
+          end
             if vehicle.destroy
               status 200
               return { sucess:true }
