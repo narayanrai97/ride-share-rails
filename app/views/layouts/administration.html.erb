@@ -27,7 +27,7 @@
             <%= link_to 'Drivers', admin_drivers_path, :class => 'nav-link active' %>
           </li>
           <li class="nav-item <%= request.path =~ /riders/ ? 'active' : ''  %>">
-            <%= link_to 'Riders', riders_path, :class => 'nav-link active' %>
+            <!-- < link_to 'Riders', riders_path, :class => 'nav-link active' %> -->
           </li>
           <li class="nav-item <%= request.path =~ /admin_ride/ ? 'active' : '' %>">
            <%= link_to 'Rides', admin_ride_index_path, :class => 'nav-link active' %>
