@@ -29,34 +29,34 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, controllers: {registrations: "organizations/registrations"}
-  devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
+  # devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
-  resources :riders do
-    collection do
-      get 'edit/:rider_id' => 'riders#edit'
-      post 'bulk_update'
-    end
-    member do
-      get 'locations'
-    end
-    put :activation
-  end
-
-  devise_scope :rider do
-    resource :riders_devise,
-             controller: 'devise/registrations',
-             as: :rider_registration do
-              get 'cancel'
-             end
-             get 'sort-down' => 'riders#sort_down'
-  end
+  # resources :riders do
+  #   collection do
+  #     get 'edit/:rider_id' => 'riders#edit'
+  #     post 'bulk_update'
+  #   end
+  #   member do
+  #     get 'locations'
+  #   end
+  #   put :activation
+  # end
+  #
+  # devise_scope :rider do
+  #   resource :riders_devise,
+  #            controller: 'devise/registrations',
+  #            as: :rider_registration do
+  #             get 'cancel'
+  #            end
+  #            get 'sort-down' => 'riders#sort_down'
+  # end
 
   mount Api::Base, at: "/"
   mount GrapeSwaggerRails::Engine, at: "/documentation"
 
   get 'welcome/index'
   get 'welcome/welcome'
-  get 'welcome/rider'
+  # get 'welcome/rider'
 
   get '/privacy_policy' => 'pages#privacy_policy'
   get '/terms_and_conditions' => 'pages#terms_and_conditions'
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :tokens, path_names: { new: 'new/:rider_id' }
+  # resources :tokens, path_names: { new: 'new/:rider_id' }
 
   root 'welcome#welcome'
 
@@ -89,10 +89,10 @@ Rails.application.routes.draw do
     root :to => "welcome#index"
   end
 
-  namespace :riders do
-    root :to => "welcome#rider"
-    resources :tokens
-
-  end
+  # namespace :riders do
+  #   root :to => "welcome#rider"
+  #   resources :tokens
+  #
+  # end
 
 end
