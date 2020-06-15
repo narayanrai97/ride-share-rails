@@ -20,7 +20,7 @@ RSpec.describe Api::V1::Locations, type: :request do
 
 
     #Created a Location based on the logged in user. Uses token previously created
-  context " Create function test " do
+  context " Post endpoint test " do
     it 'will create a location related to logged in user' do
       post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
         params: { location:
@@ -106,7 +106,7 @@ RSpec.describe Api::V1::Locations, type: :request do
     end
   end
 
-  context "Return error code 404 when location is nil" do
+  context "Get Endpoint test" do
 
     it 'will return locations of driver ' do
       get '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
@@ -144,7 +144,7 @@ RSpec.describe Api::V1::Locations, type: :request do
     end
   end
 
-  context " Update function Test" do
+  context " Update Endpoint Test" do
     it 'Updates a location with bad values should return an error message.' do
       put "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
         params: {location:{street:"2210 Front Street",
@@ -179,7 +179,7 @@ RSpec.describe Api::V1::Locations, type: :request do
     end
   end
 
-  context "Delete funition Test" do
+  context "Delete Endpoint Test" do
      #Delete Record based on id
     it 'will delete a location based on id passed ' do
 
