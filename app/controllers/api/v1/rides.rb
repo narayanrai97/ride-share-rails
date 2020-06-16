@@ -130,6 +130,7 @@
         end
         if ride.driver_id.nil? && ride.status == "approved"
           ride.update(driver_id: current_driver.id, status: "scheduled")
+          RiderMailer.ride_accepted_notifications(ride).deliver
           status 201
           render ride
         else
