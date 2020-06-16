@@ -33,7 +33,7 @@ module Api
         # Return bad request error code and error
         else
           status 400
-          return {error: driver.errors.full_messages.to_sentence.join(";") }
+          return {error: driver.errors.full_messages.to_sentence}
         end
       end
 
