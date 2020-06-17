@@ -29,7 +29,7 @@ RSpec.describe RidesController, type: :controller do
                                                   }
                             }
 
-    it "changes the ride count on ride create" do
+    xit "changes the ride count on ride create" do
 
       expect do                                # first expect
           test_response
