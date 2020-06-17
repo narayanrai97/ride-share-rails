@@ -11,7 +11,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
   let!(:ride){create(:ride, organization_id: rider.organization.id, rider_id: rider.id,
     start_location_id: location1.id, end_location_id: location1.id)}
 
-  scenario 'log in as rider' do
+  xit 'log in as rider' do
     visit root_path
     click_link 'Login as Rider'
     expect(page).to have_text 'Log in'
@@ -21,7 +21,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     expect(page).to have_text rider.first_name
   end
 
-  scenario 'attempt to login as rider with incorrect password' do
+  xit 'attempt to login as rider with incorrect password' do
     visit root_path
     click_link 'Login as Rider'
     expect(page).to have_text 'Log in'
@@ -31,7 +31,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     expect(page).to have_text 'Invalid Email or password.'
   end
 
-  scenario 'when rider selects list of rides, check that all rides are in org' do
+  xit 'when rider selects list of rides, check that all rides are in org' do
     visit root_path
     click_link 'Login as Rider'
     expect(page).to have_text 'Log in'
