@@ -19,10 +19,10 @@ module Api
         requires :vehicle, type: Hash do
           requires :car_make, type: String, desc: " Car Manufactor of vehicle"
           requires :car_model, type: String, desc: " Car Model of vehicle"
-          requires :car_year, type: Integer, desc: " Car Year of vehicle"
+          requires :car_year, type: String, desc: " Car Year of vehicle"
           requires :car_color, type: String, desc: " Car Color of vehicle"
           requires :car_plate, type: String, desc: " Car plate of vehicle"
-          requires :seat_belt_num, type: Integer, desc: " Car plate of vehicle"
+          requires :seat_belt_num, type: String, desc: " Car plate of vehicle"
           requires :insurance_provider, type: String, desc: " Insurance Provider for vehicle"
           requires :insurance_start, type: Date, desc: " Insurance start date"
           requires :insurance_stop, type: Date, desc: " Insurance start date"
