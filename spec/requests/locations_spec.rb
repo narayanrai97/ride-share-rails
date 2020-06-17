@@ -13,9 +13,12 @@ RSpec.describe Api::V1::Locations, type: :request do
   #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
   let!(:location2){FactoryBot.create(:location, street: "1202 W Dublin St", city: "Chandler", state: "Az", zip: "85224")}
+  let!(:location3){FactoryBot.create(:location, street: "1900 Forest Valley Rd #1998", city: "Greensboro", state: "NC", zip: "27410")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true)}
   let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id, default: false)}
   let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id, default: true)}
+  let!(:locationrelationship4){LocationRelationship.create(driver_id: driver2.id, location_id: location3.id, default: true)}
+
 
 
 
@@ -154,8 +157,49 @@ RSpec.describe Api::V1::Locations, type: :request do
 
         expect(response).to have_http_status(400)
         #uncomment these to see the error messages
-        # parsed_json = JSON.parse(response.body)
-        # puts parsed_json
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
+    end
+
+    it 'Returns error code when location can not be found.' do
+      put "/api/v1/locations/#{999999}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+        params: {location:{street:"21 Frank Ave",
+        city:"Burlington",
+        state:"NC",
+        zip: "27215!"}}
+
+        expect(response).to have_http_status(404)
+        #uncomment these to see the error messages
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
+    end
+
+    it 'Returns error code when driver updates a location that doesnt belong to that driver.' do
+      put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+        params: {location:{street:"20 Jone lane",
+        city:"Burlington",
+        state:"NC",
+        zip: "27215!"}}
+        expect(response).to have_http_status(401)
+    end
+
+    it 'Return error code when loction belongs to driver but updated with location can not be found' do
+      location_relationship = LocationRelationship.where(location: location2.id).first
+      # location_relationship.update(default: params[:default_location][:default], location: new_location)
+        put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+        params: { location: { street:"256 Frank James",
+                              city:"Durham",
+                              state:"NY",
+                              zip: "27701"
+                            },
+          location_relationship: {
+            default: true,
+            location: location.id
+          }}
+        expect(response).to have_http_status(400)
+        #uncomment these to see the error messages
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
     end
 
     it 'returns a new address when a location is shared by two drivers but update by one driver' do
@@ -168,14 +212,13 @@ RSpec.describe Api::V1::Locations, type: :request do
                               zip: "27701"
                             },
           location_relationship: {
-            default: true,
-            location: location.id
+            default: false,
+            location: location2.id
           }}
-
         expect(response).to have_http_status(200)
         #uncomment these to see the error messages
-        # parsed_json = JSON.parse(response.body)
-        # puts parsed_json
+        parsed_json = JSON.parse(response.body)
+        puts parsed_json
     end
   end
 
@@ -184,14 +227,14 @@ RSpec.describe Api::V1::Locations, type: :request do
     it 'will delete a location based on id passed ' do
 
       delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
-        expect(Location.count).to eq(1)
+        expect(Location.count).to eq(2)
         expect(response).to have_http_status(200)
     end
 
     it 'Return a error code of 401 when location does not belong to a driver ' do
       delete "/api/v1/locations/#{location.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678"}
         expect(response).to have_http_status(401)
-        expect(Location.count).to eq(2)
+        expect(Location.count).to eq(3)
     end
 
     it 'will return a error of code 404 when location is nil ' do

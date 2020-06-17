@@ -128,10 +128,12 @@ module Api
           end
           location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: current_driver.id).first
           if params[:default_location]
+            byebug
             location_relationship.update(default: params[:default_location][:default], location: save_success) #updating l_r with his/her own location
           else
             location_relationship.update(location: save_success) #updating l_r with his/her own location
           end
+          byebug
           status 200
           return save_success
         else
