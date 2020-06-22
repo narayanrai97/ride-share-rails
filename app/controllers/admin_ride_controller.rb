@@ -67,14 +67,16 @@ class AdminRideController < ApplicationController
                      rider_id: rider.id,
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
-                     round_trip: ride_params[:round_trip])
+                     round_trip: ride_params[:round_trip],
+                     notes: ride_params[:notes])
 
     if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                               rider_id: rider.id,
                               pick_up_time: ride_params[:return_pick_up_time],
                               reason: ride_params[:reason],
-                              round_trip: false)
+                              round_trip: false,
+                              notes: ride_params[:notes])
     end
     if !return_pick_up_time_not_in_past
       return
@@ -157,6 +159,7 @@ class AdminRideController < ApplicationController
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
       round_trip: ride_params[:round_trip],
+      notes: ride_params[:notes],
       start_location: @start_location,
       end_location: @end_location
     )
@@ -209,10 +212,10 @@ class AdminRideController < ApplicationController
   private
 
   def ride_params
-    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location,
-                                 :save_end_location, :organization_rider_start_location, :start_street, :start_city,
-                                 :start_state, :start_zip, :organization_rider_end_location,
-                                 :end_street, :end_city, :end_state, :end_zip, :reason, :status, :q, :round_trip, :return_pick_up_time)
+    params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
+                                 :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
+                                 :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :reason,
+                                 :status, :q, :round_trip, :return_pick_up_time, :notes)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

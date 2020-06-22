@@ -42,6 +42,11 @@
     <%= @ride.round_trip %>
   </p>
 
+  <p>
+    <strong>Notes: </strong>
+    <%= @ride.notes %>
+  </p>
+
   <% if @ride.return %>
   <p class="contains-time">
     <strong> Return trip pick up time:</strong>
@@ -54,7 +59,7 @@
 
 </div>
 <script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", (e) => {    
+  document.addEventListener("DOMContentLoaded", (e) => {
     const parents = document.querySelectorAll('.contains-time');
     for (let j = 0; j< parents.length; j += 1) {
       const timeCell = parents[j].querySelector('* .local-time');
