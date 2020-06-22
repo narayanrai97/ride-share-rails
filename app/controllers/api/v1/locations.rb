@@ -132,12 +132,12 @@ module Api
             pervous_defaults.each do |check|
               check.update(default: false)
             end
-            byebug
+            # byebug
             location_relationship.update(default: params[:location_relationship][:default], location: save_success) #updating l_r with his/her own location
           else
             location_relationship.update(default: params[:location_relationship][:default], location: save_success, ) #updating l_r with his/her own location
           end
-          byebug
+          # byebug
           status 200
           return save_success
         else

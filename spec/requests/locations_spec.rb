@@ -16,7 +16,7 @@ RSpec.describe Api::V1::Locations, type: :request do
   let!(:location3){FactoryBot.create(:location, street: "1900 Forest Valley Rd #1998", city: "Greensboro", state: "NC", zip: "27410")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true)}
   let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id, default: false)}
-  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id, default: true)}
+  let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id, default: false)}
   let!(:locationrelationship4){LocationRelationship.create(driver_id: driver2.id, location_id: location3.id, default: true)}
 
 
@@ -193,7 +193,7 @@ RSpec.describe Api::V1::Locations, type: :request do
                               zip: "27701"
                             },
           location_relationship: {
-            default: true,
+            default: false,
             location: location.id
           }}
         expect(response).to have_http_status(400)
@@ -219,8 +219,28 @@ RSpec.describe Api::V1::Locations, type: :request do
         #uncomment these to see the error messages
         parsed_json = JSON.parse(response.body)
         puts parsed_json
-    end
   end
+
+  it 'Check driver previous default and changes it to the drivers input' do
+    location_relationship = LocationRelationship.where(location: location2.id).last
+    # location_relationship.update(default: params[:default_location][:default], location: new_location)
+      put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: { location: { street:"1052 Canal St",
+                            city:"Durham",
+                            state:"NC",
+                            zip: "27701"
+                          },
+        location_relationship: {
+          default: true,
+          location: location2.id
+        }}
+      expect(response).to have_http_status(200)
+      #uncomment these to see the error messages
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+  end
+end
+
 
   context "Delete Endpoint Test" do
      #Delete Record based on id
