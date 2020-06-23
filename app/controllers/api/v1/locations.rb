@@ -132,29 +132,31 @@ module Api
             pervous_defaults.each do |check|
               check.update(default: false)
             end
-            # byebug
             location_relationship.update(default: params[:location_relationship][:default], location: save_success) #updating l_r with his/her own location
           else
             location_relationship.update(default: params[:location_relationship][:default], location: save_success, ) #updating l_r with his/her own location
           end
-          # byebug
           status 200
           return save_success
         else
+          byebug
           # update old location
           update_success = if params[:location].present?
                              old_location.update(params[:location])
                            else
                              true
                            end
+                           # byebug
           if update_success
             location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
-            if params[:default_location]
+            if params[:location_relationship][:default]
+              byebug
               default_location_relationship = current_driver.location_relationships.where(default: true).first
 
               if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location] && params[:default_location][:default]
                 default_location_relationship.update(default: false)
               end
+              byebug
               location_relationship2.update(default: params[:default_location][:default])
             end
             old_location.reload

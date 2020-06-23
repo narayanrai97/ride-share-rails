@@ -183,7 +183,7 @@ RSpec.describe Api::V1::Locations, type: :request do
         expect(response).to have_http_status(401)
     end
 
-    it 'Return error code when loction belongs to driver but updated with location can not be found' do
+    it 'Return error code when loction belongs to driver but updated with a location that non existing' do
       location_relationship = LocationRelationship.where(location: location2.id).first
       # location_relationship.update(default: params[:default_location][:default], location: new_location)
         put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
@@ -225,16 +225,53 @@ RSpec.describe Api::V1::Locations, type: :request do
     location_relationship = LocationRelationship.where(location: location2.id).last
     # location_relationship.update(default: params[:default_location][:default], location: new_location)
       put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
-      params: { location: { street:"1052 Canal St",
-                            city:"Durham",
+      params: { location: { street:"2645 Lawndale Dr",
+                            city:"Greensboro",
                             state:"NC",
-                            zip: "27701"
+                            zip: "27408"
                           },
         location_relationship: {
           default: true,
           location: location2.id
         }}
       expect(response).to have_http_status(200)
+      #uncomment these to see the error messages
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+  end
+
+  it 'Updates a location when there no l_r' do
+    # LocationRelationship.find_by(driver_id: 2).destroy
+    location_relationship = LocationRelationship.where(location: location2.id).last
+    # location_relationship.update(default: params[:default_location][:default], location: new_location)
+      put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: { location: { street:"2645 Lawndale Dr",
+                            city:"Greensboro",
+                            state:"NC",
+                            zip: "27408"
+                          },
+        location_relationship: {
+          default: true,
+          location: location2.id
+        }}
+      # expect(response).to have_http_status(200)
+      #uncomment these to see the error messages
+      parsed_json = JSON.parse(response.body)
+      puts parsed_json
+  end
+
+  it 'Updates a true' do
+    # LocationRelationship.find_by(driver_id: 2).destroy
+    # location_relationship = LocationRelationship.where(location: location3.id).last
+    # location_relationship.update(default: params[:default_location][:default], location: new_location)
+      put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: { location: {
+                          },
+        location_relationship: {
+          default: true,
+          location: location2.id
+        }}
+      # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       parsed_json = JSON.parse(response.body)
       puts parsed_json
