@@ -149,7 +149,7 @@ module Api
             location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
             if params[:location_relationship][:default]
               default_location_relationship = current_driver.location_relationships.where(default: true).first
-              if default_location_relationship != location_relationship2 &&  params[:location_relationship] && params[:location_relationship][:default]
+              if default_location_relationship && default_location_relationship != location_relationship2 &&  params[:location_relationship] && params[:location_relationship][:default]
                 default_location_relationship.update(default: false)
               end
               location_relationship2.update(default: params[:location_relationship][:default])
