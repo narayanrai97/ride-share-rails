@@ -157,7 +157,7 @@ module Api
                 default_location_relationship.update(default: false)
               end
               byebug
-              location_relationship2.update(default: params[:default_location][:default])
+              location_relationship2.update(default: params[:location_relationship][:default])
             end
             old_location.reload
             render_value = old_location
