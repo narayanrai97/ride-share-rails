@@ -71,7 +71,6 @@ RSpec.describe Api::V1::Locations, type: :request do
         expect(parsed_json['location']['state']).to eq('NC')
         expect(parsed_json['location']['zip']).to eq( "27408")
         expect(parsed_json['location']['default_location']).to eq(false)
-        puts parsed_json
     end
 
     it "Return 400 when default_location is missing" do
@@ -81,8 +80,9 @@ RSpec.describe Api::V1::Locations, type: :request do
         state: "NC",
         zip: "27408"}}
         expect(response).to have_http_status(400)
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #uncomment to see the error
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
 
     it "Return 400 when location is unfound" do
@@ -95,8 +95,9 @@ RSpec.describe Api::V1::Locations, type: :request do
           default: false
         }}
         expect(response).to have_http_status(400)
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #uncomment to see the error
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
 
     it "Return 400 when location is nil" do
@@ -106,8 +107,9 @@ RSpec.describe Api::V1::Locations, type: :request do
           default: false
         }}
         expect(response).to have_http_status(400)
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #uncomment to see the error
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
   end
 
@@ -144,8 +146,9 @@ RSpec.describe Api::V1::Locations, type: :request do
       get "/api/v1/locations/#{99999}", headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
         parsed_json = JSON.parse(response.body)
         expect(response).to have_http_status(404)
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        #uncomment to see the error
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
   end
 
@@ -159,8 +162,8 @@ RSpec.describe Api::V1::Locations, type: :request do
 
         expect(response).to have_http_status(400)
         #uncomment these to see the error messages
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
 
     it 'Returns error code when location can not be found.' do
@@ -172,8 +175,8 @@ RSpec.describe Api::V1::Locations, type: :request do
 
         expect(response).to have_http_status(404)
         #uncomment these to see the error messages
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
 
     it 'Returns error code when driver updates a location that doesnt belong to that driver.' do
@@ -200,8 +203,8 @@ RSpec.describe Api::V1::Locations, type: :request do
           }}
         expect(response).to have_http_status(400)
         #uncomment these to see the error messages
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
     end
 
     it 'returns a new address when a location is shared by two drivers but update by one driver' do
@@ -219,8 +222,8 @@ RSpec.describe Api::V1::Locations, type: :request do
           }}
         expect(response).to have_http_status(200)
         #uncomment these to see the error messages
-        parsed_json = JSON.parse(response.body)
-        puts parsed_json
+        # parsed_json = JSON.parse(response.body)
+        # puts parsed_json
   end
 
   it 'Check driver previous default and changes it to the drivers input' do
@@ -238,8 +241,8 @@ RSpec.describe Api::V1::Locations, type: :request do
         }}
       expect(response).to have_http_status(200)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
 
   it 'Updates a default to true when location_relationship default is false' do
@@ -257,8 +260,8 @@ RSpec.describe Api::V1::Locations, type: :request do
         }}
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
 
   it 'Turns of pervous location default and set a new one' do
@@ -277,8 +280,8 @@ RSpec.describe Api::V1::Locations, type: :request do
         }}
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
 
   it 'Updates locationrelationship there no location send, default back to old location' do
@@ -291,8 +294,8 @@ RSpec.describe Api::V1::Locations, type: :request do
         }}
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
-      parsed_json = JSON.parse(response.body)
-      puts parsed_json
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
   end
 end
 
