@@ -11,9 +11,9 @@ class Users::SessionsController < Devise::SessionsController
    #POST /resource/sign_in
    def create
      super
-     if rider_signed_in?
-       sign_out current_rider
-     end
+     # if rider_signed_in?
+     #   sign_out current_rider
+     # end
    end
 
   # DELETE /resource/sign_out

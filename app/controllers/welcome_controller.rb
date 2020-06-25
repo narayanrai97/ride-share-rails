@@ -4,7 +4,7 @@ class WelcomeController < ApplicationController
   def welcome
     if (current_user)
       redirect_to welcome_index_path
-    # elsif (current_rider)
+    # else
     #   redirect_to welcome_rider_path
     end
   end

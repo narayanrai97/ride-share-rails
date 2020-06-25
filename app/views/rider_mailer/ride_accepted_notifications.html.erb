@@ -1,0 +1,13 @@
+<p>Congratulations <%= @rider.first_name %>,</p>
+
+<p>Your ride scheduled for <%= @ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
+  has been accepted.</p>
+
+<p>
+  <b>Volunteer driver:</b> <%= @driver.full_name %><br/>
+  <b>Phone:</b> <%= number_to_phone(@driver.phone) %>
+</p><br/>
+
+<p>
+  - <%= Organization.find(@rider.organization_id).name %>
+</p>

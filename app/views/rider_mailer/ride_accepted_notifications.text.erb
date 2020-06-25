@@ -1,0 +1,9 @@
+Congratulations <%= @rider.first_name %>,
+
+Your ride scheduled for <%= @ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
+has been accepted.
+
+Volunteer driver: <%= @driver.full_name %>
+Phone: <%= number_to_phone(@driver.phone) %>
+
+- <%= Organization.find(@rider.organization_id).name %>

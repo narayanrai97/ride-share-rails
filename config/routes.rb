@@ -31,16 +31,16 @@ Rails.application.routes.draw do
   resources :organizations, controllers: {registrations: "organizations/registrations"}
   # devise_for :riders, :skip => [:registrations],  path: 'riders', controllers: {sessions: "riders/sessions"}
 
-  # resources :riders do
-  #   collection do
-  #     get 'edit/:rider_id' => 'riders#edit'
-  #     post 'bulk_update'
-  #   end
-  #   member do
-  #     get 'locations'
-  #   end
-  #   put :activation
-  # end
+  resources :riders do
+    collection do
+      get 'edit/:rider_id' => 'riders#edit'
+      post 'bulk_update'
+    end
+    member do
+      get 'locations'
+    end
+    put :activation
+  end
   #
   # devise_scope :rider do
   #   resource :riders_devise,
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # resources :tokens, path_names: { new: 'new/:rider_id' }
+  resources :tokens, path_names: { new: 'new/:rider_id' }
 
   root 'welcome#welcome'
 
