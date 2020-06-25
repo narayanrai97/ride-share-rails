@@ -147,12 +147,12 @@ module Api
                            end
           if update_success
             location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
-            if params[:location_relationship][:default]
+            if  params[:default_location]
               default_location_relationship = current_driver.location_relationships.where(default: true).first
-              if default_location_relationship && default_location_relationship != location_relationship2 &&  params[:location_relationship] && params[:location_relationship][:default]
+              if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location] && params[:default_location][:default]
                 default_location_relationship.update(default: false)
               end
-              location_relationship2.update(default: params[:location_relationship][:default])
+              location_relationship2.update(default: params[:default_location][:default])
             end
             old_location.reload
             render_value = old_location
