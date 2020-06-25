@@ -13,8 +13,10 @@ RSpec.describe Api::V1::Locations, type: :request do
   #To test locations I needed to create some locations and also some relationships
   let!(:location){FactoryBot.create(:location)}
   let!(:location2){FactoryBot.create(:location, street: "1202 W Dublin St", city: "Chandler", state: "Az", zip: "85224")}
-  let!(:location3){FactoryBot.create(:location, street: "1900 Forest Valley Rd #1998", city: "Greensboro", state: "NC", zip: "27410")}
-  let!(:location4){FactoryBot.create(:location, street: "4050 Valley Pike", city: "Winchester", state: "VA", zip: "22602")}
+  let!(:location3){FactoryBot.create(:location, street: "1900 Forest Valley Rd #1998", city: "Greensboro", state: "NC",
+     zip: "27410", notes: "Disable ramp is at the side door.")}
+  let!(:location4){FactoryBot.create(:location, street: "4050 Valley Pike", city: "Winchester", state: "VA",
+    zip: "22602", notes: "Doctor office park in the back")}
   let!(:locationrelationship){LocationRelationship.create(driver_id: driver.id, location_id: location.id, default: true)}
   let!(:locationrelationship2){LocationRelationship.create(driver_id: driver.id, location_id: location2.id, default: false)}
   let!(:locationrelationship3){LocationRelationship.create(driver_id: driver2.id, location_id: location2.id, default: false)}
@@ -26,13 +28,14 @@ RSpec.describe Api::V1::Locations, type: :request do
 
     #Created a Location based on the logged in user. Uses token previously created
   context " Post endpoint test " do
-    it 'will create a location related to logged in user' do
+    it 'will create a location from current_driver' do
       post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
         params: { location:
                   { street:"200 W Front St",
                     city:"Burlington",
                     state:"NC",
-                    zip: "27215"},
+                    zip: "27215",
+                    notes: "Apple Store use the side door"},
                   default_location: {
                     default: true
                     }}
@@ -246,9 +249,6 @@ RSpec.describe Api::V1::Locations, type: :request do
   end
 
   it 'Updates a default to true when location_relationship default is false' do
-    # LocationRelationship.find_by(driver_id: 2).destroy
-    # location_relationship = LocationRelationship.where(location: location2.id).last
-    # location_relationship.update(default: params[:default_location][:default], location: new_location)
       put "/api/v1/locations/#{location4.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: { street:"2645 Lawndale Dr",
                             city:"Greensboro",
@@ -265,14 +265,29 @@ RSpec.describe Api::V1::Locations, type: :request do
   end
 
   it 'Turns of pervous location default and set a new one' do
-    # LocationRelationship.find_by(driver_id: 2).destroy
-    # location_relationship = LocationRelationship.where(location: location3.id).last
-    # location_relationship.update(default: params[:default_location][:default], location: new_location)
       put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: { street:"2645 Lawndale Dr",
                             city:"Greensboro",
                             state:"NC",
-                            zip: "27408"
+                            zip: "27408",
+                          },
+        location_relationship: {
+          default: true,
+          location: location3.id
+        }}
+      # expect(response).to have_http_status(200)
+      #uncomment these to see the error messages
+      # parsed_json = JSON.parse(response.body)
+      # puts parsed_json
+  end
+
+  it 'Updates note field for location when location changes' do
+      put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
+      params: { location: { street:"2645 Lawndale Dr",
+                            city:"Greensboro",
+                            state:"NC",
+                            zip: "27408",
+                            notes: "Doctor office, Ramp changed to back door",
                           },
         location_relationship: {
           default: true,
