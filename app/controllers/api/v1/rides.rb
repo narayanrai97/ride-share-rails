@@ -128,14 +128,16 @@
           status 404
           return {}
         end
-        if ride.driver_id.nil? && ride.status == "approved"
-          ride.update(driver_id: current_driver.id, status: "scheduled")
+
+        unless ride.driver_id.nil? && ride.status == "approved"
+          status 401
+          return { error: 'Not Authorized'}
+        end
+
+        if ride.update(driver_id: current_driver.id, status: "scheduled")
           RiderMailer.ride_accepted_notifications(ride).deliver
           status 201
           render ride
-        else
-          status 401
-          return { error: "Not Authorized" }
         end
       end
 

@@ -1,13 +1,24 @@
 <p>Congratulations <%= @rider.first_name %>,</p>
 
-<p>Your ride scheduled for <%= @ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
+<p>Your ride scheduled for <b><%= @ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %></b>
   has been accepted.</p>
 
-<p>
+<p style="border: solid 2px gray; padding: 5px;">
   <b>Volunteer driver:</b> <%= @driver.full_name %><br/>
-  <b>Phone:</b> <%= number_to_phone(@driver.phone) %>
-</p><br/>
+  <b>Phone:</b> <%= number_to_phone(@driver.phone) %><br/>
+  <b>Vehicle:</b>
+    <% if @driver.vehicles.count == 1 %>
+      <%= @driver.vehicles.first.car_year %>
+      <%= @driver.vehicles.first.car_make %>
+      <%= @driver.vehicles.first.car_model %>
+      (<%= @driver.vehicles.first.car_color %>)
+    <% else %>
+      No vehicle information at the moment!
+    <% end %>
+</p><br/><br/>
+
+
 
 <p>
-  - <%= Organization.find(@rider.organization_id).name %>
+  - <%= @rider.organization.name %>
 </p>

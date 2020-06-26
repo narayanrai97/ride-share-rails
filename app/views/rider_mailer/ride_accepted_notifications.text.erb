@@ -5,5 +5,16 @@ has been accepted.
 
 Volunteer driver: <%= @driver.full_name %>
 Phone: <%= number_to_phone(@driver.phone) %>
+Vehicle:
+  <% if @driver.vehicles.count == 1 %>
+    <%= @driver.vehicles.first.car_year %>
+    <%= @driver.vehicles.first.car_make %>
+    <%= @driver.vehicles.first.car_model %>
+    (<%= @driver.vehicles.first.car_color %>)
+  <% else %>
+    No vehicle information at the moment!
+  <% end %>
 
-- <%= Organization.find(@rider.organization_id).name %>
+  
+
+- <%= @rider.organization.name %>
