@@ -53,9 +53,7 @@ module Api
           requires :zip, type: String
           optional :notes, type: String
         end
-        requires :default_location, type: Hash do
-          optional :default, type: Boolean, default: false
-        end
+        optional :default_location, type: Boolean
       end
       post 'locations' do
         location = Location.new
@@ -70,13 +68,16 @@ module Api
         if !location.nil?
           location_relationship = current_driver.location_relationships.where(location_id: location.id).first
           location_relationship ||= current_driver.location_relationships.new(location_id: location.id)
-
           default_location = current_driver.location_relationships.where(default: true).first
-          if default_location && default_location != location_relationship && params[:default_location][:default]
+          if default_location && default_location != location_relationship && params[:default_location]
             default_location.default = false
             default_location.save
           end
-          location_relationship.default = params[:default_location][:default]
+          if !params[:default_location].nil?
+            location_relationship.default = params[:default_location]
+          else
+            location_relationship.default = false
+          end
           location_relationship.save
           status 201
           return location
@@ -97,9 +98,7 @@ module Api
           optional :zip, type: String
           optional :notes, type: String
         end
-        optional :default_location, type: Hash do
-          optional :default, type: Boolean, default: false
-        end
+        optional :default_location, type: Boolean
       end
       put 'locations/:id' do
         # Find location to change
@@ -114,6 +113,7 @@ module Api
           status 401
           return {}
         end
+
         if LocationRelationship.where(location: permitted_params[:id]).count > 1
           new_location = Location.new(params[:location]) # We don't want to change the location address if someone else is using it already
           new_location.location_must_be_found
@@ -127,8 +127,12 @@ module Api
             return {errors: new_location.errors.full_messages.to_sentence }
           end
           location_relationship = LocationRelationship.where(location: permitted_params[:id], driver_id: current_driver.id).first
+          pervous_defaults = LocationRelationship.where(driver_id: current_driver.id, default: true)
           if params[:default_location]
-            location_relationship.update(default: params[:default_location][:default], location: save_success) #updating l_r with his/her own location
+            pervous_defaults.each do |check|
+              check.update(default: false)
+            end
+            location_relationship.update(default: params[:default_location], location: save_success) #updating l_r with his/her own location
           else
             location_relationship.update(location: save_success) #updating l_r with his/her own location
           end
@@ -143,13 +147,12 @@ module Api
                            end
           if update_success
             location_relationship2 = current_driver.location_relationships.find_by(location: old_location)
-            if params[:default_location]
+            if  params[:default_location]
               default_location_relationship = current_driver.location_relationships.where(default: true).first
-
-              if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location] && params[:default_location][:default]
+              if default_location_relationship && default_location_relationship != location_relationship2 && params[:default_location] && params[:default_location]
                 default_location_relationship.update(default: false)
               end
-              location_relationship2.update(default: params[:default_location][:default])
+              location_relationship2.update(default: params[:default_location])
             end
             old_location.reload
             render_value = old_location
