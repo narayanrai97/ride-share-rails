@@ -56,7 +56,6 @@ module Api
         optional :default_location, type: Boolean
       end
       post 'locations' do
-        byebug
         location = Location.new
         location.attributes = params[:location]
         location.location_must_be_found #Geocoder location search
@@ -69,13 +68,16 @@ module Api
         if !location.nil?
           location_relationship = current_driver.location_relationships.where(location_id: location.id).first
           location_relationship ||= current_driver.location_relationships.new(location_id: location.id)
-
           default_location = current_driver.location_relationships.where(default: true).first
           if default_location && default_location != location_relationship && params[:default_location]
             default_location.default = false
             default_location.save
           end
-          location_relationship.default = params[:default_location]
+          if !params[:default_location].nil?
+            location_relationship.default = params[:default_location]
+          else
+            location_relationship.default = false
+          end
           location_relationship.save
           status 201
           return location
@@ -111,6 +113,7 @@ module Api
           status 401
           return {}
         end
+
         if LocationRelationship.where(location: permitted_params[:id]).count > 1
           new_location = Location.new(params[:location]) # We don't want to change the location address if someone else is using it already
           new_location.location_must_be_found

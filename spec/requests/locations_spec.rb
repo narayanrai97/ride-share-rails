@@ -36,9 +36,8 @@ RSpec.describe Api::V1::Locations, type: :request do
                     state:"NC",
                     zip: "27215",
                     notes: "Apple Store use the side door"},
-                  default_location: {
-                    default: true
-                    }}
+                  default_location:  true
+                    }
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
         expect(parsed_json['location']['street']).to eq('200 W Front St')
@@ -66,26 +65,28 @@ RSpec.describe Api::V1::Locations, type: :request do
         zip: "27408"},
         default_location: false
         }
-        # expect(response).to have_http_status(201)
+        expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-        puts parsed_json
-        # expect(parsed_json['location']['street']).to eq('3202 W Friendly Ave')
-        # expect(parsed_json['location']['city']).to eq("Greensboro")
-        # expect(parsed_json['location']['state']).to eq('NC')
-        # expect(parsed_json['location']['zip']).to eq( "27408")
-        # expect(parsed_json['location']['default_location']).to eq(false)
+        expect(parsed_json['location']['street']).to eq('3202 W Friendly Ave')
+        expect(parsed_json['location']['city']).to eq("Greensboro")
+        expect(parsed_json['location']['state']).to eq('NC')
+        expect(parsed_json['location']['zip']).to eq( "27408")
+        expect(parsed_json['location']['default_location']).to eq(false)
     end
 
-    it "Return 400 when default_location is missing" do
+    it "set default to false if it is not included in params" do
       post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
       params: {location:{ street: "3202 W Friendly Ave",
         city: "Greensboro",
         state: "NC",
         zip: "27408"}}
-        expect(response).to have_http_status(400)
-        #uncomment to see the error
-        # parsed_json = JSON.parse(response.body)
-        # puts parsed_json
+        expect(response).to have_http_status(201)
+        parsed_json = JSON.parse(response.body)
+        expect(parsed_json['location']['street']).to eq('3202 W Friendly Ave')
+        expect(parsed_json['location']['city']).to eq("Greensboro")
+        expect(parsed_json['location']['state']).to eq('NC')
+        expect(parsed_json['location']['zip']).to eq( "27408")
+        expect(parsed_json['location']['default_location']).to eq(false)
     end
 
     it "Return 400 when location is unfound" do
@@ -94,9 +95,8 @@ RSpec.describe Api::V1::Locations, type: :request do
         city: "Greensboro",
         state: "NY",
         zip: "27408"},
-        default_location: {
-          default: false
-        }}
+        default_location: false
+        }
         expect(response).to have_http_status(400)
         #uncomment to see the error
         # parsed_json = JSON.parse(response.body)
@@ -106,9 +106,8 @@ RSpec.describe Api::V1::Locations, type: :request do
     it "Return 400 when location is nil" do
       post '/api/v1/locations', headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
       params: {location: {},
-        default_location: {
-          default: false
-        }}
+        default_location: false
+        }
         expect(response).to have_http_status(400)
         #uncomment to see the error
         # parsed_json = JSON.parse(response.body)
@@ -191,19 +190,15 @@ RSpec.describe Api::V1::Locations, type: :request do
         expect(response).to have_http_status(401)
     end
 
-    it 'Return error code when loction belongs to driver but updated with a location that non existing' do
-      location_relationship = LocationRelationship.where(location: location2.id).first
-      # location_relationship.update(default: params[:default_location][:default], location: new_location)
+    it 'Return error code when loction belongs to driver, but updated with a location that non existing' do
         put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
         params: { location: { street:"256 Frank James",
                               city:"Durham",
                               state:"NY",
                               zip: "27701"
                             },
-          location_relationship: {
-            default: false,
-            location: location.id
-          }}
+          default_location: false,
+          }
         expect(response).to have_http_status(400)
         #uncomment these to see the error messages
         # parsed_json = JSON.parse(response.body)
@@ -211,37 +206,29 @@ RSpec.describe Api::V1::Locations, type: :request do
     end
 
     it 'returns a new address when a location is shared by two drivers but update by one driver' do
-      location_relationship = LocationRelationship.where(location: location2.id).first
-      # location_relationship.update(default: params[:default_location][:default], location: new_location)
         put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
         params: { location: { street:"1052 Canal St",
                               city:"Durham",
                               state:"NC",
                               zip: "27701"
                             },
-          location_relationship: {
-            default: false,
-            location: location2.id
-          }}
-        expect(response).to have_http_status(200)
+          default_location: false
+          }
+        # expect(response).to have_http_status(200)
         #uncomment these to see the error messages
         # parsed_json = JSON.parse(response.body)
         # puts parsed_json
   end
 
   it 'Check driver previous default and changes it to the drivers input' do
-    location_relationship = LocationRelationship.where(location: location2.id).last
-    # location_relationship.update(default: params[:default_location][:default], location: new_location)
       put "/api/v1/locations/#{location2.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: { street:"2645 Lawndale Dr",
                             city:"Greensboro",
                             state:"NC",
                             zip: "27408"
                           },
-        location_relationship: {
-          default: true,
-          location: location2.id
-        }}
+                          default_location: false
+                          }
       expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
@@ -255,26 +242,23 @@ RSpec.describe Api::V1::Locations, type: :request do
                             state:"NC",
                             zip: "27408"
                           },
-        location_relationship: {
-          default: true,
-        }}
+                          default_location: false
+                          }
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
       # puts parsed_json
   end
 
-  it 'Turns of pervous location default and set a new one' do
+  it 'Turns off pervous location default and set a new one' do
       put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: { street:"2645 Lawndale Dr",
                             city:"Greensboro",
                             state:"NC",
                             zip: "27408",
                           },
-        location_relationship: {
-          default: true,
-          location: location3.id
-        }}
+                          default_location: true
+                          }
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
@@ -289,10 +273,8 @@ RSpec.describe Api::V1::Locations, type: :request do
                             zip: "27408",
                             notes: "Doctor office, Ramp changed to back door",
                           },
-        location_relationship: {
-          default: true,
-          location: location3.id
-        }}
+                        default_location: true
+                        }
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
@@ -303,10 +285,8 @@ RSpec.describe Api::V1::Locations, type: :request do
       put "/api/v1/locations/#{location3.id}", headers: {"ACCEPT" => "application/json",  "Token" => "5678" },
       params: { location: {
                           },
-        location_relationship: {
-          default: true,
-          location: location2.id
-        }}
+                        default_location: true
+                        }
       # expect(response).to have_http_status(200)
       #uncomment these to see the error messages
       # parsed_json = JSON.parse(response.body)
