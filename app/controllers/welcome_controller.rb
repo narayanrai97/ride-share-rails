@@ -16,7 +16,6 @@ class WelcomeController < ApplicationController
   end
 
   def index
-    # byebug
     @ride = Ride.where(organization_id: current_user.organization.id).status("pending")
     @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(5)
     @drivers = Driver.where(organization_id: current_user.organization.id).pending
@@ -27,6 +26,12 @@ class WelcomeController < ApplicationController
       redirect_to welcome_welcome_path
     end
   end
+
+  def driver
+    redirect_to welcome_welcome_path
+    flash.notice = "Your password has been reset, Please log in on the app."
+  end
+
 
   private
 

@@ -56,7 +56,7 @@ Rails.application.routes.draw do
 
   get 'welcome/index'
   get 'welcome/welcome'
-  # get 'welcome/rider'
+  get 'welcome/driver'
 
   get '/privacy_policy' => 'pages#privacy_policy'
   get '/terms_and_conditions' => 'pages#terms_and_conditions'
