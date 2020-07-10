@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
 		if resource.class == User
 		stored_location_for(resource) || welcome_index_path
 		else
-		stored_location_for(resource) || welcome_rider_path
+		stored_location_for(resource) || welcome_driver_path
 		end
 
 	end
