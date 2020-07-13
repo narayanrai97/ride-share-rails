@@ -32,16 +32,30 @@
   <div class="form-group offset-md-1 col-8">
     1. <%= form.label :rider_id %><br>
     <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
-  </div
+  </div>
 </div>
 
-
+<div class="form-row">
   <div class="form-group offset-md-1 col-4">
-
     2. <%= form.label :pick_up_time %>
     <%= form.text_field :pick_up_time, id: 'ride_pick_up_time' %>
   </div>
 
+  <div class="form-group  col-md-2">
+    3. <%= form.check_box :round_trip %>
+    <%= form.label :round_trip, "Round Trip" %>
+  </div>
+
+  <div class="form-group col-4" id = "return_pick_up_time" style="display: none">
+    <div id="return_pick_up_time">
+      <%= form.label :return_pick_up_time %>
+      <% if @ride.return %>
+      <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}",  id: 'ride_return_pick_up_time' %>
+      <% else %>
+      <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 
@@ -49,7 +63,7 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-10">
     <div class: "start_location">
-      3. <%= label_tag :start_location %>
+      4. <%= label_tag :start_location, "Start Location" %>
       <p> Would you like to use previously saved location? <%= form.collection_select "organization_rider_start_location",
         Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
@@ -113,7 +127,7 @@
       <%= form.label :start_zip, "Zip" %>
       <%= form.text_field :start_zip, value: start_zip, class: "form-control" %>
        <div class= "start_location_checkbox">
-         <h6>Save start location? <%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> </h6>
+         <h6><%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> Save Start Location</h6>
       </div>
     </div>
 
@@ -122,7 +136,7 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-10">
     <div class: "start_location">
-      4. <%= label_tag :end_location %>
+      5. <%= label_tag :end_location, "End Location" %>
       <p>  Would you like to use previously saved location? <%= form.collection_select "organization_rider_end_location",
        Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
@@ -187,14 +201,14 @@
       <%= form.label :end_zip, "Zip" %>
       <%= form.text_field :end_zip, value: end_zip, class: "form-control" %>
        <div class = "end_location_checkbox">
-         <h6>Save end location? <%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved" %></h6>
+         <h6><%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved"%> Save End Location</h6>
        </div>
     </div>
 </div>
 
   <div class="form-row">
     <div class="form-group  col-md-10 offset-md-1">
-    5. <%= form.label :reason %>
+    6. <%= form.label :reason %>
        <%= form.text_field :reason,class: "form-control" %>
     </div>
   </div>
@@ -206,25 +220,6 @@
     </div>
   </div>
 <% end %>
-
-
-<div class="form-row">
-  <div class="form-group  col-md-10 offset-md-1" >
-  6. <%= form.label :round_trip  %>
-     <%= form.check_box :round_trip  %>
-  </div>
-</div>
-
-<div class="form-group offset-md-1 col-4" id = "return_pick_up_time" style="display: none" >
-  <div id="return_pick_up_time" class="form-group col-md-10 offset-md-1">
-    <%= form.label :return_pick_up_time %>
-    <% if @ride.return %>
-    <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}",  id: 'ride_return_pick_up_time' %>
-    <% else %>
-    <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
-    <% end %>
-  </div>
-</div>
 
 <div class="form-row">
   <div class="form-group col-md-10 offset-md-1">
@@ -271,8 +266,8 @@
     minDate:         "today",
     altFormat:       "LOCAL",
     dateFormat:      "UTC",
-    defaultHour:     23,
-    defaultMinute:   59,
+    defaultHour:     09,
+    defaultMinute:   00,
     minuteIncrement: 1,
     parseDate: parseDateIn,
     formatDate: formatDateOut
