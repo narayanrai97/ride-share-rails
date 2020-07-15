@@ -83,6 +83,10 @@
       $('#ride_start_zip').val(zip);
     });
 
+    function startLocationDropdownReset() {
+      document.getElementById("ride_organization_rider_start_location").selectedIndex = 0;
+    }
+
   <% end %>
   <%if @ride.start_location_id.nil? %>
     <%if @start_location.nil? %>
@@ -105,7 +109,7 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :start_street, "Street" %>
-    <%= form.text_field :start_street, value: start_street, class: "form-control" %>
+    <%= form.text_field :start_street, value: start_street, class: "form-control", onclick: "startLocationDropdownReset()"%>
   </div>
 </div>
 
@@ -115,17 +119,17 @@
 
     <div class="form-group offset-md-1 col-4">
       <%= form.label :start_city, "City" %>
-      <%= form.text_field :start_city, value: start_city,  class: "form-control" %>
+      <%= form.text_field :start_city, value: start_city,  class: "form-control", onclick: "startLocationDropdownReset()" %>
     </div>
 
     <div class="form-group col-4">
       <%= form.label :start_state, "State" %>
-      <%= form.text_field :start_state, value: start_state, class: "form-control" %>
+      <%= form.text_field :start_state, value: start_state, class: "form-control", onclick: "startLocationDropdownReset()" %>
     </div>
 
     <div class="form-group col-2">
       <%= form.label :start_zip, "Zip" %>
-      <%= form.text_field :start_zip, value: start_zip, class: "form-control" %>
+      <%= form.text_field :start_zip, value: start_zip, class: "form-control", onclick: "startLocationDropdownReset()" %>
        <div class= "start_location_checkbox">
          <h6><%= form.check_box :save_start_location, {}, checked_value = "saved", unchecked_value = "not saved" %> Save Start Location</h6>
       </div>
@@ -159,6 +163,9 @@
        $('#ride_end_zip').val(zip);
     });
 
+    function endLocationDropdownReset() {
+      document.getElementById("ride_organization_rider_end_location").selectedIndex = 0;
+    }
   <% end %>
   <%if @ride.end_location_id.nil? %>
     <%if @end_location.nil? %>
@@ -182,24 +189,24 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-md-10">
     <%= form.label :end_street, "Street" %>
-    <%= form.text_field :end_street, value: end_street, class: "form-control" %>
+    <%= form.text_field :end_street, value: end_street, class: "form-control", onclick: "endLocationDropdownReset()"%>
   </div>
 </div>
 
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
       <%= form.label :end_city, "City" %>
-      <%= form.text_field :end_city, value: end_city, class: "form-control" %>
+      <%= form.text_field :end_city, value: end_city, class: "form-control", onclick: "endLocationDropdownReset()" %>
     </div>
 
     <div class="form-group col-4">
       <%= form.label :end_state, "State" %>
-      <%= form.text_field :end_state,  value: end_state, class: "form-control" %>
+      <%= form.text_field :end_state,  value: end_state, class: "form-control", onclick: "endLocationDropdownReset()" %>
     </div>
 
     <div class="form-group col-2">
       <%= form.label :end_zip, "Zip" %>
-      <%= form.text_field :end_zip, value: end_zip, class: "form-control" %>
+      <%= form.text_field :end_zip, value: end_zip, class: "form-control", onclick: "endLocationDropdownReset()" %>
        <div class = "end_location_checkbox">
          <h6><%= form.check_box :save_end_location, {}, checked_value = "saved", unchecked_value = "not saved"%> Save End Location</h6>
        </div>
