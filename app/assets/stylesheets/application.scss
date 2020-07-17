@@ -121,7 +121,7 @@ html, body {
 }
 
 .navbar {
-  padding: 0px 95px 0px 95px;
+  padding: 0px 160px 0px 160px;
 }
 
 .navbar-collapse ul li {
@@ -134,11 +134,7 @@ html, body {
 
 .sessions a {
   font-weight: lighter;
-}
-
-.sessions a:hover {
-  background-color: #cfdce4;
-  padding: 10px;
+  text-decoration: none;
 }
 
 table {

@@ -37,13 +37,22 @@
                 <%= link_to 'Tokens', tokens_path, :class => 'nav-link active' %>
             </li>
           <% end %>
-          <li class="nav-item">
-              <%= link_to 'Change Password', edit_user_registration_path, :class => 'nav-link' %>
-          </li>
         </ul>
         <div class="sessions">
           <% if user_signed_in? %>
-            <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+            <div class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <%= current_user.organization.name %> <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a><%= current_user.email %></a></li>
+                        <li><%= link_to 'Change Password', edit_user_registration_path, :class => 'nav-link' %></li>
+                        <li style="border-bottom: 1px solid lightgray;"></li>
+                        <li>
+                            <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+                        </li>
+                    </ul>
+                </div>
           <% else %>
             <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
           <% end %>
