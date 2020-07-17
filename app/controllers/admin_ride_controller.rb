@@ -23,7 +23,6 @@ class AdminRideController < ApplicationController
     if params[:status].present?
       @rides = Ride.status(params[:status]).where(organization: current_user.organization)
     end
-
     @query = @rides.joins(:rider).ransack(params[:q])
     @search = Kaminari.paginate_array(@query.result).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end

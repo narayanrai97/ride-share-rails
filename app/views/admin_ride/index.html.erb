@@ -25,7 +25,7 @@
         <%= link_to 'Canceled', admin_ride_index_path(status: "canceled") %>
       </div>
     </th>
-    <th scope="col"></th>
+    <th scope="col" class="ride_box_width"></th>
   </tr>
   <% @search.each do |ride| %>
     <% if ride.organization_id==current_user.organization_id%>
