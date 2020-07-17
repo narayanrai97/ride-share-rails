@@ -1,9 +1,7 @@
 <% content_for(:body_attributes) do %>
    data-turbolinks="false"
  <% end %>
-
 <div class="locations"></div>
-
 <!-- <div data-turbolinks="false"> -->
 <div>
 <% if @ride.id %>
@@ -12,8 +10,6 @@
   <% url = admin_ride_index_path %>
 <% end %>
 <%= form_with(url: url , model: @ride, local: true) do |form| %>
-
-
   <% if @ride.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -27,14 +23,12 @@
       </ul>
     </div>
   <% end %>
-
 <div class="form-row">
   <div class="form-group offset-md-1 col-8">
     1. <%= form.label :rider_id %><br>
     <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
   </div>
 </div>
-
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
     2. <%= form.label :pick_up_time %>
@@ -57,9 +51,6 @@
     </div>
   </div>
 </div>
-
-
-
 <div class="form-row">
   <div class="form-group offset-md-1 col-10">
     <div class: "start_location">
