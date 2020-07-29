@@ -41,6 +41,8 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers
+  config.include Warden::Test::Helpers
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   # config.expect_with(:rspec) { |c| c.syntax = :should }
@@ -50,6 +52,8 @@ RSpec.configure do |config|
    DatabaseCleaner.clean_with(:truncation)
    DatabaseCleaner.strategy = :transaction
  end
+
+
 
  # start the transaction strategy as examples are run
  config.around(:each) do |example|

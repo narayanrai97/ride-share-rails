@@ -36,21 +36,22 @@ class AdminRideController < ApplicationController
   end
 
   def create
-    byebug
+    # byebug
     begin
       rider = Rider.find(ride_params[:rider_id])
     rescue ActiveRecord::RecordNotFound
       flash.now[:alert] = "The rider can't be blank."
       @ride = Ride.new
-      byebug
       render 'new'
       return
     end
+    # byebug
     authorize rider
     keep_proccessing = rider_is_active
     if !keep_proccessing
       return
     end
+    # byebug
     organization = Organization.find(current_user.organization_id)
     if organization.use_tokens == true
       token = rider.next_valid_token
@@ -79,17 +80,21 @@ class AdminRideController < ApplicationController
                               round_trip: false,
                               notes: ride_params[:notes])
     end
+    # byebug
     if !return_pick_up_time_not_in_past
       return
     end
+    # byebug
     location = save_location_error_handler(@start_location)
     if location.nil?
+      # byebug
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
       render 'new'
       return
     else
       @start_location = location
     end
+    # byebug
     location = save_location_error_handler(@end_location)
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
