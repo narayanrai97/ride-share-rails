@@ -36,7 +36,7 @@ class AdminRideController < ApplicationController
   end
 
   def create
-    # byebug
+    byebug
     begin
       rider = Rider.find(ride_params[:rider_id])
     rescue ActiveRecord::RecordNotFound
@@ -107,7 +107,6 @@ class AdminRideController < ApplicationController
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
     round_trip_save
-    byebug
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
