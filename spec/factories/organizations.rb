@@ -14,5 +14,6 @@ FactoryBot.define do
     city {'Chapel Hill'}
     state {'NC'}
     zip {'27514'}
+    use_tokens { true }
   end
 end

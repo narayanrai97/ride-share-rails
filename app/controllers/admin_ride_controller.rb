@@ -36,7 +36,7 @@ class AdminRideController < ApplicationController
   end
 
   def create
-    byebug
+    # byebug
     begin
       rider = Rider.find(ride_params[:rider_id])
     rescue ActiveRecord::RecordNotFound
@@ -48,6 +48,7 @@ class AdminRideController < ApplicationController
     # byebug
     authorize rider
     keep_proccessing = rider_is_active
+    # byebug
     if !keep_proccessing
       return
     end
@@ -57,6 +58,7 @@ class AdminRideController < ApplicationController
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
+    # byebug
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
@@ -71,7 +73,7 @@ class AdminRideController < ApplicationController
                      reason: ride_params[:reason],
                      round_trip: ride_params[:round_trip],
                      notes: ride_params[:notes])
-
+    # byebug
     if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                               rider_id: rider.id,
@@ -107,6 +109,7 @@ class AdminRideController < ApplicationController
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
     round_trip_save
+    # beybug
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
