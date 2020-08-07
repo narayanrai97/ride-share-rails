@@ -46,15 +46,11 @@ RSpec.describe AdminRideController, type: :request do
          end_state: location2[:state],
          end_zip: location2[:zip],
          reason: "doctor",
-         round_trip: false,
-         return_pick_up_time: DateTime.now + 6.days + 2.hours,
-         notes: "ride created",
-         status: "active"
+         round_trip: false
           }
         }
       end.not_to change(Ride, :count)
       expect(select_rider2.is_active).to eq(false)
-      # byebug
       response.should redirect_to admin_ride_index_path
     end
 
@@ -76,14 +72,12 @@ RSpec.describe AdminRideController, type: :request do
        end_state: location2[:state],
        end_zip: location2[:zip],
        reason: "doctor",
-       round_trip: false,
-       return_pick_up_time: DateTime.now + 6.days + 2.hours,
-       notes: "ride created",
-       status: "active"
+       round_trip: false
         }
       }
       end.not_to change(Ride, :count)
       expect{raise StandardError, "The rider can't be blank."}.to raise_error(StandardError, "The rider can't be blank." )
+      expect(response).to render_template(:new)
     end
 
     it "Check if organization uses tokens" do
@@ -105,10 +99,7 @@ RSpec.describe AdminRideController, type: :request do
        end_state: location2[:state],
        end_zip: location2[:zip],
        reason: "doctor",
-       round_trip: false,
-       return_pick_up_time: DateTime.now + 6.days + 2.hours,
-       notes: "ride created",
-       status: "active"
+       round_trip: false
         }
       }
       end.to change(Ride, :count)
@@ -129,10 +120,7 @@ RSpec.describe AdminRideController, type: :request do
        end_state: location2[:state],
        end_zip: location2[:zip],
        reason: "doctor",
-       round_trip: false,
-       return_pick_up_time: DateTime.now + 6.days + 2.hours,
-       notes: "ride created",
-       status: "active"
+       round_trip: false
         }
       }
     end.not_to change(Ride, :count)
@@ -142,6 +130,7 @@ RSpec.describe AdminRideController, type: :request do
     expect{raise NameError, "State can't be blank."}.to raise_error( NameError, "State can't be blank.")
     expect{raise NameError, "Zip is the wrong length (should be 5 characters)"}.to raise_error( NameError, "Zip is the wrong length (should be 5 characters)")
     expect{raise NameError, "Zip is not a number."}.to raise_error( NameError, "Zip is not a number.")
+    expect(response).to render_template(:new)
     end
 
     it "Error when end location is not provide" do
@@ -168,6 +157,7 @@ RSpec.describe AdminRideController, type: :request do
     expect{raise NameError, "Zip is the wrong length (should be 5 characters)"}.to raise_error( NameError, "Zip is the wrong length (should be 5 characters)")
     expect{raise NameError, "Zip is not a number."}.to raise_error( NameError, "Zip is not a number.")
     expect(response.redirect?).to eq(false)
+    expect(response).to render_template(:new)
     end
 
     it "changes the ride count and token count on admin ride create" do
@@ -225,6 +215,7 @@ RSpec.describe AdminRideController, type: :request do
           # byebug
       expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:new)
     end
 
     it "Error when round trip is true but return trip pick up time is in the past" do
@@ -251,9 +242,9 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.not_to change(Ride, :count)
-          # byebug
       expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:new)
     end
 
     it "Create a ride with a round trip" do
@@ -288,12 +279,26 @@ RSpec.describe AdminRideController, type: :request do
     before do
       login_as(admin, :scope => :user)
     end
-    it "Get all" do
+    it "Get" do
       get new_admin_ride_path
-      byebug
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:new)
     end
-    # expect(response).to render_template(:new)
+  end
 
+  describe "show" do
+    before do
+      login_as(admin, :scope => :user)
+      ride = Factorybot.create(:ride).build
+    end
+    # byebug
+    it "shows when a ride has been created" do
+      byebug
+      get admin_ride_path, id: ride.id
+      byebug
+      # expect(response.redirect?).to eq(false)
+      # expect(response).to render_template(:new)
+    end
   end
 
 end

@@ -56,6 +56,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'simplecov', require: false, group: :test
   gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'master'
+  gem 'rails-controller-testing'
 end
 
 group :development do

@@ -9,12 +9,13 @@ class AdminRideController < ApplicationController
   layout 'administration'
 
   def new
-    byebug
     @ride = Ride.new
   end
 
   def show
+    byebug
     @ride = Ride.find(params[:id])
+    byebug
     @second_ride = Ride.find(@ride.return) if @ride.return
     authorize @ride
   end
@@ -37,7 +38,6 @@ class AdminRideController < ApplicationController
   end
 
   def create
-    # byebug
     begin
       rider = Rider.find(ride_params[:rider_id])
     rescue ActiveRecord::RecordNotFound
@@ -46,20 +46,16 @@ class AdminRideController < ApplicationController
       render 'new'
       return
     end
-    # byebug
     authorize rider
     keep_proccessing = rider_is_active
-    # byebug
     if !keep_proccessing
       return
     end
-    # byebug
     organization = Organization.find(current_user.organization_id)
     if organization.use_tokens == true
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
-    # byebug
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
@@ -74,7 +70,6 @@ class AdminRideController < ApplicationController
                      reason: ride_params[:reason],
                      round_trip: ride_params[:round_trip],
                      notes: ride_params[:notes])
-    # byebug
     if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                               rider_id: rider.id,
@@ -83,24 +78,18 @@ class AdminRideController < ApplicationController
                               round_trip: false,
                               notes: ride_params[:notes])
     end
-    # byebug
     if !return_pick_up_time_not_in_past
-      # byebug
       return
     end
-    # byebug
     location = save_location_error_handler(@start_location)
     if location.nil?
-      # byebug
       flash.now[:alert] = @start_location.errors.full_messages.join("\n")
       render 'new'
       return
     else
       @start_location = location
     end
-    # byebug
     location = save_location_error_handler(@end_location)
-    # byebug
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
       render 'new'
@@ -111,15 +100,12 @@ class AdminRideController < ApplicationController
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
-    # byebug
     round_trip_save
-    # byebug
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
       return
     else
-      # byebug
       return unless round_trip_save
       rider_choose_save_location
       only_15_location_saves(organization)
