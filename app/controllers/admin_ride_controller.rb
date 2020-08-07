@@ -9,6 +9,7 @@ class AdminRideController < ApplicationController
   layout 'administration'
 
   def new
+    byebug
     @ride = Ride.new
   end
 
@@ -84,6 +85,7 @@ class AdminRideController < ApplicationController
     end
     # byebug
     if !return_pick_up_time_not_in_past
+      # byebug
       return
     end
     # byebug
@@ -98,6 +100,7 @@ class AdminRideController < ApplicationController
     end
     # byebug
     location = save_location_error_handler(@end_location)
+    # byebug
     if location.nil?
       flash.now[:alert] = @end_location.errors.full_messages.join("\n")
       render 'new'
@@ -108,8 +111,9 @@ class AdminRideController < ApplicationController
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
+    # byebug
     round_trip_save
-    # beybug
+    # byebug
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'

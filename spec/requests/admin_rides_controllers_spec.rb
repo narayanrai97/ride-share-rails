@@ -149,8 +149,8 @@ RSpec.describe AdminRideController, type: :request do
         # byebug
         post admin_ride_index_path, params:{
         ride: {
-        rider_id: select_rider3.id,
-       pick_up_time: DateTime.now - 6.days,
+        rider_id: select_rider.id,
+       pick_up_time: DateTime.now + 6.days,
        save_start_location: true,
        save_end_location: true,
        start_street: location2[:street],
@@ -158,10 +158,7 @@ RSpec.describe AdminRideController, type: :request do
        start_state: location2[:state],
        start_zip: location2[:zip],
        reason: "doctor",
-       round_trip: false,
-       return_pick_up_time: DateTime.now + 6.days + 2.hours,
-       notes: "ride created",
-       status: "active"
+       round_trip: false
         }
       }
     end.not_to change(Ride, :count)
@@ -170,6 +167,7 @@ RSpec.describe AdminRideController, type: :request do
     expect{raise NameError, "State can't be blank."}.to raise_error( NameError, "State can't be blank.")
     expect{raise NameError, "Zip is the wrong length (should be 5 characters)"}.to raise_error( NameError, "Zip is the wrong length (should be 5 characters)")
     expect{raise NameError, "Zip is not a number."}.to raise_error( NameError, "Zip is not a number.")
+    expect(response.redirect?).to eq(false)
     end
 
     it "changes the ride count and token count on admin ride create" do
@@ -189,10 +187,7 @@ RSpec.describe AdminRideController, type: :request do
            end_state: location2[:state],
            end_zip: location2[:zip],
            reason: "doctor",
-           round_trip: false,
-           return_pick_up_time: DateTime.now + 6.days + 2.hours,
-           notes: "ride created",
-           status: "active"
+           round_trip: false
             }
           }
           # byebug
@@ -200,9 +195,104 @@ RSpec.describe AdminRideController, type: :request do
           @next_token.save
           end.to change(Ride, :count)
       expect(select_rider.valid_tokens_count).to eq(0) # Token count change after admin ride create
-      response.should redirect_to  "/admin_ride/#{ride.id}"
+      # response.should redirect_to  "/admin_ride/#{ride.id}"
     end
 
+    it "Error when round trip is true but return trip pick up time is in the past" do
+      expect do
+          post admin_ride_index_path, params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location2[:street],
+           end_city: location2[:city],
+           end_state: location2[:state],
+           end_zip: location2[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now - 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.not_to change(Ride, :count)
+          # byebug
+      expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
+      expect(response.redirect?).to eq(false)
+    end
+
+    it "Error when round trip is true but return trip pick up time is in the past" do
+      expect do
+          post admin_ride_index_path, params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location2[:street],
+           end_city: location2[:city],
+           end_state: location2[:state],
+           end_zip: location2[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now - 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.not_to change(Ride, :count)
+          # byebug
+      expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
+      expect(response.redirect?).to eq(false)
+    end
+
+    it "Create a ride with a round trip" do
+      expect do
+          post admin_ride_index_path, params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location2[:street],
+           end_city: location2[:city],
+           end_state: location2[:state],
+           end_zip: location2[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(response.redirect?).to eq(true)
+    end
+  end
+
+  describe "New Action" do
+    before do
+      login_as(admin, :scope => :user)
+    end
+    it "Get all" do
+      get new_admin_ride_path
+      byebug
+    end
+    # expect(response).to render_template(:new)
 
   end
 
