@@ -9,7 +9,6 @@ RSpec.describe AdminRideController, type: :request do
   let!(:ride) { FactoryBot.attributes_for(:ride3) }
   let!(:location1) {FactoryBot.attributes_for(:location)}
   let!(:location2) {FactoryBot.attributes_for(:location, end_street: "700 Park Offices Dr")}
-  # byebug
   let!(:select_rider) { create :rider, email: "select_rider@example.com", organization_id: admin.organization_id }
   let!(:select_rider2) { create :rider, email: "jump_rider@example.com", organization_id: admin.organization_id, is_active: false }
   let!(:select_rider3) { create :rider, email: "fast_rider@example.com", organization_id: admin2.organization_id, is_active: true }
@@ -286,18 +285,37 @@ RSpec.describe AdminRideController, type: :request do
     end
   end
 
-  describe "show" do
+  describe "show Action" do
+    #write test for return
+    let!(:ride)  { FactoryBot.create(:ride3) }
+
     before do
       login_as(admin, :scope => :user)
-      ride = Factorybot.create(:ride).build
     end
-    # byebug
-    it "shows when a ride has been created" do
-      byebug
-      get admin_ride_path, id: ride.id
-      byebug
-      # expect(response.redirect?).to eq(false)
-      # expect(response).to render_template(:new)
+
+    it "Create a ride and render the show" do
+      # byebug
+      get admin_ride_path(Ride.last.id)
+      # byebug
+       expect(response.redirect?).to eq(true)
+       response.should redirect_to admin_ride_index_path
+    end
+  end
+
+  describe "Edit Action" do
+    #write test for return
+    let!(:ride)  { FactoryBot.create(:ride3) }
+
+    before do
+      login_as(admin, :scope => :user)
+    end
+
+    it "Create a ride and render the show" do
+      # byebug
+      get edit_admin_ride_path(Ride.last.id)
+    
+       expect(response.redirect?).to eq(true)
+       response.should redirect_to admin_ride_index_path
     end
   end
 
