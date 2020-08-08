@@ -184,7 +184,7 @@ RSpec.describe AdminRideController, type: :request do
           @next_token.save
           end.to change(Ride, :count)
       expect(select_rider.valid_tokens_count).to eq(0) # Token count change after admin ride create
-      # response.should redirect_to  "/admin_ride/#{ride.id}"
+      response.should redirect_to  "/admin_ride/#{Ride.last.id}"
     end
 
     it "Error when round trip is true but return trip pick up time is in the past" do
@@ -313,7 +313,7 @@ RSpec.describe AdminRideController, type: :request do
     it "Create a ride and render the show" do
       # byebug
       get edit_admin_ride_path(Ride.last.id)
-    
+
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
     end
