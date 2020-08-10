@@ -14,9 +14,9 @@
       <% if token.rider.organization_id==current_user.organization_id %>
         <tr>
           <td scope="row"><%= token.rider.full_name %></td>
-          <td><%= token.created_at.strftime("%b %d, %Y %I:%M %p") unless token.created_at.nil? %></td>
-          <td><%= token.expires_at.strftime("%b %d, %Y %I:%M %p") unless token.expires_at.nil? %></td>
-          <td><%= token.used_at.strftime("%b %d, %Y %I:%M %p") unless token.used_at.nil? %></td>
+          <td><%= token.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%b %d, %Y %I:%M %p") unless token.created_at.nil? %></td>
+          <td><%= token.expires_at.in_time_zone("Eastern Time (US & Canada)").strftime("%b %d, %Y %I:%M %p") unless token.expires_at.nil? %></td>
+          <td><%= token.used_at.in_time_zone("Eastern Time (US & Canada)").strftime("%b %d, %Y %I:%M %p") unless token.used_at.nil? %></td>
           <td><%= t token.is_valid.class %></td>
         </tr>
       <% end %>
