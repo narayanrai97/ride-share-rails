@@ -9,11 +9,11 @@
     <% agenda[1].each do |event| %>
       <div class="agenda">
         <div class="day-and-date">
-          <span style="color: gray;"><%= Date.parse(event[:startTime].to_s).strftime("%a") %></span>
-          <span><%= Date.parse(event[:startTime].to_s).strftime("%d") %></span>
+          <span style="color: gray;"><%= Date.parse(event[:startTime].to_s).in_time_zone("Eastern Time (US & Canada)").strftime("%a") %></span>
+          <span><%= Date.parse(event[:startTime].to_s).in_time_zone("Eastern Time (US & Canada)").strftime("%d") %></span>
         </div>
         <div class="time-and-address">
-          <div><%= Time.parse(event[:startTime].to_s).strftime("%I:%M %P") %> - <%= Time.parse(event[:endTime].to_s).strftime("%I:%M %P") %></div>
+          <div><%= Time.parse(event[:startTime].to_s).in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M %P") %> - <%= Time.parse(event[:endTime].to_s).in_time_zone("Eastern Time (US & Canada)").strftime("%I:%M %P") %></div>
           <div><%= event[:location].full_address %></div>
         </div>
       </div>
