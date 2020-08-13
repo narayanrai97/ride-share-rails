@@ -300,6 +300,14 @@ RSpec.describe AdminRideController, type: :request do
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
     end
+
+    it "Error when ride can not be found" do
+      # byebug
+      get admin_ride_path(9999)
+       expect(response.redirect?).to eq(true)
+       response.should redirect_to admin_ride_index_path
+       expect(flash[:alert]).to eq("Record not found.")
+    end
   end
 
   describe "Edit Action" do
@@ -311,11 +319,18 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Create a ride and render the show" do
-      # byebug
       get edit_admin_ride_path(Ride.last.id)
 
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
+    end
+
+    it "Error when ride can not be found" do
+      get edit_admin_ride_path(9999)
+
+       expect(response.redirect?).to eq(true)
+       response.should redirect_to admin_ride_index_path
+       expect(flash[:alert]).to eq("Record not found.")
     end
   end
 

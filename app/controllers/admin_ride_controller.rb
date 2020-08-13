@@ -13,7 +13,13 @@ class AdminRideController < ApplicationController
   end
 
   def show
+    begin
     @ride = Ride.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash.now[:alert] = "Record not found."
+      redirect_to admin_ride_index_path
+      return
+    end
     @second_ride = Ride.find(@ride.return) if @ride.return
     authorize @ride
   end
@@ -28,7 +34,13 @@ class AdminRideController < ApplicationController
   end
 
   def edit
+    begin
     @ride = Ride.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash.now[:alert] = "Record not found."
+      redirect_to admin_ride_index_path
+      return
+    end
     if @ride.outbound
       @ride = Ride.find(@ride.outbound)
     end
