@@ -8,12 +8,12 @@ FactoryBot.define do
     use_tokens { false }
   end
 
-  factory :organization2, class: Organization do
-    name {'University of North Carolina'}
-    street {'4000 Ashley Wade Ln'}
-    city {'Chapel Hill'}
-    state {'NC'}
-    zip {'27514'}
-    use_tokens { true }
-  end
+  # factory :organization2, class: Organization do
+  #   name {'University of North Carolina'}
+  #   street {'4000 Ashley Wade Ln'}
+  #   city {'Chapel Hill'}
+  #   state {'NC'}
+  #   zip {'27514'}
+  #   use_tokens { true }
+  # end
 end

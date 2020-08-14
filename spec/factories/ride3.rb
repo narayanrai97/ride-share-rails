@@ -5,7 +5,7 @@ FactoryBot.define do
       pick_up_time { Date.today + 6.days }
       start_location_id {FactoryBot.create(:location).id}
       end_location_id {FactoryBot.create(:location).id}
-      reason {Faker::Artist.name}
+      reason {"notworking"}
       status {"approved"}
       round_trip {false}
       organization

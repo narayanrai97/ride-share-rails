@@ -278,7 +278,7 @@ RSpec.describe AdminRideController, type: :request do
     before do
       login_as(admin, :scope => :user)
     end
-    it "Get" do
+    it "it render the new action" do
       get new_admin_ride_path
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:new)
@@ -286,7 +286,6 @@ RSpec.describe AdminRideController, type: :request do
   end
 
   describe "show Action" do
-    #write test for return
     let!(:ride)  { FactoryBot.create(:ride3) }
 
     before do
@@ -311,7 +310,6 @@ RSpec.describe AdminRideController, type: :request do
   end
 
   describe "Edit Action" do
-    #write test for return
     let!(:ride)  { FactoryBot.create(:ride3) }
 
     before do
@@ -331,6 +329,25 @@ RSpec.describe AdminRideController, type: :request do
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
        expect(flash[:alert]).to eq("Record not found.")
+    end
+  end
+
+  describe "Index Action" do
+    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
+    let!(:ride2)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
+    let!(:ride3)  { create :ride3, organization_id: admin.organization.id, status: "pending" }
+    let!(:ride4)  { create :ride3, organization_id: admin.organization.id, status: "completed" }
+
+    before do
+      login_as(admin, :scope => :user)
+    end
+
+    it "Create a record and render index" do
+      get admin_ride_index_path
+
+      # byebug
+      expect(response.redirect?).to eq(false)
+      expect(Ride.count).to eq(4)
     end
   end
 
