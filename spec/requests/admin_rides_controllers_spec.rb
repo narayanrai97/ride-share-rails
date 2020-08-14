@@ -345,7 +345,25 @@ RSpec.describe AdminRideController, type: :request do
     it "Create a record and render index" do
       get admin_ride_index_path
 
-      # byebug
+
+      expect(response.redirect?).to eq(false)
+      expect(Ride.count).to eq(4)
+    end
+  end
+
+  describe "Update action" do
+    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
+    let!(:ride2)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
+    let!(:ride3)  { create :ride3, organization_id: admin.organization.id, status: "pending" }
+    let!(:ride4)  { create :ride3, organization_id: admin.organization.id, status: "completed" }
+
+    before do
+      login_as(admin, :scope => :user)
+    end
+
+    it "Create a record and render index" do
+      get admin_ride_index_path
+
       expect(response.redirect?).to eq(false)
       expect(Ride.count).to eq(4)
     end

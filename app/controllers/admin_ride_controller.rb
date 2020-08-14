@@ -26,12 +26,9 @@ class AdminRideController < ApplicationController
 
   def index
     @rides = Ride.where(organization: current_user.organization)
-    byebug
     if params[:status].present?
-      byebug
       @rides = Ride.status(params[:status]).where(organization: current_user.organization)
     end
-    byebug
     @query = @rides.joins(:rider).ransack(params[:q])
     @search = Kaminari.paginate_array(@query.result).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
   end
