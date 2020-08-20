@@ -16,8 +16,8 @@ class RidersController < ApplicationController
     authorize @rider
 
     @locations = @rider.locations
-    @rides = Ride.where(rider: @rider)
-    @rides = Ride.status(params[:status]).where(rider: @rider) if params[:status].present?
+    @rides = Ride.where("rider_id =? AND pick_up_time >= ?", @rider.id, Date.today)
+    @rides = Ride.status(params[:status]).where("rider_id =? AND pick_up_time >= ?", @rider.id, Date.today) if params[:status].present?
 
     @rider_rides = Kaminari.paginate_array(@rides).page(params[:page]).per(10)
   end
