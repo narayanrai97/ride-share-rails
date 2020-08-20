@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :rider do
-    first_name {"Ubber"}
-    last_name {"Rider"}
+    first_name {Faker::Name.first_name}
+    last_name {Faker::Name.last_name}
     phone {"9199998888"}
-    email {"rider@example.com"}
+    email {Faker::Name.first_name+"@gmail.com"}
     password {"Pa$$word20"}
+     is_active {true}
     association :organization
   end
 

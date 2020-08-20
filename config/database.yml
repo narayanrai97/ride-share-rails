@@ -83,4 +83,3 @@ test:
 production:
   <<: *default
   database: carma_production
-
