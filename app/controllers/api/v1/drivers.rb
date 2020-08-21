@@ -117,6 +117,46 @@ module Api
         end
       end
 
+      desc 'Driver reset there own password'
+      params do
+        requires :driver, type: Hash do
+          requires :old_password, type: String
+          requires :new_password, type: String
+          requires :password_confirmation, type: String
+        end
+      end
+
+      post 'drivers/changes_password' do
+        if !current_driver
+          status 401
+          return {}
+        end
+        old_password = params[:driver][:old_password]
+        new_password = params[:driver][:new_password]
+        password_confirmation = params[:driver][:password_confirmation]
+        if current_driver.valid_password?(old_password)
+          byebug
+            if new_password == password_confirmation
+              current_driver.update_attributes(password: new_password, password_confirmation: password_confirmation)
+              if current_driver.save
+                status 201
+                return {}
+              else
+              status 400
+              return {error: current_driver.errors.full_messages.to_sentence}
+              end
+            else
+              status 400
+              {error: "New password and Password confirmation does not match"}
+            end
+        else
+          status 400
+          {error: "Pervoius password is not correct"}
+        end
+      end
+
+
+
       desc 'Prompt a driver to change password on first login if admin_sign_up is true'
       params do
         requires :driver, type: Hash do
