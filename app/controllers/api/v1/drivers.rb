@@ -37,22 +37,6 @@ module Api
         end
       end
 
-      params do
-        requires :email, type: String, desc: "Driver email"
-      end
-
-      post 'drivers/password_reset' do
-        @driver = Driver.find_by_email(params[:email])
-        if @driver.nil?
-          status 404
-          return {}
-        else
-          @driver.send_reset_password_instructions
-          status 201
-          return {}
-        end
-      end
-
       desc 'Return the current driver'
       params do
         # requires :id, type: String, desc: "ID of driver"
@@ -117,7 +101,7 @@ module Api
         end
       end
 
-      desc 'Driver reset there own password'
+      desc 'Driver reset there own password from the app'
       params do
         requires :driver, type: Hash do
           requires :old_password, type: String
@@ -135,7 +119,6 @@ module Api
         new_password = params[:driver][:new_password]
         password_confirmation = params[:driver][:password_confirmation]
         if current_driver.valid_password?(old_password)
-          byebug
             if new_password == password_confirmation
               current_driver.update_attributes(password: new_password, password_confirmation: password_confirmation)
               if current_driver.save
@@ -155,7 +138,22 @@ module Api
         end
       end
 
+      desc "Forgotten password, send driver an email with a link to set password"
+      params do
+        requires :email, type: String, desc: "Driver email"
+      end
 
+      post 'drivers/password_reset' do
+        @driver = Driver.find_by_email(params[:email])
+        if @driver.nil?
+          status 404
+          return {}
+        else
+          @driver.send_reset_password_instructions
+          status 201
+          return {}
+        end
+      end
 
       desc 'Prompt a driver to change password on first login if admin_sign_up is true'
       params do
