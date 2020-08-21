@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_18_151709) do
+ActiveRecord::Schema.define(version: 2020_08_21_213306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_06_18_151709) do
     t.string "zip"
     t.boolean "use_tokens", default: false
     t.boolean "send_notifications"
+    t.boolean "use_rider_app", default: true
   end
 
   create_table "recurring_patterns", force: :cascade do |t|
