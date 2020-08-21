@@ -191,6 +191,7 @@ class AdminRideController < ApplicationController
                                               start_location: @start_location,
                                               end_location: @end_location)
       end
+
       if !return_pick_up_time_not_in_past
         return
       end
