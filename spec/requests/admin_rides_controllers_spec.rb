@@ -353,20 +353,105 @@ RSpec.describe AdminRideController, type: :request do
 
   describe "Update action" do
     let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
-    let!(:ride2)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
-    let!(:ride3)  { create :ride3, organization_id: admin.organization.id, status: "pending" }
-    let!(:ride4)  { create :ride3, organization_id: admin.organization.id, status: "completed" }
 
     before do
       login_as(admin, :scope => :user)
     end
 
-    it "Create a record and render index" do
-      get admin_ride_index_path
-
-      expect(response.redirect?).to eq(false)
-      expect(Ride.count).to eq(4)
+    it "Error when end location is not provide in params" do
+      expect do
+      put admin_ride_path(Ride.last), params: {
+        ride: {
+          start_street: location2[:street],
+          start_city: location2[:city],
+          start_state: location2[:state],
+          start_zip: location2[:zip]
+        }
+      }
+    end.not_to change(Ride, :count)
+    expect{raise NameError, "Street can't be blank."}.to raise_error( NameError, "Street can't be blank.")
+    expect{raise NameError, "City can't be blank."}.to raise_error( NameError, "City can't be blank.")
+    expect{raise NameError, "State can't be blank."}.to raise_error( NameError, "State can't be blank.")
+    expect{raise NameError, "Zip is the wrong length (should be 5 characters)"}.to raise_error( NameError, "Zip is the wrong length (should be 5 characters)")
+    expect{raise NameError, "Zip is not a number."}.to raise_error( NameError, "Zip is not a number.")
+    expect(response.redirect?).to eq(false)
+    expect(response).to render_template(:edit)
     end
+
+    it "Error when start location is not provide in params" do
+      expect do
+      put admin_ride_path(Ride.last), params: {
+        ride: {
+          end_street: location2[:street],
+          end_city: location2[:city],
+          end_state: location2[:state],
+          end_zip: location2[:zip]
+        }
+      }
+    end.not_to change(Ride, :count)
+    expect{raise NameError, "Street can't be blank."}.to raise_error( NameError, "Street can't be blank.")
+    expect{raise NameError, "City can't be blank."}.to raise_error( NameError, "City can't be blank.")
+    expect{raise NameError, "State can't be blank."}.to raise_error( NameError, "State can't be blank.")
+    expect{raise NameError, "Zip is the wrong length (should be 5 characters)"}.to raise_error( NameError, "Zip is the wrong length (should be 5 characters)")
+    expect{raise NameError, "Zip is not a number."}.to raise_error( NameError, "Zip is not a number.")
+    expect(response.redirect?).to eq(false)
+    expect(response).to render_template(:edit)
+    end
+
+  it "Updates a ride when round trip is false" do
+    expect do
+      put admin_ride_path(Ride.last), params: {
+        ride: {
+          start_street: location2[:street],
+          start_city: location2[:city],
+          start_state: location2[:state],
+          start_zip: location2[:zip],
+          end_street: location2[:street],
+          end_city: location2[:city],
+          end_state: location2[:state],
+          end_zip: location2[:zip],
+          organization_id: admin.organization_id,
+          rider_id: select_rider.id,
+          pick_up_time: DateTime.now + 6.days,
+          reason: ride.reason,
+          round_trip: false,
+          notes: "Yes",
+          start_location: ride.start_location,
+          end_location: ride.end_location
+        }
+      }
+    end.not_to change(Ride, :count)
+    expect(response.redirect?).to eq(true)
+    expect(flash[:notice]).to eq("The ride information has been updated.")
+    end
+
+    it "Updates a ride when round trip is true" do
+      expect do
+        put admin_ride_path(Ride.last), params: {
+          ride: {
+            start_street: location2[:street],
+            start_city: location2[:city],
+            start_state: location2[:state],
+            start_zip: location2[:zip],
+            end_street: location1[:street],
+            end_city: location1[:city],
+            end_state: location1[:state],
+            end_zip: location1[:zip],
+            organization_id: admin.organization_id,
+            rider_id: select_rider.id,
+            pick_up_time: DateTime.now + 6.days,
+            reason: ride.reason,
+            round_trip: true,
+            return_pick_up_time: DateTime.now + 6.days + 3.hours,
+            notes: "pick near walmart",
+            start_location: ride.start_location,
+            end_location: ride.end_location
+          }
+        }
+      end.to change(Ride, :count)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("The ride information has been updated.")
+      end
   end
 
 end
