@@ -2,7 +2,7 @@
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item <%= request.path =~ /welcome/ ? 'active' : '' %>">
-        <%= link_to 'Home', "/", :class => 'nav-link active' %>
+        <%= link_to 'Dashboard', "/", :class => 'nav-link active' %>
       </li>
       <li class="nav-item <%= request.path =~ /drivers/ ? 'active' : '' %>">
         <!-- < link_to 'Drivers', "#", :class => 'nav-link active' %> -->

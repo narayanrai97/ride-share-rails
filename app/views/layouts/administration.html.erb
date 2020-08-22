@@ -21,7 +21,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item <%= request.path =~ /welcome/ ? 'active' : '' %>">
-            <%= link_to 'Home', welcome_index_path, :class => 'nav-link active' %>
+            <%= link_to 'Dashboard', welcome_index_path, :class => 'nav-link active' %>
           </li>
           <li class="nav-item <%= request.path =~ /drivers/ ? 'active' : '' %>">
             <%= link_to 'Drivers', admin_drivers_path, :class => 'nav-link active' %>

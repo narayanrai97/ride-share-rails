@@ -1,69 +1,87 @@
-<div class="container"><br>
-<h4> <strong> Rides That are Pending </strong></h4>
-<table class="table table-bordered table-hover contains-times">
-  <tr class="border-bot">
-    <th scope="col">rider </th>
-    <th scope="col">Driver </th>
-    <th scope="col">pick_up_time </th>
-    <th scope="col">Action</th>
-  </tr>
+<% if current_user.organization.use_rider_app %>
+  <div class="container"><br>
+    <h5><strong>PENDING RIDES</strong></h5>
+    <table class="table table-bordered table-hover contains-times">
+      <tr class="border-bot">
+        <th scope="col">Rider </th>
+        <th scope="col">Driver </th>
+        <th scope="col">Pick Up Time </th>
+        <th scope="col">Action</th>
+      </tr>
 
-<% @ride.each do |ride| %>
-<tr class="clickable-row" data-href='<%= admin_ride_path(ride) %>'>
-  <td class="no-wrap"><%= ride.rider&.full_name %> </td>
-  <td class="no-wrap"><%= ride.driver&.full_name %> </td>
-  <td class="no-wrap local-time"><%= ride.pick_up_time %></td>
-  <% if ride.status == 'pending' %>
-  <td><%= link_to "Approve", approve_admin_ride_path(ride), method: :put  %> |
-    <%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put  %>  </td>
-  </tr>
+      <% @rides.each do |ride| %>
+        <tr class="clickable-row" data-href='<%= admin_ride_path(ride) %>'>
+          <td class="no-wrap"><%= ride.rider&.full_name %> </td>
+          <td class="no-wrap"><%= ride.driver&.full_name %> </td>
+          <td class="no-wrap local-time"><%= ride.pick_up_time %></td>
+          <td><%= link_to "Approve", approve_admin_ride_path(ride), method: :put  %> |
+            <%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put  %>  </td>
+        </tr>
+      <% end %>
+    </table>
+    <%= paginate(@rides) %>
+  </div>
 <% end %>
-<% end %>
-</table>
-<%= paginate(@ride) %>
+
+<div class="container"><br>
+  <h5><strong>APPROVED RIDES</strong></h5>
+  <table class="table table-bordered table-hover contains-ties">
+    <tr class="border-bot">
+      <th scope="col">Rider </th>
+      <th scope="col">Driver </th>
+      <th scope="col">Pick Up Time </th>
+      <th scope="col">Action</th>
+    </tr>
+    <% @approved_rides.each do |ride| %>
+      <tr class="clickable-row" data-href='<%= admin_ride_path(ride) %>'>
+        <td class="no-wrap"><%= ride.rider&.full_name %> </td>
+        <td class="no-wrap"><%= ride.driver&.full_name %> </td>
+        <td class="no-wrap"><%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %I:%M %p") %></td>
+        <td><%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= paginate(@rides) %>
 </div>
 
 <div class="container">
+  <h5><strong>COMPLETED RIDES</strong></h5>
   <table class="table table-bordered table-hover">
-    <tr>
+    <tr class="border-bot">
       <th scope="col">Rides completed this year</th>
       <td><%= @rides_completed_this_year %></td>
       </tr>
-      <tr>
+    <tr class="border-bot">
       <th scope="col">Rides completed Today</th>
       <td><%= @rides_completed_today %></td>
-      </tr>
+    </tr>
   </table>
 </div>
 
 
 <div class="container"><br>
-<table class="table table-bordered table-hover">
-  <h4> <strong> Drivers That are Pending </strong></h4>
-    <th scope="col">First Name</th>
-    <th scope="col">Last Name</th>
-    <th scope="col">Phone</th>
-    <th scope="col">Email</th>
-
-
-      </div>
-    </th>
-  </tr>
-
-  <% @drivers.each do |driver| %>
-    <% if driver.organization_id == current_user.organization_id%>
-      <tr class="clickable-row", data-href='<%= admin_driver_path(driver) %>'>
-        <td><%= driver.first_name %></td>
-        <td><%= driver.last_name %></td>
-        <td><%= number_to_phone(driver.phone) %></td>
-        <td><%= driver.email %></td>
-
-      </tr>
+  <h5> <strong>PENDING DRIVERS</strong></h5>
+  <table class="table table-bordered table-hover">
+    <tr style="background-color: #00bcd4;">
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+    </tr>
+    <% @drivers.each do |driver| %>
+      <% if driver.organization_id == current_user.organization_id%>
+        <tr class="clickable-row", data-href='<%= admin_driver_path(driver) %>'>
+          <td><%= driver.first_name %></td>
+          <td><%= driver.last_name %></td>
+          <td><%= number_to_phone(driver.phone) %></td>
+          <td><%= driver.email %></td>
+        </tr>
+      <% end %>
     <% end %>
-  <% end %>
-</table>
- <%= paginate(@drivers) %>
+  </table>
+  <%= paginate(@drivers) %>
 </div>
+
 
 <script type="text/javascript">
   jQuery(document).ready(function($) {

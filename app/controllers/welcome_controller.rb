@@ -16,9 +16,10 @@ class WelcomeController < ApplicationController
   end
 
   def index
-    @ride = Ride.where(organization_id: current_user.organization.id).status("pending")
-    @ride = Kaminari.paginate_array(@ride).page(params[:page]).per(5)
-    @drivers = Driver.where(organization_id: current_user.organization.id).pending
+    @rides = Ride.where("organization_id =? AND pick_up_time >=?", current_user.organization.id, Date.today).status("pending").order(:pick_up_time)
+    @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(5)
+    @approved_rides = Ride.where("organization_id =? AND pick_up_time >=?", current_user.organization.id, Date.today).status("approved").order(:pick_up_time)
+    @drivers = Driver.where(organization_id: current_user.organization.id).pending.order(:created_at)
     @rides_completed_this_year = current_year_ride_count
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(5)
     @rides_completed_today = current_day_ride_count
