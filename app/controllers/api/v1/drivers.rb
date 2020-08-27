@@ -37,22 +37,6 @@ module Api
         end
       end
 
-      params do
-        requires :email, type: String, desc: "Driver email"
-      end
-
-      post 'drivers/password_reset' do
-        @driver = Driver.find_by_email(params[:email])
-        if @driver.nil?
-          status 404
-          return {}
-        else
-          @driver.send_reset_password_instructions
-          status 201
-          return {}
-        end
-      end
-
       desc 'Return the current driver'
       params do
         # requires :id, type: String, desc: "ID of driver"
@@ -113,6 +97,60 @@ module Api
         else
           driver.destroy
           status 200
+          return {}
+        end
+      end
+
+      desc 'Driver reset there own password from the app'
+      params do
+        requires :driver, type: Hash do
+          requires :old_password, type: String
+          requires :new_password, type: String
+          requires :password_confirmation, type: String
+        end
+      end
+
+      post 'drivers/changes_password' do
+        if !current_driver
+          status 401
+          return {}
+        end
+        old_password = params[:driver][:old_password]
+        new_password = params[:driver][:new_password]
+        password_confirmation = params[:driver][:password_confirmation]
+        if current_driver.valid_password?(old_password)
+            if new_password == password_confirmation
+              current_driver.update_attributes(password: new_password, password_confirmation: password_confirmation)
+              if current_driver.save
+                status 201
+                return {}
+              else
+              status 400
+              return {error: current_driver.errors.full_messages.to_sentence}
+              end
+            else
+              status 400
+              {error: "The new password and password confirmation do not match."}
+            end
+        else
+          status 400
+          {error: "The entry for the current password is not correct."}
+        end
+      end
+
+      desc "Forgotten password, send driver an email with a link to set password"
+      params do
+        requires :email, type: String, desc: "Driver email"
+      end
+
+      post 'drivers/password_reset' do
+        @driver = Driver.find_by_email(params[:email])
+        if @driver.nil?
+          status 404
+          return {}
+        else
+          @driver.send_reset_password_instructions
+          status 201
           return {}
         end
       end
