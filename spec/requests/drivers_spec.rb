@@ -61,6 +61,18 @@ RSpec.describe Api::V1::Drivers, type: :request do
        expect(response).to have_http_status(400)
     end
 
+    it "lets driver change there own password" do
+      post '/api/v1/drivers/changes_password', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
+      params: {driver:
+      {
+        old_password: "Pa$$word20",
+        new_password: "Pa$$$word20!",
+        password_confirmation: "Pa$$$word20!"
+        }}
+        parsed_json = JSON.parse(response.body)
+        expect(response).to have_http_status(201)
+    end
+
     it 'update driver infomation ' do
        put '/api/v1/drivers', headers: {"ACCEPT" => "application/json", "Token" => logintoken },
        params:  {driver:

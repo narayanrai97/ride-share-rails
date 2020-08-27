@@ -130,11 +130,11 @@ module Api
               end
             else
               status 400
-              {error: "New password and Password confirmation does not match"}
+              {error: "The new password and password confirmation do not match."}
             end
         else
           status 400
-          {error: "Pervoius password is not correct"}
+          {error: "The entry for the current password is not correct."}
         end
       end
 
