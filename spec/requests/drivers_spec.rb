@@ -61,7 +61,7 @@ RSpec.describe Api::V1::Drivers, type: :request do
        expect(response).to have_http_status(400)
     end
 
-    it "lets driver change there own password" do
+    it "lets driver changes there own password" do
       post '/api/v1/drivers/changes_password', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
       params: {driver:
       {
@@ -69,8 +69,31 @@ RSpec.describe Api::V1::Drivers, type: :request do
         new_password: "Pa$$$word20!",
         password_confirmation: "Pa$$$word20!"
         }}
-        parsed_json = JSON.parse(response.body)
         expect(response).to have_http_status(201)
+    end
+
+    it "Error when current password is not correct" do
+      post '/api/v1/drivers/changes_password', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
+      params: {driver:
+      {
+        old_password: "PA$$Word20",
+        new_password: "Pa$$$word20!",
+        password_confirmation: "Pa$$$word20!"
+        }}
+        expect(response).to have_http_status(400)
+        expect{raise StandardError, "The entry for the current password is not correct."}.to raise_error(StandardError, "The entry for the current password is not correct." )
+    end
+
+    it "Error when new password and password confirmation does not match" do
+      post '/api/v1/drivers/changes_password', headers: {"ACCEPT" => "application/json", "Token" => logintoken},
+      params: {driver:
+      {
+        old_password: "Pa$$word20",
+        new_password: "Pa$$$word20!",
+        password_confirmation: "Pa$$$word20!!!!!"
+        }}
+        expect(response).to have_http_status(400)
+        expect{raise StandardError, "The new password and password confirmation do not match."}.to raise_error(StandardError, "The new password and password confirmation do not match." )
     end
 
     it 'update driver infomation ' do
