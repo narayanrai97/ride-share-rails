@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Admin::DriversController, type: :request do
   let!(:user) { create :user }
   let!(:driver) { create :driver, organization_id: user.organization.id }
+  let!(:organization1) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
 
   describe "Create action " do
@@ -31,7 +32,7 @@ RSpec.describe Admin::DriversController, type: :request do
 
     it 'creates a driver' do
       expect do
-        test_response = post :create, params: {
+        post admin_drivers_path, params: {
           driver: {
             first_name: 'John',
             last_name: 'Doe',
@@ -41,11 +42,23 @@ RSpec.describe Admin::DriversController, type: :request do
             password_confirmation: 'Pa$$word20'
           }
         }
-
         expect(flash[:notice]).to match("Sign up confirmation email sent to the driver.")
-        expect(test_response.response_code).to eq(302)
-        expect(test_response).to redirect_to(admin_driver_path(Driver.last))
+        expect(response.redirect?).to eq(true)
+        expect(response.redirect?).to redirect_to(admin_driver_path(Driver.last))
       end.to change(Driver, :count)
+    end
+  end
+
+  describe "New action" do
+    before do
+      login_as(user, :scope => :user)
+    end
+
+    it 'access the new action' do
+      get new_admin_driver_path
+
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:new)
     end
   end
 
