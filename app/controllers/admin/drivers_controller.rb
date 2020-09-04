@@ -44,6 +44,7 @@ class Admin::DriversController < ApplicationController
   end
 
   def create
+    byebug
     @driver = Driver.new(driver_params)
     generated_password = Devise.friendly_token.first(8)
     password_processor(generated_password)
@@ -56,6 +57,7 @@ class Admin::DriversController < ApplicationController
       flash.notice = "Sign up confirmation email sent to the driver."
       redirect_to admin_driver_path(@driver)
     else
+      byebug
       flash[:error] = @driver.errors.full_messages
       render 'new'
     end

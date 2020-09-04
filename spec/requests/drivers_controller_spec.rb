@@ -2,50 +2,51 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::DriversController, type: :controller do
+RSpec.describe Admin::DriversController, type: :request do
   let!(:user) { create :user }
   let!(:driver) { create :driver, organization_id: user.organization.id }
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
 
-  before do
-    sign_in user
-  end
-
-  it 'reports an error if the phone number is the wrong length' do
-    expect do
-      test_response = post :create, params: {
-        driver: {
-          first_name: 'John',
-          last_name: 'Doe',
-          phone: '1234567',
-          email: 'wasemail@this.com',
-          password: 'password',
-          password_confirmation: 'password'
+  describe "Create action " do
+    before do
+      login_as(user, :scope => :user )
+    end
+    # byebug
+    it 'reports an error if the phone number is the wrong length' do
+      expect do
+        post admin_drivers_path, params: {
+          driver: {
+            first_name: 'John',
+            last_name: 'Doe',
+            phone: '1234567',
+            email: 'wasemail@this.com',
+            password: 'password',
+            password_confirmation: 'password'
+          }
         }
-      }
+        expect{raise StandardError, "Phone is the wrong length (should be 10 characters)"}.to raise_error(StandardError, "Phone is the wrong length (should be 10 characters)" )
+        expect(response).to render_template(:new)
+      end.not_to change(Driver, :count)
+    end
 
-      expect(flash[:error][0]).to match(/wrong length/)
-      expect(test_response.response_code).to eq(200)
-    end.not_to change(Driver, :count)
-  end
-
-  it 'creates a driver' do
-    expect do
-      test_response = post :create, params: {
-        driver: {
-          first_name: 'John',
-          last_name: 'Doe',
-          phone: '1234567891',
-          email: 'wasemail@this.com',
-          password: 'Pa$$word20',
-          password_confirmation: 'Pa$$word20'
+    it 'creates a driver' do
+      expect do
+        test_response = post :create, params: {
+          driver: {
+            first_name: 'John',
+            last_name: 'Doe',
+            phone: '1234567891',
+            email: 'wasemail@this.com',
+            password: 'Pa$$word20',
+            password_confirmation: 'Pa$$word20'
+          }
         }
-      }
 
-      expect(flash[:notice]).to match("Sign up confirmation email sent to the driver.")
-      expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(admin_driver_path(Driver.last))
-    end.to change(Driver, :count)
+        expect(flash[:notice]).to match("Sign up confirmation email sent to the driver.")
+        expect(test_response.response_code).to eq(302)
+        expect(test_response).to redirect_to(admin_driver_path(Driver.last))
+      end.to change(Driver, :count)
+    end
   end
 
   it 'updates a driver' do
