@@ -67,7 +67,6 @@ class Admin::DriversController < ApplicationController
 
   def update
     @driver = Driver.find(params[:id])
-    # byebug
     authorize @driver
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated."
@@ -90,6 +89,7 @@ class Admin::DriversController < ApplicationController
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
+  
     authorize @driver
     @driver.update_attribute(:application_state, "rejected")
     flash.alert = "The driver application has been rejected."

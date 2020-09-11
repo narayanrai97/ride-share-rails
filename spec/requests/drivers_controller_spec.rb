@@ -113,55 +113,60 @@ RSpec.describe Admin::DriversController, type: :request do
     end
   end
 
-  it 'accepts application' do
-    test_response = put :accept, params: {
-      driver_id: driver.id
-      }
+  describe "Accept Action " do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
 
-      driver.reload
-      expect(driver.application_state).to eq("accepted")
-      expect(test_response.response_code).to eq(302)
-      expect(flash[:notice]).to match(/accepted/)
-      expect(test_response).to redirect_to(admin_driver_path(driver))
-  end
+    it 'accepts application' do
+       put admin_driver_accept_path(Driver.last.id)
+        expect(Driver.last.application_state).to eq("accepted")
+        expect(response.redirect?).to eq(true)
+        expect(flash[:notice]).to eq("The driver application has been accepted.")
+        expect(response).to redirect_to(admin_driver_path(Driver.last.id))
+    end
 
-  it 'does not accept application for driver outside organization' do
-      test_response = put :accept, params: {
-        driver_id: driver_outside_organization.id,
-        driver: { application_state: "accepted"
+    it 'does not accept application for driver outside organization' do
+        put admin_driver_accept_path(Driver.first.id), params: {
+          driver: { application_state: "accepted"
+            }
           }
+          byebug
+
+        expect(Driver.last.application_state).to eq("pending")
+        expect(response.redirect?).to eq(true)
+        expect(flash[:notice]).to eq("You are not authorized to view this information")
+        expect(response).to redirect_to(admin_drivers_path)
+    end
+  end
+
+  describe "Rejected Action " do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
+
+    it "rejects an application" do
+    put admin_driver_reject_path(Driver.last.id), params: {
+      driver: { application_state: "rejected"
         }
-
-      driver_outside_organization.reload
-      expect(driver_outside_organization.application_state).to eq("pending")
-      expect(test_response.response_code).to eq(302)
-      expect(test_response.body).to match(/You are being/)
-      expect(flash[:notice]).to match(/not authorized/)
-      expect(test_response).to redirect_to(admin_drivers_path)
-  end
-
-  it 'rejects application' do
-    test_response = put :reject, params: {
-      driver_id: driver_outside_organization.id
       }
+      expect(response.redirect?).to eq(true)
+      expect(flash[:alert]).to eq("The driver application has been rejected.")
+      expect(response).to redirect_to(admin_driver_path(Driver.last.id))
+    end
 
-    driver_outside_organization.reload
-    expect(driver.application_state).to_not eq("accepted")
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(admin_drivers_path)
-  end
-
-  it 'does not reject application for driver outside organization' do
-    test_response = put :accept, params: {
-      driver_id: driver_outside_organization.id
+    it 'does not reject application for driver outside organization' do
+    put admin_driver_reject_path(Driver.first.id), params: {
+      driver: { application_state: "rejected"
+        }
       }
-
-    driver_outside_organization.reload
-    expect(driver.application_state).to_not eq("rejected")
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(admin_drivers_path)
+      expect(Driver.last.application_state).to eq("pending")
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("You are not authorized to view this information")
+      expect(response).to redirect_to(admin_drivers_path)
+    end
   end
 
   it 'passes driver background check' do
