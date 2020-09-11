@@ -13,7 +13,6 @@ RSpec.describe Admin::DriversController, type: :request do
     before do
       login_as(user, :scope => :user )
     end
-    # byebug
     it 'reports an error if the phone number is the wrong length' do
       expect do
         post admin_drivers_path, params: {
@@ -132,8 +131,6 @@ RSpec.describe Admin::DriversController, type: :request do
           driver: { application_state: "accepted"
             }
           }
-          byebug
-
         expect(Driver.last.application_state).to eq("pending")
         expect(response.redirect?).to eq(true)
         expect(flash[:notice]).to eq("You are not authorized to view this information")
@@ -226,37 +223,36 @@ RSpec.describe Admin::DriversController, type: :request do
     end
   end
 
-  it 'deactivates driver' do
-    test_response = put :activation, params: {
-      driver_id: driver.id
-      }
-
-    driver.reload
-    expect(driver.is_active).to be(false)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:alert]).to match("Driver deactivated.")
-    expect(test_response).to redirect_to(admin_drivers_path)
-
-    test_response_2 = put :activation, params: {
-      driver_id: driver.id
-    }
-
-    driver.reload
-    expect(driver.is_active).to be(true)
-    expect(test_response_2.response_code).to eq(302)
-    expect(flash[:notice]).to match("Driver reactivated.")
-    expect(test_response_2).to redirect_to(admin_drivers_path)
-  end
-
-  it 'prevents unauthorized users from deactivating a driver outside org' do
-    test_response = put :activation, params: {
-      driver_id: driver_outside_organization.id
-    }
-
-    driver_outside_organization.reload
-    expect(driver_outside_organization.is_active).to be(true)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(admin_drivers_path)
-  end
+  # describe "Deactivated Action " do
+  #   let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+  #   before do
+  #     login_as(user2, :scope => :user)
+  #   end
+  #
+  #   it "deactivat a driver" do
+  #   put admin_driver_activation_path(Driver.last.id), params: {
+  #     driver: { is_active: true
+  #       }
+  #     }
+  #     byebug
+  #     expect(response.redirect?).to eq(true)
+  #     expect(Driver.last.is_active).to eq(false)
+  #     byebug
+  #     expect(flash[:notice]).to eq("Driver reactivated.")
+  #     expect(response).to redirect_to(admin_driver_path(Driver.last.id))
+  #   end
+  # end
+  #
+  #
+  # it 'prevents unauthorized users from deactivating a driver outside org' do
+  #   test_response = put :activation, params: {
+  #     driver_id: driver_outside_organization.id
+  #   }
+  #
+  #   driver_outside_organization.reload
+  #   expect(driver_outside_organization.is_active).to be(true)
+  #   expect(test_response.response_code).to eq(302)
+  #   expect(flash[:notice]).to match(/not authorized/)
+  #   expect(test_response).to redirect_to(admin_drivers_path)
+  # end
 end
