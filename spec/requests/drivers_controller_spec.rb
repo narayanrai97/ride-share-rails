@@ -4,8 +4,9 @@ require 'rails_helper'
 
 RSpec.describe Admin::DriversController, type: :request do
   let!(:user) { create :user }
-  let!(:driver) { create :driver, organization_id: user.organization.id }
   let!(:organization1) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
+  let!(:user2) { create :user, email: "frank@gmail.com", password: "Pa$$word100!", organization_id: organization1.id }
+  let!(:driver) { create :driver}
   let!(:driver_outside_organization) { create :driver, email: 'adriver@gmail.com' }
 
   describe "Create action " do
@@ -54,7 +55,7 @@ RSpec.describe Admin::DriversController, type: :request do
       login_as(user, :scope => :user)
     end
 
-    it 'access the new action' do
+    it 'render the new action' do
       get new_admin_driver_path
 
       expect(response.redirect?).to eq(false)
@@ -62,32 +63,54 @@ RSpec.describe Admin::DriversController, type: :request do
     end
   end
 
-  it 'updates a driver' do
-    test_response = put :update, params: {
-      id: driver.id,
-      driver: {
-        first_name: 'Lucy'
-      }
-    }
+  describe "Show action" do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
 
-    driver.reload
-    expect(driver.first_name).to eq('Lucy')
-    expect(test_response.response_code).to eq(302)
-    expect(test_response).to redirect_to(admin_driver_path)
+    it 'render the show action' do
+      get admin_driver_path(Driver.last.id)
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:show)
+    end
+
+    it "render an error when recorder is not found" do
+    get admin_ride_path(9999)
+     expect(response.redirect?).to eq(true)
+     expect(flash[:alert]).to eq("Record not found.")
+    end
   end
 
-  it 'fails to update a driver in a different organization than active user' do
+  describe "Update Action" do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
 
-      test_response = put :update, params: {
-        id: driver_outside_organization.id,
+    it 'updates a driver' do
+      put admin_driver_path(Driver.last.id), params: {
         driver: {
-          first_name: 'Sam'
+          first_name: "Memo",
+          last_name: "frog",
+          phone: "1234567890"
         }
       }
-      expect(driver_outside_organization.first_name).to_not eq('Sam')
-      expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(admin_drivers_path)
-      expect(flash[:notice]).to match(/not authorized/)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("The driver information has been updated.")
+    end
+
+    it 'fails to update a driver in a different organization than active user' do
+
+        put admin_driver_path(Driver.first.id), params: {
+          driver: {
+            first_name: 'Sam'
+          }
+        }
+        expect(driver_outside_organization.first_name).to_not eq('Sam')
+        expect(response.redirect?).to eq(true)
+        expect(flash[:notice]).to eq("You are not authorized to view this information")
+    end
   end
 
   it 'accepts application' do

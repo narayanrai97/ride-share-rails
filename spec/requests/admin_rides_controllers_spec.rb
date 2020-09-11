@@ -293,9 +293,7 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Create a ride and render the show" do
-      # byebug
-      get admin_ride_path(Ride.last.id)
-      # byebug
+       get admin_ride_path(Ride.last.id)
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
     end
