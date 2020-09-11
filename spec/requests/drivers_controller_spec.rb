@@ -169,54 +169,61 @@ RSpec.describe Admin::DriversController, type: :request do
     end
   end
 
-  it 'passes driver background check' do
-    test_response = put :pass, params: {
-      driver_id: driver.id
-      }
+  describe "fail Action " do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
 
-    driver.reload
-    expect(driver.background_check).to eq(true)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/passed/)
-    expect(test_response).to redirect_to(admin_driver_path(driver))
+    it "fails a driver background check" do
+    put admin_driver_fail_path(Driver.last.id), params: {
+      driver: { background_check: false
+        }
+      }
+      expect(response.redirect?).to eq(true)
+      expect(flash[:alert]).to eq("The driver failed.")
+      expect(response).to redirect_to(admin_driver_path(Driver.last.id))
+    end
+
+    it 'does not fail background check for driver outside organization' do
+    put admin_driver_reject_path(Driver.first.id), params: {
+      driver: { background_check: false
+        }
+      }
+      expect(Driver.first.application_state).to eq("pending")
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("You are not authorized to view this information")
+      expect(response).to redirect_to(admin_drivers_path)
+    end
   end
 
-  it 'fails driver background check' do
-    driver.update(background_check: true)
-    test_response = put :fail, params: {
-      driver_id: driver.id
+
+  describe "Pass Action " do
+    let!(:driver3)  { FactoryBot.create(:driver, first_name: "Joe", organization_id: organization1.id) }
+    before do
+      login_as(user2, :scope => :user)
+    end
+
+    it "passes a driver background check" do
+    put admin_driver_pass_path(Driver.last.id), params: {
+      driver: { background_check: true
+        }
       }
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("The driver passed.")
+      expect(response).to redirect_to(admin_driver_path(Driver.last.id))
+    end
 
-    driver.reload
-    expect(driver.background_check).to eq(false)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:alert]).to match(/The driver failed./)
-    expect(test_response).to redirect_to(admin_driver_path(driver))
-  end
-
-  it 'prevents unauthorized users from marking a driver background passed' do
-    test_response = put :pass, params: {
-      driver_id: driver_outside_organization.id
+    it 'does not pass background check for driver outside organization' do
+    put admin_driver_reject_path(Driver.first.id), params: {
+      driver: { background_check: true
+        }
       }
-
-    driver_outside_organization.reload
-    expect(driver_outside_organization.background_check).to eq(false)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(admin_drivers_path)
-  end
-
-  it 'prevents unauthorized users from marking a driver background failed' do
-    driver_outside_organization.update(background_check: true)
-    test_response = put :fail, params: {
-      driver_id: driver_outside_organization.id
-      }
-
-    driver_outside_organization.reload
-    expect(driver_outside_organization.background_check).to eq(true)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-    expect(test_response).to redirect_to(admin_drivers_path)
+      expect(Driver.first.application_state).to eq("pending")
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("You are not authorized to view this information")
+      expect(response).to redirect_to(admin_drivers_path)
+    end
   end
 
   it 'deactivates driver' do

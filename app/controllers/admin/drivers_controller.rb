@@ -89,7 +89,6 @@ class Admin::DriversController < ApplicationController
   #Method to Reject application
   def reject
     @driver = Driver.find(params[:driver_id])
-  
     authorize @driver
     @driver.update_attribute(:application_state, "rejected")
     flash.alert = "The driver application has been rejected."
@@ -111,6 +110,7 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     @driver.update_attribute(:background_check, false)
     flash.alert = "The driver failed."
+    byebug
     redirect_to admin_driver_path(@driver)
   end
 
