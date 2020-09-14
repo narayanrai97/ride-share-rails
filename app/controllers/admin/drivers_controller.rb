@@ -117,14 +117,12 @@ class Admin::DriversController < ApplicationController
     @driver = Driver.find(params[:driver_id])
     authorize @driver
     was_active = @driver.is_active
-    byebug
     @driver.toggle(:is_active).save
     if was_active == true
       flash.alert = "Driver deactivated."
     else #was_active == false
       flash.notice = "Driver reactivated."
     end
-    byebug
     redirect_to request.referrer || admin_drivers_path
   end
 
