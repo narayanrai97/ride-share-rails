@@ -55,7 +55,6 @@ RSpec.describe AdminRideController, type: :request do
 
     it "raises expection when rider is not found" do
       expect do
-        # byebug
         post admin_ride_index_path, params:{
         ride: {
         rider_id: 9999,
@@ -82,7 +81,6 @@ RSpec.describe AdminRideController, type: :request do
     it "Check if organization uses tokens" do
       login_as(admin2, :scope => :user )
       expect do
-        # byebug
         post admin_ride_index_path, params:{
         ride: {
         rider_id: select_rider3.id,
@@ -107,10 +105,9 @@ RSpec.describe AdminRideController, type: :request do
     it "Error when start location is not provide" do
       login_as(admin2, :scope => :user )
       expect do
-        # byebug
-        post admin_ride_index_path, params:{
-        ride: {
-        rider_id: select_rider3.id,
+       post admin_ride_index_path, params:{
+       ride: {
+       rider_id: select_rider3.id,
        pick_up_time: DateTime.now - 6.days,
        save_start_location: true,
        save_end_location: true,
@@ -123,7 +120,6 @@ RSpec.describe AdminRideController, type: :request do
         }
       }
     end.not_to change(Ride, :count)
-    # byebug
     expect{raise NameError, "Street can't be blank."}.to raise_error( NameError, "Street can't be blank.")
     expect{raise NameError, "City can't be blank."}.to raise_error( NameError, "City can't be blank.")
     expect{raise NameError, "State can't be blank."}.to raise_error( NameError, "State can't be blank.")
@@ -134,10 +130,9 @@ RSpec.describe AdminRideController, type: :request do
 
     it "Error when end location is not provide" do
       expect do
-        # byebug
-        post admin_ride_index_path, params:{
-        ride: {
-        rider_id: select_rider.id,
+       post admin_ride_index_path, params:{
+       ride: {
+       rider_id: select_rider.id,
        pick_up_time: DateTime.now + 6.days,
        save_start_location: true,
        save_end_location: true,
@@ -179,7 +174,6 @@ RSpec.describe AdminRideController, type: :request do
            round_trip: false
             }
           }
-          # byebug
           @next_token.ride_id = Ride.last.id
           @next_token.save
           end.to change(Ride, :count)
@@ -211,7 +205,6 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.not_to change(Ride, :count)
-          # byebug
       expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:new)
@@ -293,16 +286,13 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Create a ride and render the show" do
-      # byebug
-      get admin_ride_path(Ride.last.id)
-      # byebug
+       get admin_ride_path(Ride.last.id)
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
     end
 
     it "Error when ride can not be found" do
-      # byebug
-      get admin_ride_path(9999)
+       get admin_ride_path(9999)
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
        expect(flash[:alert]).to eq("Record not found.")
