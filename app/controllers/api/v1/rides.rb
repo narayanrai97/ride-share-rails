@@ -16,14 +16,20 @@
         optional :end, type: DateTime, desc: "End date for rides"
         optional :status, type: Array[String], except_values: ['pending'], desc: "String of status wanted"
         optional :driver_specific, type: Boolean, desc: "Boolean if rides are driver specific"
+        optional :current, type: Boolean, desc: "List current rides if true else entire rides"
         #Missing functionality for radius feature currently
         optional :radius, type: Boolean, desc: "Boolean if rides are within radius"
         optional :location_id, type: Integer, desc: "location to use for radius"
       end
       get "rides", root: :rides do
+        if params[:current] || params[:current].nil?
+          all_rides = Ride.where("organization_id = ? AND pick_up_time >=?", current_driver.organization.id, DateTime.now)
+        else
+          all_rides = Ride.where("organization_id = ?", current_driver.organization.id)
+        end
         status = ["scheduled", "picking-up", "dropping-off", "waiting", "return-picking-up", "return-dropping-off", "completed", "canceled"]
-        approved_rides = Ride.where(organization_id: current_driver.organization_id, status: "approved")
-        drivers_rides = Ride.where(organization_id: current_driver.organization_id, status: status, driver_id: current_driver.id)
+        approved_rides = all_rides.status("approved")
+        drivers_rides = all_rides.where(status: status, driver_id: current_driver.id)
         rides = approved_rides.or(drivers_rides).order(:pick_up_time)
 
         start_time = params[:start]
