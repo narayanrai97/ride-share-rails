@@ -13,7 +13,7 @@ class Admin::VehiclesController < ApplicationController
     # byebug
     @vehicle.driver_id= params[:driver_id]
     driver = Driver.find(params[:driver_id])
-    byebug
+    # byebug
     if current_user.organization_id == driver.organization_id
 
       if @vehicle.save
@@ -21,12 +21,14 @@ class Admin::VehiclesController < ApplicationController
         redirect_to admin_driver_path(params[:driver_id])
       else
         flash.alert = @vehicle.errors.full_messages.join(' ')
+        byebug
         redirect_to admin_driver_path(params[:driver_id])
       end
 
     else
+      # byebug
       flash.alert = "You cannot create vehicles outside your organization"
-      redirect_to admin_driver_path
+      redirect_to admin_driver_path(params[:driver_id])
     end
 
   end
