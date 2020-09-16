@@ -20,7 +20,7 @@ class Admin::VehiclesController < ApplicationController
         flash.notice = "The vehicle information has been created"
         redirect_to admin_driver_path(params[:driver_id])
       else
-        flash.alert = @vehicle.errors.full_messages.join(' ')
+        flash.alert = @vehicle.errors.full_messages.join(', ')
         byebug
         redirect_to admin_driver_path(params[:driver_id])
       end
