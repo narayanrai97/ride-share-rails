@@ -8,10 +8,12 @@ class Admin::VehiclesController < ApplicationController
   end
 
   def create
+    # byebug
     @vehicle = Vehicle.new(vehicle_params)
+    # byebug
     @vehicle.driver_id= params[:driver_id]
     driver = Driver.find(params[:driver_id])
-
+    byebug
     if current_user.organization_id == driver.organization_id
 
       if @vehicle.save
