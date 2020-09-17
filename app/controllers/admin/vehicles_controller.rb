@@ -28,7 +28,7 @@ class Admin::VehiclesController < ApplicationController
 
   def edit
     @vehicle = Vehicle.find(params[:id])
-
+    byebug
     if current_user.organization_id != @vehicle.driver.organization_id
 
         flash.notice = "You are not authorized to view that vehicle"

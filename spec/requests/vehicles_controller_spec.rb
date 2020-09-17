@@ -4,7 +4,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
   let!(:organization1) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
   let!(:user) { create :user, organization_id: organization1.id }
   let!(:driver) { FactoryBot.create :driver}
-  # let(:vehicle) {FactoryBot.create(:vehicle, driver_id: driver.id)}
+  let(:vehicle) {FactoryBot.create(:vehicle, driver_id: driver.id)}
 
   describe "Create Action" do
     let!(:driver1) { FactoryBot.create(:driver, first_name: "Frank", organization_id: organization1.id)}
@@ -80,15 +80,25 @@ RSpec.describe Admin::VehiclesController, type: :request do
   end
 
   describe "New action " do
-    # let!(:driver1) { FactoryBot.create(:driver, first_name: "Frank", organization_id: organization1.id)}
     before do
       login_as(user, :scope => :user)
     end
-    # byebug
     it "render new action" do
     get new_admin_driver_vehicle_path(Driver.first.id)
     expect(response.redirect?).to eq(false)
     expect(response).to render_template(:new)
+    end
+  end
+
+  describe "edit action " do
+    before do
+      login_as(user, :scope => :user)
+    end
+    it "render edit action" do
+    get edit_admin_driver_vehicle_path(Driver.first.id)
+    # expect(response.redirect?).to eq(false)
+    # expect(response).to render_template(:new)
+    byebug
     end
   end
 
