@@ -6,7 +6,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
   let!(:driver) { FactoryBot.create :driver}
   let!(:driver1) { FactoryBot.create(:driver, first_name: "Frank", organization_id: organization1.id)}
   let!(:vehicle) {FactoryBot.create(:vehicle, driver_id: driver1.id)}
-
+  let!(:vehicle1) {FactoryBot.create(:vehicle, driver_id: driver.id)}
 
   describe "Create Action" do
     before do
@@ -83,30 +83,89 @@ RSpec.describe Admin::VehiclesController, type: :request do
       login_as(user, :scope => :user)
     end
     it "render new action" do
-    get new_admin_driver_vehicle_path(Driver.first.id)
+    get new_admin_driver_vehicle_path(Driver.last.id)
     expect(response.redirect?).to eq(false)
     expect(response).to render_template(:new)
     end
   end
 
   describe "edit action " do
-    let!(:vehicle) {FactoryBot.create(:vehicle, driver_id: driver.id)}
+    let!(:vehicle1) {FactoryBot.create(:vehicle, driver_id: driver.id)}
     before do
       login_as(user, :scope => :user)
     end
     it "render edit action" do
-    get edit_admin_vehicle_path(Vehicle.first.id)
+    get edit_admin_vehicle_path(vehicle.id)
     expect(response.redirect?).to eq(false)
     expect(response).to render_template(:edit)
     end
 
     it "Error when driver belongs to another organization" do
-    get edit_admin_vehicle_path(Vehicle.first.id)
+    get edit_admin_vehicle_path(vehicle1.id)
     expect(response.redirect?).to eq(true)
     expect(flash[:notice]).to match("You are not authorized to view that vehicle")
     expect(response.redirect?).to redirect_to(admin_drivers_path)
     end
   end
 
+  describe "Update action" do
+    before do
+      login_as(user, :scope => :user)
+    end
 
+    it "Updates a record" do
+      expect do
+        put admin_vehicle_path(vehicle.id), params: {
+          vehicle: {
+          car_make: "Toyato",
+          car_model: "Camery",
+          car_year: 2012,
+          car_color: "Silver",
+          car_plate: "VZW1212",
+          insurance_provider: "Geico",
+          insurance_start: Date.today,
+          insurance_stop: Date.today,
+          seat_belt_num: 5
+          }
+        }
+        expect(flash[:notice]).to match("The vehicle information has been updated")
+        expect(response.redirect?).to eq(true)
+        expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
+      end.not_to change(Vehicle, :count)
+    end
+
+    it "Error when vehicle update is missing required information" do
+      put admin_vehicle_path(vehicle.id), params: {
+        vehicle: {
+        car_year: 2019,
+        car_color: "Silver",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: Date.today - 1.year,
+        insurance_stop: Date.today,
+        seat_belt_num: "first"
+        }
+      }
+      expect{raise StandardError, "Seat belt num is not a number"}.to raise_error(StandardError, "Seat belt num is not a number" )
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:edit)
+    end
+
+      it "Error when drivers from another organization" do
+        put admin_vehicle_path(vehicle1.id), params: {
+          vehicle: {
+          car_year: 2019,
+          car_color: "Silver",
+          car_plate: "VZW1212",
+          insurance_provider: "Geico",
+          insurance_start: Date.today - 1.year,
+          insurance_stop: Date.today,
+          seat_belt_num: 2
+          }
+        }
+        expect(flash[:alert]).to eq("You cannot update vehicles outside your organization")
+        expect(response.redirect?).to eq(true)
+        expect(response.redirect?).to redirect_to(admin_drivers_path)
+      end
+    end
 end

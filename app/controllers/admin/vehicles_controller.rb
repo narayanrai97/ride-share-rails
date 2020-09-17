@@ -36,9 +36,7 @@ class Admin::VehiclesController < ApplicationController
 
   def update
     @vehicle = Vehicle.find(params[:id])
-
       if current_user.organization_id == @vehicle.driver.organization_id
-
         if @vehicle.update(vehicle_params)
           flash.notice = "The vehicle information has been updated"
           redirect_to admin_driver_path(@vehicle.driver_id)
@@ -46,12 +44,10 @@ class Admin::VehiclesController < ApplicationController
           flash.alert = @vehicle.errors.full_messages.join(' ')
           render "edit"
         end
-
       else
         flash.alert = "You cannot update vehicles outside your organization"
         redirect_to admin_drivers_path
       end
-
   end
 
   def destroy
