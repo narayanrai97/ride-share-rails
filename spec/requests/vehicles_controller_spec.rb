@@ -4,6 +4,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
   let!(:organization1) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
   let!(:user) { create :user, organization_id: organization1.id }
   let!(:driver) { FactoryBot.create :driver}
+  # let(:vehicle) {FactoryBot.create(:vehicle, driver_id: driver.id)}
 
   describe "Create Action" do
     let!(:driver1) { FactoryBot.create(:driver, first_name: "Frank", organization_id: organization1.id)}
@@ -32,7 +33,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
       end.to change(Vehicle, :count)
     end
 
-    it "Error when vehicle information are missing" do
+    it "Error when vehicle informations are missing" do
       expect do
       post admin_driver_vehicles_path(Driver.last.id), params: {
          vehicle: {
@@ -76,8 +77,19 @@ RSpec.describe Admin::VehiclesController, type: :request do
       expect(response.redirect?).to redirect_to(admin_driver_path(Driver.first.id))
       end.not_to change(Vehicle, :count)
     end
+  end
 
-
+  describe "New action " do
+    # let!(:driver1) { FactoryBot.create(:driver, first_name: "Frank", organization_id: organization1.id)}
+    before do
+      login_as(user, :scope => :user)
+    end
+    # byebug
+    it "render new action" do
+    get new_admin_driver_vehicle_path(Driver.first.id)
+    expect(response.redirect?).to eq(false)
+    expect(response).to render_template(:new)
+    end
   end
 
 
