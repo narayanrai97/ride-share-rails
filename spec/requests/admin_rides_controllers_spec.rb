@@ -105,9 +105,15 @@ RSpec.describe AdminRideController, type: :request do
     it "Error when start location is not provide" do
       login_as(admin2, :scope => :user )
       expect do
+<<<<<<< HEAD
         post admin_ride_index_path, params:{
         ride: {
         rider_id: select_rider3.id,
+=======
+       post admin_ride_index_path, params:{
+       ride: {
+       rider_id: select_rider3.id,
+>>>>>>> master
        pick_up_time: DateTime.now - 6.days,
        save_start_location: true,
        save_end_location: true,
@@ -292,7 +298,11 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Error when ride can not be found" do
+<<<<<<< HEAD
       get admin_ride_path(9999)
+=======
+       get admin_ride_path(9999)
+>>>>>>> master
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
        expect(flash[:alert]).to eq("Record not found.")
