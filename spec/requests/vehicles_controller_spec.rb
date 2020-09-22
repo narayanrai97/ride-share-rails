@@ -15,7 +15,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
 
     it "Create a vehicle" do
       expect do
-      post admin_driver_vehicles_path(Driver.last.id), params: {
+      post admin_driver_vehicles_path(driver1.id), params: {
          vehicle: {
          car_make: "Chevorlet",
          car_model: "Impala",
@@ -30,13 +30,13 @@ RSpec.describe Admin::VehiclesController, type: :request do
       }
       expect(flash[:notice]).to match("The vehicle information has been created")
       expect(response.redirect?).to eq(true)
-      expect(response.redirect?).to redirect_to(admin_driver_path(Driver.last.id))
+      expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
       end.to change(Vehicle, :count)
     end
 
     it "Error when vehicle informations are missing" do
       expect do
-      post admin_driver_vehicles_path(Driver.last.id), params: {
+      post admin_driver_vehicles_path(driver1.id), params: {
          vehicle: {
          car_make: "Chevorlet",
          car_model: "Impala",
@@ -51,14 +51,14 @@ RSpec.describe Admin::VehiclesController, type: :request do
       expect{raise StandardError, "Insurance start can't be blank"}.to raise_error(StandardError, "Insurance start can't be blank" )
       expect{raise StandardError, "Insurance stop can't be blank"}.to raise_error(StandardError, "Insurance stop can't be blank" )
       expect(response.redirect?).to eq(true)
-      expect(response.redirect?).to redirect_to(admin_driver_path(Driver.last.id))
+      expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
       end.not_to change(Vehicle, :count)
     end
 
 
     it "Error when driver belongs to another organization" do
       expect do
-      post admin_driver_vehicles_path(Driver.first.id), params: {
+      post admin_driver_vehicles_path(driver.id), params: {
          vehicle: {
          car_make: "Chevorlet",
          car_model: "Impala",
@@ -73,7 +73,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
       }
       expect(flash[:alert]).to match("You cannot create vehicles outside your organization")
       expect(response.redirect?).to eq(true)
-      expect(response.redirect?).to redirect_to(admin_driver_path(Driver.first.id))
+      expect(response.redirect?).to redirect_to(admin_driver_path(driver.id))
       end.not_to change(Vehicle, :count)
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
       login_as(user, :scope => :user)
     end
     it "render new action" do
-    get new_admin_driver_vehicle_path(Driver.last.id)
+    get new_admin_driver_vehicle_path(driver1.id)
     expect(response.redirect?).to eq(false)
     expect(response).to render_template(:new)
     end
@@ -151,21 +151,44 @@ RSpec.describe Admin::VehiclesController, type: :request do
       expect(response).to render_template(:edit)
     end
 
-      it "Error when drivers from another organization" do
-        put admin_vehicle_path(vehicle1.id), params: {
-          vehicle: {
-          car_year: 2019,
-          car_color: "Silver",
-          car_plate: "VZW1212",
-          insurance_provider: "Geico",
-          insurance_start: Date.today - 1.year,
-          insurance_stop: Date.today,
-          seat_belt_num: 2
-          }
+    it "Error when drivers from another organization" do
+      put admin_vehicle_path(vehicle1.id), params: {
+        vehicle: {
+        car_year: 2019,
+        car_color: "Silver",
+        car_plate: "VZW1212",
+        insurance_provider: "Geico",
+        insurance_start: Date.today - 1.year,
+        insurance_stop: Date.today,
+        seat_belt_num: 2
         }
-        expect(flash[:alert]).to eq("You cannot update vehicles outside your organization")
-        expect(response.redirect?).to eq(true)
-        expect(response.redirect?).to redirect_to(admin_drivers_path)
-      end
+      }
+      expect(flash[:alert]).to eq("You cannot update vehicles outside your organization")
+      expect(response.redirect?).to eq(true)
+      expect(response.redirect?).to redirect_to(admin_drivers_path)
     end
+  end
+
+  describe "Delete action " do
+    before do
+      login_as(user, :scope => :user)
+    end
+
+    it "Delete a vehicle " do
+      delete admin_vehicle_path(vehicle.id)
+      expect(response.redirect?).to eq(true)
+      expect(Vehicle.count).to eq(1)
+      expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
+    end
+
+    it "Error when driver is from another organization " do
+      delete admin_vehicle_path(vehicle1.id)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:alert]).to eq("You cannot delete vehicles outside your organization")
+      expect(Vehicle.count).to eq(2)
+      expect(response.redirect?).to redirect_to(admin_drivers_path)
+    end
+
+  end
+
 end
