@@ -45,11 +45,11 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_plate: "VZW1212",
        }
       }
-      expect{raise StandardError, "Seat belt num can't be blank"}.to raise_error(StandardError, "Seat belt num can't be blank" )
-      expect{raise StandardError, "Seat belt num is not a number"}.to raise_error(StandardError, "Seat belt num is not a number" )
-      expect{raise StandardError, "Insurance provider can't be blank"}.to raise_error(StandardError, "Insurance provider can't be blank" )
-      expect{raise StandardError, "Insurance start can't be blank"}.to raise_error(StandardError, "Insurance start can't be blank" )
-      expect{raise StandardError, "Insurance stop can't be blank"}.to raise_error(StandardError, "Insurance stop can't be blank" )
+      expect(flash[:alert]).to match("Seat belt num can't be blank" )
+      expect(flash[:alert]).to match("Seat belt num is not a number" )
+      expect(flash[:alert]).to match("Insurance provider can't be blank" )
+      expect(flash[:alert]).to match("Insurance start can't be blank" )
+      expect(flash[:alert]).to  match("Insurance stop can't be blank" )
       expect(response.redirect?).to eq(true)
       expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
       end.not_to change(Vehicle, :count)
