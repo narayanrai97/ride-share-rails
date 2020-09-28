@@ -15,11 +15,10 @@ class Admin::DriversController < ApplicationController
     @vehicles = @driver.vehicles
     @locations = @driver.locations
     @schedules = @driver.schedule_windows
-
     @agenda = Hash.new{ |h,k| h[k] = []}
     events = @driver.events(params[:query_start_date] ||= DateTime.now, params[:query_end_date] ||= (DateTime.now + 3.months)).sort_by { |event| event[:startTime] }
     events.each do |event|
-      @agenda[Date.parse(event[:startTime].to_s).beginning_of_week] << event
+    @agenda[Date.parse(event[:startTime].to_s).beginning_of_week] << event
     end
   end
 
@@ -69,11 +68,11 @@ class Admin::DriversController < ApplicationController
   def update
     @driver = Driver.find(params[:id])
     authorize @driver
-
     if @driver.update(driver_params)
       flash.notice = "The driver information has been updated."
       redirect_to admin_driver_path(@driver)
     else
+      @driver.errors.full_messages
       render 'edit'
     end
   end
@@ -119,7 +118,6 @@ class Admin::DriversController < ApplicationController
     authorize @driver
     was_active = @driver.is_active
     @driver.toggle(:is_active).save
-
     if was_active == true
       flash.alert = "Driver deactivated."
     else #was_active == false
