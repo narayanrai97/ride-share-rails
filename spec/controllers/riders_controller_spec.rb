@@ -11,7 +11,7 @@ RSpec.describe RidersController, type: :controller do
     sign_in user
   end
 
-  it 'creates a rider' do
+  xit 'creates a rider' do
     expect do
       test_response = post :create, params: {
         rider: {
@@ -29,7 +29,7 @@ RSpec.describe RidersController, type: :controller do
     end.to change(Rider, :count)
   end
 
-  it 'updates a rider' do
+  xit 'updates a rider' do
     test_response = put :update, params: {
       id: rider.id,
       rider: {
@@ -43,7 +43,7 @@ RSpec.describe RidersController, type: :controller do
     expect(test_response).to redirect_to(rider)
   end
 
-  it 'fails to update a rider in a different organization than active user' do
+  xit 'fails to update a rider in a different organization than active user' do
     test_response = put :update, params: {
       id: rider_outside_organization.id,
       rider: {
@@ -57,7 +57,7 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
   end
 
-  it 'bulk updates tokens for a rider' do
+  xit 'bulk updates tokens for a rider' do
     test_response = post :bulk_update, params: {
       rider_id: rider.id,
       quantity: 5,
@@ -77,7 +77,7 @@ RSpec.describe RidersController, type: :controller do
     expect(test_response_2.response_code).to eq(302)
   end
 
-  it 'fails to update tokens for a rider in a different organization than the active user' do
+  xit 'fails to update tokens for a rider in a different organization than the active user' do
     test_response = post :bulk_update, params: {
       rider_id: rider_outside_organization.id,
       quantity: 5,
@@ -89,7 +89,7 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:notice]).to match(/not authorized/)
   end
 
-  it 'deactivates a rider' do
+  xit 'deactivates a rider' do
     test_response = put :activation, params: {
       rider_id: rider.id,
     }
@@ -98,7 +98,7 @@ RSpec.describe RidersController, type: :controller do
     expect(flash[:alert]).to match("Rider deactivated.")
   end
 
-  it 'fails to deactivate a rider in a different organization than the active user' do
+  xit 'fails to deactivate a rider in a different organization than the active user' do
     test_response = put :activation, params: {
       rider_id: rider_outside_organization.id,
     }

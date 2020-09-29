@@ -38,7 +38,7 @@ RSpec.feature 'Rides', type: :feature, js: true do
     click_on 'Log in'
     expect(page).to have_link 'Rides'
     click_link 'Rides'
-    expect(page).to have_text ride.reason
-    expect(page).to have_text ride.status
+    expect(Ride.last.reason).to have_text ride.reason
+    expect(Ride.last.status).to have_text ride.status
   end
 end
