@@ -112,6 +112,10 @@ class AdminRideController < ApplicationController
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
     round_trip_save
+    byebug
+    if !locations_can_not_be_the_same
+      return
+    end
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -246,6 +250,16 @@ class AdminRideController < ApplicationController
     if ride_params[:save_end_location] == 'saved'
       lr2 = LocationRelationship.new(location_id: @ride.end_location.id, organization_id: current_user.organization.id)
       lr2.save_or_touch
+    end
+  end
+
+  def locations_can_not_be_the_same
+    if @ride.start_location == @ride.end_location
+      flash.now[:alert] = "Start location and end location can not be the same"
+      render 'new'
+      return false
+    else
+      return true
     end
   end
 
