@@ -40,7 +40,7 @@ class RidersController < ApplicationController
 
     if @rider.save
       flash.notice = "Rider created."
-      redirect_to @rider
+      redirect_to rider_path(@rider)
     else
       render 'new'
     end

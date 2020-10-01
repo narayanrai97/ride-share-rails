@@ -2,31 +2,35 @@
 
 require 'rails_helper'
 
-RSpec.describe RidersController, type: :controller do
+RSpec.describe RidersController, type: :request do
   let!(:user) { create :user }
   let!(:rider) { create :rider, organization_id: user.organization.id }
   let!(:rider_outside_organization) { create :rider, email: 'whatever@gmail.com' }
 
-  before do
-    sign_in user
-  end
+  describe "Create action " do
+    before do
+      login_as(user, :scope => :user )
+    end
 
-  it 'creates a rider' do
-    expect do
-      test_response = post :create, params: {
-        rider: {
-          first_name: 'John',
-          last_name: 'Doe',
-          phone: '1234567890',
-          email: 'wasemail@this.com',
-          password: 'Pa$$word20',
-          password_confirmation: 'Pa$$word20'
+    it 'creates a rider' do
+      expect do
+        # byebug
+        post riders_path, params: {
+          rider: {
+            first_name: 'John',
+            last_name: 'Doe',
+            phone: '1234567890',
+            email: 'wasemail@this.com',
+            password: 'Pa$$word20',
+            password_confirmation: 'Pa$$word20'
+          }
         }
-      }
-
-      expect(test_response.response_code).to eq(302)
-      expect(test_response).to redirect_to(Rider.last)
-    end.to change(Rider, :count)
+        # byebug
+        expect(response.redirect?).to eq(true)
+        expect(flash[:notice]).to match("Rider created.")
+        expect(response.redirect?).to redirect_to(rider_path(Rider.last))
+      end.to change(Rider, :count)
+    end
   end
 
   it 'updates a rider' do
