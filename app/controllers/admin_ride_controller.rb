@@ -256,8 +256,14 @@ class AdminRideController < ApplicationController
   def locations_can_not_be_the_same
     if @ride.start_location == @ride.end_location
       flash.now[:alert] = "Start location and end location can not be the same"
-      render 'new'
-      return false
+      byebug
+      if @ride.id
+        render 'edit'
+        return false
+      else
+        render 'new'
+        return false
+      end
     else
       return true
     end
