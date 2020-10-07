@@ -14,7 +14,6 @@ class RidersController < ApplicationController
   def show
     @rider = Rider.find(params[:id])
     authorize @rider
-    byebug
     @locations = @rider.locations
     @rides = Ride.where("rider_id =? AND pick_up_time >= ?", @rider.id, Date.today)
     @rides = Ride.status(params[:status]).where("rider_id =? AND pick_up_time >= ?", @rider.id, Date.today) if params[:status].present?
