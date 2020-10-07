@@ -4,7 +4,10 @@ require 'rails_helper'
 
 RSpec.describe RidersController, type: :request do
   let!(:user) { create :user }
+  let!(:organization1) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
   let!(:rider) { create :rider, organization_id: user.organization.id }
+  let!(:token) {create :token, rider_id: rider.id}
+  let!(:rider1) { create :rider, first_name: "James", organization_id: organization1.id }
   let!(:rider_outside_organization) { create :rider, email: 'whatever@gmail.com' }
 
   describe "Create action " do
@@ -14,7 +17,6 @@ RSpec.describe RidersController, type: :request do
 
     it 'creates a rider' do
       expect do
-        # byebug
         post riders_path, params: {
           rider: {
             first_name: 'John',
@@ -25,90 +27,158 @@ RSpec.describe RidersController, type: :request do
             password_confirmation: 'Pa$$word20'
           }
         }
-        # byebug
         expect(response.redirect?).to eq(true)
         expect(flash[:notice]).to match("Rider created.")
-        expect(response.redirect?).to redirect_to(rider_path(Rider.last))
       end.to change(Rider, :count)
+    end
+
+    it 'reports an error if the phone number is the wrong length' do
+      expect do
+        post riders_path, params: {
+          rider: {
+            first_name: 'John',
+            last_name: 'Doe',
+            phone: '1234567',
+            email: 'wasemail@this.com',
+            password: 'password',
+            password_confirmation: 'password'
+          }
+        }
+        expect(response).to render_template(:new)
+      end.not_to change(Rider, :count)
     end
   end
 
-  it 'updates a rider' do
-    test_response = put :update, params: {
-      id: rider.id,
-      rider: {
-        first_name: 'Jane',
+  describe "New action" do
+    before do
+      login_as(user, :scope => :user )
+    end
+    it "rider new action" do
+      get new_rider_path(rider.id)
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:new)
+    end
+  end
+
+  describe "edit action" do
+    before do
+      login_as(user, :scope => :user )
+    end
+    it "render edit action" do
+      get edit_rider_path(rider.id)
+      expect(response.redirect?).to eq(false)
+      expect(response).to render_template(:edit)
+    end
+
+    it "Error when rider belongs to another organization" do
+    get edit_rider_path(rider1.id)
+    expect(response.redirect?).to eq(true)
+    expect(flash[:notice]).to match("You are not authorized to view this information")
+    end
+  end
+
+  describe "Show action" do
+    before do
+      login_as(user, :scope => :user )
+    end
+    it "rider show action" do
+      get rider_path(rider.id)
+      expect(response.redirect?).to eq(false)
+    end
+
+    it "Error when rider belongs to another organization" do
+      get rider_path(rider1.id)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to match("You are not authorized to view this information")
+    end
+  end
+
+  describe "Update action " do
+    before do
+      login_as(user, :scope => :user )
+    end
+    it 'updates a rider' do
+      expect do
+       put rider_path(rider.id), params: {
+        id: rider.id,
+        rider: {
+          first_name: 'Jane'
+        }
       }
-    }
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to match("The rider information has been updated")
+      end.not_to change(Rider, :count)
+    end
 
-    rider.reload
-    expect(rider.first_name).to eq('Jane')
-    expect(test_response.response_code).to eq(302)
-    expect(test_response).to redirect_to(rider)
-  end
-
-  it 'fails to update a rider in a different organization than active user' do
-    test_response = put :update, params: {
-      id: rider_outside_organization.id,
-      rider: {
-        first_name: 'Jane'
+    it 'fails to update a rider in a different organization' do
+      expect do
+       put rider_path(rider1.id), params: {
+        id: rider.id,
+        rider: {
+          first_name: 'Jane'
+        }
       }
-    }
-
-    expect(rider_outside_organization.first_name).to_not eq('Jane')
-    expect(test_response.response_code).to eq(302)
-    expect(test_response).to redirect_to(riders_path)
-    expect(flash[:notice]).to match(/not authorized/)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to match("You are not authorized to view this information")
+      end.not_to change(Rider, :count)
+    end
   end
 
-  it 'bulk updates tokens for a rider' do
-    test_response = post :bulk_update, params: {
-      rider_id: rider.id,
-      quantity: 5,
-      commit: "Add"
-    }
+  describe "Bulk tokens actions " do
+    before do
+      login_as(user, :scope => :user )
+    end
 
-    expect(rider.valid_tokens.count).to eq(5)
-    expect(test_response.response_code).to eq(302)
+    it 'bulk updates tokens for a rider' do
+      post bulk_update_riders_path, params: {
+        rider_id: rider.id,
+        quantity: 5,
+        commit: "Add"
+        }
+      expect(rider.valid_tokens.count).to eq(6)
+      expect(redirect?).to eq(true)
+    end
 
-    test_response_2 = post :bulk_update, params: {
-      rider_id: rider.id,
-      quantity: 3,
-      commit: "Remove"
-    }
+    it 'bulk updates tokens for a rider' do
+      post bulk_update_riders_path, params: {
+        rider_id: rider.id,
+        quantity: 1,
+        commit: "Remove"
+        }
+        expect(rider.valid_tokens.count).to eq(0)
+        expect(redirect?).to eq(true)
+    end
 
-    expect(rider.valid_tokens.count).to eq(2)
-    expect(test_response_2.response_code).to eq(302)
+    it 'fails to update tokens when rider is in a different organization' do
+      post bulk_update_riders_path, params: {
+        rider_id: rider1.id,
+        quantity: 1,
+        commit: "Remove"
+        }
+        expect(rider.valid_tokens.count).to eq(1)
+        expect(redirect?).to eq(true)
+    end
   end
 
-  it 'fails to update tokens for a rider in a different organization than the active user' do
-    test_response = post :bulk_update, params: {
-      rider_id: rider_outside_organization.id,
-      quantity: 5,
-      commit: "Add"
-    }
+  describe "Activation action " do
+    before do
+      login_as(user, :scope => :user )
+    end
 
-    expect(rider_outside_organization.valid_tokens.count).to_not eq(5)
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
+    it 'deactivates a rider' do
+       put rider_activation_path(rider.id), params: {
+        is_active: true
+      }
+      expect(redirect?).to eq(true)
+      expect(flash[:alert]).to match("Rider deactivated.")
+    end
+
+    it 'fails to deactivate a rider in a different organization' do
+       put rider_activation_path(rider1.id), params: {
+        is_active: false
+      }
+      expect(redirect?).to eq(true)
+      expect(flash[:notice]).to match("not authorized")
+    end
   end
-
-  it 'deactivates a rider' do
-    test_response = put :activation, params: {
-      rider_id: rider.id,
-    }
-
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:alert]).to match("Rider deactivated.")
-  end
-
-  it 'fails to deactivate a rider in a different organization than the active user' do
-    test_response = put :activation, params: {
-      rider_id: rider_outside_organization.id,
-    }
-
-    expect(test_response.response_code).to eq(302)
-    expect(flash[:notice]).to match(/not authorized/)
-  end
-
 end
