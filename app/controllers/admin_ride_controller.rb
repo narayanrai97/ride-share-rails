@@ -112,7 +112,6 @@ class AdminRideController < ApplicationController
     @ride.end_location_id = @end_location.id
     @ride.status = 'approved'
     round_trip_save
-    byebug
     if !locations_can_not_be_the_same
       return
     end
@@ -201,6 +200,9 @@ class AdminRideController < ApplicationController
       end
       return unless round_trip_save
     end
+    if !locations_can_not_be_the_same
+      return
+    end
     rider_choose_save_location
     flash.notice = 'The ride information has been updated.'
     redirect_to admin_ride_path(@ride)
@@ -254,14 +256,13 @@ class AdminRideController < ApplicationController
   end
 
   def locations_can_not_be_the_same
-    if @ride.start_location == @ride.end_location
+    if @ride.start_location.full_address == @ride.end_location.full_address
       flash.now[:alert] = "Start location and end location can not be the same"
-      byebug
       if @ride.id
-        render 'edit'
+        render "edit"
         return false
       else
-        render 'new'
+        render "new"
         return false
       end
     else
