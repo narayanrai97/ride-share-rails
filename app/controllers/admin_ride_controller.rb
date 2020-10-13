@@ -77,6 +77,7 @@ class AdminRideController < ApplicationController
                                  zip: ride_params[:end_zip])
     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
+                     driver_id: driver.id,
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
                      round_trip: ride_params[:round_trip],
@@ -89,6 +90,7 @@ class AdminRideController < ApplicationController
                               round_trip: false,
                               notes: ride_params[:notes])
     end
+    byebug
     if !return_pick_up_time_not_in_past
       return
     end
