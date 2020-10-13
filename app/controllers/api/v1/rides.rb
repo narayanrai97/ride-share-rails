@@ -29,8 +29,16 @@
         start_time = params[:start]
         end_time = params[:end]
 
-        if start_time.present? and end_time.present?
-          rides = rides.where("pick_up_time >= ?", start_time).where("pick_up_time <= ?", end_time)
+        if start_time.present?
+          rides = rides.where("pick_up_time >= ?", start_time)
+          if rides.length == 0
+            status 404
+            return {}
+          end
+        end
+
+        if end_time.present?
+          rides = rides.where("pick_up_time <= ?", end_time)
           if rides.length == 0
             status 404
             return {}

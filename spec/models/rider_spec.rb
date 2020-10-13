@@ -5,7 +5,7 @@ RSpec.describe Rider, type: :model do
     expect(FactoryBot.create(:rider)).to be_valid
   end
 
-  let!(:rider) { create :rider, email: "new_email@example.com" }
+  let!(:rider) { create :rider, email: "new_email@example.com", first_name: "Ubber", last_name: "Rider" }
   let!(:token) { create :token, expires_at: Date.today, rider_id: rider.id }
   let!(:tokens) { create_list :token, 5, rider_id: rider.id }
 #   let(:token1) { create :token }
