@@ -239,6 +239,34 @@ RSpec.describe AdminRideController, type: :request do
       expect(response).to render_template(:new)
     end
 
+    it "Error when end locationand start location are the same" do
+      expect do
+          post admin_ride_index_path, params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location1[:street],
+           end_city: location1[:city],
+           end_state: location1[:state],
+           end_zip: location1[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.redirect?).to eq(false)
+      end
+
     it "Create a ride with a round trip" do
       expect do
           post admin_ride_index_path, params: {
@@ -415,6 +443,34 @@ RSpec.describe AdminRideController, type: :request do
     expect(flash[:notice]).to eq("The ride information has been updated.")
     end
 
+    it "Error when end locationand start location are the same" do
+      expect do
+          put admin_ride_path(Ride.last), params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location1[:street],
+           end_city: location1[:city],
+           end_state: location1[:state],
+           end_zip: location1[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.redirect?).to eq(false)
+      end
+
     it "Updates a ride when round trip is true" do
       expect do
         put admin_ride_path(Ride.last), params: {
@@ -441,7 +497,7 @@ RSpec.describe AdminRideController, type: :request do
       end.to change(Ride, :count)
       expect(response.redirect?).to eq(true)
       expect(flash[:notice]).to eq("The ride information has been updated.")
-      end
+    end
   end
 
 end
