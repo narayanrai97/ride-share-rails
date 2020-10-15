@@ -8,7 +8,7 @@ RSpec.describe AdminRideController, type: :request do
   # let!(:ride) { FactoryBot.create(:ride3)}
   let!(:ride) { FactoryBot.attributes_for(:ride3) }
   let!(:location1) {FactoryBot.attributes_for(:location)}
-  let!(:location2) {FactoryBot.attributes_for(:location, end_street: "700 Park Offices Dr")}
+  let!(:location2) {create :location, street: "700 Park Offices Dr"}
   let!(:select_rider) { create :rider, email: "select_rider@example.com", organization_id: admin.organization_id }
   let!(:select_rider2) { create :rider, email: "jump_rider@example.com", organization_id: admin.organization_id, is_active: false }
   let!(:select_rider3) { create :rider, email: "fast_rider@example.com", organization_id: admin2.organization_id, is_active: true }
@@ -420,10 +420,10 @@ RSpec.describe AdminRideController, type: :request do
     expect do
       put admin_ride_path(Ride.last), params: {
         ride: {
-          start_street: location2[:street],
-          start_city: location2[:city],
-          start_state: location2[:state],
-          start_zip: location2[:zip],
+          start_street: location1[:street],
+          start_city: location1[:city],
+          start_state: location1[:state],
+          start_zip: location1[:zip],
           end_street: location2[:street],
           end_city: location2[:city],
           end_state: location2[:state],
