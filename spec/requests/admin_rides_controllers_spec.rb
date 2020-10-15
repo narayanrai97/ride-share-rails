@@ -8,7 +8,7 @@ RSpec.describe AdminRideController, type: :request do
   # let!(:ride) { FactoryBot.create(:ride3)}
   let!(:ride) { FactoryBot.attributes_for(:ride3) }
   let!(:location1) {FactoryBot.attributes_for(:location)}
-  let!(:location2) {FactoryBot.attributes_for(:location, end_street: "700 Park Offices Dr")}
+  let!(:location2) {create :location, street: "700 Park Offices Dr"}
   let!(:select_rider) { create :rider, email: "select_rider@example.com", organization_id: admin.organization_id }
   let!(:select_rider2) { create :rider, email: "jump_rider@example.com", organization_id: admin.organization_id, is_active: false }
   let!(:select_rider3) { create :rider, email: "fast_rider@example.com", organization_id: admin2.organization_id, is_active: true }
@@ -239,6 +239,34 @@ RSpec.describe AdminRideController, type: :request do
       expect(response).to render_template(:new)
     end
 
+    it "Error when end locationand start location are the same" do
+      expect do
+          post admin_ride_index_path, params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location1[:street],
+           end_city: location1[:city],
+           end_state: location1[:state],
+           end_zip: location1[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.redirect?).to eq(false)
+      end
+
     it "Create a ride with a round trip" do
       expect do
           post admin_ride_index_path, params: {
@@ -392,10 +420,10 @@ RSpec.describe AdminRideController, type: :request do
     expect do
       put admin_ride_path(Ride.last), params: {
         ride: {
-          start_street: location2[:street],
-          start_city: location2[:city],
-          start_state: location2[:state],
-          start_zip: location2[:zip],
+          start_street: location1[:street],
+          start_city: location1[:city],
+          start_state: location1[:state],
+          start_zip: location1[:zip],
           end_street: location2[:street],
           end_city: location2[:city],
           end_state: location2[:state],
@@ -414,6 +442,34 @@ RSpec.describe AdminRideController, type: :request do
     expect(response.redirect?).to eq(true)
     expect(flash[:notice]).to eq("The ride information has been updated.")
     end
+
+    it "Error when end locationand start location are the same" do
+      expect do
+          put admin_ride_path(Ride.last), params: {
+            ride: {
+            rider_id: select_rider.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location1[:street],
+           end_city: location1[:city],
+           end_state: location1[:state],
+           end_zip: location1[:zip],
+           reason: "doctor",
+           round_trip: true,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.redirect?).to eq(false)
+      end
 
     it "Updates a ride when round trip is true" do
       expect do
@@ -441,7 +497,7 @@ RSpec.describe AdminRideController, type: :request do
       end.to change(Ride, :count)
       expect(response.redirect?).to eq(true)
       expect(flash[:notice]).to eq("The ride information has been updated.")
-      end
+    end
   end
 
 end
