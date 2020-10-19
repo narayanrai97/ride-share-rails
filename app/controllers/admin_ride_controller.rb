@@ -67,7 +67,6 @@ class AdminRideController < ApplicationController
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
-    # byebug
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
@@ -91,7 +90,6 @@ class AdminRideController < ApplicationController
                               round_trip: false,
                               notes: ride_params[:notes])
     end
-    # byebug
     if !return_pick_up_time_not_in_past
       return
     end
