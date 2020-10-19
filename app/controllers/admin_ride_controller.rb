@@ -77,6 +77,7 @@ class AdminRideController < ApplicationController
                                  zip: ride_params[:end_zip])
     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
+                     driver_id: ride_params[:driver_id],
                      pick_up_time: ride_params[:pick_up_time],
                      reason: ride_params[:reason],
                      round_trip: ride_params[:round_trip],

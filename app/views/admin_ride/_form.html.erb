@@ -28,7 +28,16 @@
     1. <%= form.label :rider_id %><br>
     <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
   </div>
+<!-- </div> -->
+
+<!-- <div class="form-row"> -->
+  <div class=" col-2">
+    8. <%= form.label :driver_id, "Assign a driver?" %><br>
+      <%= form.collection_select :driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
+  </div>
 </div>
+
+
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
     2. <%= form.label :pick_up_time %>
