@@ -67,6 +67,7 @@ class AdminRideController < ApplicationController
       token = rider.next_valid_token
       token = rider.valid_tokens.create if token.nil?
     end
+    byebug
     @start_location = Location.new(street: ride_params[:start_street],
                                    city: ride_params[:start_city],
                                    state: ride_params[:start_state],
