@@ -190,6 +190,7 @@ class AdminRideController < ApplicationController
     if @ride.round_trip
       if @ride.return
         @second_ride = Ride.find(@ride.return)
+        # byebug
         @second_ride.update(
           organization_id: current_user.organization_id,
           rider_id: ride_params[:rider_id],

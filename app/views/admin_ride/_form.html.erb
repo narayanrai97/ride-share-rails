@@ -52,7 +52,8 @@
       <%= form.label :return_pick_up_time %>
       <% if @ride.return %>
       <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}", id: 'ride_return_pick_up_time' %>
-      <%= collection_select(:second_ride, :second_driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, {:selected => "#{Ride.find(@ride.return).driver_id}"}) %>
+      <%= collection_select(:second_ride, :second_driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' , :selected => "#{Ride.find(@ride.return).driver_id}"}) %>
+      <%# form.select(:second_ride, Driver.all.collect { |p| [ p.full_name, p.id ] }, { include_blank: '' }) %>
       <% else %>
       <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
       <%= form.collection_select :second_driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, id: 'ride_return_pick_up_time' %>

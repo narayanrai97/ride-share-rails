@@ -524,7 +524,7 @@ RSpec.describe AdminRideController, type: :request do
               end_location: ride.end_location
             }
           }
-        end.not_to change(Ride, :count)
+         end.not_to change(Ride, :count)
         expect(response.redirect?).to eq(true)
         expect(flash[:notice]).to eq("The ride information has been updated.")
         end

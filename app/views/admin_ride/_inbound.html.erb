@@ -54,7 +54,11 @@
   </p>
   <p>
     <strong> Driver for return trip:</strong>
+    <% if @second_ride.driver.nil? %>
+      <%= "No driver is assigned" %>
+    <% else %>
     <%= @second_ride.driver.full_name %>
+    <% end %>
   </p>
   <% end %>
 
