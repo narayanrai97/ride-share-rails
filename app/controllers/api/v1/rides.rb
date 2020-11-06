@@ -143,7 +143,7 @@
         end
 
         if ride.update(driver_id: current_driver.id, status: "scheduled")
-          RiderMailer.ride_accepted_notifications(ride).deliver
+          RiderMailer.ride_accepted_notifications(ride).deliver_later
           status 201
           render ride
         end
