@@ -168,7 +168,6 @@ class AdminRideController < ApplicationController
       location = @end_location
     end
     rider_choose_save_location
-    # byebug
     only_15_location_saves(organization)
     if @ride.update(
       organization_id: current_user.organization_id,
@@ -190,7 +189,6 @@ class AdminRideController < ApplicationController
     if @ride.round_trip
       if @ride.return
         @second_ride = Ride.find(@ride.return)
-        # byebug
         @second_ride.update(
           organization_id: current_user.organization_id,
           rider_id: ride_params[:rider_id],
@@ -221,7 +219,6 @@ class AdminRideController < ApplicationController
       return
     end
     rider_choose_save_location
-    # byebug
     flash.notice = 'The ride information has been updated.'
     redirect_to admin_ride_path(@ride)
   end
