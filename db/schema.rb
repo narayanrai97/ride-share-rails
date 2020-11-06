@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_213306) do
+ActiveRecord::Schema.define(version: 2020_11_06_152136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2020_08_21_213306) do
     t.string "first_name"
     t.string "last_name"
     t.string "phone"
-    t.integer "radius", default: 50
+    t.integer "radius", default: 100
     t.boolean "is_active", default: true
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
