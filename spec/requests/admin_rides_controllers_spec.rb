@@ -2,16 +2,18 @@ require 'rails_helper'
 
 RSpec.describe AdminRideController, type: :request do
   let!(:organization) {create :organization, name: "Burlington High", street: "644 spence street", city: "burlington", zip: "27417"}
-  let!(:admin) { create :user, organization_id: organization.id }
   let (:organization2) {create :organization, name: 'University of North Carolina', street: '4000 Ashley Wade Ln', city:'Chapel Hill', state:'NC', zip: '27514', use_tokens: true }
+  let!(:admin) { create :user, organization_id: organization.id }
   let!(:admin2) {create :user, email: "admin2@example.com", organization_id: organization2.id}
-  # let!(:ride) { FactoryBot.create(:ride3)}
-  let!(:ride) { FactoryBot.attributes_for(:ride3) }
   let!(:location1) {FactoryBot.attributes_for(:location)}
   let!(:location2) {create :location, street: "700 Park Offices Dr"}
   let!(:select_rider) { create :rider, email: "select_rider@example.com", organization_id: admin.organization_id }
   let!(:select_rider2) { create :rider, email: "jump_rider@example.com", organization_id: admin.organization_id, is_active: false }
   let!(:select_rider3) { create :rider, email: "fast_rider@example.com", organization_id: admin2.organization_id, is_active: true }
+  let!(:driver) {create :driver, first_name: "Bobby", organization_id: organization.id}
+  let!(:driver2) {create :driver, first_name: "Franky", organization_id: organization.id}
+  let!(:ride) { FactoryBot.attributes_for(:ride3) }
+  let!(:ride2) {create :ride2, organization_id: organization.id}
   let!(:valid_tokens) { create_list :token, 5, rider_id: select_rider.id }
   let!(:pick_up_time) { Time.zone.now + 15.days }
 
@@ -293,6 +295,34 @@ RSpec.describe AdminRideController, type: :request do
         end.to change(Ride, :count)
         expect(response.redirect?).to eq(true)
     end
+
+    it "Create a ride and assigns a driver" do
+      expect do
+          post admin_ride_index_path, params: {
+           ride: {
+           rider_id: select_rider.id,
+           driver_id: driver.id,
+           pick_up_time: DateTime.now + 6.days,
+           save_start_location: true,
+           save_end_location: true,
+           start_street: location1[:street],
+           start_city: location1[:city],
+           start_state: location1[:state],
+           start_zip: location1[:zip],
+           end_street: location2[:street],
+           end_city: location2[:city],
+           end_state: location2[:state],
+           end_zip: location2[:zip],
+           reason: "doctor",
+           round_trip: false,
+           return_pick_up_time: DateTime.now + 6.days + 2.hours,
+           notes: "ride created",
+           status: "active"
+            }
+          }
+        end.to change(Ride, :count)
+        expect(response.redirect?).to eq(true)
+    end
   end
 
   describe "New Action" do
@@ -314,7 +344,7 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Create a ride and render the show" do
-       get admin_ride_path(Ride.last.id)
+       get admin_ride_path(ride.id)
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
     end
@@ -335,7 +365,7 @@ RSpec.describe AdminRideController, type: :request do
     end
 
     it "Create a ride and render the show" do
-      get edit_admin_ride_path(Ride.last.id)
+      get edit_admin_ride_path(ride.id)
 
        expect(response.redirect?).to eq(true)
        response.should redirect_to admin_ride_index_path
@@ -378,7 +408,7 @@ RSpec.describe AdminRideController, type: :request do
 
     it "Error when end location is not provide in params" do
       expect do
-      put admin_ride_path(Ride.last), params: {
+      put admin_ride_path(ride), params: {
         ride: {
           start_street: location2[:street],
           start_city: location2[:city],
@@ -398,7 +428,7 @@ RSpec.describe AdminRideController, type: :request do
 
     it "Error when start location is not provide in params" do
       expect do
-      put admin_ride_path(Ride.last), params: {
+      put admin_ride_path(ride), params: {
         ride: {
           end_street: location2[:street],
           end_city: location2[:city],
@@ -418,7 +448,7 @@ RSpec.describe AdminRideController, type: :request do
 
   it "Updates a ride when round trip is false" do
     expect do
-      put admin_ride_path(Ride.last), params: {
+      put admin_ride_path(ride), params: {
         ride: {
           start_street: location1[:street],
           start_city: location1[:city],
@@ -443,9 +473,65 @@ RSpec.describe AdminRideController, type: :request do
     expect(flash[:notice]).to eq("The ride information has been updated.")
     end
 
+    it "Updates a ride and assign a driver" do
+      expect do
+        put admin_ride_path(ride), params: {
+          ride: {
+            start_street: location1[:street],
+            start_city: location1[:city],
+            start_state: location1[:state],
+            start_zip: location1[:zip],
+            end_street: location2[:street],
+            end_city: location2[:city],
+            end_state: location2[:state],
+            end_zip: location2[:zip],
+            organization_id: admin.organization_id,
+            rider_id: select_rider.id,
+            driver_id: driver.id,
+            pick_up_time: DateTime.now + 6.days,
+            reason: ride.reason,
+            round_trip: false,
+            notes: "Yes",
+            start_location: ride.start_location,
+            end_location: ride.end_location
+          }
+        }
+      end.not_to change(Ride, :count)
+      expect(response.redirect?).to eq(true)
+      expect(flash[:notice]).to eq("The ride information has been updated.")
+      end
+
+      it "Updates a ride and assign a different driver" do
+        expect do
+          put admin_ride_path(ride2), params: {
+            ride: {
+              start_street: location1[:street],
+              start_city: location1[:city],
+              start_state: location1[:state],
+              start_zip: location1[:zip],
+              end_street: location2[:street],
+              end_city: location2[:city],
+              end_state: location2[:state],
+              end_zip: location2[:zip],
+              organization_id: admin.organization_id,
+              rider_id: select_rider.id,
+              driver_id: driver2.id,
+              pick_up_time: DateTime.now + 6.days,
+              reason: ride.reason,
+              round_trip: false,
+              notes: "Yes",
+              start_location: ride.start_location,
+              end_location: ride.end_location
+            }
+          }
+         end.not_to change(Ride, :count)
+        expect(response.redirect?).to eq(true)
+        expect(flash[:notice]).to eq("The ride information has been updated.")
+        end
+
     it "Error when end locationand start location are the same" do
       expect do
-          put admin_ride_path(Ride.last), params: {
+          put admin_ride_path(ride), params: {
             ride: {
             rider_id: select_rider.id,
            pick_up_time: DateTime.now + 6.days,
@@ -473,7 +559,7 @@ RSpec.describe AdminRideController, type: :request do
 
     it "Updates a ride when round trip is true" do
       expect do
-        put admin_ride_path(Ride.last), params: {
+        put admin_ride_path(ride), params: {
           ride: {
             start_street: location2[:street],
             start_city: location2[:city],

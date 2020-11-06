@@ -85,6 +85,7 @@ class AdminRideController < ApplicationController
     if @ride.round_trip
       @second_ride = Ride.new(organization_id: current_user.organization_id,
                               rider_id: rider.id,
+                              driver_id: ride_params[:second_driver_id],
                               pick_up_time: ride_params[:return_pick_up_time],
                               reason: ride_params[:reason],
                               round_trip: false,
@@ -171,6 +172,7 @@ class AdminRideController < ApplicationController
     if @ride.update(
       organization_id: current_user.organization_id,
       rider_id: ride_params[:rider_id],
+      driver_id: ride_params[:driver_id],
       pick_up_time: ride_params[:pick_up_time],
       reason: ride_params[:reason],
       round_trip: ride_params[:round_trip],
@@ -183,19 +185,31 @@ class AdminRideController < ApplicationController
       return
     end
     round_trip_false
+
     if @ride.round_trip
       if @ride.return
         @second_ride = Ride.find(@ride.return)
+        @second_ride.update(
+          organization_id: current_user.organization_id,
+          rider_id: ride_params[:rider_id],
+          driver_id: params[:second_ride][:second_driver_id],
+          pick_up_time: ride_params[:return_pick_up_time],
+          reason: ride_params[:reason],
+          round_trip: false,
+          notes: ride_params[:notes],
+          start_location: @start_location,
+          end_location: @end_location
+        )
       else
         @second_ride = Ride.find_or_create_by(organization_id: current_user.organization_id,
                                               rider_id: @ride.rider_id,
+                                              driver_id: ride_params[:second_driver_id],
                                               pick_up_time: ride_params[:return_pick_up_time],
                                               reason: @ride.reason,
                                               round_trip: false,
                                               start_location: @start_location,
                                               end_location: @end_location)
       end
-
       if !return_pick_up_time_not_in_past
         return
       end
@@ -234,7 +248,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
                                  :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
                                  :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :reason,
-                                 :status, :q, :round_trip, :return_pick_up_time, :notes)
+                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

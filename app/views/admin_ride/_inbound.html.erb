@@ -50,7 +50,15 @@
   <% if @ride.return %>
   <p class="contains-time">
     <strong> Return trip pick up time:</strong>
-    <span class="local-time"><%= @second_ride.pick_up_time %></span>
+    <span class="local-time"><%= @second_ride.pick_up_time %></span><br />
+  </p>
+  <p>
+    <strong> Driver for return trip:</strong>
+    <% if @second_ride.driver.nil? %>
+      <%= "No driver is assigned" %>
+    <% else %>
+    <%= @second_ride.driver.full_name %>
+    <% end %>
   </p>
   <% end %>
 

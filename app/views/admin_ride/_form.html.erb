@@ -28,11 +28,9 @@
     1. <%= form.label :rider_id %><br>
     <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
   </div>
-<!-- </div> -->
 
-<!-- <div class="form-row"> -->
   <div class=" col-2">
-    8. <%= form.label :driver_id, "Assign a driver?" %><br>
+    2. <%= form.label :driver_id, "Assign a driver" %><br>
       <%= form.collection_select :driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
   </div>
 </div>
@@ -40,12 +38,12 @@
 
 <div class="form-row">
   <div class="form-group offset-md-1 col-4">
-    2. <%= form.label :pick_up_time %>
+    3. <%= form.label :pick_up_time %>
     <%= form.text_field :pick_up_time, id: 'ride_pick_up_time' %>
   </div>
 
   <div class="form-group  col-md-2">
-    3. <%= form.check_box :round_trip %>
+    4. <%= form.check_box :round_trip %>
     <%= form.label :round_trip, "Round Trip" %>
   </div>
 
@@ -53,17 +51,20 @@
     <div id="return_pick_up_time">
       <%= form.label :return_pick_up_time %>
       <% if @ride.return %>
-      <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}",  id: 'ride_return_pick_up_time' %>
+      <%= form.text_field :return_pick_up_time, value: "#{Ride.find(@ride.return).pick_up_time}", id: 'ride_return_pick_up_time' %>
+      <%= collection_select(:second_ride, :second_driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' , :selected => "#{Ride.find(@ride.return).driver_id}"}) %>
       <% else %>
       <%= form.text_field :return_pick_up_time, id: 'ride_return_pick_up_time' %>
+      <%= form.collection_select :second_driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, id: 'ride_return_pick_up_time' %>
       <% end %>
+      <%= form.label :driver_id, "Assign a round trip driver" %>
     </div>
   </div>
 </div>
 <div class="form-row">
   <div class="form-group offset-md-1 col-10">
     <div class: "start_location">
-      4. <%= label_tag :start_location, "Start Location" %>
+      5. <%= label_tag :start_location, "Start Location" %>
       <p> Would you like to use previously saved location? <%= form.collection_select "organization_rider_start_location",
         Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
       :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
