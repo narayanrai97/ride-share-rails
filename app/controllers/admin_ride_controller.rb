@@ -112,7 +112,9 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    @ride.status = 'approved'
+    byebug
+    when_ride_driver_is_assigned_change_status
+    byebug
     round_trip_save
     if !locations_can_not_be_the_same
       return
@@ -257,6 +259,22 @@ class AdminRideController < ApplicationController
 
     l_new = location.save_or_touch
     l_new
+  end
+
+  def when_ride_driver_is_assigned_change_status
+    if !@ride.driver_id.nil? or !@second_ride.driver_id.nil?
+      if !@ride.driver_id.nil?
+        @ride.status = "scheduled"
+      end
+      if !@second_ride.driver_id.nil?
+        @second_ride.status = "scheduled"
+      else
+        @second_ride.status = "approved"
+      end
+      byebug
+    else
+      @ride.status = "approved"
+    end
   end
 
   def rider_choose_save_location
