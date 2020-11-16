@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   get '/privacy_policy' => 'pages#privacy_policy'
   get '/terms_and_conditions' => 'pages#terms_and_conditions'
+  get '/support' => 'pages#support'
 
   resources :rides do
     member do
