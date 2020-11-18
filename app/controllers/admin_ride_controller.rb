@@ -112,9 +112,9 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    byebug
+    # byebug
     when_ride_driver_is_assigned_change_status
-    byebug
+    # byebug
     round_trip_save
     if !locations_can_not_be_the_same
       return
@@ -131,6 +131,7 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
+      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
@@ -262,19 +263,21 @@ class AdminRideController < ApplicationController
   end
 
   def when_ride_driver_is_assigned_change_status
-    if !@ride.driver_id.nil? or !@second_ride.driver_id.nil?
-      if !@ride.driver_id.nil?
-        @ride.status = "scheduled"
-      end
+    if !@ride.driver_id.nil?
+      @ride.status = "scheduled"
+    else
+      @ride.status = "approved"
+    end
+    if @ride.round_trip
       if !@second_ride.driver_id.nil?
         @second_ride.status = "scheduled"
       else
         @second_ride.status = "approved"
       end
-      byebug
     else
-      @ride.status = "approved"
+      return false
     end
+    byebug
   end
 
   def rider_choose_save_location
