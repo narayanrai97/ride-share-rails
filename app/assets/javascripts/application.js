@@ -19,3 +19,5 @@
 //= require bootstrap
 //= require flatpickr
 //= require moment
+//= require nested_form_fields
+//= require jquery_ujs
