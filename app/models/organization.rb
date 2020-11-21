@@ -5,7 +5,7 @@ class Organization < ApplicationRecord
   has_many :locations, -> {distinct}, through: :location_relationships
   has_many :rides, dependent: :destroy
   has_many :tokens, through: :riders
-  has_many :reasons
+  has_many :ride_categories
 
   validates :name, :street, :city, :state, :zip, presence: true
   validates :use_tokens, inclusion: { in: [ true, false ] }
