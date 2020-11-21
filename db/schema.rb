@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_06_152136) do
+ActiveRecord::Schema.define(version: 2020_11_21_050251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,16 @@ ActiveRecord::Schema.define(version: 2020_11_06_152136) do
     t.boolean "use_rider_app", default: true
   end
 
+  create_table "reasons", force: :cascade do |t|
+    t.string "details"
+    t.bigint "ride_id"
+    t.bigint "ride_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ride_category_id"], name: "index_reasons_on_ride_category_id"
+    t.index ["ride_id"], name: "index_reasons_on_ride_id"
+  end
+
   create_table "recurring_patterns", force: :cascade do |t|
     t.bigint "schedule_window_id"
     t.integer "separation_count"
@@ -108,6 +118,15 @@ ActiveRecord::Schema.define(version: 2020_11_06_152136) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["schedule_window_id"], name: "index_recurring_patterns_on_schedule_window_id"
+  end
+
+  create_table "ride_categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.bigint "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_ride_categories_on_organization_id"
   end
 
   create_table "riders", force: :cascade do |t|
@@ -219,4 +238,7 @@ ActiveRecord::Schema.define(version: 2020_11_06_152136) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "reasons", "ride_categories"
+  add_foreign_key "reasons", "rides"
+  add_foreign_key "ride_categories", "organizations"
 end
