@@ -28,8 +28,10 @@
 
 
   <p>
-    <strong>Reason:</strong>
-    <%= @ride.reason %>
+    <strong>Reasons:</strong>
+    <% @ride.reasons.each do |reason| %>
+      <%= reason.details%>,
+    <%end%>
   </p>
 
   <p>
