@@ -112,11 +112,11 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    @ride.status = 'approved'
     round_trip_save
     if !locations_can_not_be_the_same
       return
     end
+    when_ride_driver_is_assigned_change_status
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -218,6 +218,7 @@ class AdminRideController < ApplicationController
     if !locations_can_not_be_the_same
       return
     end
+    when_ride_driver_is_assigned_change_status
     rider_choose_save_location
     flash.notice = 'The ride information has been updated.'
     redirect_to admin_ride_path(@ride)
@@ -259,6 +260,23 @@ class AdminRideController < ApplicationController
     l_new
   end
 
+  def when_ride_driver_is_assigned_change_status
+    if !@ride.driver_id.nil?
+      @ride.status = "scheduled"
+    else
+      @ride.status = "approved"
+    end
+    if @ride.round_trip
+      if !@second_ride.driver_id.nil?
+        @second_ride.status = "scheduled"
+      else
+        @second_ride.status = "approved"
+      end
+    else
+      return false
+    end
+  end
+
   def rider_choose_save_location
     if ride_params[:save_start_location] == 'saved'
       lr1 = LocationRelationship.new(location_id: @ride.start_location.id, organization_id: current_user.organization.id)
@@ -290,7 +308,6 @@ class AdminRideController < ApplicationController
       @second_ride.outbound = @ride.id
       @second_ride.start_location_id = @end_location.id
       @second_ride.end_location_id = @start_location.id
-      @second_ride.status = 'approved'
       unless @second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
         render 'new'
