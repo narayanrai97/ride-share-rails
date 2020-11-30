@@ -112,13 +112,11 @@ class AdminRideController < ApplicationController
     end
     @ride.start_location_id = @start_location.id
     @ride.end_location_id = @end_location.id
-    # byebug
-    when_ride_driver_is_assigned_change_status
-    # byebug
     round_trip_save
     if !locations_can_not_be_the_same
       return
     end
+    when_ride_driver_is_assigned_change_status
     if !@ride.save
       flash.now[:alert] = @ride.errors.full_messages.join("\n")
       render 'new'
@@ -131,7 +129,6 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
-      byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
@@ -277,7 +274,6 @@ class AdminRideController < ApplicationController
     else
       return false
     end
-    byebug
   end
 
   def rider_choose_save_location
@@ -311,7 +307,6 @@ class AdminRideController < ApplicationController
       @second_ride.outbound = @ride.id
       @second_ride.start_location_id = @end_location.id
       @second_ride.end_location_id = @start_location.id
-      @second_ride.status = 'approved'
       unless @second_ride.save
         flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
         render 'new'
