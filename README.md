@@ -1,3 +1,51 @@
+# Getting Started
+
+## Clone Repo
+
+Clone it.
+
+```bash
+git clone https://github.com/CodeTheDream/ride-share-rails.git
+cd ride-share-rails
+```
+
+## Download Ruby
+
+This project is using ruby 2.5.3. You must have that locally before you can begin working on this project. [Install rbenv](https://github.com/rbenv/rbenv) if you haven't already.
+
+```bash
+brew install rbenv
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc # or ~/.bash_profile if you're still on bash
+source ~/.zshrc # or close the window and relaunch
+rbenv install 2.6.0 # and wait for it to finish
+```
+
+## Get credentials
+Get the right credentials and master key from one of the main devs on the project. Run the following to make sure the credentials are set correctly. Otherwise, the seeder will complain about not having the correct Google Maps API key when you go to try set up the DB.
+
+```bash
+EDITOR="vim" rails credentials:edit
+```
+
+You should have entries for the following values:
+```ruby
+GMAIL_USERNAME:
+GMAIL_PASSWORD:
+GOOGLE_API_KEY:
+SENDGRID_API_KEY:
+```
+
+Make sure that `config/master.key` has the correct master key.
+
+## Build the app and run it
+
+```bash
+bundle
+rails db:setup
+rails s
+```
+
+
 # API Documentation
 
 - [Authentication](#authentication)
