@@ -218,6 +218,7 @@ class AdminRideController < ApplicationController
     if !locations_can_not_be_the_same
       return
     end
+    when_ride_driver_is_assigned_change_status
     rider_choose_save_location
     flash.notice = 'The ride information has been updated.'
     redirect_to admin_ride_path(@ride)
