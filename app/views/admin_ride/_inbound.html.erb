@@ -30,7 +30,10 @@
   <p>
     <strong>Reasons:</strong>
     <% @ride.reasons.each do |reason| %>
-      <%= reason.details%>,
+       <%= RideCategory.find(reason.ride_category_id).name %>
+       <% if RideCategory.find(reason.ride_category_id).name == "Other" %>
+        (<%= reason.details%>)
+       <%end%>, 
     <%end%>
   </p>
 
