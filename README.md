@@ -1,12 +1,13 @@
 # Getting Started
 
-## Clone Repo
+## Fork and Clone Repo
 
-Clone it.
+Fork the repo, then clone your version locally. Then make sure to set the main repo as the upstream source.
 
 ```bash
-git clone https://github.com/CodeTheDream/ride-share-rails.git
+git clone https://github.com/[GITHUBHANDLE]/ride-share-rails.git
 cd ride-share-rails
+git remote add upstream https://github.com/CodeTheDream/ride-share-rails.git
 ```
 
 ## Download Ruby
@@ -21,7 +22,7 @@ rbenv install 2.6.0 # and wait for it to finish
 ```
 
 ## Get credentials
-Get the right credentials and master key from one of the main devs on the project. Run the following to make sure the credentials are set correctly. Otherwise, the seeder will complain about not having the correct Google Maps API key when you go to try set up the DB.
+Get the master key from one of the main devs on the project. Run the following to make sure the credentials are set correctly. Otherwise, the seeder will complain about not having the correct Google Maps API key when you go to try set up the DB.
 
 ```bash
 EDITOR="vim" rails credentials:edit
