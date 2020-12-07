@@ -88,6 +88,7 @@ class AdminRideController < ApplicationController
                               driver_id: ride_params[:second_driver_id],
                               pick_up_time: ride_params[:return_pick_up_time],
                               round_trip: false,
+                              reasons_attributes: ride_params["reasons_attributes"],
                               notes: ride_params[:notes])
     end
     if !return_pick_up_time_not_in_past
