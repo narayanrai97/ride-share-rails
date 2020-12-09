@@ -10,29 +10,34 @@
 
 org1 = Organization.create(name: "Durham Rescue Mission", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709")
 org2 = Organization.create(name: "Urban Ministires", street: "100 Miami Blvd", city: "Durham", state: "North Carolina", zip: "27709", use_tokens: true)
+puts "#{Organization.count} organizations created."
+puts ""
+
 User.create(email: "admin@gmail.com", password: "Pa$$word20",organization_id: org1.id)
 User.create(email: "admin1@gmail.com", password: "Pa$$word20",organization_id: org2.id)
-
-
+puts "#{User.count} users created."
+puts ""
 
 driver1 = Driver.create(organization_id: org1.id, first_name: "Teddy", last_name: "Ruby", phone: "4086948508", email: "ejr25@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 driver2 = Driver.create(organization_id: org1.id, first_name: "John", last_name: "Smith", phone: "4362484055", email: "j.smith@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 driver3 = Driver.create(organization_id: org1.id, first_name: "Katie", last_name: "Jones", phone: "9298694850", email: "katie@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 driver4 = Driver.create(organization_id: org2.id, first_name: "Sarah", last_name: "Kim", phone: "4029348508", email: "Sarah.Kim@yahoo.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
+puts "#{Driver.count} drivers created."
+puts ""
 
 vehicle1 = Vehicle.create(driver_id: driver1.id , car_make: "Toyota", car_model: "Tacoma", car_color: "Silver", car_year: "2010", car_plate: "ZQW0PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-02-19", insurance_stop: "2022-02-19" )
 vehicle2 = Vehicle.create(driver_id: driver2.id ,car_make: "Toyota", car_model: "Camry", car_color: "Blue", car_year: "2010", car_plate: "ZQW1PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-01-19", insurance_stop: "2022-01-19")
 vehicle3 = Vehicle.create(driver_id: driver3.id , car_make: "Honda", car_model: "Civic", car_color: "Black", car_year: "2010", car_plate: "ZQW2PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-03-19", insurance_stop: "2022-03-19")
 vehicle4 = Vehicle.create(driver_id: driver4.id , car_make: "Nissan", car_model: "Altima", car_color: "Silver", car_year: "2010", car_plate: "ZQW3PQ", seat_belt_num: "4", insurance_provider: "Geico", insurance_start: "2019-05-19", insurance_stop: "2022-05-19")
-
-
+puts "#{Vehicle.count} vehicles created."
+puts ""
 
 rider1 = Rider.create(organization_id: org1.id, first_name: "Katelyn", last_name: "Splint" , phone: "9293842930", email: "ks@duke.edu", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 rider2 = Rider.create(organization_id: org1.id, first_name: "James", last_name: "Cage" , phone: "3292842339",  email: "cage@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 rider3 = Rider.create(organization_id: org1.id, first_name: "Mary", last_name: "Young" , phone: "5293454293",  email: "myoung@yahoo.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
 rider4 = Rider.create(organization_id: org2.id, first_name: "Jim", last_name: "Free" , phone: "9223842200",  email: "free_j@gmail.com", password: "Pa$$word20", password_confirmation: "Pa$$word20")
-
-
+puts "#{Rider.count} riders created."
+puts ""
 
 loc1 = Location.create(street: "507 E Knox", city: "Durham", state: "NC", zip: "27705")
 loc2 = Location.create(street: "410 Liberty Street", city: "Durham", state: "NC", zip: "27705")
@@ -53,34 +58,30 @@ loc16 = Location.create(street: "123 Rowan Street" , city: "Durham", state: "NC"
 loc17 = Location.create(street: "2303 Sandy Creek Drive" , city: "Durham", state: "NC", zip: "27705")
 loc18 = Location.create(street: "30 Newton Drive" , city: "Durham", state: "NC", zip: "27707")
 loc19 = Location.create(street: "101 Erwin" , city: "Durham", state: "NC", zip: "27705")
+puts "#{Location.count} locations created."
+puts ""
 
+ride_category1 = RideCategory.find_or_create_by(name: "Medical", organization_id: org1.id)
+ride_category2 = RideCategory.find_or_create_by(name: "Shopping", organization_id: org1.id)
+ride_category3 = RideCategory.find_or_create_by(name: "Family", organization_id: org1.id)
+ride_category4 = RideCategory.find_or_create_by(name: "Other", organization_id: org1.id)
+puts "#{RideCategory.count} ride categories created."
+puts ""
 
-
-
-
-
-
-
-
-
-Ride.create(organization_id: org1.id, rider_id: rider1.id ,  pick_up_time: "2022-02-19 15:30:00" , start_location_id: loc5.id , end_location_id: loc12.id , reason: "Interview", status: "pending")
-Ride.create(organization_id: org1.id, rider_id: rider2.id ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id , reason: "Doctor's appointment", status: "pending")
-
-Ride.create(organization_id: org1.id, rider_id: rider3.id ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reason: "Haircut", status: "approved")
-Ride.create(organization_id: org2.id, rider_id: rider4.id ,  pick_up_time: "2022-03-11 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reason: "Teacher Conference", status: "approved")
+ride1 = Ride.create(organization_id: org1.id, rider_id: rider1.id ,  pick_up_time: "2022-02-19 15:30:00" , start_location_id: loc5.id , end_location_id: loc12.id , reasons_attributes: [ride_category_id: ride_category1.id], status: "pending")
+ride2 = Ride.create(organization_id: org1.id, rider_id: rider2.id ,  pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id, reasons_attributes: [ride_category_id: ride_category2.id], status: "pending")
+ride3 = Ride.create(organization_id: org1.id, rider_id: rider3.id ,  pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reasons_attributes: [details: "hair cut", ride_category_id: ride_category4.id], status: "approved")
+ride4 = Ride.create(organization_id: org2.id, rider_id: rider4.id ,  pick_up_time: "2022-03-11 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reasons_attributes: [details: "watch movie", ride_category_id: ride_category4.id], status: "approved")
 
 Ride.create(organization_id: org1.id, rider_id: rider1.id , driver_id: driver1.id , pick_up_time: "2022-02-19 15:30:00" , start_location_id: loc5.id , end_location_id: loc12.id , reason: "Interview", status: "scheduled")
 Ride.create(organization_id: org1.id, rider_id: rider2.id , driver_id: driver2.id , pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id , reason: "Doctor's appointment", status: "scheduled")
 Ride.create(organization_id: org1.id, rider_id: rider3.id , driver_id: driver3.id , pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reason: "Haircut", status: "scheduled")
 Ride.create(organization_id: org2.id, rider_id: rider4.id , driver_id: driver4.id , pick_up_time: "2022-03-11 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reason: "Teacher Conference", status: "scheduled")
 
-
 Ride.create(organization_id: org1.id, rider_id: rider1.id , driver_id: driver1.id , pick_up_time: "2022-02-19 15:30:00" , start_location_id: loc5.id , end_location_id: loc12, reason: "Interview", status: "scheduled")
 Ride.create(organization_id: org1.id, rider_id: rider2.id , pick_up_time: "2022-02-22 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id , reason: "Doctor's appointment", status: "pending")
 Ride.create(organization_id: org1.id, rider_id: rider3.id , pick_up_time: "2022-02-23 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reason: "Haircut", status: "pending")
 Ride.create(organization_id: org2.id, rider_id: rider4.id , driver_id: driver4.id , pick_up_time: "2022-03-11 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reason: "Teacher Conference", status: "completed")
-
-
 
 Ride.create(organization_id: org1.id, rider_id: rider1.id ,  pick_up_time: "2022-02-20 15:30:00" , start_location_id: loc5.id , end_location_id: loc12.id , reason: "Interview", status: "pending")
 Ride.create(organization_id: org1.id, rider_id: rider2.id ,  pick_up_time: "2022-02-23 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id , reason: "Doctor's appointment", status: "pending")
@@ -93,16 +94,12 @@ Ride.create(organization_id: org1.id, rider_id: rider2.id , driver_id: driver2.i
 Ride.create(organization_id: org1.id, rider_id: rider3.id , driver_id: driver3.id , pick_up_time: "2022-02-24 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reason: "Haircut", status: "scheduled")
 Ride.create(organization_id: org2.id, rider_id: rider4.id , driver_id: driver4.id , pick_up_time: "2022-03-15 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reason: "Teacher Conference", status: "scheduled")
 
-
 Ride.create(organization_id: org1.id, rider_id: rider1.id , driver_id: driver1.id , pick_up_time: "2022-02-22 15:30:00" , start_location_id: loc5.id , end_location_id: loc12.id , reason: "Interview", status: "scheduled")
 Ride.create(organization_id: org1.id, rider_id: rider2.id , pick_up_time: "2022-02-25 08:30:00" ,   start_location_id: loc6.id , end_location_id: loc14.id , reason: "Doctor's appointment", status: "pending")
 Ride.create(organization_id: org1.id, rider_id: rider3.id , pick_up_time: "2022-02-25 12:15:00" ,  start_location_id: loc7.id , end_location_id: loc15.id , reason: "Haircut", status: "pending")
 Ride.create(organization_id: org2.id, rider_id: rider4.id , driver_id: driver4.id , pick_up_time: "2022-03-14 14:30:00" , start_location_id: loc8.id , end_location_id: loc13.id , reason: "Teacher Conference", status: "completed")
-
-
-
-
-
+puts "#{Ride.count} rides created."
+puts ""
 
 Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
 Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
@@ -114,11 +111,8 @@ Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 
 Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
 Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
 Token.create(rider_id: rider4.id , created_at: Time.now, expires_at: Time.now + 1.year,  used_at: nil, is_valid: true)
-
-
-
-
-
+puts "#{Token.count} created."
+puts ""
 
 sw1 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc1.id , is_recurring: true)
 sw2 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc1.id , is_recurring: true)
@@ -141,7 +135,6 @@ sw14 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.d
 sw15 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc7.id , is_recurring: true)
 sw16 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: Time.now + 28.hours, location_id: loc8.id , is_recurring: true)
 
-
 sw17 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: "2019-03-06 12:00:00", location_id: loc1.id , is_recurring: false)
 sw18 = ScheduleWindow.create(driver_id: driver1.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: "2019-03-13 16:30:00", location_id: loc1.id , is_recurring: false)
 
@@ -153,9 +146,8 @@ sw22 = ScheduleWindow.create(driver_id: driver3.id , start_date: (Time.now + 1.d
 
 sw23 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: "2019-03-11 12:30:00", location_id: loc6.id , is_recurring: false)
 sw24 = ScheduleWindow.create(driver_id: driver4.id , start_date: (Time.now + 1.day).to_date, end_date: (Time.now + 3.months).to_date, start_time: Time.now + 26.hours, end_time: "2019-03-12 18:00:00", location_id: loc7.id , is_recurring: false)
-
-
-
+puts "#{ScheduleWindow.count} schedule windows created."
+puts ""
 
 RecurringPattern.create(schedule_window_id: sw1.id , day_of_week: sw1.start_time.wday)
 RecurringPattern.create(schedule_window_id: sw2.id , day_of_week: sw2.start_time.wday)
@@ -177,7 +169,8 @@ RecurringPattern.create(schedule_window_id: sw13.id , day_of_week: sw13.start_ti
 RecurringPattern.create(schedule_window_id: sw14.id , day_of_week: sw14.start_time.wday)
 RecurringPattern.create(schedule_window_id: sw15.id , day_of_week: sw15.start_time.wday)
 RecurringPattern.create(schedule_window_id: sw16.id , day_of_week: sw16.start_time.wday)
-
+puts "#{RecurringPattern.count} recurring patterns created."
+puts ""
 
 LocationRelationship.create(default: false, location_id: loc1.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: false, location_id: loc2.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
@@ -191,7 +184,6 @@ LocationRelationship.create(default: false, location_id: loc8.id , driver_id: ni
 
 LocationRelationship.create(default: false, location_id: loc9.id , driver_id: nil, rider_id: nil, organization_id: org1.id)
 LocationRelationship.create(default: false, location_id: loc10.id , driver_id: nil, rider_id: nil, organization_id: org2.id)
-
 LocationRelationship.create(default: true, location_id: loc11.id , driver_id: driver1.id , rider_id: nil, organization_id: nil)
 
 LocationRelationship.create(default: false, location_id: loc12.id , driver_id: nil, rider_id: nil, organization_id: nil)
@@ -199,15 +191,13 @@ LocationRelationship.create(default: false, location_id: loc13.id , driver_id: n
 LocationRelationship.create(default: false, location_id: loc14.id , driver_id: nil, rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: false, location_id: loc15.id , driver_id: nil, rider_id: nil, organization_id: nil)
 
-
-
-
 LocationRelationship.create(default: false, location_id: loc16.id , driver_id: driver2.id , rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: false, location_id: loc17.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: false, location_id: loc18.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: true, location_id: loc19.id , driver_id: driver3.id , rider_id: nil, organization_id: nil)
 LocationRelationship.create(default: false, location_id: loc10.id , driver_id: driver4.id , rider_id: nil, organization_id: nil)
-
+puts "#{LocationRelationship.count} location relationships created."
+puts ""
 
 
 
