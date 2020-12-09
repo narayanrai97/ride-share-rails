@@ -296,8 +296,12 @@
           status 404
           return {}
         end
-        if ride.status == "scheduled" && ride.driver_id == current_driver.id # && ride.pick_up_time >= Date.today + 1.week
-          ride.update(driver_id: nil, status: "approved")
+        if ride.status != "approved" && ride.driver_id == current_driver.id
+          if ride.status == "scheduled" # && ride.pick_up_time >= Date.today + 1.week
+            ride.update(driver_id: nil, status: "approved")
+          else
+            ride.update(driver_id: nil, status: "canceled")
+          end
           status 201
           render ride
         else
