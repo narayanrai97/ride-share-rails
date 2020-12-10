@@ -30,7 +30,6 @@ RSpec.describe Api::V1::Drivers, type: :request do
     it 'driver login in' do
     post '/api/v1/login', headers: {"ACCEPT" => "application/json" }, params: { email: driver.email, password: "Pa$$word20" }
        expect(response).to have_http_status(201)
-       puts response
     end
 
     it "enrolls a driver" do

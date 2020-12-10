@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :ride_category do
-    name { "MyString" }
-    description { "MyText" }
+    name { "Shopping" }
+    description { "Buy groceries" }
     organization { nil }
   end
 end
