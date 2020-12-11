@@ -120,6 +120,7 @@ RSpec.describe Api::V1::Rides, type: :request do
   it 'will change status to picking up on a ride for a driver' do
     post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
     parsed_json = JSON.parse(response.body)
+    byebug
     expect(parsed_json['ride']['status']).to eq("picking-up")
   end
 
