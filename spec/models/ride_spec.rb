@@ -4,7 +4,7 @@ RSpec.describe Ride, type: :model do
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:pick_up_time) }
-    it { is_expected.to validate_presence_of(:reason) }
+    it { is_expected.to validate_presence_of(:reasons) }
     it { is_expected.to validate_presence_of(:status) }
   end
 

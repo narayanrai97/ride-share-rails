@@ -11,8 +11,9 @@ RSpec.feature 'Riders', type: :feature, js: true do
   let!(:rider_outside_organization) { create :rider, email: 'arider@gmail.com', first_name: 'Joey' }
   let!(:location) { create :location }
   let!(:location1) { create :location, street: '100 Main St', city: 'Durham', state: 'NC', zip: '27713' }
+  let!(:ride_category) { create :ride_category, organization_id: organization.id}
   let!(:ride){create(:ride, rider_id: rider.id, organization_id: admin.organization.id,
-    start_location_id: location1.id, end_location_id: location1.id)}
+    start_location_id: location1.id, end_location_id: location1.id, reasons_attributes: [details: "buy foods", ride_category_id: ride_category.id])}
   let!(:location_relationship) { create :location_relationship, rider_id: rider.id, location_id: location.id }
 
   scenario 'when admin selects list of riders, check that all riders are in org' do

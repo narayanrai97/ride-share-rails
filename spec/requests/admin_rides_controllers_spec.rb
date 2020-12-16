@@ -12,8 +12,10 @@ RSpec.describe AdminRideController, type: :request do
   let!(:select_rider3) { create :rider, email: "fast_rider@example.com", organization_id: admin2.organization_id, is_active: true }
   let!(:driver) {create :driver, first_name: "Bobby", organization_id: organization.id}
   let!(:driver2) {create :driver, first_name: "Franky", organization_id: organization.id}
-  let!(:ride) { FactoryBot.attributes_for(:ride3) }
-  let!(:ride2) {create :ride2, organization_id: organization.id}
+  let!(:ride_category) { create :ride_category, organization_id: organization.id}
+  let!(:reasons_attributes) {[details: "buy groceries", ride_category_id: ride_category.id]}
+  let!(:ride) { create :ride3, reasons_attributes: reasons_attributes }
+  let!(:ride2) {create :ride2, organization_id: organization.id, reasons_attributes: reasons_attributes}
   let!(:valid_tokens) { create_list :token, 5, rider_id: select_rider.id }
   let!(:pick_up_time) { Time.zone.now + 15.days }
 
@@ -97,7 +99,7 @@ RSpec.describe AdminRideController, type: :request do
        end_city: location2[:city],
        end_state: location2[:state],
        end_zip: location2[:zip],
-       reason: "doctor",
+       reasons_attributes: reasons_attributes,
        round_trip: false
         }
       }
@@ -117,7 +119,7 @@ RSpec.describe AdminRideController, type: :request do
        end_city: location2[:city],
        end_state: location2[:state],
        end_zip: location2[:zip],
-       reason: "doctor",
+       reasons_attributes: reasons_attributes,
        round_trip: false
         }
       }
@@ -142,7 +144,7 @@ RSpec.describe AdminRideController, type: :request do
        start_city: location2[:city],
        start_state: location2[:state],
        start_zip: location2[:zip],
-       reason: "doctor",
+       reasons_attributes: reasons_attributes,
        round_trip: false
         }
       }
@@ -172,7 +174,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: false
             }
           }
@@ -199,7 +201,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: true,
            return_pick_up_time: DateTime.now - 6.days + 2.hours,
            notes: "ride created",
@@ -228,7 +230,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: true,
            return_pick_up_time: DateTime.now - 6.days + 2.hours,
            notes: "ride created",
@@ -257,7 +259,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location1[:city],
            end_state: location1[:state],
            end_zip: location1[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: true,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -285,7 +287,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: true,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -313,7 +315,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           reasons_attributes: reasons_attributes,
            round_trip: false,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -337,7 +339,7 @@ RSpec.describe AdminRideController, type: :request do
   end
 
   describe "show Action" do
-    let!(:ride)  { FactoryBot.create(:ride3) }
+    let!(:ride)  { create :ride3, reasons_attributes: reasons_attributes }
 
     before do
       login_as(admin, :scope => :user)
@@ -358,7 +360,7 @@ RSpec.describe AdminRideController, type: :request do
   end
 
   describe "Edit Action" do
-    let!(:ride)  { FactoryBot.create(:ride3) }
+    let!(:ride)  { create :ride3, reasons_attributes: reasons_attributes }
 
     before do
       login_as(admin, :scope => :user)
@@ -381,10 +383,10 @@ RSpec.describe AdminRideController, type: :request do
   end
 
   describe "Index Action" do
-    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
-    let!(:ride2)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
-    let!(:ride3)  { create :ride3, organization_id: admin.organization.id, status: "pending" }
-    let!(:ride4)  { create :ride3, organization_id: admin.organization.id, status: "completed" }
+    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved", reasons_attributes: reasons_attributes }
+    let!(:ride2)  { create :ride3, organization_id: admin.organization.id, status: "approved", reasons_attributes: reasons_attributes }
+    let!(:ride3)  { create :ride3, organization_id: admin.organization.id, status: "pending", reasons_attributes: reasons_attributes }
+    let!(:ride4)  { create :ride3, organization_id: admin.organization.id, status: "completed", reasons_attributes: reasons_attributes }
 
     before do
       login_as(admin, :scope => :user)
@@ -392,15 +394,13 @@ RSpec.describe AdminRideController, type: :request do
 
     it "Create a record and render index" do
       get admin_ride_index_path
-
-
       expect(response.redirect?).to eq(false)
       expect(Ride.count).to eq(4)
     end
   end
 
   describe "Update action" do
-    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved" }
+    let!(:ride)  { create :ride3, organization_id: admin.organization.id, status: "approved", reasons_attributes: reasons_attributes }
 
     before do
       login_as(admin, :scope => :user)
@@ -433,7 +433,8 @@ RSpec.describe AdminRideController, type: :request do
           end_street: location2[:street],
           end_city: location2[:city],
           end_state: location2[:state],
-          end_zip: location2[:zip]
+          end_zip: location2[:zip],
+          reasons_attributes: reasons_attributes
         }
       }
     end.not_to change(Ride, :count)
@@ -461,7 +462,7 @@ RSpec.describe AdminRideController, type: :request do
           organization_id: admin.organization_id,
           rider_id: select_rider.id,
           pick_up_time: DateTime.now + 6.days,
-          reason: ride.reason,
+          reasons_attributes: reasons_attributes,
           round_trip: false,
           notes: "Yes",
           start_location: ride.start_location,
@@ -489,7 +490,7 @@ RSpec.describe AdminRideController, type: :request do
             rider_id: select_rider.id,
             driver_id: driver.id,
             pick_up_time: DateTime.now + 6.days,
-            reason: ride.reason,
+            reasons_attributes: reasons_attributes,
             round_trip: false,
             notes: "Yes",
             start_location: ride.start_location,
@@ -517,7 +518,7 @@ RSpec.describe AdminRideController, type: :request do
               rider_id: select_rider.id,
               driver_id: driver2.id,
               pick_up_time: DateTime.now + 6.days,
-              reason: ride.reason,
+              reasons_attributes: reasons_attributes,
               round_trip: false,
               notes: "Yes",
               start_location: ride.start_location,
@@ -529,7 +530,7 @@ RSpec.describe AdminRideController, type: :request do
         expect(flash[:notice]).to eq("The ride information has been updated.")
         end
 
-    it "Error when end locationand start location are the same" do
+    it "Error when end location and start location are the same" do
       expect do
           put admin_ride_path(ride), params: {
             ride: {
@@ -545,14 +546,14 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location1[:city],
            end_state: location1[:state],
            end_zip: location1[:zip],
-           reason: "doctor",
-           round_trip: true,
+           reasons_attributes: reasons_attributes,
+           round_trip: false,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
            status: "active"
             }
           }
-        end.to change(Ride, :count)
+        end.not_to change(Ride, :count)
         expect(flash[:alert]).to match("Start location and end location can not be the same")
         expect(response.redirect?).to eq(false)
       end
@@ -572,15 +573,13 @@ RSpec.describe AdminRideController, type: :request do
             organization_id: admin.organization_id,
             rider_id: select_rider.id,
             pick_up_time: DateTime.now + 6.days,
-            reason: ride.reason,
-            round_trip: true,
+            reasons_attributes: reasons_attributes,
+            round_trip: false,
             return_pick_up_time: DateTime.now + 6.days + 3.hours,
-            notes: "pick near walmart",
-            start_location: ride.start_location,
-            end_location: ride.end_location
+            notes: "pick near walmart"
           }
         }
-      end.to change(Ride, :count)
+      end.to_not change(Ride, :count)
       expect(response.redirect?).to eq(true)
       expect(flash[:notice]).to eq("The ride information has been updated.")
     end

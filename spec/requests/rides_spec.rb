@@ -16,6 +16,8 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:rider) {create(:rider)}
   let!(:rider2) {create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
+  let!(:ride_category) { create :ride_category, organization_id: organization.id}
+  let!(:reasons_attributes) {[details: "buy groceries", ride_category_id: ride_category.id]}
 
   # added a few more locations to test ride radius
   let!(:location1) {create(:location,  street:"5410 Page Rd", city: "Durham", state: "NC", zip: "27703")}
@@ -32,39 +34,39 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   # the start location and end locations are helping with testing the radius of the rieds for the driver.
   let!(:ride) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-               start_location_id: location1.id, end_location_id: location2.id, status: "approved")}
+               start_location_id: location1.id, end_location_id: location2.id, status: "approved", reasons_attributes: reasons_attributes)}
 
   let!(:ride1) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride2) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "picking-up",
+                driver_id: driver.id, status: "picking-up", reasons_attributes: reasons_attributes,
                 start_location_id: location3.id, end_location_id: location4.id)}
 
   let!(:ride3) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location4.id, end_location_id: location5.id)}
 
   let!(:ride4) {create(:ride, rider_id: rider2.id, organization_id: organization.id,
-                driver_id: driver2.id, status: "scheduled",
+                driver_id: driver2.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride5) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location5.id, end_location_id: location6.id)}
 
   let!(:ride6) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location6.id, end_location_id: location7.id)}
 
   # this ride test when ladditude is and longitude is nil
   let!(:ride7) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", reasons_attributes: reasons_attributes,
                 start_location_id: location7.id, end_location_id: location6.id)}
 
   let!(:ride8) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "dropping-off",
+                driver_id: driver.id, status: "dropping-off", reasons_attributes: reasons_attributes,
                 start_location_id: location2.id, end_location_id: location3.id)}
 
   #Accepts a ride for the current logged in user.
@@ -156,6 +158,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
      #Returns all rides that h
     it 'will return a error when start time and end time are not nil' do
+      Reason.destroy_all
       Ride.destroy_all
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{
         start: Time.now,
@@ -165,6 +168,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
 
     it 'will return a 404 error when organization is nil!' do
+      Reason.destroy_all
       Ride.destroy_all
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{
         organization_id: nil, status: ["approved", "scheduled", "picking-up", "dropping-off", "completed", "canceled"]
@@ -184,6 +188,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
     # returns rides that only the driver has accepted
     it 'will return a 404 error when ride does not belong to driver ' do
+      Reason.destroy_all
       Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id, ride8.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true}
       #Driver should own all of these rides
@@ -218,6 +223,7 @@ RSpec.describe Api::V1::Rides, type: :request do
     end
 
      it 'will return a error 404 when ride does not belong to driver' do
+       Reason.destroy_all
        Ride.destroy([ride1.id,ride2.id,ride3.id,ride5.id, ride6.id, ride7.id, ride8.id])
       get "/api/v1/rides",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}, params:{driver_specific: true, start: Date.today,
       end: Date.today + 15}

@@ -10,8 +10,9 @@ RSpec.feature 'Rides', type: :feature, js: true do
   let!(:admin) { create :user }
   let!(:location1) { create :location, street: "100 Main St", city: 'Durham', state: "NC", zip: "27713" }
   let!(:rider) { create :rider, organization_id: admin.organization.id }
+  let!(:ride_category) { create :ride_category, organization_id: organization.id}
   let!(:ride){create(:ride, organization_id: admin.organization.id, rider_id: rider.id,
-    start_location_id: location1.id, end_location_id: location1.id)}
+    start_location_id: location1.id, end_location_id: location1.id, reasons_attributes: [ride_category_id: ride_category.id])}
 
   scenario 'log in as admin' do
     visit root_path
