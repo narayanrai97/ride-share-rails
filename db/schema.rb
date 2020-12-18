@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_021311) do
+ActiveRecord::Schema.define(version: 2020_12_18_041118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,8 @@ ActiveRecord::Schema.define(version: 2020_12_16_021311) do
     t.bigint "ride_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "cancellation_reason_id"
+    t.index ["cancellation_reason_id"], name: "index_reasons_on_cancellation_reason_id"
     t.index ["ride_category_id"], name: "index_reasons_on_ride_category_id"
     t.index ["ride_id"], name: "index_reasons_on_ride_id"
   end
@@ -247,8 +249,9 @@ ActiveRecord::Schema.define(version: 2020_12_16_021311) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cancellation_reasons", "organizations"
+  add_foreign_key "reasons", "cancellation_reasons"
   add_foreign_key "reasons", "ride_categories"
   add_foreign_key "reasons", "rides"
   add_foreign_key "ride_categories", "organizations"
-  add_foreign_key "cancellation_reasons", "organizations"
 end
