@@ -163,11 +163,10 @@
           return {}
         end
         #driver can only have one ride in a active state
-        current_driver.rides.each do |ride|
-          if ["picking-up", "dropping-off", "waiting", "return-picking-up", "return-dropping-off"].include?(ride.status)
-            status 400
-            return { error: "Sorry, there's a ride already in progress." }
-          end
+        if current_driver.rides.where( status: "picking-up" || "dropping-off" ||
+           "waiting" || "return-picking-up" || "return-dropping-off")
+          status 400
+          return { error: "Sorry, there's a ride already in progress." }
         end
 
         if ride.status == "scheduled" && ride.driver_id == current_driver.id
