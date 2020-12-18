@@ -16,7 +16,7 @@ RSpec.describe Api::V1::Rides, type: :request do
 
   let!(:driver4) {create(:driver, organization_id: organization.id, auth_token: "7897",
                                  radius: 5, is_active: true, token_created_at: Time.zone.now, background_check: true, application_state: "accepted")}
-                                 
+
   let!(:rider) {create(:rider)}
   let!(:rider2) {create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
@@ -131,6 +131,13 @@ RSpec.describe Api::V1::Rides, type: :request do
     byebug
     expect(parsed_json['ride']['status']).to eq("picking-up")
   end
+
+  it 'Driver can only have one active ride.' do
+    post "/api/v1/rides/#{ride3.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    parsed_json = JSON.parse(response.body)
+    expect(parsed_json['error']).to eq("Sorry, there's a ride already in progress.")
+  end
+
 
   it 'will change status to dropping off for a ride for a driver' do
     post "/api/v1/rides/#{ride2.id}/dropping-off",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
