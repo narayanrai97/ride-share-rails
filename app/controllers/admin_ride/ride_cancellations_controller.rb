@@ -1,6 +1,5 @@
-class RideCancellationsController < ApplicationController
-  def show
-  # byebug
+class AdminRide::RideCancellationsController < ApplicationController
+  def review
     @ride = Ride.find(params[:id])
     @cancellation_reasons = CancellationReason.where(organization_id: current_user.organization_id)
     authorize @ride
