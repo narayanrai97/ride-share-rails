@@ -71,7 +71,7 @@ Rails.application.routes.draw do
   resources :admin_ride do
     member do
       put 'approve' => 'admin_ride#approve'
-      put 'cancel' => 'ride_cancellations#cancel', controller: 'admin_ride/ride_cancellations'
+      patch 'cancel' => 'admin_ride/ride_cancellations#cancel'
       get 'review' => 'admin_ride/ride_cancellations#review'
     end
   end

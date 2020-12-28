@@ -4,7 +4,7 @@
   <% url = review_admin_ride_path %>
 <% end %>
 
-<%= form_with(url: url , model: [@ride, @cancellation_reasons], local: true) do |form| %>
+<%= form_with(url: url , model: @ride, local: true) do |form| %>
   <% if @ride.errors.any? %>
     <div id="error_explanation">
       <h2>
