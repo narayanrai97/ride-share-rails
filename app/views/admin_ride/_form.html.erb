@@ -217,17 +217,17 @@
   <div class="form-row">
     <div class="form-group  col-md-10 offset-md-1">
     6. <%= form.label :reason, class: 'control-label col-md-2' %>
-       <%= form.nested_fields_for :reasons do |ff| %>
-       <div class="row">
+     <div class="row">
+       <%= form.nested_fields_for :reasons, style: "display: flex" do |ff| %>
         <%= ff.select :ride_category_id, RideCategory.where(organization_id: current_user.organization.id).order(name: :asc).map {|rc| [ rc.name, rc.id, {'data-ride_category_name' => rc.name} ]},
         {}, {id: "dropdown", :onchange => "jsFunction(this);"}%>
         <div style="display:none" class="ride_category-description">
           <%= ff.text_field :details, placeholder: "details" %>
         </div>
         <%= ff.remove_nested_fields_link 'Remove'%>
-         <%end %>
-         <%= form.add_nested_fields_link :reasons %>
-       </div>
+      <%end %><br/>
+     </div>
+     <%= form.add_nested_fields_link :reasons %>
     </div>
   </div>
 <% if false %>
