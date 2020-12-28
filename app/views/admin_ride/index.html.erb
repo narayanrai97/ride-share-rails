@@ -53,7 +53,7 @@
                 <i class="fa fa-pencil-square-o">Edit</i>
               <% end %>
 
-              <%= link_to review_admin_ride_path(ride), class: "btn btn-sm btn-outline-warning" do %>
+              <%= link_to review_admin_ride_path(ride), method: :get, class: "btn btn-sm btn-outline-warning" do %>
                 <i class="fa fa-ban">Cancel</i>
 
             <% end %>
