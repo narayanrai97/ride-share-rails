@@ -50,7 +50,20 @@
       <% end %>
       <div class="mb-4">
           <%= form.label :reasons %><br>
-          <%= form.collection_select :cancellation_reason, CancellationReason.where("organization_id =?", current_user.organization_id), :id, :name %>
+          <div class="row">
+            <%= form.nested_fields_for :reasons, style: "display: flex" do |ff| %>
+             <%= ff.hidden_field :ride_category_id %>
+
+             <%= ff.select :cancellation_reason_id, CancellationReason.where("organization_id =?", current_user.organization_id).order(name: :asc).map {|rc| [ rc.name, rc.id, {'data-cancellation_reason_name' => rc.name} ]} %>
+
+             <div style="display:none" class="ride_category-description">
+               <%= ff.text_field :details, placeholder: "details" %>
+             </div>
+
+             <%= ff.remove_nested_fields_link 'Remove'%>
+           <%end %><br/>
+          </div>
+          <%= form.add_nested_fields_link :reasons %>
       </div>
       <div class="mt-5">
         <%= form.submit "Cancel", class: "btn btn-outline-warning", method: :put %>

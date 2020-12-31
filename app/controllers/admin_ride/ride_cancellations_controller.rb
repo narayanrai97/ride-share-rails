@@ -12,8 +12,14 @@ class AdminRide::RideCancellationsController < ApplicationController
     if %w[pending approved scheduled].include? @ride.status
       @ride.update_attributes(status: 'canceled')
       @ride.token&.update_attribute(:ride_id, nil)
-      flash.notice = 'Ride canceled.'
-      redirect_to admin_ride_index_path
+      if @ride.update(reasons_attributes: ride_params[:reasons_attributes])
+        flash.notice = 'Ride canceled.'
+        redirect_to admin_ride_index_path
+      end
     end
+  end
+
+  def ride_params
+    params.require(:ride).permit(reasons_attributes: [:details, :ride_category_id, :cancellation_reason_id, :_destroy, :id])
   end
 end
