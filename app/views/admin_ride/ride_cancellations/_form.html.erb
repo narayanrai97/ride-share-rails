@@ -1,4 +1,4 @@
-<div class="d-flex pt-2 justify-content-between border-top">
+<div class="d-flex pt-2 pb-2 justify-content-between border-top mr-4 ml-4">
   <% if @ride.id %>
     <% url = cancel_admin_ride_path(@ride) %>
   <% else %>
@@ -66,7 +66,7 @@
           <%= form.add_nested_fields_link :reasons %>
       </div>
       <div class="mt-5">
-        <%= form.submit "Cancel", class: "btn btn-outline-warning", method: :put %>
+        <%= form.submit "Cancel", class: "btn btn-warning", method: :put %>
       </div>
     <%end%>
   </div>

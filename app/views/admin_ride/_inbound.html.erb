@@ -1,76 +1,85 @@
 <div class="container admin-ride">
-  <h4 style="text-align: center">Ride Details</h4>
+  <h4 style="text-align: center" class="border-bottom pb-2">Ride Details</h4>
+  <div class="pl-5 pr-5 pb-2 pt-2 ml-4 mr-4">
+    <p>
+      <strong>Rider:</strong>
+      <%= @ride.rider.full_name %>
+    </p>
 
-  <p>
-    <strong>Rider:</strong>
-    <%= @ride.rider.full_name %>
-  </p>
+    <p>
+      <strong>Driver:</strong>
+      <%= @ride.driver&.full_name %>
+    </p>
 
-  <p>
-    <strong>Driver:</strong>
-    <%= @ride.driver&.full_name %>
-  </p>
+    <p class="contains-time">
+      <strong>Pick Up Time:</strong>
+      <span class="local-time"><%= @ride.pick_up_time %></span>
+    </p>
 
-  <p class="contains-time">
-    <strong>Pick Up Time:</strong>
-    <span class="local-time"><%= @ride.pick_up_time %></span>
-  </p>
+    <p>
+      <strong>Start Address:</strong>
+      <%= @ride.start_location.full_address %>
+    </p>
 
-  <p>
-    <strong>Start Address:</strong>
-    <%= @ride.start_location.full_address %>
-  </p>
-
-  <p>
-    <strong>End Address:</strong>
-    <%= @ride.end_location.full_address %>
-  </p>
+    <p>
+      <strong>End Address:</strong>
+      <%= @ride.end_location.full_address %>
+    </p>
 
 
-  <p>
-    <strong>Reasons:</strong>
-    <% @ride.reasons.each do |reason| %>
-       <%= RideCategory.find(reason.ride_category_id).name %>
-       <% if RideCategory.find(reason.ride_category_id).name == "Other" %>
-        (<%= reason.details%>)
-       <%end%>, 
-    <%end%>
-  </p>
+    <p>
+      <strong>Reasons:</strong>
+      <% @ride.reasons.each do |reason| %>
+         <%= RideCategory.find(reason.ride_category_id).name %>
+         <% if RideCategory.find(reason.ride_category_id).name == "Other" %>
+          (<%= reason.details%>)
+         <%end%>,
+      <%end%>
+    </p>
 
-  <p>
-    <strong>Status:</strong>
-    <%= @ride.status %>
-  </p>
+    <p>
+      <strong>Status:</strong>
+      <%= @ride.status %>
+    </p>
 
-  <p>
-    <strong>Round trip?</strong>
-    <%= @ride.round_trip %>
-  </p>
+    <p>
+      <strong>Round trip?</strong>
+      <%= @ride.round_trip %>
+    </p>
 
-  <p>
-    <strong>Notes: </strong>
-    <%= @ride.notes %>
-  </p>
+    <p>
+      <strong>Notes: </strong>
+      <%= @ride.notes %>
+    </p>
 
-  <% if @ride.return %>
-  <p class="contains-time">
-    <strong> Return trip pick up time:</strong>
-    <span class="local-time"><%= @second_ride.pick_up_time %></span><br />
-  </p>
-  <p>
-    <strong> Driver for return trip:</strong>
-    <% if @second_ride.driver.nil? %>
-      <%= "No driver is assigned" %>
-    <% else %>
-    <%= @second_ride.driver.full_name %>
+    <% if @ride.return %>
+    <p class="contains-time">
+      <strong> Return trip pick up time:</strong>
+      <span class="local-time"><%= @second_ride.pick_up_time %></span><br />
+    </p>
+    <p>
+      <strong> Driver for return trip:</strong>
+      <% if @second_ride.driver.nil? %>
+        <%= "No driver is assigned" %>
+      <% else %>
+      <%= @second_ride.driver.full_name %>
+      <% end %>
+    </p>
     <% end %>
-  </p>
-  <% end %>
-
-  <%= link_to 'Back', admin_ride_index_path, class: "btn btn-outline-primary" %>
-  <%= link_to 'Edit', edit_admin_ride_path(@ride), class: "btn btn-outline-success" %>
-
+    <div class="d-flex justify-content-between">
+      <div class="">
+        <%= link_to 'Back', admin_ride_index_path, class: "btn btn-outline-primary" %>
+      </div>
+      <div>
+        <%= link_to 'Edit', edit_admin_ride_path(@ride), class: "btn btn-outline-success" %>
+        <%= link_to review_admin_ride_path(@ride), method: :get, class: "btn btn-outline-warning" do %>
+          <i class="fa fa-ban">Cancel</i>
+        <%end%>
+      </div>
+    </div>
+  </div>
 </div>
+
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", (e) => {
     const parents = document.querySelectorAll('.contains-time');
