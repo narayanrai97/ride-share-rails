@@ -249,7 +249,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
                                  :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
                                  :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :reason,
-                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes)
+                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes, :ride_category_id)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

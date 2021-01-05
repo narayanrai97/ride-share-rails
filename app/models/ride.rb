@@ -7,6 +7,7 @@ class Ride < ApplicationRecord
   belongs_to :start_location, :class_name => "Location"
   belongs_to :end_location, :class_name => "Location"
   has_one :token
+  has_one :ride_category
 
   validates :start_location, :end_location, :pick_up_time, :reason, :status, presence: true
   validate :pick_up_time_cannot_be_in_the_past

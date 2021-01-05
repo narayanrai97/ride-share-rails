@@ -217,7 +217,8 @@
   <div class="form-row">
     <div class="form-group  col-md-10 offset-md-1">
     6. <%= form.label :reason %>
-       <%= form.text_field :reason,class: "form-control" %>
+       <!-- < form.text_field :reason,class: "form-control" %> -->
+       <%= form.collection_select :ride_category_id, RideCategory.where("organization_id =?", current_user.organization_id), :id, :name, { :include_blank => ' ' }%>
     </div>
   </div>
 <% if false %>
