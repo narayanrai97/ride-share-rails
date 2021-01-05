@@ -1,9 +1,9 @@
 class AdminRide::RideCancellationsController < ApplicationController
   def review
     @ride = Ride.find(params[:id])
-    @cancellation_reasons = CancellationReason.where(organization_id: current_user.organization_id)
+    @cancellation_categories = CancellationCategory.where(organization_id: current_user.organization_id)
     authorize @ride
-    # authorize @cancellation_reasons
+    # authorize @cancellation_categories
   end
 
   def cancel
@@ -20,6 +20,6 @@ class AdminRide::RideCancellationsController < ApplicationController
   end
 
   def ride_params
-    params.require(:ride).permit(reasons_attributes: [:details, :ride_category_id, :cancellation_reason_id, :_destroy, :id])
+    params.require(:ride).permit(reasons_attributes: [:details, :ride_category_id, :cancellation_category_id, :_destroy, :id])
   end
 end

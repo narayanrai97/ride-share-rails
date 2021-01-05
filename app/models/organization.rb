@@ -6,7 +6,7 @@ class Organization < ApplicationRecord
   has_many :rides, dependent: :destroy
   has_many :tokens, through: :riders
   has_many :ride_categories
-  has_many :cancellation_reasons
+  has_many :cancellation_categories
 
   validates :name, :street, :city, :state, :zip, presence: true
   validates :use_tokens, inclusion: { in: [ true, false ] }

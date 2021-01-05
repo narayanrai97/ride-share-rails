@@ -54,7 +54,7 @@
             <%= form.nested_fields_for :reasons, style: "display: flex" do |ff| %>
              <%= ff.hidden_field :ride_category_id %>
 
-             <%= ff.select :cancellation_reason_id, CancellationReason.where("organization_id =?", current_user.organization_id).order(name: :asc).map {|rc| [ rc.name, rc.id, {'data-cancellation_reason_name' => rc.name} ]} %>
+             <%= ff.select :cancellation_category_id, CancellationCategory.where("organization_id =?", current_user.organization_id).order(name: :asc).map {|rc| [ rc.name, rc.id, {'data-cancellation_category_name' => rc.name} ]} %>
 
              <div style="display:none" class="ride_category-description">
                <%= ff.text_field :details, placeholder: "details" %>
