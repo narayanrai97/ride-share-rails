@@ -1,5 +1,7 @@
 class WelcomeController < ApplicationController
   layout :resolve_layout
+  before_action :current_year_ride_count, only: :index
+  before_action :current_day_ride_count, only: :index
 
   def welcome
     if (current_user)
@@ -20,9 +22,9 @@ class WelcomeController < ApplicationController
     @rides = Kaminari.paginate_array(@rides).page(params[:page]).per(5)
     @approved_rides = Ride.where("organization_id =? AND pick_up_time >=?", current_user.organization.id, Date.today).status("approved").order(:pick_up_time)
     @drivers = Driver.where(organization_id: current_user.organization.id).pending.order(:created_at)
-    @rides_completed_this_year = current_year_ride_count
+    # @rides_completed_this_year = current_year_ride_count
     @drivers = Kaminari.paginate_array(@drivers).page(params[:page]).per(5)
-    @rides_completed_today = current_day_ride_count
+    # @rides_completed_today = current_day_ride_count
     if (!current_user)
       redirect_to welcome_welcome_path
     end

@@ -9,8 +9,7 @@ class CreateRides < ActiveRecord::Migration[5.2]
       t.references :start_location
       t.references :end_location
 
-
-      t.text :reason
+      t.string :ride_category_id, foreign_key: true
       t.string :status, default: 'requested'
 
       t.timestamps
