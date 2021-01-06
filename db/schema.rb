@@ -144,9 +144,18 @@ ActiveRecord::Schema.define(version: 2021_01_05_185208) do
     t.bigint "start_location_id"
     t.bigint "end_location_id"
     t.string "ride_category_id"
-    t.string "status", default: "requested"
+    t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "round_trip", default: false, null: false
+    t.string "expected_wait_time"
+    t.date "completed_at"
+    t.integer "outbound"
+    t.integer "return"
+    t.boolean "same_driver", default: false
+    t.float "pickup_to_dropoff_distance"
+    t.datetime "pickup_to_dropoff_time"
+    t.string "notes"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
     t.index ["organization_id"], name: "index_rides_on_organization_id"

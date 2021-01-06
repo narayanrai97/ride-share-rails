@@ -79,7 +79,7 @@ class AdminRideController < ApplicationController
                      rider_id: rider.id,
                      driver_id: ride_params[:driver_id],
                      pick_up_time: ride_params[:pick_up_time],
-                     reason: ride_params[:reason],
+                     ride_category_id: ride_params[:ride_category_id],
                      round_trip: ride_params[:round_trip],
                      notes: ride_params[:notes])
     if @ride.round_trip
@@ -87,7 +87,7 @@ class AdminRideController < ApplicationController
                               rider_id: rider.id,
                               driver_id: ride_params[:second_driver_id],
                               pick_up_time: ride_params[:return_pick_up_time],
-                              reason: ride_params[:reason],
+                              ride_category_id: ride_params[:ride_category_id],
                               round_trip: false,
                               notes: ride_params[:notes])
     end
@@ -174,7 +174,7 @@ class AdminRideController < ApplicationController
       rider_id: ride_params[:rider_id],
       driver_id: ride_params[:driver_id],
       pick_up_time: ride_params[:pick_up_time],
-      reason: ride_params[:reason],
+      ride_category_id: ride_params[:ride_category_id],
       round_trip: ride_params[:round_trip],
       notes: ride_params[:notes],
       start_location: @start_location,
@@ -194,7 +194,7 @@ class AdminRideController < ApplicationController
           rider_id: ride_params[:rider_id],
           driver_id: params[:second_ride][:second_driver_id],
           pick_up_time: ride_params[:return_pick_up_time],
-          reason: ride_params[:reason],
+          ride_category_id: ride_params[:ride_category_id],
           round_trip: false,
           notes: ride_params[:notes],
           start_location: @start_location,
@@ -205,7 +205,7 @@ class AdminRideController < ApplicationController
                                               rider_id: @ride.rider_id,
                                               driver_id: ride_params[:second_driver_id],
                                               pick_up_time: ride_params[:return_pick_up_time],
-                                              reason: @ride.reason,
+                                              ride_category_id: @ride.ride_category_id,
                                               round_trip: false,
                                               start_location: @start_location,
                                               end_location: @end_location)
@@ -248,7 +248,7 @@ class AdminRideController < ApplicationController
   def ride_params
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
                                  :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
-                                 :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :reason,
+                                 :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :ride_category_id,
                                  :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes, :ride_category_id)
   end
 

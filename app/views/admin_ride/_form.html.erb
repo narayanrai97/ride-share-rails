@@ -26,12 +26,12 @@
 <div class="form-row">
   <div class="form-group offset-md-1 col-8">
     1. <%= form.label :rider_id %><br>
-    <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
+    <%= form.collection_select :rider_id, Rider.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())", class: 'p-1' %>
   </div>
 
   <div class=" col-2">
     2. <%= form.label :driver_id, "Assign a driver" %><br>
-      <%= form.collection_select :driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())" %>
+      <%= form.collection_select :driver_id, Driver.where("organization_id =? AND is_active = ?", current_user.organization_id, true), :id, :full_name, { :include_blank => ' ' }, onchange: "getLocations($(this).val())", class: 'p-1' %>
   </div>
 </div>
 
@@ -67,7 +67,7 @@
       5. <%= label_tag :start_location, "Start Location" %>
       <p> Would you like to use previously saved location? <%= form.collection_select "organization_rider_start_location",
         Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
-      :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
+      :address_parsed, :full_address, { :include_blank => ' ' }, class: 'p-1'  %> </p>
     </div>
   </div>
 </div>
@@ -144,7 +144,7 @@
       5. <%= label_tag :end_location, "End Location" %>
       <p>  Would you like to use previously saved location? <%= form.collection_select "organization_rider_end_location",
        Location.joins(:location_relationships).select("DISTINCT ON (street, city, zip)*").where("organization_id=?", current_user.organization.id).limit(15),
-      :address_parsed, :full_address, { :include_blank => ' ' }  %> </p>
+      :address_parsed, :full_address, { :include_blank => ' ' }, class: 'p-1'  %> </p>
 
     </div>
 
@@ -218,7 +218,9 @@
     <div class="form-group  col-md-10 offset-md-1">
     6. <%= form.label :reason %>
        <!-- < form.text_field :reason,class: "form-control" %> -->
-       <%= form.collection_select :ride_category_id, RideCategory.where("organization_id =?", current_user.organization_id), :id, :name, { :include_blank => ' ' }%>
+       <!-- <div class="p-5"> -->
+         <%= form.collection_select :ride_category_id, RideCategory.where("organization_id =?", current_user.organization_id), :id, :name, { :include_blank => ' ' }, class: 'p-1'%>
+       <!-- </div> -->
     </div>
   </div>
 <% if false %>
