@@ -217,7 +217,8 @@
   <div class="form-row pt-3">
     <div class="form-group  col-md-10 offset-md-1">
     7. <%= form.label :reason %>
-         <%= form.collection_select :ride_category_id, RideCategory.where("organization_id =?", current_user.organization_id), :id, :name, { :include_blank => ' ' }, class: 'p-1'%>
+         <%= form.collection_select :ride_category_id, RideCategory.where("organization_id =?", current_user.organization_id), :id, :name, { :include_blank => ' ' }, class: 'p-1', id: 'ride-category'%>
+         <span style="display:none" id="ride-reason"><%= form.text_field :ride_reason, placeholder: "Reason... " %></span>
     </div>
   </div>
 <% if false %>
@@ -311,4 +312,18 @@
         }
     });
   });
+
+// Display ride reason input field only if the Ride category is 'Other'
+  $(document).ready(function(){
+    $('#ride-category').on('change', function() {
+      if ( this.value == '4')
+      {
+        $("#ride-reason").show();
+      }
+      else
+      {
+        $("#ride-reason").hide();
+      }
+    });
+});
 </script>

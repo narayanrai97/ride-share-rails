@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_05_185208) do
+ActiveRecord::Schema.define(version: 2021_01_08_024311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 2021_01_05_185208) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "cancellation_categories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_cancellation_categories_on_organization_id"
   end
 
   create_table "drivers", force: :cascade do |t|
@@ -156,6 +165,8 @@ ActiveRecord::Schema.define(version: 2021_01_05_185208) do
     t.float "pickup_to_dropoff_distance"
     t.datetime "pickup_to_dropoff_time"
     t.string "notes"
+    t.string "cancellation_category_id"
+    t.string "ride_reason"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
     t.index ["organization_id"], name: "index_rides_on_organization_id"
@@ -228,5 +239,6 @@ ActiveRecord::Schema.define(version: 2021_01_05_185208) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cancellation_categories", "organizations"
   add_foreign_key "ride_categories", "organizations"
 end
