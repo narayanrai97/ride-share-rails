@@ -98,3 +98,5 @@ gem 'grape-swagger'
 gem 'grape-swagger-rails'
 
 gem 'geocoder'
+
+gem 'nokogiri', '>= 1.11.0.rc4'
