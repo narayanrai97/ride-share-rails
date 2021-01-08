@@ -33,7 +33,7 @@
         <td class="no-wrap"><%= ride.rider.full_name %></td>
         <td class="no-wrap"><%= ride.driver&.full_name %></td>
         <td class="no-wrap local-time"><%= ride.pick_up_time.to_s %></td>
-        <td><%= RideCategory.find(ride.ride_category_id).name %></td>
+        <td><%= ride.ride_reason if !ride.ride_reason.nil?%></td>
         <td><%= ride.status %></td>
         <td>
           <% if ride.status == 'pending' %>

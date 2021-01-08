@@ -10,6 +10,12 @@ class AdminRideController < ApplicationController
 
   def new
     @ride = Ride.new
+    @ride_categories = current_user.organization.ride_categories
+
+    @ride_categories2 = {}
+    @ride_categories.each do |ride_category|
+      @ride_categories2[ride_category.name] = ride_category.id
+    end
   end
 
   def show

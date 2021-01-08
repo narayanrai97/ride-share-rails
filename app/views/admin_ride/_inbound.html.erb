@@ -29,7 +29,11 @@
 
   <p>
     <strong>Reason:</strong>
-    <%= RideCategory.find(@ride.ride_category_id).name %>
+    <%if !@ride.ride_reason.empty?%>
+      <%= @ride.ride_reason %>
+    <%else%>
+      <%= RideCategory.find(@ride.ride_category_id).name%>
+    <%end%>
   </p>
 
   <p>
