@@ -162,6 +162,12 @@
           status 404
           return {}
         end
+        #driver can only have one ride in a active state
+        if current_driver.rides.where( status: "picking-up" || "dropping-off" ||
+           "waiting" || "return-picking-up" || "return-dropping-off")
+          status 400
+          return { error: "Sorry, there's a ride already in progress." }
+        end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "picking-up")
           status 201
