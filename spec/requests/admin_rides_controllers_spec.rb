@@ -46,7 +46,7 @@ RSpec.describe AdminRideController, type: :request do
          end_city: location2[:city],
          end_state: location2[:state],
          end_zip: location2[:zip],
-         reason: "doctor",
+         ride_reason: "doctor",
          round_trip: false
           }
         }
@@ -71,7 +71,7 @@ RSpec.describe AdminRideController, type: :request do
        end_city: location2[:city],
        end_state: location2[:state],
        end_zip: location2[:zip],
-       reason: "doctor",
+       ride_reason: "doctor",
        round_trip: false
         }
       }
@@ -97,7 +97,7 @@ RSpec.describe AdminRideController, type: :request do
        end_city: location2[:city],
        end_state: location2[:state],
        end_zip: location2[:zip],
-       reason: "doctor",
+       ride_reason: "doctor",
        round_trip: false
         }
       }
@@ -117,7 +117,7 @@ RSpec.describe AdminRideController, type: :request do
        end_city: location2[:city],
        end_state: location2[:state],
        end_zip: location2[:zip],
-       reason: "doctor",
+       ride_reason: "doctor",
        round_trip: false
         }
       }
@@ -142,7 +142,7 @@ RSpec.describe AdminRideController, type: :request do
        start_city: location2[:city],
        start_state: location2[:state],
        start_zip: location2[:zip],
-       reason: "doctor",
+       ride_reason: "doctor",
        round_trip: false
         }
       }
@@ -172,7 +172,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: false
             }
           }
@@ -199,7 +199,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: true,
            return_pick_up_time: DateTime.now - 6.days + 2.hours,
            notes: "ride created",
@@ -228,7 +228,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: true,
            return_pick_up_time: DateTime.now - 6.days + 2.hours,
            notes: "ride created",
@@ -257,7 +257,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location1[:city],
            end_state: location1[:state],
            end_zip: location1[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: true,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -285,7 +285,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: true,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -313,7 +313,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location2[:city],
            end_state: location2[:state],
            end_zip: location2[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: false,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -461,7 +461,7 @@ RSpec.describe AdminRideController, type: :request do
           organization_id: admin.organization_id,
           rider_id: select_rider.id,
           pick_up_time: DateTime.now + 6.days,
-          reason: ride.reason,
+          ride_reason: ride.ride_reason,
           round_trip: false,
           notes: "Yes",
           start_location: ride.start_location,
@@ -489,7 +489,7 @@ RSpec.describe AdminRideController, type: :request do
             rider_id: select_rider.id,
             driver_id: driver.id,
             pick_up_time: DateTime.now + 6.days,
-            reason: ride.reason,
+            ride_reason: ride.ride_reason,
             round_trip: false,
             notes: "Yes",
             start_location: ride.start_location,
@@ -517,7 +517,7 @@ RSpec.describe AdminRideController, type: :request do
               rider_id: select_rider.id,
               driver_id: driver2.id,
               pick_up_time: DateTime.now + 6.days,
-              reason: ride.reason,
+              ride_reason: ride.ride_reason,
               round_trip: false,
               notes: "Yes",
               start_location: ride.start_location,
@@ -545,7 +545,7 @@ RSpec.describe AdminRideController, type: :request do
            end_city: location1[:city],
            end_state: location1[:state],
            end_zip: location1[:zip],
-           reason: "doctor",
+           ride_reason: "doctor",
            round_trip: true,
            return_pick_up_time: DateTime.now + 6.days + 2.hours,
            notes: "ride created",
@@ -572,7 +572,7 @@ RSpec.describe AdminRideController, type: :request do
             organization_id: admin.organization_id,
             rider_id: select_rider.id,
             pick_up_time: DateTime.now + 6.days,
-            reason: ride.reason,
+            ride_reason: ride.ride_reason,
             round_trip: true,
             return_pick_up_time: DateTime.now + 6.days + 3.hours,
             notes: "pick near walmart",
