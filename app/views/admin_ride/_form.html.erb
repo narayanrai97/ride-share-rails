@@ -326,7 +326,7 @@
     var ride_categories2 = <%= @ride_categories2.to_json.html_safe %>
     console.log(ride_categories2)
     $('#ride-category').on('change', function() {
-      if (this.value == ride_categories2['Other']) {
+      if (ride_categories2[this.value] && ride_categories2[this.value] === 'Other') {
         $("#ride-reason").show();
       } else {
         $("#ride-reason").hide();

@@ -14,7 +14,7 @@ class AdminRideController < ApplicationController
 
     @ride_categories2 = {}
     @ride_categories.each do |ride_category|
-      @ride_categories2[ride_category.name] = ride_category.id
+      @ride_categories2[ride_category.id] = ride_category.name
     end
   end
 
