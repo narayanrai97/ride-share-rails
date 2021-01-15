@@ -129,6 +129,7 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
+      # byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
@@ -254,8 +255,11 @@ class AdminRideController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
+    @old_location = Location.new(street: location.street, city: location.city, state: location.state, zip: location.zip)
     return nil unless location.validate
-
+    if @old_location.street != location.street || @old_location.city != location.city || @old_location.state != location.state || @old_location.zip != location.zip
+      flash[:alert] = "#{@old_location.full_address} Location you entered is different than what was found."
+    end
     l_new = location.save_or_touch
     l_new
   end

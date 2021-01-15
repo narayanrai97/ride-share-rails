@@ -7,7 +7,7 @@ GIT
       i18n (>= 1.6, < 2)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actioncable (5.2.4.4)
       actionpack (= 5.2.4.4)
