@@ -10,12 +10,6 @@ class AdminRideController < ApplicationController
 
   def new
     @ride = Ride.new
-    @ride_categories = current_user.organization.ride_categories
-
-    @ride_categories2 = {}
-    @ride_categories.each do |ride_category|
-      @ride_categories2[ride_category.id] = ride_category.name
-    end
   end
 
   def show
@@ -81,12 +75,17 @@ class AdminRideController < ApplicationController
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
                                  zip: ride_params[:end_zip])
+    if ride_params[:ride_reason] == "Other"
+      @ride_reason = ride_params[:ride_reason_other]
+    else
+      @ride_reason = ride_params[:ride_reason]
+    end
     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
                      driver_id: ride_params[:driver_id],
                      pick_up_time: ride_params[:pick_up_time],
                      ride_category_id: ride_params[:ride_category_id],
-                     ride_reason: ride_params[:ride_reason],
+                     ride_reason: @ride_reason,
                      round_trip: ride_params[:round_trip],
                      notes: ride_params[:notes])
     if @ride.round_trip
@@ -95,7 +94,7 @@ class AdminRideController < ApplicationController
                               driver_id: ride_params[:second_driver_id],
                               pick_up_time: ride_params[:return_pick_up_time],
                               ride_category_id: ride_params[:ride_category_id],
-                              ride_reason: ride_params[:ride_reason],
+                              ride_reason: @ride_reason,
                               round_trip: false,
                               notes: ride_params[:notes])
     end
@@ -260,7 +259,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
                                  :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
                                  :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :ride_category_id,
-                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes, :ride_reason)
+                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes, :ride_reason, :ride_reason_other)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.

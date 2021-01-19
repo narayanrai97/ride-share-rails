@@ -3,6 +3,7 @@ FactoryBot.define do
       pick_up_time { Date.today + 5.days }
       ride_reason {"Interview"}
       status { "pending"}
+      # ride_categories
 
     end
 end
