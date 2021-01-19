@@ -258,7 +258,7 @@ class AdminRideController < ApplicationController
     @old_location = Location.new(street: location.street, city: location.city, state: location.state, zip: location.zip)
     return nil unless location.validate
     if @old_location.street != location.street || @old_location.city != location.city || @old_location.state != location.state || @old_location.zip != location.zip
-      flash[:alert] = "#{@old_location.full_address} Location you entered is different than what was found."
+      flash[:alert] = "We updated the original address you entered: #{@old_location.full_address} to what you see in the ride details now.“"
     end
     l_new = location.save_or_touch
     l_new
