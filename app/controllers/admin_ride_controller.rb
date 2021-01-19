@@ -129,7 +129,6 @@ class AdminRideController < ApplicationController
         token.ride_id = @ride.id
         token.save
       end
-      # byebug
       flash[:notice] = "Ride created for #{rider.full_name}"
       redirect_to admin_ride_path(@ride)
       return
