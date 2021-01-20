@@ -218,9 +218,7 @@
   <div class="form-group  col-md-10 offset-md-1">
   6. <%= form.label :reason %>
      <%= form.select :reason, Ride::RIDE_CATEGORIES, {}, class: 'p-1' %>
-     <span style="display:none" id="ride-reason-other">
-       <%= form.text_field :ride_reason_other, placeholder: "Reason... "%>
-     </span>
+     <%= form.text_field :other_reason, style: 'display: none', placeholder: "Detail... "%>
   </div>
 </div>
 
@@ -309,9 +307,9 @@
   $(document).ready(function(){
     $('#ride_reason').on('change', function() {
       if (this.value === 'Other') {
-        $("#ride-reason-other").show();
+        $("#ride_other_reason").show();
       } else {
-        $("#ride-reason-other").hide();
+        $("#ride_other_reason").hide();
       }
     });
   });
