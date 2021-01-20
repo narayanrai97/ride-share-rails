@@ -214,20 +214,15 @@
     </div>
 </div>
 
-  <div class="form-row">
-    <div class="form-group  col-md-10 offset-md-1">
-    6. <%= form.label :reason %>
-       <%= form.text_field :reason,class: "form-control" %>
-    </div>
+<div class="form-row">
+  <div class="form-group  col-md-10 offset-md-1">
+  6. <%= form.label :reason %>
+     <%= form.select :reason, Ride::RIDE_CATEGORIES, {}, class: 'p-1' %>
+     <span style="display:none" id="ride-reason-other">
+       <%= form.text_field :ride_reason_other, placeholder: "Reason... "%>
+     </span>
   </div>
-<% if false %>
-  <div class="form-row">
-    <div class="form-group  col-md-10 offset-md-1">
-    <%= form.label :status %><br>
-    <%= form.text_field :status,class: "form-control" %>
-    </div>
-  </div>
-<% end %>
+</div>
 
 <div class="form-row">
   <div class="form-group col-md-10 offset-md-1">
@@ -235,8 +230,6 @@
        <%= form.text_field :notes, class: "form-control" %>
   </div>
 </div>
-
-
 
 <div class="form-row">
   <div class="form-group col-md-1 offset-md-1">
@@ -309,6 +302,17 @@
         {
           $("#return_pick_up_time").hide()
         }
+    });
+  });
+
+  // Display ride reason input field only if the Ride category is 'Other'
+  $(document).ready(function(){
+    $('#ride_reason').on('change', function() {
+      if (this.value === 'Other') {
+        $("#ride-reason-other").show();
+      } else {
+        $("#ride-reason-other").hide();
+      }
     });
   });
 </script>
