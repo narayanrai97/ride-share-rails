@@ -3,6 +3,7 @@
 class AdminRideController < ApplicationController
   RIDES_PER_PAGE_AMOUNT = 10
   before_action :authenticate_user!
+  before_action :conditional_ride_reason, only: [:create, :update]
   #  before_action :rider_is_active, only: :create
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -75,11 +76,12 @@ class AdminRideController < ApplicationController
                                  city: ride_params[:end_city],
                                  state: ride_params[:end_state],
                                  zip: ride_params[:end_zip])
+
     @ride = Ride.new(organization_id: current_user.organization_id,
                      rider_id: rider.id,
                      driver_id: ride_params[:driver_id],
                      pick_up_time: ride_params[:pick_up_time],
-                     reason: ride_params[:reason],
+                     reason: @reason,
                      round_trip: ride_params[:round_trip],
                      notes: ride_params[:notes])
     if @ride.round_trip
@@ -87,7 +89,7 @@ class AdminRideController < ApplicationController
                               rider_id: rider.id,
                               driver_id: ride_params[:second_driver_id],
                               pick_up_time: ride_params[:return_pick_up_time],
-                              reason: ride_params[:reason],
+                              reason: @reason,
                               round_trip: false,
                               notes: ride_params[:notes])
     end
@@ -174,7 +176,7 @@ class AdminRideController < ApplicationController
       rider_id: ride_params[:rider_id],
       driver_id: ride_params[:driver_id],
       pick_up_time: ride_params[:pick_up_time],
-      reason: ride_params[:reason],
+      reason: @reason,
       round_trip: ride_params[:round_trip],
       notes: ride_params[:notes],
       start_location: @start_location,
@@ -194,7 +196,7 @@ class AdminRideController < ApplicationController
           rider_id: ride_params[:rider_id],
           driver_id: params[:second_ride][:second_driver_id],
           pick_up_time: ride_params[:return_pick_up_time],
-          reason: ride_params[:reason],
+          reason: @reason,
           round_trip: false,
           notes: ride_params[:notes],
           start_location: @start_location,
@@ -249,7 +251,7 @@ class AdminRideController < ApplicationController
     params.require(:ride).permit(:rider_id, :driver_id, :pick_up_time, :save_start_location, :save_end_location,
                                  :organization_rider_start_location, :start_street, :start_city, :start_state, :start_zip,
                                  :organization_rider_end_location, :end_street, :end_city, :end_state, :end_zip, :reason,
-                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes)
+                                 :status, :q, :round_trip, :second_driver_id, :return_pick_up_time, :notes, :other_reason)
   end
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
@@ -367,5 +369,13 @@ class AdminRideController < ApplicationController
       return false
     end
     return true
+  end
+
+  def conditional_ride_reason
+    if ride_params[:reason] == 'Other'
+      @reason = ride_params[:other_reason]
+    else
+      @reason = ride_params[:reason]
+    end
   end
 end
