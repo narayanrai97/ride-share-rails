@@ -217,7 +217,7 @@
 <div class="form-row">
   <div class="form-group  col-md-10 offset-md-1">
   6. <%= form.label :reason %>
-     <%= form.select :reason, options_for_select(ride_reasons), {}, class: 'p-1' %>
+     <%= form.select :reason, Ride::RIDE_CATEGORIES, {}, selected: form.object.reason, class: 'p-1' %>
      <%= form.text_field :other_reason, style: 'display: none', placeholder: "Detail... "%>
   </div>
 </div>
