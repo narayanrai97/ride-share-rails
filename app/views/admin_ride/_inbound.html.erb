@@ -29,7 +29,7 @@
 
   <p>
     <strong>Reason:</strong>
-    <%= @ride.reason %>
+    <%= RideCategory.find(@ride.ride_category_id).name %>
   </p>
 
   <p>
@@ -38,8 +38,12 @@
   </p>
 
   <p>
-    <strong>Round trip?</strong>
-    <%= @ride.round_trip %>
+    <strong>Trip:</strong>
+    <% if @ride.round_trip %>
+      Round
+    <%else%>
+      One-way
+    <%end%>
   </p>
 
   <p>

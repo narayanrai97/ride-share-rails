@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 2021_01_24_060021) do
     t.datetime "pick_up_time"
     t.bigint "start_location_id"
     t.bigint "end_location_id"
-    t.text "reason"
+    t.string "ride_category_id"
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
