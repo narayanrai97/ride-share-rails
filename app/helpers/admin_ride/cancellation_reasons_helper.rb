@@ -1,0 +1,2 @@
+module AdminRide::CancellationReasonsHelper
+end
