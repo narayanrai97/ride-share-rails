@@ -1,6 +1,7 @@
 require 'geodistance'
 
 class Ride < ApplicationRecord
+  RIDE_CANCELLATION_CATEGORIES = ['Family', 'Friends', 'Shopping', 'Other']
   belongs_to :organization
   belongs_to :driver, optional: true
   belongs_to :rider

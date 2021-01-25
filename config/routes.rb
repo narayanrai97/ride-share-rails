@@ -72,7 +72,7 @@ Rails.application.routes.draw do
     member do
       put 'approve' => 'admin_ride#approve'
       get 'review'  => 'admin_ride/cancellation_reasons#review'
-      put 'cancel' => 'admin_ride/cancellation_reasons#cancel'
+      patch 'cancel' => 'admin_ride/cancellation_reasons#cancel'
     end
   end
 
