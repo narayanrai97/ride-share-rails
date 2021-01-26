@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :admin_ride do
+    get 'ride_cancellations/review'
+    get 'ride_cancellations/cancel'
+  end
   devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
 
   namespace :admin do

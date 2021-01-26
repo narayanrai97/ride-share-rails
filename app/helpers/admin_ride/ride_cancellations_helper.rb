@@ -1,0 +1,2 @@
+module AdminRide::RideCancellationsHelper
+end
