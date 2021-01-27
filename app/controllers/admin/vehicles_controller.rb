@@ -64,7 +64,7 @@ class Admin::VehiclesController < ApplicationController
   private
   def vehicle_params
     params.require(:vehicle).permit(:car_make, :car_model,
-       :car_color, :car_year,:car_plate, :seat_belt_num, :insurance_provider,
+       :car_color, :car_year,:car_plate, :car_state, :seat_belt_num, :insurance_provider,
      :insurance_start, :insurance_stop, :image)
   end
 end
