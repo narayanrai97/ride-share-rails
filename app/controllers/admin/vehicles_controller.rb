@@ -17,7 +17,7 @@ class Admin::VehiclesController < ApplicationController
         redirect_to admin_driver_path(params[:driver_id])
       else
         flash.alert = @vehicle.errors.full_messages.to_sentence
-        redirect_to admin_driver_path(params[:driver_id])
+        redirect_to edit_admin_vehicle_path(params[:driver_id])
       end
     else
       flash.alert = "You cannot create vehicles outside your organization"
