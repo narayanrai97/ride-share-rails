@@ -1,0 +1,80 @@
+<div class="d-flex pt-2 pb-2 justify-content-between border-top mr-4 ml-4">
+  <% if @ride.id %>
+    <% url = cancel_admin_ride_path(@ride) %>
+  <% else %>
+    <% url = review_admin_ride_path %>
+  <% end %>
+  <div class="ml-5" style="display: flex; flex-direction: column; flex-wrap: wrap;">
+    <div>
+      <p>
+        <strong>Rider: </strong>
+        <%= @ride.rider.full_name %>
+      </p>
+      <p>
+        <strong>Pick up time: </strong>
+        <span class="local-time"><%= @ride.pick_up_time %></span>
+      </p>
+      <p>
+        <strong>Status: </strong>
+        <%= @ride.status %>
+      </p>
+      <p>
+        <strong>Start Location: </strong>
+        <%= @ride.start_location.full_address %>
+      </p>
+      <p>
+        <strong>End Location: </strong>
+        <%= @ride.end_location.full_address %>
+      </p>
+      <p>
+        <strong>Cancellation reason: </strong>
+        <%= @ride.cancellation_reason %>
+      </p>
+    </div>
+
+    <div>
+      <%= link_to 'Back', :back, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+
+  <div class="d-flex mr-5 border-left pl-5" style="display: flex; flex-direction: column; flex-wrap: wrap;">
+    <%= form_with(url: url , model: @ride, local: true) do |form| %>
+      <% if @ride.errors.any? %>
+        <div id="error_explanation">
+          <h2>
+            <%= pluralize(@ride.errors.count, "error") %> prohibited
+            this ride from being saved:
+          </h2>
+          <ul>
+            <% @ride.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="mb-4">
+          <%=form.label :cancellation_reason %><br>
+          <div class="row">
+            <%= form.select :cancellation_reason, Ride.ride_cancellation_categories, {}, class: 'p-1' %>
+            <%= form.text_field :cancellation_other_reason, style: 'display:none', placeholder: "Detail... "%>
+          </div>
+      </div>
+      <div class="mt-5">
+        <%= form.submit "Cancel", class: "btn btn-warning", method: :put %>
+      </div>
+    <%end%>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // Display ride reason input field only if the Ride cancellation category is 'Other'
+  $(document).ready(function(){
+    $('#ride_cancellation_reason').on('change', function() {
+      if (this.value === 'Other') {
+        $("#ride_cancellation_other_reason").show();
+      } else {
+        $("#ride_cancellation_other_reason").hide();
+      }
+    });
+  });
+</script>

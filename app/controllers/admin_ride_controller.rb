@@ -234,17 +234,6 @@ class AdminRideController < ApplicationController
     redirect_to request.referrer || admin_ride_index_path
   end
 
-  def cancel
-    @ride = Ride.find(params[:id])
-    authorize @ride
-    if %w[pending approved scheduled].include? @ride.status
-      @ride.update_attributes(status: 'canceled')
-      @ride.token&.update_attribute(:ride_id, nil)
-      flash.notice = 'Ride canceled.'
-      redirect_to request.referrer || admin_ride_index_path
-    end
-  end
-
   private
 
   def ride_params
