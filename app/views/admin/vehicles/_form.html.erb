@@ -47,7 +47,7 @@
 
     <div class="form-group col-md-5">
       <%= form.label :car_state %><br>
-      <%= form.text_field :car_state, class: "form-control" %>
+      <%= form.select :car_state, options_for_select(us_states), {}, class: 'form-control' %>
     </div>
   </div>
 
