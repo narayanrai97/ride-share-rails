@@ -29,7 +29,7 @@ class AdminRideController < ApplicationController
     if params[:status].present?
       @rides = Ride.status(params[:status]).where("organization_id =? AND pick_up_time >=?", current_user.organization.id, Date.today)
     else
-      @rides = Ride.select("rides.*,riders.first_name,riders.last_name").joins(:rider).status(["approved", "scheduled"]).where("rides.organization_id =? AND pick_up_time >= ?", current_user.organization.id, Date.today)
+      @rides = Ride.select("rides.*,riders.first_name,riders.last_name").joins(:rider).where("rides.organization_id =? AND pick_up_time >= ?", current_user.organization.id, Date.today)
     end
     @query = @rides.ransack(params[:q])
     @search = Kaminari.paginate_array(@query.result).page(params[:page]).per(RIDES_PER_PAGE_AMOUNT)
