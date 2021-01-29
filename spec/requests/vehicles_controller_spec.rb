@@ -42,7 +42,6 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_make: "Chevorlet",
          car_model: "Impala",
          car_year: 2010,
-         car_state: "NJ",
          car_color: "Silver",
          car_plate: "VZW1212",
        }
@@ -52,6 +51,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
       expect(flash[:alert]).to match("Insurance provider can't be blank" )
       expect(flash[:alert]).to match("Insurance start can't be blank" )
       expect(flash[:alert]).to  match("Insurance stop can't be blank" )
+      expect(flash[:alert]).to  match("Car state can't be blank" )
       expect(response.redirect?).to eq(true)
       expect(response.redirect?).to redirect_to(edit_admin_vehicle_path(driver1.id))
       end.not_to change(Vehicle, :count)
