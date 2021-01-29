@@ -31,11 +31,9 @@ module Api
       end
       post "vehicles" do
         driver = current_driver
-
         vehicle = Vehicle.new
         vehicle.attributes = params[:vehicle]
         vehicle.driver_id = current_driver.id
-        byebug
         if vehicle.save
           status 201
           return vehicle
