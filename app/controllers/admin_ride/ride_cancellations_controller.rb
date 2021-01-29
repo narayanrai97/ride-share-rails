@@ -1,13 +1,9 @@
 class AdminRide::RideCancellationsController < ApplicationController
-  # before_action :conditional_ride_cancellation_reason
-
   def review
-  # byebug
     @ride = Ride.find(params[:id])
   end
 
   def cancel
-# byebug
     @ride = Ride.find(params[:id])
     authorize @ride
 
@@ -29,8 +25,4 @@ class AdminRide::RideCancellationsController < ApplicationController
     def ride_params
       params.require(:ride).permit(:cancellation_reason, :cancellation_other_reason)
     end
-
-    # def conditional_ride_cancellation_reason
-    #
-    # end
 end
