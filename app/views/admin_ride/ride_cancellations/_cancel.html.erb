@@ -51,8 +51,13 @@
       <div class="mb-4">
           <%=form.label :cancellation_reason %><br>
           <div class="row">
-            <%= form.select :cancellation_reason, Ride.ride_cancellation_categories, {}, class: 'p-1' %>
-            <%= form.text_field :cancellation_other_reason, style: 'display:none', placeholder: "Detail... "%>
+            <% if !Ride::RIDE_CANCELLATION_CATEGORIES.include? form.object.cancellation_reason %>
+              <%= form.select :cancellation_reason, Ride.ride_cancellation_categories, selected: 'Other', class: 'p-1' %>
+              <%= form.text_field :cancellation_other_reason, value: form.object.cancellation_reason, placeholder: "Detail... "%>
+            <%else%>
+             <%= form.select :cancellation_reason, Ride.ride_cancellation_categories, selected: form.object.cancellation_reason, class: 'p-1' %>
+             <%= form.text_field :cancellation_other_reason, style: 'display:none', placeholder: "Detail... "%>
+            <%end%>
           </div>
       </div>
       <div class="mt-5">
