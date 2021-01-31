@@ -294,7 +294,8 @@
       desc "Cancel a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
-        requires :cancellation_reason, type: String, desc: "Reason for cancelling the ride"
+        optional :description, type: Array[String], default: 'Late', values: Ride::RIDE_CANCELLATION_CATEGORIES, desc: "Array of Cancellation Reason categories"
+        optional :other_description, type: String, desc: "Cancellation Reason when 'Other' is selected"
       end
       post "rides/:ride_id/cancel" do
         begin
@@ -304,10 +305,10 @@
           return {}
         end
         if ride.status != "approved" && ride.driver_id == current_driver.id
-          if ride.status == "scheduled" && ride.pick_up_time >= Date.today + 1.week
-            ride.update(driver_id: nil, status: "approved", cancellation_reason: params[:cancellation_reason])
+          if ride.status == "scheduled" && ride.pick_up_time >= Date.today + 1.week && params[:description].present?
+            ride.update(driver_id: nil, status: "approved", cancellation_reason: params[:description])
           else
-            ride.update(driver_id: nil, status: "canceled", cancellation_reason: params[:cancellation_reason])
+            ride.update(driver_id: nil, status: "canceled", cancellation_reason: params[:other_description])
           end
           status 201
           render ride
