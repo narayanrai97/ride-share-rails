@@ -4,6 +4,7 @@ FactoryBot.define do
       car_model {"Altima"}
       car_color {"Silver"}
       car_year {2010}
+      car_state {"NY"}
       car_plate {Faker::Name.unique.last_name}
       seat_belt_num {4}
       insurance_provider {"Geico"}
