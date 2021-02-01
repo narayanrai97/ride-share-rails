@@ -2,7 +2,7 @@ class Vehicle < ApplicationRecord
   belongs_to :driver
   has_one_attached :image
 
-  validates :car_make, :car_model, :car_color, :car_year, :car_plate, :seat_belt_num,
+  validates :car_make, :car_model, :car_color, :car_year, :car_state, :car_plate, :seat_belt_num,
             :insurance_provider, :insurance_start, :insurance_stop, presence: true
   validates :car_year, numericality: { only_integer: true }
   validates :seat_belt_num, numericality: { only_integer: true }
