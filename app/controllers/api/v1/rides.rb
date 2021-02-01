@@ -294,8 +294,10 @@
       desc "Cancel a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
-        optional :description, type: Array[String], default: 'Late', values: Ride::RIDE_CANCELLATION_CATEGORIES, desc: "Array of Cancellation Reason categories"
-        optional :other_description, type: String, desc: "Cancellation Reason when 'Other' is selected"
+        requires :reason, type: Array[String], default: 'Late', values: Ride::RIDE_CANCELLATION_CATEGORIES, desc: "Array of Cancellation Reason categories"
+        given reason: ->(val) { val == 'Other' } do
+          requires :description, type: String, desc: "Cancellation Description when the reason is 'Other'"
+        end
       end
       post "rides/:ride_id/cancel" do
         begin
