@@ -1,5 +1,4 @@
 FactoryBot.define do
-  # byebug
     factory :ride3, class: Ride do
       rider_id {FactoryBot.create(:rider).id}
       pick_up_time { Date.today + 6.days }

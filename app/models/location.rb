@@ -96,7 +96,6 @@ class Location < ApplicationRecord
         else
           errors[:base] << "The state could not be found."
         end
-
         # Zip
         zip = (result.first.data["address_components"].select { |address_hash| address_hash["types"] == ["postal_code"]}).first
         if !zip.nil?
