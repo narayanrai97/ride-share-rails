@@ -1,7 +1,7 @@
 require 'geodistance'
 
 class Ride < ApplicationRecord
-  RIDE_CATEGORIES = ['Family', 'Friends', 'Shopping', 'Other']
+  RIDE_CATEGORIES = ['Family', 'Friends', 'Shopping', 'Groceries', 'Other']
 
   belongs_to :organization
   belongs_to :driver, optional: true
