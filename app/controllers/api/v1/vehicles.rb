@@ -22,6 +22,7 @@ module Api
           requires :car_year, type: String, desc: " Car Year of vehicle"
           requires :car_color, type: String, desc: " Car Color of vehicle"
           requires :car_plate, type: String, desc: " Car plate of vehicle"
+          requires :car_state, type: String, desc: " State car is registed"
           requires :seat_belt_num, type: String, desc: " Car plate of vehicle"
           requires :insurance_provider, type: String, desc: " Insurance Provider for vehicle"
           requires :insurance_start, type: Date, desc: " Insurance start date"
@@ -30,7 +31,6 @@ module Api
       end
       post "vehicles" do
         driver = current_driver
-
         vehicle = Vehicle.new
         vehicle.attributes = params[:vehicle]
         vehicle.driver_id = current_driver.id
@@ -90,6 +90,7 @@ module Api
             optional :car_year, type: Integer, desc: " Car Year of vehicle"
             optional :car_color, type: String, desc: " Car Color of vehicle"
             optional :car_plate, type: String, desc: " Car plate of vehicle"
+            requires :car_state, type: String, desc: " State car is registed"
             optional :seat_belt_num, type: Integer, desc: " Car plate of vehicle"
             optional :insurance_provider, type: String, desc: " Insurance Provider for vehicle"
             optional :insurance_start, type: Date, desc: " Insurance start date"

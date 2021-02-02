@@ -98,7 +98,7 @@ class AdminRideController < ApplicationController
     end
     location = save_location_error_handler(@start_location)
     if location.nil?
-      flash.now[:alert] = @start_location.errors.full_messages.join("\n")
+      flash.now[:error] = @start_location.errors.full_messages.join("\n")
       render 'new'
       return
     else
@@ -106,7 +106,7 @@ class AdminRideController < ApplicationController
     end
     location = save_location_error_handler(@end_location)
     if location.nil?
-      flash.now[:alert] = @end_location.errors.full_messages.join("\n")
+      flash.now[:error] = @end_location.errors.full_messages.join("\n")
       render 'new'
       return
     else
@@ -120,7 +120,7 @@ class AdminRideController < ApplicationController
     end
     when_ride_driver_is_assigned_change_status
     if !@ride.save
-      flash.now[:alert] = @ride.errors.full_messages.join("\n")
+      flash.now[:error] = @ride.errors.full_messages.join("\n")
       render 'new'
       return
     else
@@ -149,7 +149,7 @@ class AdminRideController < ApplicationController
                                    zip: ride_params[:start_zip])
     location = save_location_error_handler(@start_location)
     if location.nil?
-      flash.now[:alert] = @start_location.errors.full_messages.join("\n")
+      flash.now[:error] = @start_location.errors.full_messages.join("\n")
       @ride = Ride.find(params[:id])
       render 'edit'
       return
@@ -162,7 +162,7 @@ class AdminRideController < ApplicationController
                                  zip: ride_params[:end_zip])
     location = save_location_error_handler(@end_location)
     if location.nil?
-      flash.now[:alert] = @end_location.errors.full_messages.join("\n")
+      flash.now[:error] = @end_location.errors.full_messages.join("\n")
       @ride = Ride.find(params[:id])
       render 'edit'
       return
@@ -256,11 +256,15 @@ class AdminRideController < ApplicationController
 
   # TODO: -- possibly clean out old record, and make a plan to fix it in the future.
   def save_location_error_handler(location)
+    @old_location = Location.new(street: location.street, city: location.city, state: location.state, zip: location.zip)
     return nil unless location.validate
-
+    if @old_location.street != location.street || @old_location.city != location.city || @old_location.state != location.state || @old_location.zip != location.zip
+      flash[:alert] = " We updated the original address you entered: #{@old_location.full_address}. You can see the updated address in the ride details."
+    end
     l_new = location.save_or_touch
     l_new
   end
+
 
   def when_ride_driver_is_assigned_change_status
     if !@ride.driver_id.nil?
@@ -311,7 +315,7 @@ class AdminRideController < ApplicationController
       @second_ride.start_location_id = @end_location.id
       @second_ride.end_location_id = @start_location.id
       unless @second_ride.save
-        flash.now[:alert] = @second_ride.errors.full_messages.join("\n")
+        flash.now[:error] = @second_ride.errors.full_messages.join("\n")
         render 'new'
         return false
       end
