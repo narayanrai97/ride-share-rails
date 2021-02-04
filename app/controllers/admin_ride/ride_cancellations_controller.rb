@@ -1,11 +1,22 @@
 class AdminRide::RideCancellationsController < ApplicationController
   def review
-    @ride = Ride.find(params[:id])
+    begin
+      @ride = Ride.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash.now[:alert] = "Record not found."
+      redirect_to admin_ride_index_path
+      return
+    end
   end
 
   def cancel
-    @ride = Ride.find(params[:id])
-    authorize @ride
+    begin
+      @ride = Ride.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash.now[:alert] = "Record not found."
+      redirect_to admin_ride_index_path
+      return
+    end
 
     if ride_params[:cancellation_reason] == 'Other'
       @cancellation_reason = ride_params[:cancellation_other_reason]
