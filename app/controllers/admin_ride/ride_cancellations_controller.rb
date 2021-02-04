@@ -17,7 +17,7 @@ class AdminRide::RideCancellationsController < ApplicationController
       @ride.update_attributes(status: 'canceled', cancellation_reason: @cancellation_reason)
       @ride.token&.update_attribute(:ride_id, nil)
       flash.notice = 'Ride canceled.'
-      redirect_to admin_ride_index_path
+      redirect_to admin_ride_path @ride
     end
   end
 
