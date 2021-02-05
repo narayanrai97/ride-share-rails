@@ -12,7 +12,7 @@
       </p>
       <p>
         <strong>Pick up time: </strong>
-        <span class="local-time"><%= @ride.pick_up_time %></span>
+        <span class="local-time"><%= @ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%A, %b %d, %Y %I:%M %p %Z") %></span>
       </p>
       <p>
         <strong>Status: </strong>
