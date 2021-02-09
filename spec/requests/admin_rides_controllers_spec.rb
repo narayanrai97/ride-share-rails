@@ -207,7 +207,7 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.not_to change(Ride, :count)
-      expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
+      expect(response.body).to include("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:new)
     end
@@ -236,7 +236,7 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.not_to change(Ride, :count)
-      expect(flash[:alert]).to eq ("Return time must be at least 30 minutes after departure time")
+      expect(response.body).to include("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:new)
     end
@@ -265,7 +265,7 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.to change(Ride, :count)
-        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.body).to include("Start location and end location can not be the same")
         expect(response.redirect?).to eq(false)
       end
 
@@ -553,7 +553,7 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.to change(Ride, :count)
-        expect(flash[:alert]).to match("Start location and end location can not be the same")
+        expect(response.body).to include("Start location and end location can not be the same")
         expect(response.redirect?).to eq(false)
       end
 
