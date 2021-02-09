@@ -164,7 +164,7 @@
         end
         #driver can only have one ride in a active state
         if current_driver.rides.where( status: "picking-up" || "dropping-off" ||
-           "waiting" || "return-picking-up" || "return-dropping-off")
+           "waiting" || "return-picking-up" || "return-dropping-off").count > 0
           status 400
           return { error: "Sorry, there's a ride already in progress." }
         end
