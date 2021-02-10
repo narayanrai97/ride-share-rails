@@ -16,7 +16,6 @@ class Admin::VehiclesController < ApplicationController
         flash.notice = "The vehicle information has been created"
         redirect_to admin_driver_path(params[:driver_id])
       else
-        flash.alert = @vehicle.errors.full_messages.to_sentence
         @driver =  Driver.find(params[:driver_id])
         render "edit"
       end
@@ -43,7 +42,6 @@ class Admin::VehiclesController < ApplicationController
           flash.notice = "The vehicle information has been updated"
           redirect_to admin_driver_path(@vehicle.driver_id)
         else
-          # flash.now.alert = @vehicle.errors.full_messages.to_sentence
           render "edit"
         end
       else
