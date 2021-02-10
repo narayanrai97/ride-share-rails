@@ -1,9 +1,10 @@
-<% if controller.action_name == 'new' %>
+<% if controller.action_name == 'new'  || controller.action_name == 'create' %>
   <%url = admin_driver_vehicles_path(driver_id: @driver) %>
 <% else %>
   <%url = admin_vehicle_path(id: @vehicle) %>
 <% end %>
-<%= form_with(model: [@driver,@vehicle], url: url)  do  |form| %>
+
+<%= form_with(model: [@driver,@vehicle], url: url, local: true)  do  |form| %>
 
   <% if @vehicle.errors.any? %>
     <div id="error_explanation">
