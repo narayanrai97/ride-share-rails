@@ -16,6 +16,8 @@ class Admin::VehiclesController < ApplicationController
         flash.notice = "The vehicle information has been created"
         redirect_to admin_driver_path(params[:driver_id])
       else
+        # The form is handling the errors. Turned of flash alerts error
+        # flash.alert = @vehicle.errors.full_messages.to_sentence
         @driver =  Driver.find(params[:driver_id])
         render "edit"
       end
