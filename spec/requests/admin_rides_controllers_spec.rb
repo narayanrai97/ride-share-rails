@@ -207,7 +207,6 @@ RSpec.describe AdminRideController, type: :request do
             }
           }
         end.not_to change(Ride, :count)
-
       expect(response.body).to include("Return time must be at least 30 minutes after departure time")
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:new)
