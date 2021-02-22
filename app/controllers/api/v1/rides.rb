@@ -307,7 +307,7 @@
           return {}
         end
         if ride.status != "approved" && ride.driver_id == current_driver.id
-          if !params[:reason].present?
+          unless params[:reason].present?
             status 400
             return {error: "Cancellation reason not given."}
           end
@@ -320,11 +320,8 @@
             end
             cancellation_reason = params[:description]
           end
-          if ride.status == "scheduled" && ride.pick_up_time >= Date.today + 1.week
-            ride.update(driver_id: nil, status: "approved", cancellation_reason: cancellation_reason)
-          else
-            ride.update(status: "canceled", cancellation_reason: cancellation_reason)
-          end
+
+          ride.update(status: "canceled", cancellation_reason: cancellation_reason)
           status 200
           render ride
         else
