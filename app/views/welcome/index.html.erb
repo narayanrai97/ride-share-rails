@@ -15,7 +15,7 @@
           <td class="no-wrap"><%= ride.driver&.full_name %> </td>
           <td class="no-wrap local-time"><%= ride.pick_up_time %></td>
           <td><%= link_to "Approve", approve_admin_ride_path(ride), method: :put  %> |
-            <%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put  %>  </td>
+            <%= link_to "Cancel", review_admin_ride_path(ride), method: :get  %>  </td>
         </tr>
       <% end %>
     </table>
@@ -37,7 +37,7 @@
         <td class="no-wrap"><%= ride.rider&.full_name %> </td>
         <td class="no-wrap"><%= ride.driver&.full_name %> </td>
         <td class="no-wrap"><%= ride.pick_up_time.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %I:%M %p") %></td>
-        <td><%= link_to "Cancel", cancel_admin_ride_path(ride), method: :put %></td>
+        <td><%= link_to "Cancel", review_admin_ride_path(ride), method: :get %></td>
       </tr>
     <% end %>
   </table>

@@ -1,6 +1,9 @@
 require 'geodistance'
 
 class Ride < ApplicationRecord
+  RIDE_CATEGORIES = ['Family', 'Friends', 'Shopping', 'Other']
+  RIDE_CANCELLATION_CATEGORIES = ['Late', 'No Show', 'Schedule Conflict', 'Car Problem', 'Direction Problem', 'Other']
+
   belongs_to :organization
   belongs_to :driver, optional: true
   belongs_to :rider
@@ -18,6 +21,20 @@ class Ride < ApplicationRecord
   # validates :expected_wait_time, presence: true, if: :round_trip?
   after_validation :set_distance, on: [ :create, :update ]
   scope :status, -> (status) { where status: status }
+
+  def self.ride_categories
+    ride_categories_arr = []
+    RIDE_CATEGORIES.each do |r_c|
+      ride_categories_arr << [r_c, r_c]
+    end
+  end
+
+  def self.ride_cancellation_categories
+    ride_cancellation_categories_arr = []
+    RIDE_CANCELLATION_CATEGORIES.each do |r_c|
+      ride_cancellation_categories_arr << [r_c, r_c]
+    end
+  end
 
   def start_street
     if self.start_location

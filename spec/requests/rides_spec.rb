@@ -39,7 +39,7 @@ RSpec.describe Api::V1::Rides, type: :request do
                start_location_id: location1.id, end_location_id: location2.id, status: "approved")}
 
   let!(:ride1) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", pick_up_time: DateTime.now + 10.days,
                 start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride2) {create(:ride, rider_id: rider.id, organization_id: organization.id,
@@ -114,7 +114,8 @@ RSpec.describe Api::V1::Rides, type: :request do
   end
 
   it 'will put the ride back to APPROVED status when canceled a ride with scheduled status' do
-    post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+    params: { reason: "No Show"}
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("approved")
   end
