@@ -1,7 +1,7 @@
 class RideSerializer < ActiveModel::Serializer
   ActiveModelSerializers.config.adapter = :json
   attributes :id, :organization_id, :driver_id, :pick_up_time, :rider, :start_location, :end_location,  :reason, :status, :completed_at, :round_trip,
-  :expected_wait_time, :notes, :pickup_to_dropoff_distance, :pickup_to_dropoff_time, :default_to_pickup_distance
+  :expected_wait_time, :notes, :pickup_to_dropoff_distance, :pickup_to_dropoff_time, :default_to_pickup_distance, :cancellation_reason
 
   def default_to_pickup_distance
     #access driver's default address here. It's one specific address to a driver

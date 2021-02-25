@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_204611) do
     t.float "pickup_to_dropoff_distance"
     t.datetime "pickup_to_dropoff_time"
     t.string "notes"
+    t.string "cancellation_reason"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
     t.index ["end_location_id"], name: "index_rides_on_end_location_id"
     t.index ["organization_id"], name: "index_rides_on_organization_id"
