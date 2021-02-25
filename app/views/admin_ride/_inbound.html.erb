@@ -47,6 +47,13 @@
     <%= @ride.notes %>
   </p>
 
+  <% if @ride.status == 'canceled'%>
+    <p>
+      <strong>Cancellation Reason: </strong>
+      <%= @ride.cancellation_reason %>
+    </p>
+  <%end%>
+
   <% if @ride.return %>
   <p class="contains-time">
     <strong> Return trip pick up time:</strong>
