@@ -48,12 +48,12 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_plate: "VZW1212",
        }
       }
-      byebug
+      # byebug
       expect(response.body).to include("Seat belt num is not a number")
-      expect(response.body).to include("Car state can't be blank")
-      expect(response.body).to include("Seat belt num can't be blank" )
-      expect(response.body).to include("Insurance provider can't be blank")
-      expect(response.body).to include("Insurance start can't be blank")
+      expect(response.body).to include("Car state can&#39;t be blank")
+      expect(response.body).to include("Seat belt num can&#39;t be blank" )
+      expect(response.body).to include("Insurance start can&#39;t be blank")
+      expect(response.body).to include("Insurance stop can&#39;t be blank")
       expect(response).to render_template(:edit)
       end.not_to change(Vehicle, :count)
     end
