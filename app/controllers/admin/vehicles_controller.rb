@@ -39,6 +39,7 @@ class Admin::VehiclesController < ApplicationController
 
   def update
     @vehicle = Vehicle.find(params[:id])
+    @driver = @vehicle.driver
       if current_user.organization_id == @vehicle.driver.organization_id
         if @vehicle.update(vehicle_params)
           flash.notice = "The vehicle information has been updated"
@@ -46,7 +47,6 @@ class Admin::VehiclesController < ApplicationController
         else
           # The form is handling the errors. Turned of flash alerts error
           # flash.alert = @vehicle.errors.full_messages.to_sentence
-          @driver =  Driver.find(params[:id])
           render "edit"
         end
       else

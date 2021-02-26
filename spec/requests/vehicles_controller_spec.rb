@@ -48,11 +48,12 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_plate: "VZW1212",
        }
       }
-      expect{raise StandardError, "Seat belt num is not a number"}.to raise_error(StandardError, "Seat belt num is not a number" )
-      expect{raise StandardError, "Car state can't be blank"}.to raise_error(StandardError, "Car state can't be blank" )
-      expect{raise StandardError, "Seat belt num can't be blank"}.to raise_error(StandardError, "Seat belt num can't be blank" )
-      expect{raise StandardError, " Insurance provider can't be blank"}.to raise_error(StandardError, " Insurance provider can't be blank" )
-      expect{raise StandardError, "Insurance start can't be blank"}.to raise_error(StandardError, "Insurance start can't be blank" )
+      byebug
+      expect(response.body).to include("Seat belt num is not a number")
+      expect(response.body).to include("Car state can't be blank")
+      expect(response.body).to include("Seat belt num can't be blank" )
+      expect(response.body).to include("Insurance provider can't be blank")
+      expect(response.body).to include("Insurance start can't be blank")
       expect(response).to render_template(:edit)
       end.not_to change(Vehicle, :count)
     end
@@ -151,7 +152,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
         seat_belt_num: "first"
         }
       }
-      expect{raise StandardError, "Seat belt num is not a number"}.to raise_error(StandardError, "Seat belt num is not a number" )
+      expect(response.body).to include("Seat belt num is not a number" )
       expect(response.redirect?).to eq(false)
       expect(response).to render_template(:edit)
     end
