@@ -25,8 +25,8 @@ module Api
           requires :car_state, type: String, desc: " State car is registed"
           requires :seat_belt_num, type: String, desc: " Car plate of vehicle"
           requires :insurance_provider, type: String, desc: " Insurance Provider for vehicle"
-          requires :insurance_start, type: Date, desc: " Insurance start date"
-          requires :insurance_stop, type: Date, desc: " Insurance start date"
+          optional :insurance_start, type: Date, desc: " Insurance start date"
+          optional :insurance_stop, type: Date, desc: " Insurance start date"
         end
       end
       post "vehicles" do

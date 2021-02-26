@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :drivers, path: 'drivers', controllers: {sessions: "drivers/sessions"}
 
   namespace :admin do
@@ -71,7 +70,8 @@ Rails.application.routes.draw do
   resources :admin_ride do
     member do
       put 'approve' => 'admin_ride#approve'
-      put 'cancel' => 'admin_ride#cancel'
+      get 'review' => 'admin_ride/ride_cancellations#review'
+      put 'cancel' => 'admin_ride/ride_cancellations#cancel'
     end
   end
 
