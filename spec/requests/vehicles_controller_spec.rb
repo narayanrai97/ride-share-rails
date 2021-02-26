@@ -48,7 +48,6 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_plate: "VZW1212",
        }
       }
-      # byebug
       expect(response.body).to include("Seat belt num is not a number")
       expect(response.body).to include("Car state can&#39;t be blank")
       expect(response.body).to include("Seat belt num can&#39;t be blank" )
