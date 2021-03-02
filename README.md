@@ -11,7 +11,7 @@ git remote add upstream https://github.com/CodeTheDream/ride-share-rails.git
 ```
 
 ## Download Ruby
-
+Andrei Komolov
 This project is using ruby 2.5.3. You must have that locally before you can begin working on this project. [Install rbenv](https://github.com/rbenv/rbenv) if you haven't already.
 
 ```bash
