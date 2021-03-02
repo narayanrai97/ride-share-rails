@@ -17,7 +17,7 @@ class Admin::VehiclesController < ApplicationController
         redirect_to admin_driver_path(params[:driver_id])
       else
         flash.alert = @vehicle.errors.full_messages.to_sentence
-        redirect_to admin_driver_path(params[:driver_id])
+        redirect_to edit_admin_vehicle_path(params[:driver_id])
       end
     else
       flash.alert = "You cannot create vehicles outside your organization"
@@ -64,7 +64,7 @@ class Admin::VehiclesController < ApplicationController
   private
   def vehicle_params
     params.require(:vehicle).permit(:car_make, :car_model,
-       :car_color, :car_year,:car_plate, :seat_belt_num, :insurance_provider,
+       :car_color, :car_year,:car_plate, :car_state, :seat_belt_num, :insurance_provider,
      :insurance_start, :insurance_stop, :image)
   end
 end

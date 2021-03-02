@@ -23,6 +23,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         car_year: 2010,
         car_color: "Silver",
         car_plate: "VZW1212",
+        car_state: "NY",
         insurance_provider: "Geico",
         insurance_start: Date.today,
         insurance_stop: Date.today,
@@ -30,11 +31,11 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         }
         expect(response).to have_http_status(201)
         parsed_json = JSON.parse(response.body)
-
         expect(parsed_json['vehicle']['car_make']).to eq('Chevorlet')
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
+        expect(parsed_json['vehicle']['car_state']).to eq('NY')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
         expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
@@ -124,6 +125,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           car_year: 2010,
           car_color: "Silver",
           car_plate: "VZW1212",
+          car_state: "NJ",
           insurance_provider: "Geico",
           insurance_start: Date.today,
           insurance_stop: Date.today,
@@ -135,6 +137,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
         expect(parsed_json['vehicle']['car_year']).to eq(2010)
         expect(parsed_json['vehicle']['car_color']).to eq('Silver')
         expect(parsed_json['vehicle']['car_plate']).to eq('VZW1212')
+        expect(parsed_json['vehicle']['car_state']).to eq('NJ')
         expect(parsed_json['vehicle']['insurance_provider']).to eq('Geico')
         #Dates a formatted when they are accepted so appear slightly different than above
         expect(parsed_json['vehicle']['insurance_start']).to eq(Date.today.strftime)
@@ -154,7 +157,7 @@ RSpec.describe Api::V1::Vehicles, type: :request do
           insurance_stop: "2020/3/11",
           seat_belt_num: 5}
         }
-        expect(response).to have_http_status(404)
+        expect(response).to have_http_status(400)
     end
 
     #Test deleting a vehicle using vehicle id.

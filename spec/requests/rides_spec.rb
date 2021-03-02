@@ -13,6 +13,10 @@ RSpec.describe Api::V1::Rides, type: :request do
   #This driver is to test when driver is inactived
   let!(:driver3) {create(:driver, organization_id: organization.id,
                   auth_token: "1020", is_active: false, token_created_at: Time.zone.now)}
+
+  let!(:driver4) {create(:driver, organization_id: organization.id, auth_token: "7897",
+                                 radius: 5, is_active: true, token_created_at: Time.zone.now, background_check: true, application_state: "accepted")}
+
   let!(:rider) {create(:rider)}
   let!(:rider2) {create(:rider, first_name: "ben", email: 'sample@sample.com')}
   let!(:location) {create(:location)}
@@ -35,7 +39,7 @@ RSpec.describe Api::V1::Rides, type: :request do
                start_location_id: location1.id, end_location_id: location2.id, status: "approved")}
 
   let!(:ride1) {create(:ride, rider_id: rider.id, organization_id: organization.id,
-                driver_id: driver.id, status: "scheduled",
+                driver_id: driver.id, status: "scheduled", pick_up_time: DateTime.now + 10.days,
                 start_location_id: location2.id, end_location_id: location3.id)}
 
   let!(:ride2) {create(:ride, rider_id: rider.id, organization_id: organization.id,
@@ -66,6 +70,10 @@ RSpec.describe Api::V1::Rides, type: :request do
   let!(:ride8) {create(:ride, rider_id: rider.id, organization_id: organization.id,
                 driver_id: driver.id, status: "dropping-off",
                 start_location_id: location2.id, end_location_id: location3.id)}
+
+  let!(:ride9) {create(:ride, rider_id: rider.id, organization_id: organization.id,
+                              driver_id: driver4.id, status: "scheduled",
+                              start_location_id: location2.id, end_location_id: location3.id)}
 
   #Accepts a ride for the current logged in user.
   #This added the driver id to the ride and changes the status to scheduled
@@ -106,7 +114,8 @@ RSpec.describe Api::V1::Rides, type: :request do
   end
 
   it 'will put the ride back to APPROVED status when canceled a ride with scheduled status' do
-    post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride1.id}/cancel",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"},
+    params: { reason: "No Show"}
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("approved")
   end
@@ -118,10 +127,17 @@ RSpec.describe Api::V1::Rides, type: :request do
   end
 
   it 'will change status to picking up on a ride for a driver' do
-    post "/api/v1/rides/#{ride1.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    post "/api/v1/rides/#{ride9.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "7897"}
     parsed_json = JSON.parse(response.body)
     expect(parsed_json['ride']['status']).to eq("picking-up")
   end
+
+  it 'Driver can only have one active ride.' do
+    post "/api/v1/rides/#{ride3.id}/picking-up",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}
+    parsed_json = JSON.parse(response.body)
+    expect(parsed_json['error']).to eq("Sorry, there's a ride already in progress.")
+  end
+
 
   it 'will change status to dropping off for a ride for a driver' do
     post "/api/v1/rides/#{ride2.id}/dropping-off",  headers: {"ACCEPT" => "application/json",  "Token" => "1234"}

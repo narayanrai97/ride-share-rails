@@ -162,6 +162,12 @@
           status 404
           return {}
         end
+        #driver can only have one ride in a active state
+        if current_driver.rides.where( status: "picking-up" || "dropping-off" ||
+           "waiting" || "return-picking-up" || "return-dropping-off").length > 0
+          status 400
+          return { error: "Sorry, there's a ride already in progress." }
+        end
         if ride.status == "scheduled" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "picking-up")
           status 201
@@ -288,6 +294,10 @@
       desc "Cancel a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
+        requires :reason, type: String, default: 'Late', values: Ride::RIDE_CANCELLATION_CATEGORIES, desc: "Array of Cancellation Reason categories"
+        given reason: ->(val) { val == 'Other' } do
+          optional :description, type: String, desc: "Cancellation Description when the reason is 'Other'"
+        end
       end
       post "rides/:ride_id/cancel" do
         begin
@@ -296,9 +306,23 @@
           status 404
           return {}
         end
-        if ride.status == "scheduled" && ride.driver_id == current_driver.id # && ride.pick_up_time >= Date.today + 1.week
-          ride.update(driver_id: nil, status: "approved")
-          status 201
+        if ride.status != "approved" && ride.driver_id == current_driver.id
+          unless params[:reason].present?
+            status 400
+            return {error: "Cancellation reason not given."}
+          end
+          cancellation_reason = params[:reason]
+
+          if params[:reason] == 'Other'
+            if !params[:description].present?
+              status 400
+              return {error: "Cancellation reason description not given."}
+            end
+            cancellation_reason = params[:description]
+          end
+
+          ride.update(status: "canceled", cancellation_reason: cancellation_reason)
+          status 200
           render ride
         else
           status 401

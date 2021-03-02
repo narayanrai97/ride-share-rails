@@ -20,6 +20,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_make: "Chevorlet",
          car_model: "Impala",
          car_year: 2010,
+         car_state: "NY",
          car_color: "Silver",
          car_plate: "VZW1212",
          insurance_provider: "Geico",
@@ -48,10 +49,11 @@ RSpec.describe Admin::VehiclesController, type: :request do
       expect(flash[:alert]).to match("Seat belt num can't be blank" )
       expect(flash[:alert]).to match("Seat belt num is not a number" )
       expect(flash[:alert]).to match("Insurance provider can't be blank" )
-      expect(flash[:alert]).to match("Insurance start can't be blank" )
-      expect(flash[:alert]).to  match("Insurance stop can't be blank" )
+      # expect(flash[:alert]).to match("Insurance start can't be blank" )
+      # expect(flash[:alert]).to  match("Insurance stop can't be blank" )
+      expect(flash[:alert]).to  match("Car state can't be blank" )
       expect(response.redirect?).to eq(true)
-      expect(response.redirect?).to redirect_to(admin_driver_path(driver1.id))
+      expect(response.redirect?).to redirect_to(edit_admin_vehicle_path(driver1.id))
       end.not_to change(Vehicle, :count)
     end
 
@@ -63,6 +65,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
          car_make: "Chevorlet",
          car_model: "Impala",
          car_year: 2010,
+         car_state: "NM",
          car_color: "Silver",
          car_plate: "VZW1212",
          insurance_provider: "Geico",
@@ -120,6 +123,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
           car_make: "Toyato",
           car_model: "Camery",
           car_year: 2012,
+          car_state: "NE",
           car_color: "Silver",
           car_plate: "VZW1212",
           insurance_provider: "Geico",
@@ -139,6 +143,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
         vehicle: {
         car_year: 2019,
         car_color: "Silver",
+        car_state: "HI",
         car_plate: "VZW1212",
         insurance_provider: "Geico",
         insurance_start: Date.today - 1.year,
@@ -157,6 +162,7 @@ RSpec.describe Admin::VehiclesController, type: :request do
         car_year: 2019,
         car_color: "Silver",
         car_plate: "VZW1212",
+        car_state: "DE",
         insurance_provider: "Geico",
         insurance_start: Date.today - 1.year,
         insurance_stop: Date.today,

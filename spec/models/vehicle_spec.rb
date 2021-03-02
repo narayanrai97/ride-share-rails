@@ -10,8 +10,6 @@ RSpec.describe Vehicle, type: :model do
       it { is_expected.to validate_presence_of(:car_plate) }
       it { is_expected.to validate_presence_of(:seat_belt_num) }
       it { is_expected.to validate_presence_of(:insurance_provider) }
-      it { is_expected.to validate_presence_of(:insurance_start) }
-      it { is_expected.to validate_presence_of(:insurance_stop) }
   end
 
   describe "Associations" do
