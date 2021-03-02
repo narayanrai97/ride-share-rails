@@ -10,23 +10,42 @@ cd ride-share-rails
 git remote add upstream https://github.com/CodeTheDream/ride-share-rails.git
 ```
 
+## What do you need install before get started?
+- Ruby 2.7.2
+- Rails
+- PostgreSQL
+- Install all gems
+- Google key
+- Master key
+
 ## Download Ruby
-Andrei Komolov
-This project is using ruby 2.5.3. You must have that locally before you can begin working on this project. [Install rbenv](https://github.com/rbenv/rbenv) if you haven't already.
+This project is using ruby 2.7.2. You must have that locally before you can begin working on this project. [Install rbenv](https://github.com/rbenv/rbenv) if you haven't already.
 
 ```bash
 brew install rbenv
 echo 'eval "$(rbenv init -)"' >> ~/.zshrc # or ~/.bash_profile if you're still on bash
 source ~/.zshrc # or close the window and relaunch
-rbenv install 2.6.0 # and wait for it to finish
+rbenv install 2.7.2 # and wait for it to finish
 ```
+
+## PostgreSQL install
+
+ ```bash
+ brew install postgresql
+ bundle install #now it should be work
+ ```
 
 ## Get credentials
 Get the master key from one of the main devs on the project. Run the following to make sure the credentials are set correctly. Otherwise, the seeder will complain about not having the correct Google Maps API key when you go to try set up the DB.
 
-```bash
-EDITOR="vim" rails credentials:edit
-```
+ ```bash
+ EDITOR="vim" rails credentials:edit
+ ```
+ after that delete file config/credential.yml.en and repeat last step again
+
+ ```bash
+ EDITOR="vim" rails credentials:edit #now you shoild get VIM Editor
+ ```
 
 You should have entries for the following values:
 ```ruby
@@ -36,16 +55,36 @@ GOOGLE_API_KEY:
 SENDGRID_API_KEY:
 ```
 
-Make sure that `config/master.key` has the correct master key.
 
-## Build the app and run it
+ In VIM Editor push 'i' to go in Insert mode and Copy/Past your Google API Key in the end of the file. 
+ After that push 'ESC' next push 'Shift + :' next push 'wq' and push Enter.
+ If everything is good you shoul see 'New credentials encrypted and saved.' in the terminal console)
+
+## Master Key
+Open project files in your text editor (VS Code). 
+Make sure that `config/master.key` has the correct master key. 
+How to get a Master key you can ask your team.
+
+ ## Build the app and run it
+ ```bash
+ bundle
+ rails db:setup
+ ```
+After that if you got error with (connections on Unix domain socket "/tmp/.s.PGSQL.5432”?)
+just run this comand
 
 ```bash
-bundle
-rails db:setup
-rails s
+brew services restart postgresql
 ```
 
+will try again create a table
+```bash
+rails db:setup # now it should work
+rails s # run rails server
+```
+
+## Open localhost with the project
+Go to your browser `http://localhost:3000/` and log in like admin. 
 
 # API Documentation
 
