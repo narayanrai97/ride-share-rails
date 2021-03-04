@@ -83,36 +83,62 @@ Fork the CTD master repository for the project into your own github account.
 Clone the fork onto your workstation so that you can develop project features.
 Add an additional github remote repository to your workspace for the project:
 ```bash
-git remote add upstream #<git url of the master repository>
+git remote add upstream # <git url of the master repository>
 ```
 
 Do a 
 ```bash
-git pull upstream master #to synchronize with the master repository.
+git pull upstream master # to synchronize with the master repository.
 ```
 
 ## Working on a Feature
 
-Do not make edits directly to the master branch. Instead, create a feature branch using git checkout -b <featurename> Note: If you forget, there are ways to save your changes and to get the master branch back the way it was. For example, if you have not committed changes, you can use git stash, then create the feature branch, then do git stash apply.
-
-Work on the feature, periodically committing to your feature branch.
-Periodically push your commits to github, using git push origin <featurename>
-When the feature is complete, tested, and ready, commit and push it once more.
-Then, checkout the master branch. You need to get any changes that have been made by your coworkers on the project.
-Do a git pull upstream master to get those latest changes.
-Then, git checkout <featurename> to switch back to your feature branch.
-Do git merge master . This will bring those changes into your feature branch.
-Sometimes you will get merge conflicts. This happens when you and your coworkers are both making changes to the same files. You need to resolve the merge conflicts by editing each file with merge conflicts. The merge conflicts will be marked, and you have to select whether your lines, your coworker’s lines, or both are to be included. You also need to remove the merge conflict markers.
-If you fixed merge conflicts in any files, add and commit them to complete the merge.
-Test one more time to make sure the merge didn’t cause a break and that your feature still works.
-Push your feature branch to github one more time.
-Login to github and do a pull request for your feature branch. Include git IDs for project committers in the comment for your pull request so that they can review it.
-If the review determines that changes are needed, make them to the same feature branch. Then repeat the process of pulling the upstream master into the master branch, merging the master branch, and resolving merge conflicts, and push your changes once more, marking the requested changes as resolved.
-Repeat this process until your feature branch has been merged.
-Checkout your master branch on your workstation. You can now delete your feature branch using git branch -d <featurename> .
-Do a git pull upstream master to pull down your changes into your master branch.
-Do a git push origin master to push your changes to your github fork master branch.
-Time for a new feature branch!
+1. Do not make edits directly to the master branch. 
+Instead, create a feature branch using 
+```bash
+git checkout -b # <featurename> 
+```
+Note: If you forget, there are ways to save your changes and to get the master branch back the way it was. For example, if you have not committed changes, you can use git stash, then create the feature branch, then do git stash apply.
+2. Work on the feature, periodically committing to your feature branch.
+3. Periodically push your commits to github, using
+```bash
+git push origin # <featurename>
+```
+4. When the feature is complete, tested, and ready, commit and push it once more.
+5. Then, checkout the master branch. You need to get any changes that have been made by your coworkers on the project.
+6. Do a 
+```bash
+git pull upstream master # to get those latest changes.
+```
+7. Then, 
+```bash
+git checkout # <featurename> 
+```
+to switch back to your feature branch.
+8. Do 
+```bash
+git merge master. # This will bring those changes into your feature branch.
+```
+9. Sometimes you will get merge conflicts. This happens when you and your coworkers are both making changes to the same files. You need to resolve the merge conflicts by editing each file with merge conflicts. The merge conflicts will be marked, and you have to select whether your lines, your coworker’s lines, or both are to be included. You also need to remove the merge conflict markers.
+10. If you fixed merge conflicts in any files, add and commit them to complete the merge.
+11. Test one more time to make sure the merge didn’t cause a break and that your feature still works.
+12. Push your feature branch to github one more time.
+13. Login to github and do a pull request for your feature branch. Include git IDs for project committers in the comment for your pull request so that they can review it.
+14. If the review determines that changes are needed, make them to the same feature branch. Then repeat the process of pulling the upstream master into the master branch, merging the master branch, and resolving merge conflicts, and push your changes once more, marking the requested changes as resolved.
+15. Repeat this process until your feature branch has been merged.
+16. Checkout your master branch on your workstation. You can now delete your feature branch using
+```bash
+git branch -d # <featurename>
+```
+17. Do a 
+```bash
+git pull upstream master # to pull down your changes into your master branch.
+```
+18. Do a 
+```bash
+git push origin master # to push your changes to your github fork master branch.
+```
+19. Time for a new feature branch!
 
 # Working with a PRIVATE repository
 Git Process for Midnight Train Applications
@@ -124,32 +150,34 @@ We will use postgres as the database for this application. Be sure you have post
 
 Go to the directory where you would like to do your work, and clone the repository:
 
-git clone https://github.com/CodeTheDream/warren-co.git
-cd warren-co
+```bash
+git clone https://github.com/[GITHUBHANDLE]/ride-share-rails.git
+cd ride-share-rails
 bundle install
+```
 
 ## Git Process for Features
 
-git checkout development (always start your new feature branch here)
-git pull origin development (make sure you are up to date)
-git checkout -b your-feature-name
-Develop your feature
-Add and commit your changes.
-Push your feature branch. This should be done periodically, even before you are done with your feature, so that you don’t lose your work.
-Test your feature, including Rspec testing. Make any changes necessary to make the tests pass.
-Commit and push your changes again.
-git checkout development (you need to merge in any changes that your colleagues have made in the meantime)
-git pull origin development
-git checkout your-feature-name
-git merge development (now, at this point, if anyone has made changes to the same files you changed, you will need to resolve merge conflicts)
-resolve merge conflicts, if any, and add and commit your changes
-test again to make sure the merge conflict resolution did not break anything
-push your changes
-Do a pull request. The target of the pull request must be the development branch. Make @charlesvincentanderson and @jrmcgarvey as reviewers.
-Chuck will review your code and may request changes.
-Make any necessary changes to the your-feature-name branch. Then add, commit, and push again.
-Once all required changes have been made, Chuck will merge your code.
-Time for a new feature branch!
+1. git checkout development (always start your new feature branch here)
+2. git pull origin development (make sure you are up to date)
+3. git checkout -b your-feature-name
+4. Develop your feature
+5. Add and commit your changes.
+6. Push your feature branch. This should be done periodically, even before you are done with your feature, so that you don’t lose your work.
+7. Test your feature, including Rspec testing. Make any changes necessary to make the tests pass.
+8. Commit and push your changes again.
+9. git checkout development (you need to merge in any changes that your colleagues have made in the meantime)
+10. git pull origin development
+11. git checkout your-feature-name
+12. git merge development (now, at this point, if anyone has made changes to the same files you changed, you will need to resolve merge conflicts)
+13. resolve merge conflicts, if any, and add and commit your changes
+14. test again to make sure the merge conflict resolution did not break anything
+15. push your changes
+16. Do a pull request. The target of the pull request must be the development branch. Make @charlesvincentanderson and @jrmcgarvey as reviewers.
+17. Chuck will review your code and may request changes.
+18. Make any necessary changes to the your-feature-name branch. Then add, commit, and push again.
+19. Once all required changes have been made, Chuck will merge your code.
+20. Time for a new feature branch!
 
 # API Documentation
 
