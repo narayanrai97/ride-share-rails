@@ -77,14 +77,21 @@ You create changes in a feature branch on your workspace and push it to your Git
 You do a pull request. When approved this will merge your changes from your feature branch into the CTD master repository.
 You will only have read only access to the CTD master repository for the project. Your changes will be merged by the committers for the project.
 
-##Setting up for this Git Workflow
+## Setting up for this Git Workflow
 
 Fork the CTD master repository for the project into your own github account.
 Clone the fork onto your workstation so that you can develop project features.
-Add an additional github remote repository to your workspace for the project: git remote add upstream <git url of the master repository>
-Do a git pull upstream master to synchronize with the master repository.
+Add an additional github remote repository to your workspace for the project:
+```bash
+git remote add upstream #<git url of the master repository>
+```
 
-##Working on a Feature
+Do a 
+```bash
+git pull upstream master #to synchronize with the master repository.
+```
+
+## Working on a Feature
 
 Do not make edits directly to the master branch. Instead, create a feature branch using git checkout -b <featurename> Note: If you forget, there are ways to save your changes and to get the master branch back the way it was. For example, if you have not committed changes, you can use git stash, then create the feature branch, then do git stash apply.
 
@@ -111,7 +118,7 @@ Time for a new feature branch!
 Git Process for Midnight Train Applications
 The Warren County Farm to Consumer application will not be open source, because Warren County will own the code. The CARE Alliance Application will not be open source, because it uses a proprietary library. So, we must make both repositories private, and we can’t use forks. Instead, we will use branches for each feature request. There are two branches in continuous use, those being master and development, but these are read/only except for Chuck, Ramiro, and John.
 
-##Setting Up for the Git Process
+## Setting Up for the Git Process
 
 We will use postgres as the database for this application. Be sure you have postgres installed in your development environment.
 
@@ -121,7 +128,7 @@ git clone https://github.com/CodeTheDream/warren-co.git
 cd warren-co
 bundle install
 
-##Git Process for Features
+## Git Process for Features
 
 git checkout development (always start your new feature branch here)
 git pull origin development (make sure you are up to date)
