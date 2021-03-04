@@ -1,6 +1,18 @@
 # Getting Started
 
-## Fork and Clone Repo
+## What do you need install before get started?
+1. Install PostgreSQL
+2. Install rbenv or rvm
+3. Install Ruby 2.7.2 with rbenv or rvm
+4. Install bundler
+5. Change to the ride-share-rails directory and run bundle install. (That will install Rails and all required gems).
+6. Create the file config/master.key. (Getting the required value from a teammate).
+7. Run bin/rails db:setup
+8. Run: bundle exec rspec (This will verify that the application is correctly installed, because most of the tests should run correctly. Some tests require firefox, and those will fail unless firefox is present and Capybara is configured to call firefox. It is not necessary, when starting work on the team, to get FIrefox Capybary configured at the start).
+9. Run: bin/rails s to start the server.
+10. Congratulation! Now you should ready to go :)
+
+## Fork and Clone Repo from GitHub
 
 Fork the repo, then clone your version locally. Then make sure to set the main repo as the upstream source.
 
@@ -10,13 +22,12 @@ cd ride-share-rails
 git remote add upstream https://github.com/CodeTheDream/ride-share-rails.git
 ```
 
-## What do you need install before get started?
-- Ruby 2.7.2
-- Rails
-- PostgreSQL
-- Install all gems
-- Google key
-- Master key
+## PostgreSQL install
+
+ ```bash
+ brew install postgresql
+ bundle install #now it should be work
+ ```
 
 ## Download Ruby
 This project is using ruby 2.7.2. You must have that locally before you can begin working on this project. [Install rbenv](https://github.com/rbenv/rbenv) if you haven't already.
@@ -28,37 +39,8 @@ source ~/.zshrc # or close the window and relaunch
 rbenv install 2.7.2 # and wait for it to finish
 ```
 
-## PostgreSQL install
-
- ```bash
- brew install postgresql
- bundle install #now it should be work
- ```
-
 ## Get credentials
 Get the master key from one of the main devs on the project. Run the following to make sure the credentials are set correctly. Otherwise, the seeder will complain about not having the correct Google Maps API key when you go to try set up the DB.
-
- ```bash
- EDITOR="vim" rails credentials:edit
- ```
- after that delete file config/credential.yml.en and repeat last step again
-
- ```bash
- EDITOR="vim" rails credentials:edit #now you shoild get VIM Editor
- ```
-
-You should have entries for the following values:
-```ruby
-GMAIL_USERNAME:
-GMAIL_PASSWORD:
-GOOGLE_API_KEY:
-SENDGRID_API_KEY:
-```
-
-
- In VIM Editor push 'i' to go in Insert mode and Copy/Past your Google API Key in the end of the file. 
- After that push 'ESC' next push 'Shift + :' next push 'wq' and push Enter.
- If everything is good you shoul see 'New credentials encrypted and saved.' in the terminal console)
 
 ## Master Key
 Open project files in your text editor (VS Code). 
@@ -84,7 +66,83 @@ rails s # run rails server
 ```
 
 ## Open localhost with the project
-Go to your browser `http://localhost:3000/` and log in like admin. 
+Go to your browser `http://localhost:3000/` and log in like an admin. 
+
+# Git Process for CRSN Applications
+## CTD Git Workflow
+For many CTD projects, we will use a specific Git workflow. This workflow is similar to ones used by many companies. The flow is triangular:
+
+You receive changes to your workspace from the CTD master repository for the project. Some newer repositories use “main” instead of “master” as the name for the master branch.
+You create changes in a feature branch on your workspace and push it to your Github fork of the master CTD repository for the project.
+You do a pull request. When approved this will merge your changes from your feature branch into the CTD master repository.
+You will only have read only access to the CTD master repository for the project. Your changes will be merged by the committers for the project.
+
+##Setting up for this Git Workflow
+
+Fork the CTD master repository for the project into your own github account.
+Clone the fork onto your workstation so that you can develop project features.
+Add an additional github remote repository to your workspace for the project: git remote add upstream <git url of the master repository>
+Do a git pull upstream master to synchronize with the master repository.
+
+##Working on a Feature
+
+Do not make edits directly to the master branch. Instead, create a feature branch using git checkout -b <featurename> Note: If you forget, there are ways to save your changes and to get the master branch back the way it was. For example, if you have not committed changes, you can use git stash, then create the feature branch, then do git stash apply.
+
+Work on the feature, periodically committing to your feature branch.
+Periodically push your commits to github, using git push origin <featurename>
+When the feature is complete, tested, and ready, commit and push it once more.
+Then, checkout the master branch. You need to get any changes that have been made by your coworkers on the project.
+Do a git pull upstream master to get those latest changes.
+Then, git checkout <featurename> to switch back to your feature branch.
+Do git merge master . This will bring those changes into your feature branch.
+Sometimes you will get merge conflicts. This happens when you and your coworkers are both making changes to the same files. You need to resolve the merge conflicts by editing each file with merge conflicts. The merge conflicts will be marked, and you have to select whether your lines, your coworker’s lines, or both are to be included. You also need to remove the merge conflict markers.
+If you fixed merge conflicts in any files, add and commit them to complete the merge.
+Test one more time to make sure the merge didn’t cause a break and that your feature still works.
+Push your feature branch to github one more time.
+Login to github and do a pull request for your feature branch. Include git IDs for project committers in the comment for your pull request so that they can review it.
+If the review determines that changes are needed, make them to the same feature branch. Then repeat the process of pulling the upstream master into the master branch, merging the master branch, and resolving merge conflicts, and push your changes once more, marking the requested changes as resolved.
+Repeat this process until your feature branch has been merged.
+Checkout your master branch on your workstation. You can now delete your feature branch using git branch -d <featurename> .
+Do a git pull upstream master to pull down your changes into your master branch.
+Do a git push origin master to push your changes to your github fork master branch.
+Time for a new feature branch!
+
+# Working with a PRIVATE repository
+Git Process for Midnight Train Applications
+The Warren County Farm to Consumer application will not be open source, because Warren County will own the code. The CARE Alliance Application will not be open source, because it uses a proprietary library. So, we must make both repositories private, and we can’t use forks. Instead, we will use branches for each feature request. There are two branches in continuous use, those being master and development, but these are read/only except for Chuck, Ramiro, and John.
+
+##Setting Up for the Git Process
+
+We will use postgres as the database for this application. Be sure you have postgres installed in your development environment.
+
+Go to the directory where you would like to do your work, and clone the repository:
+
+git clone https://github.com/CodeTheDream/warren-co.git
+cd warren-co
+bundle install
+
+##Git Process for Features
+
+git checkout development (always start your new feature branch here)
+git pull origin development (make sure you are up to date)
+git checkout -b your-feature-name
+Develop your feature
+Add and commit your changes.
+Push your feature branch. This should be done periodically, even before you are done with your feature, so that you don’t lose your work.
+Test your feature, including Rspec testing. Make any changes necessary to make the tests pass.
+Commit and push your changes again.
+git checkout development (you need to merge in any changes that your colleagues have made in the meantime)
+git pull origin development
+git checkout your-feature-name
+git merge development (now, at this point, if anyone has made changes to the same files you changed, you will need to resolve merge conflicts)
+resolve merge conflicts, if any, and add and commit your changes
+test again to make sure the merge conflict resolution did not break anything
+push your changes
+Do a pull request. The target of the pull request must be the development branch. Make @charlesvincentanderson and @jrmcgarvey as reviewers.
+Chuck will review your code and may request changes.
+Make any necessary changes to the your-feature-name branch. Then add, commit, and push again.
+Once all required changes have been made, Chuck will merge your code.
+Time for a new feature branch!
 
 # API Documentation
 
