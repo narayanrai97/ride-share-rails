@@ -124,12 +124,12 @@
         end
       end
 
-      # Driver Acceting only an approved ride
+      # Driver Acceting only an approved ride with old API "accept"
       desc "Accept a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
       end
-      post "rides/:ride_id/scheduled" do
+      post "rides/:ride_id/accept" do
         begin
           ride = Ride.find(permitted_params[:ride_id])
         rescue ActiveRecord::RecordNotFound
@@ -148,6 +148,31 @@
           render ride
         end
       end
+
+       # Driver Acceting only an approved ride with new API "scheduled"
+       desc "Accept a ride"
+       params do
+         requires :ride_id, type: String, desc: "ID of the ride"
+       end
+       post "rides/:ride_id/scheduled" do
+         begin
+           ride = Ride.find(permitted_params[:ride_id])
+         rescue ActiveRecord::RecordNotFound
+           status 404
+           return {}
+         end
+ 
+         unless ride.driver_id.nil? && ride.status == "approved"
+           status 401
+           return { error: 'Not Authorized'}
+         end
+ 
+         if ride.update(driver_id: current_driver.id, status: "scheduled")
+           RiderMailer.ride_accepted_notifications(ride).deliver_later
+           status 201
+           render ride
+         end
+       end
 
 
       # Driver picking up riders only with scheduled rides
