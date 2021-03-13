@@ -9,6 +9,7 @@ class Ride < ApplicationRecord
   belongs_to :rider
   belongs_to :start_location, :class_name => "Location"
   belongs_to :end_location, :class_name => "Location"
+  validates_associated :start_location, :end_location
   has_one :outbound_ride, class_name: 'Ride', foreign_key: :outbound, dependent: :nullify
   has_one :inbound_ride, class_name: 'Ride', foreign_key: :return, dependent: :nullify
   has_one :token
