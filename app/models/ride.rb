@@ -12,6 +12,7 @@ class Ride < ApplicationRecord
   validates_associated :start_location, :end_location
   has_one :outbound_ride, class_name: 'Ride', foreign_key: :outbound, dependent: :nullify
   has_one :inbound_ride, class_name: 'Ride', foreign_key: :return, dependent: :nullify
+  has_many :ride_logs
   has_one :token
 
   validates :start_location, :end_location, :pick_up_time, :reason, :status, presence: true
