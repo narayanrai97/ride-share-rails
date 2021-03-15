@@ -124,7 +124,7 @@
         end
       end
 
-      # Driver Acceting only an approved ride with old API "accept"
+      # Driver Acceting only an approved ride
       desc "Accept a ride"
       params do
         requires :ride_id, type: String, desc: "ID of the ride"
@@ -149,31 +149,30 @@
         end
       end
 
-       # Driver Acceting only an approved ride with new API "scheduled"
-       desc "Accept a ride"
-       params do
-         requires :ride_id, type: String, desc: "ID of the ride"
-       end
-       post "rides/:ride_id/scheduled" do
-         begin
-           ride = Ride.find(permitted_params[:ride_id])
-         rescue ActiveRecord::RecordNotFound
-           status 404
-           return {}
-         end
- 
-         unless ride.driver_id.nil? && ride.status == "approved"
-           status 401
-           return { error: 'Not Authorized'}
-         end
- 
-         if ride.update(driver_id: current_driver.id, status: "scheduled")
-           RiderMailer.ride_accepted_notifications(ride).deliver_later
-           status 201
-           render ride
-         end
+      # Driver Acceting only an approved ride with new API "scheduled"
+      desc "Accept a ride"
+      params do
+       requires :ride_id, type: String, desc: "ID of the ride"
+      end
+      post "rides/:ride_id/scheduled" do
+       begin
+         ride = Ride.find(permitted_params[:ride_id])
+       rescue ActiveRecord::RecordNotFound
+         status 404
+         return {}
        end
 
+       unless ride.driver_id.nil? && ride.status == "approved"
+         status 401
+         return { error: 'Not Authorized'}
+       end
+
+       if ride.update(driver_id: current_driver.id, status: "scheduled")
+         RiderMailer.ride_accepted_notifications(ride).deliver_later
+         status 201
+         render ride
+       end
+      end
 
       # Driver picking up riders only with scheduled rides
       desc "Picking up a rider"
@@ -225,6 +224,28 @@
         end
       end
 
+      # Driver returning-home after dropping-off a rider
+      desc "Returning home after dropping off a rider"
+      params do
+        requires :ride_id, type: String, desc: "ID of the ride"
+      end
+      post "rides/:ride_id/returning-home" do
+        begin
+          ride = Ride.find(permitted_params[:ride_id])
+        rescue ActiveRecord::RecordNotFound
+          status 404
+          return {}
+        end
+        if ride.status == "dropping-off" && ride.driver_id == current_driver.id
+          ride.update_attribute(:status, "returning-home")
+          status 201
+          render ride
+        else
+          status 401
+          return { error: "Not Authorized" }
+        end
+      end
+
       # Driver waiting a rider after dropping-off
       desc "Waiting a rider after dropping off"
       params do
@@ -237,7 +258,7 @@
           status 404
           return {}
         end
-        if ride.status == "dropping-off" && ride.driver_id == current_driver.id
+        if ride.status == "returning-home" && ride.driver_id == current_driver.id
           ride.update_attribute(:status, "waiting")
           status 201
           render ride
@@ -303,7 +324,7 @@
           status 404
         return {}
         end
-        if ["dropping-off", "return-dropping-off"].include?(ride.status) && ride.driver_id == current_driver.id
+        if ride.status == "returning-home" && ride.driver_id == current_driver.id
           ride.update_attributes(status: "completed", completed_at: Time.now)
           status 201
           render ride
